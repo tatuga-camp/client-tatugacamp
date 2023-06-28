@@ -99,6 +99,7 @@ export default function CreateAssignment({
   };
   const handleSubmit = async (e) => {
     try {
+      setLoading(() => true);
       e.preventDefault();
       const createAssignment = await CreateAssignmentApi({
         classroomId: rounter.query.classroomId,
@@ -112,9 +113,13 @@ export default function CreateAssignment({
 
       Swal.fire("success", "assignment has been createed", "success");
       setAssignmentCreated(createAssignment);
+
+      setLoading(() => false);
       setIsAssignmentStdent(true);
     } catch (err) {
       console.log(err);
+
+      setLoading(() => false);
       Swal.fire(
         "error",
         err?.props?.response?.data?.message.toString(),
@@ -224,16 +229,22 @@ export default function CreateAssignment({
                 }
               />
 
-              <button
-                type="submit"
-                className="w-full py-2 mt-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
+              {loading ? (
+                <div className="flex justify-center">
+                  <Loading />
+                </div>
+              ) : (
+                <button
+                  type="submit"
+                  className="w-full py-2 mt-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
               text-md cursor-pointer hover: active:border-2  active:border-gray-300
                active:border-solid  focus:border-2 hover:bg-red-500 transition duration-150
               focus:border-solid"
-              >
-                {language === "Thai" && "สร้าง"}
-                {language === "English" && "CREATE"}
-              </button>
+                >
+                  {language === "Thai" && "สร้าง"}
+                  {language === "English" && "CREATE"}
+                </button>
+              )}
             </div>
             <div
               className="w-[30%] h-full border-2 border-solid border-gray-200 rounded-xl 
