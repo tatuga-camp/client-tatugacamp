@@ -466,7 +466,7 @@ function Index() {
               </tr>
             </tbody>
           </table>
-          <div className="h-max w-full  lg:text-lg rounded-md max-w-4xl overflow-x-auto">
+          <div className="h-max max-h-96  w-full  lg:text-lg rounded-md max-w-4xl overflow-auto">
             <div
               className=" p-5  text-black font-Kanit"
               dangerouslySetInnerHTML={{

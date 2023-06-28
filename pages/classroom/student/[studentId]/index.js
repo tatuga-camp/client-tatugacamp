@@ -509,7 +509,7 @@ function Index() {
           )}
           {activeMenu === 0 &&
             assignments?.data?.data?.map((assignment) => {
-              const createDate = new Date(assignment.assignment.createAt);
+              const createDate = new Date(assignment.assignment?.createAt);
               const formattedCreateDate = createDate.toLocaleDateString(
                 "th-TH",
                 {
@@ -518,7 +518,7 @@ function Index() {
                   year: "numeric",
                 }
               );
-              const deadlineDate = new Date(assignment.assignment.deadline);
+              const deadlineDate = new Date(assignment.assignment?.deadline);
               const formatteDeadlineDate = deadlineDate.toLocaleDateString(
                 "th-TH",
                 {
@@ -529,12 +529,12 @@ function Index() {
               );
               return (
                 <button
-                  key={assignment.assignment.id}
+                  key={assignment.assignment?.id}
                   onClick={() => {
                     const serializedAssignment = JSON.stringify(assignment);
                     localStorage.setItem("assignment", serializedAssignment);
                     router.push({
-                      pathname: `/classroom/student/${student?.data?.data.id}/assignment/${assignment.assignment.id}`,
+                      pathname: `/classroom/student/${student?.data?.data.id}/assignment/${assignment.assignment?.id}`,
                       query: {
                         classroomId: router.query.classroomId,
                       },
@@ -546,7 +546,7 @@ function Index() {
                   <div className="w-full h-28 flex flex-col justify-center  text-left   ">
                     <div className="w-48 md:w-72 text-left truncate scrollbar-hide">
                       <span className="font-Kanit font-semibold md:text-xl text-blue-500">
-                        {assignment.assignment.title}
+                        {assignment.assignment?.title}
                       </span>
                     </div>
                     <div className="flex flex-col">
@@ -565,13 +565,13 @@ function Index() {
                           <span>ไม่ส่งงาน</span>
                         </div>
                       )}
-                      {assignment?.student.status === "have-work" &&
+                      {assignment?.student?.status === "have-work" &&
                         assignment?.student?.isSummited === false && (
                           <div className="w-20 h-20 bg-yellow-400 rounded-2xl text-white font-Kanit font-semibold flex justify-center items-center">
                             <span>ส่งแล้ว</span>
                           </div>
                         )}
-                      {assignment?.student.status === "have-work" &&
+                      {assignment?.student?.status === "have-work" &&
                         assignment?.student?.isSummited === true && (
                           <div className="w-20 h-20 bg-green-600 rounded-2xl text-white font-Kanit font-semibold flex justify-center items-center">
                             <span>ตรวจแล้ว</span>
