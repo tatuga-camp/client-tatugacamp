@@ -203,7 +203,7 @@ function Index({ error, user, whatsNews }) {
   };
 
   return (
-    <div className="bg-white lg:w-full lg:h-full md:h-screen font-Kanit">
+    <div className="bg-white lg:w-full lg:h-full md:h-full md:pb-96 font-Kanit">
       <Head>
         <meta property="og:title" content={`TaTuga class`} />
         <meta

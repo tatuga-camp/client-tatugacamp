@@ -17,11 +17,15 @@ import {
   CreateCheckoutOld,
 } from "../../service/stripe-api/checkout";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { Switch } from "@headlessui/react";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 function Subscriptions({ user, error }) {
+  const router = useRouter();
   const [sideMenus, setSideMenus] = useState();
+  const [enabled, setEnabled] = useState(false);
   const tiers = [
     {
       title: `${
@@ -61,7 +65,7 @@ function Subscriptions({ user, error }) {
           : user?.language === "English" && "Tatuga starter"
       }`,
       subheader: "Most popular",
-      price: "70",
+      price: enabled ? 670 : 70,
       description: [
         `${
           user?.language === "Thai" || error
@@ -96,10 +100,10 @@ function Subscriptions({ user, error }) {
       title: `${
         user?.language === "Thai" || error
           ? "สมาชิกพรีเมี่ยม"
-          : user?.language === "English" && "Tatuga starter"
+          : user?.language === "English" && "Tatuga Premium"
       }`,
       subheader: "Unlimited",
-      price: "120",
+      price: enabled ? 1100 : 120,
       description: [
         `${
           user?.language === "Thai" || error
@@ -141,40 +145,42 @@ function Subscriptions({ user, error }) {
   }, []);
 
   const handleCreateCheckOutStarter = async () => {
-    try {
-      if (user?.plan === "TATUGA-PREMIUM") {
-        const url = await CreateCheckout({
+    if (enabled) {
+      router.push({
+        pathname: "/payment",
+        query: {
+          priceId: process.env.NEXT_PUBLIC_TATUGA_STARTER_PRICEID_YEARLY,
+        },
+      });
+    } else if (!enabled) {
+      router.push({
+        pathname: "/payment",
+        query: {
           priceId: process.env.NEXT_PUBLIC_TATUGA_STARTER_PRICEID,
-        });
-        window.location.href = url.data;
-      } else if (user?.plan === "FREE") {
-        const url = await CreateCheckout({
-          priceId: process.env.NEXT_PUBLIC_TATUGA_STARTER_PRICEID,
-        });
-        window.location.href = url.data;
-      }
-    } catch (err) {}
+        },
+      });
+    }
   };
 
   const handleCreateCheckOutPremium = async () => {
-    try {
-      if (user?.plan === "TATUGA-STARTER") {
-        const url = await CreateCheckoutOld({
+    if (enabled) {
+      router.push({
+        pathname: "/payment",
+        query: {
+          priceId: process.env.NEXT_PUBLIC_TATUGA_PREMIUM_PRICEID_YEARLY,
+        },
+      });
+    } else if (!enabled) {
+      router.push({
+        pathname: "/payment",
+        query: {
           priceId: process.env.NEXT_PUBLIC_TATUGA_PREMIUM_PRICEID,
-        });
-        window.location.href = url.data;
-      } else if (user?.plan === "FREE") {
-        const url = await CreateCheckout({
-          priceId: process.env.NEXT_PUBLIC_TATUGA_PREMIUM_PRICEID,
-        });
-        window.location.href = url.data;
-      }
-    } catch (err) {
-      console.log(err);
+        },
+      });
     }
   };
   return (
-    <div className="bg-gradient-to-t h-full lg:h-screen md:h-screen from-blue-300 to-orange-100">
+    <div className="bg-gradient-to-t h-full lg:h-full md:h-screen from-blue-300 to-orange-100">
       <Head>
         <meta property="og:title" content={`TaTuga class subscription`} />
         <meta
@@ -245,6 +251,33 @@ function Subscriptions({ user, error }) {
             </div>
           </Typography>
         </Container>
+        <div className="w-full flex justify-center py-10 flex-col items-center gap-2 font-Kanit">
+          <Switch
+            checked={enabled}
+            onChange={setEnabled}
+            className={`${enabled ? "bg-teal-900" : "bg-teal-700"}
+          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+          >
+            <span
+              aria-hidden="true"
+              className={`${enabled ? "translate-x-9" : "translate-x-0"}
+            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+            />
+          </Switch>
+          {enabled ? (
+            <span className="font-bold text-xl">
+              {user?.language === "Thai"
+                ? "รายปี"
+                : user?.language === "English" && "Yearly"}
+            </span>
+          ) : (
+            <span className="font-bold text-xl">
+              {user?.language === "Thai"
+                ? "รายเดือน"
+                : user?.language === "English" && "Monthly"}
+            </span>
+          )}
+        </div>
         <section className="w-full flex flex-col items-center pb-10 md:flex-row md:gap-5  justify-center gap-10 font-Kanit">
           {tiers.map((tire, index) => {
             return (
@@ -273,9 +306,15 @@ function Subscriptions({ user, error }) {
                 </div>
                 <div className="flex justify-center mt-3 items-end">
                   <span className="font-bold lg:text-8xl md:text-3xl">
-                    {tire.price}
+                    {tire.price.toLocaleString()}
                   </span>
-                  บาท/เดือน
+                  {enabled
+                    ? user?.language === "Thai"
+                      ? "บาท/ปี"
+                      : user?.language === "English" && "yearly"
+                    : user?.language === "Thai"
+                    ? "บาท/เดือน"
+                    : user?.language === "English" && "monthly"}
                 </div>
                 <ul className="pl-0 flex flex-col gap-2 mt-5">
                   {tire.description.map((description, index) => {
