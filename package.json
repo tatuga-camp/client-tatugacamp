@@ -25,6 +25,8 @@
     "@portabletext/react": "^2.0.0",
     "@prisma/client": "^4.8.1",
     "@sanity/image-url": "^1.0.1",
+    "@stripe/react-stripe-js": "^2.1.1",
+    "@stripe/stripe-js": "^1.54.1",
     "@tinymce/tinymce-react": "^4.3.0",
     "axios": "^0.27.2",
     "heic2any": "^0.0.4",
