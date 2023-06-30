@@ -198,6 +198,7 @@ function Index({ user, error }) {
                                         src={student.picture}
                                         layout="fill"
                                         quality={60}
+                                        sizes="(max-width: 500px) 100vw, 700px"
                                         placeholder="blur"
                                         blurDataURL="/logo/TaTuga camp.png"
                                         alt="student's avatar"

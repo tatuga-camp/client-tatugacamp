@@ -203,7 +203,7 @@ function Index({ error, user, whatsNews }) {
   };
 
   return (
-    <div className="bg-white lg:w-full lg:h-full md:h-full md:pb-96 font-Kanit">
+    <div className="bg-white lg:w-full lg:h-full md:h-full  font-Kanit">
       <Head>
         <meta property="og:title" content={`TaTuga class`} />
         <meta
@@ -230,7 +230,7 @@ function Index({ error, user, whatsNews }) {
 
       <div
         className={`flex  w-full  bg-[url('/blob-scene-haikei.svg')] bg-no-repeat bg-fixed bg-cover ${
-          classroomState?.[0] ? "h-full pb-60 md:pb-80 lg:pb-0" : "h-screen"
+          classroomState?.[0] ? "h-full pb-60 md:pb-80 lg:pb-40" : "h-screen"
         } `}
       >
         <Layout user={user} sideMenus={sideMenus} />
