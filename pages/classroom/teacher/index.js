@@ -57,22 +57,22 @@ function Index({ error, user, whatsNews }) {
 
   useEffect(() => {
     if (user) {
-      Swal.fire({
-        title: "มาร่วมกลุ่ม tatuga class ใน Facebook กัน!",
-        html:
-          "<span>Tatuga class - เว็บไซต์สำหรับจัดการชั้นเรียน by Tatuga camp</span>" +
-          "<br/>" +
-          "<span>ขอเชิญทุก ๆ ท่านเข้าร่วมกลุ่ม Facebook เพื่อทราบข้อมูลต่างๆ ได้รวดเร็วก่อนใครแถมยังมีเทคนิคการใช้งาน tatug class อีกด้วย!😁</span>" +
-          "<br/>" +
-          '<a  target=”_blank” href="https://www.facebook.com/groups/201281862869927/">เข้าร่วม</a> ' +
-          "<span> กดเลย</span>",
+      // Swal.fire({
+      //   title: "มาร่วมกลุ่ม tatuga class ใน Facebook กัน!",
+      //   html:
+      //     "<span>Tatuga class - เว็บไซต์สำหรับจัดการชั้นเรียน by Tatuga camp</span>" +
+      //     "<br/>" +
+      //     "<span>ขอเชิญทุก ๆ ท่านเข้าร่วมกลุ่ม Facebook เพื่อทราบข้อมูลต่างๆ ได้รวดเร็วก่อนใครแถมยังมีเทคนิคการใช้งาน tatug class อีกด้วย!😁</span>" +
+      //     "<br/>" +
+      //     '<a  target=”_blank” href="https://www.facebook.com/groups/201281862869927/">เข้าร่วม</a> ' +
+      //     "<span> กดเลย</span>",
 
-        imageUrl:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png",
-        imageWidth: 100,
-        imageHeight: 100,
-        imageAlt: "Facebook icon",
-      });
+      //   imageUrl:
+      //     "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png",
+      //   imageWidth: 100,
+      //   imageHeight: 100,
+      //   imageAlt: "Facebook icon",
+      // });
       const viewNews = localStorage.getItem("IsViewNews");
       if (viewNews === whatsNews[0]._id) {
         setIsViewNews(() => true);
