@@ -330,6 +330,9 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                         layout="fill"
                         alt="students avatar"
                         className="object-cover "
+                        sizes="(max-width: 768px) 100vw, 700px"
+                        placeholder="blur"
+                        blurDataURL="/logo/TaTuga camp.png"
                       />
                     </div>
                     <div

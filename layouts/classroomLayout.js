@@ -24,6 +24,8 @@ import RandomStudents from "../components/form/randomStudents";
 import { IoPersonAdd, IoWarningOutline } from "react-icons/io5";
 import RandomIcon from "../components/svg/RandomIcon";
 import QRCode from "react-qr-code";
+import { HiRectangleGroup } from "react-icons/hi2";
+
 function Layout({ children, sideMenus, language }) {
   const router = useRouter();
   const [triggerRandomStudent, setTriggerRandomStudent] = useState(false);
@@ -133,16 +135,16 @@ function Layout({ children, sideMenus, language }) {
                   <span className="mr-2 md:block hidden">Welcome to</span>
                   <div className="mr-2 md:hidden block">Welcome to</div>
                   <div className="w-60 hover:w-max truncate">
-                    <span className="md:text-xl lg:text-4xl break-words	 font-semibold text-center md:text-left uppercase">
+                    <span className="md:text-xl  lg:text-4xl break-words flex justify-center md:justify-start	 font-semibold text-center md:text-left uppercase">
                       {classroom?.data?.data?.title}
                     </span>
                   </div>
                 </div>
-                <div className="mt-2  md:flex md:flex-col gap-2">
+                <div className="mt-2  md:flex md:flex-col gap-2 text-center md:text-left ">
                   <span className="font-Kanit text-base mr-5 font-medium ">
                     {classroom?.data?.data?.description}
                   </span>
-                  <div className="flex justify-start items-center">
+                  <div className="flex justify-start flex-col md:flex-row items-center md:items-center">
                     <span
                       className="font-Kanit font-normal px-2 tracking-wider
                  text-black text-base bg-[#EDBA02] p-1 rounded-xl"
@@ -434,6 +436,24 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                   language={language}
                 />
               )}
+            </div>
+            <div>
+              <button
+                onClick={() => {
+                  document.body.style.overflow = "hidden";
+                }}
+                role="button"
+                className="font-Kanit flex items-center justify-center gap-2 text-white
+           bg-violet-500 w-max p-3 rounded-xl hover:scale-110 transition duration-150 cursor-pointer"
+              >
+                <div className="flex items-center justify-center">
+                  <HiRectangleGroup />
+                </div>
+                <span className="font-Kanit font-semibold text-lg">
+                  {language === "Thai" && "จัดกลุ่ม"}
+                  {language === "English" && "create group"}
+                </span>
+              </button>
             </div>
           </div>
 
