@@ -393,7 +393,7 @@ function Index() {
                 <td className="w-40 text-center">มอบหมายโดย</td>
                 <td className="flex gap-2 justify-start items-center">
                   <span className="font-semibold text-blue-500 text-lg">
-                    ครู {teacher?.firstName} {teacher?.lastName}
+                    {teacher?.firstName} {teacher?.lastName}
                   </span>
                 </td>
               </tr>

@@ -131,7 +131,7 @@ function Index() {
                       <span>welcome to</span>
                     </div>
                     <div className="flex gap-1 font-Kanit  text-blue-500 font-semibold">
-                      <span>ห้องเรียนของครู</span>
+                      <span>ห้องเรียนของ</span>
                       <span className="">
                         {classroom?.data?.data?.teacher?.firstName}
                       </span>
