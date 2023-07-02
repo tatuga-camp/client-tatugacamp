@@ -29,6 +29,7 @@ function AttendanceChecker({ close, students, language }) {
             present: false,
             holiday: false,
             sick: false,
+            late: false,
           },
         };
       })
@@ -43,7 +44,8 @@ function AttendanceChecker({ close, students, language }) {
             (prevStudent[studentId].holiday &&
               prevStudent[studentId].present) ||
             prevStudent[studentId].absent ||
-            prevStudent[studentId].sick
+            prevStudent[studentId].sick ||
+            prevStudent[studentId].late
           ) {
             return {
               ...prevStudent,
@@ -56,7 +58,8 @@ function AttendanceChecker({ close, students, language }) {
           if (
             (prevStudent[studentId].present && prevStudent[studentId].absent) ||
             prevStudent[studentId].holiday ||
-            prevStudent[studentId].sick
+            prevStudent[studentId].sick ||
+            prevStudent[studentId].late
           ) {
             return {
               ...prevStudent,
@@ -69,7 +72,22 @@ function AttendanceChecker({ close, students, language }) {
           if (
             (prevStudent[studentId].holiday && prevStudent[studentId].absent) ||
             prevStudent[studentId].present ||
-            prevStudent[studentId].sick
+            prevStudent[studentId].sick ||
+            prevStudent[studentId].late
+          ) {
+            return {
+              ...prevStudent,
+              [studentId]: {
+                ...!prevStudent[studentId],
+                [name]: !prevStudent[prevStudent.id][name],
+              },
+            };
+          }
+          if (
+            (prevStudent[studentId].late && prevStudent[studentId].absent) ||
+            prevStudent[studentId].present ||
+            prevStudent[studentId].sick ||
+            prevStudent[studentId].holiday
           ) {
             return {
               ...prevStudent,
@@ -101,7 +119,8 @@ function AttendanceChecker({ close, students, language }) {
           (prevStudent[prevStudent.id].holiday &&
             prevStudent[prevStudent.id].present) ||
           prevStudent[prevStudent.id].absent ||
-          prevStudent[prevStudent.id].sick
+          prevStudent[prevStudent.id].sick ||
+          prevStudent[prevStudent.id].late
         ) {
           return {
             ...prevStudent,
@@ -115,7 +134,8 @@ function AttendanceChecker({ close, students, language }) {
           (prevStudent[prevStudent.id].sick &&
             prevStudent[prevStudent.id].present) ||
           prevStudent[prevStudent.id].absent ||
-          prevStudent[prevStudent.id].holiday
+          prevStudent[prevStudent.id].holiday ||
+          prevStudent[prevStudent.id].late
         ) {
           return {
             ...prevStudent,
@@ -129,7 +149,8 @@ function AttendanceChecker({ close, students, language }) {
           (prevStudent[prevStudent.id].present &&
             prevStudent[prevStudent.id].absent) ||
           prevStudent[prevStudent.id].holiday ||
-          prevStudent[prevStudent.id].sick
+          prevStudent[prevStudent.id].sick ||
+          prevStudent[prevStudent.id].late
         ) {
           return {
             ...prevStudent,
@@ -143,7 +164,23 @@ function AttendanceChecker({ close, students, language }) {
           (prevStudent[prevStudent.id].holiday &&
             prevStudent[prevStudent.id].absent) ||
           prevStudent[prevStudent.id].present ||
-          prevStudent[prevStudent.id].sick
+          prevStudent[prevStudent.id].sick ||
+          prevStudent[prevStudent.id].late
+        ) {
+          return {
+            ...prevStudent,
+            [prevStudent.id]: {
+              ...!prevStudent[prevStudent.id],
+              [name]: !prevStudent[prevStudent.id][name],
+            },
+          };
+        }
+        if (
+          (prevStudent[prevStudent.id].late &&
+            prevStudent[prevStudent.id].absent) ||
+          prevStudent[prevStudent.id].present ||
+          prevStudent[prevStudent.id].sick ||
+          prevStudent[prevStudent.id].holiday
         ) {
           return {
             ...prevStudent,
@@ -333,6 +370,25 @@ function AttendanceChecker({ close, students, language }) {
                     </span>
                   </button>
                 </th>
+                <th className="w-20">
+                  <button
+                    onClick={handleCheckAllstudent}
+                    name="late"
+                    role="button"
+                    aria-label="check all"
+                    className="w-full bg-orange-500 rounded-2xl text-white text-center
+                  hover:scale-110 transition duration-150 cursor-pointer group"
+                  >
+                    <span className="block group-hover:hidden">
+                      {language === "Thai" && "สาย"}
+                      {language === "English" && "late"}
+                    </span>
+                    <span className="hidden group-hover:block text-sm">
+                      {language === "Thai" && "เลือกทั้งหมด"}
+                      {language === "English" && "pick all"}
+                    </span>
+                  </button>
+                </th>
               </tr>
             </thead>
             <tbody
@@ -420,6 +476,25 @@ function AttendanceChecker({ close, students, language }) {
                           }
                           checked={student?.[student.id].absent}
                           name="absent"
+                          className="h-5 w-5 rounded-full shadow"
+                          type="checkbox"
+                        />
+                      </div>
+                    </td>
+                    <td className="w-20 flex justify-center">
+                      <div
+                        className=" bg-orange-500 rounded-md text-white text-center 
+                      p-1  w-6 h-6 flex items-center justify-center"
+                      >
+                        <input
+                          onChange={(event) =>
+                            handleIsCheckStudent({
+                              studentId: student.id,
+                              event,
+                            })
+                          }
+                          checked={student?.[student.id].late}
+                          name="late"
                           className="h-5 w-5 rounded-full shadow"
                           type="checkbox"
                         />

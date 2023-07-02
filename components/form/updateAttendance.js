@@ -32,11 +32,16 @@ function UpdateAttendance({
     if (attendanceData.absent) {
       setActiveAttendance(3);
     }
+    if (attendanceData.late) {
+      setActiveAttendance(4);
+    }
     setReCheck(() => {
       return {
         absent: attendanceData.absent,
         present: attendanceData.present,
         holiday: attendanceData.holiday,
+        late: attendanceData.late,
+        sick: attendanceData.sick,
       };
     });
   }, []);
@@ -62,6 +67,11 @@ function UpdateAttendance({
       titleEnglish: "Absent",
       bgColor: "bg-red-500",
     },
+    {
+      titleThai: "สาย",
+      titleEnglish: "late",
+      bgColor: "bg-orange-500",
+    },
   ];
 
   const handleUpdateAttendance = async () => {
@@ -72,6 +82,7 @@ function UpdateAttendance({
         present: reCheck.present,
         holiday: reCheck.holiday,
         sick: reCheck.sick,
+        late: reCheck.late,
       });
       attendances.refetch();
       Swal.fire("success", "attendance has been updated", "success");
@@ -131,6 +142,7 @@ function UpdateAttendance({
                           present: true,
                           holiday: false,
                           sick: false,
+                          late: false,
                         };
                       } else if (index === 1) {
                         return {
@@ -138,6 +150,7 @@ function UpdateAttendance({
                           present: false,
                           holiday: true,
                           sick: false,
+                          late: false,
                         };
                       } else if (index === 2) {
                         return {
@@ -145,6 +158,7 @@ function UpdateAttendance({
                           present: false,
                           holiday: false,
                           sick: true,
+                          late: false,
                         };
                       } else if (index === 3) {
                         return {
@@ -152,6 +166,15 @@ function UpdateAttendance({
                           present: false,
                           holiday: false,
                           sick: false,
+                          late: false,
+                        };
+                      } else if (index === 4) {
+                        return {
+                          absent: false,
+                          present: false,
+                          holiday: false,
+                          sick: false,
+                          late: true,
                         };
                       }
                     });

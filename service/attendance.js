@@ -96,13 +96,14 @@ export async function UpdateAttendnaceAPI({
   present,
   holiday,
   sick,
+  late,
 }) {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const update = await axios.put(
       `${process.env.Server_Url}/user/attendance/update`,
-      { absent, present, holiday, sick },
+      { absent, present, holiday, sick, late },
       {
         params: {
           attendanceId: attendanceId,

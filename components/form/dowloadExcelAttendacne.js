@@ -13,6 +13,7 @@ function DowloadExcelAttendacne({ close, language }) {
     absent: language === "Thai" ? "ขาด" : language === "English" && "absent",
     present:
       language === "Thai" ? "มาเรียน" : language === "English" && "present",
+    late: language === "Thai" ? "สาย" : language === "English" && "late",
   });
   const handleChangeExcelData = (e) => {
     const { name, value } = e.target;
@@ -32,6 +33,7 @@ function DowloadExcelAttendacne({ close, language }) {
         holiday: excelData.holiday,
         present: excelData.present,
         sick: excelData.sick,
+        late: excelData.late,
       });
       Swal.fire(
         "ดาวโหลดสำเร็จ",
@@ -144,6 +146,27 @@ function DowloadExcelAttendacne({ close, language }) {
                   ? "กรอกอักษร เมื่อนักเรียนมีสถานะลา"
                   : language === "English" &&
                     "Put any text when student's on holiday"
+              }
+              maxLength="10"
+              required
+            />
+          </div>
+          <div className="flex flex-col relative mt-2">
+            <label className="font-sans font-normal">
+              {language === "Thai" && "สถาะนะสาย"}
+              {language === "English" && "late "}
+            </label>
+            <input
+              onChange={handleChangeExcelData}
+              className="w-60 h-7 rounded-md   pl-10 
+                placeholder:italic placeholder:font-light"
+              type="text"
+              name="late"
+              value={excelData.late}
+              placeholder={
+                language === "Thai"
+                  ? "กรอกอักษร เมื่อนักเรียนมีสถานะสาย"
+                  : language === "English" && "Put any text when student's late"
               }
               maxLength="10"
               required
