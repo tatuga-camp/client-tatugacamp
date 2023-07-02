@@ -174,6 +174,12 @@ function Index({ error, user }) {
                   </th>
                   <th className="w-36 flex items-center justify-center ">
                     <span className="text-center">
+                      {user.language === "Thai" && "จำนวนสาย"}
+                      {user.language === "English" && "late"}
+                    </span>
+                  </th>
+                  <th className="w-36 flex items-center justify-center ">
+                    <span className="text-center">
                       {user.language === "Thai" && "จำนวนลา"}
                       {user.language === "English" && "take a leave"}
                     </span>
@@ -258,10 +264,18 @@ function Index({ error, user }) {
                                             "sick"}
                                         </div>
                                       )}
+                                      {status.late && (
+                                        <div className="bg-orange-500 w-full flex items-center justify-center py-1  text-white">
+                                          {user.language === "Thai" && "สาย"}
+                                          {user.language === "English" &&
+                                            "late"}
+                                        </div>
+                                      )}
                                       {!status.holiday &&
                                         !status.absent &&
                                         !status.present &&
-                                        !status.sick && (
+                                        !status.sick &&
+                                        !status.late && (
                                           <div className="bg-gray-600 w-full flex items-center justify-center py-1  text-white">
                                             {user.language === "Thai" &&
                                               "ไม่มีข้อมูล"}
@@ -290,6 +304,11 @@ function Index({ error, user }) {
                         <td className="w-36 flex items-center justify-center ">
                           <span className="text-center">
                             {item.statistics.number.present}
+                          </span>
+                        </td>
+                        <td className="w-36 flex items-center justify-center ">
+                          <span className="text-center">
+                            {item.statistics.number.late}
                           </span>
                         </td>
                         <td className="w-36 flex items-center justify-center ">

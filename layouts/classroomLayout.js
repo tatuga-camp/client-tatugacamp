@@ -25,8 +25,9 @@ import { IoPersonAdd, IoWarningOutline } from "react-icons/io5";
 import RandomIcon from "../components/svg/RandomIcon";
 import QRCode from "react-qr-code";
 import { HiRectangleGroup } from "react-icons/hi2";
+import CreateGroup from "../components/form/createGroup";
 
-function Layout({ children, sideMenus, language }) {
+function Layout({ children, sideMenus, language, groups }) {
   const router = useRouter();
   const [triggerRandomStudent, setTriggerRandomStudent] = useState(false);
   const user = useQuery(["user"], () => GetUser());
@@ -438,22 +439,42 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
               )}
             </div>
             <div>
-              <button
-                onClick={() => {
-                  document.body.style.overflow = "hidden";
-                }}
-                role="button"
-                className="font-Kanit flex items-center justify-center gap-2 text-white
-           bg-violet-500 w-max p-3 rounded-xl hover:scale-110 transition duration-150 cursor-pointer"
-              >
-                <div className="flex items-center justify-center">
-                  <HiRectangleGroup />
-                </div>
-                <span className="font-Kanit font-semibold text-lg">
-                  {language === "Thai" && "จัดกลุ่ม"}
-                  {language === "English" && "create group"}
-                </span>
-              </button>
+              <Popover>
+                {({ open }) => (
+                  <>
+                    <Popover.Button
+                      onClick={() => {
+                        document.body.style.overflow = "hidden";
+                      }}
+                    >
+                      <div
+                        className="font-Kanit flex items-center justify-center gap-2 text-white
+           bg-violet-500 w-max p-3 rounded-xl hover:scale-110 relative transition duration-150 cursor-pointer"
+                      >
+                        <div className="w-max p-1 rounded-lg  bg-yellow-500 text-white">
+                          BETA
+                        </div>
+                        <div className="flex items-center justify-center">
+                          <HiRectangleGroup />
+                        </div>
+                        <span className="font-Kanit font-semibold text-lg">
+                          {language === "Thai" && "จัดกลุ่ม"}
+                          {language === "English" && "create group"}
+                        </span>
+                      </div>
+                    </Popover.Button>
+                    <Popover.Panel>
+                      {({ close }) => (
+                        <CreateGroup
+                          close={close}
+                          language={language}
+                          groups={groups}
+                        />
+                      )}
+                    </Popover.Panel>
+                  </>
+                )}
+              </Popover>
             </div>
           </div>
 

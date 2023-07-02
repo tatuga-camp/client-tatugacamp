@@ -142,7 +142,7 @@ function Index() {
             Swal.fire("success", "ส่งงานแล้ว", "success");
           } catch (err) {
             if (
-              err?.props?.response?.data?.error.message ===
+              err?.props?.response?.data?.message ===
               "student's already summit their work"
             ) {
               Swal.fire(
@@ -151,7 +151,7 @@ function Index() {
                 "error"
               );
             } else {
-              Swal.fire("error", err?.props?.response?.data?.message, "error");
+              Swal.fire("error", err?.props?.response?.message, "error");
             }
             console.log(err);
           }
@@ -187,7 +187,7 @@ function Index() {
           } catch (err) {
             setLoading(() => false);
             if (
-              err?.props?.response?.data?.error.message ===
+              err?.props?.response?.data?.message ===
               "student's already summit their work"
             ) {
               Swal.fire(

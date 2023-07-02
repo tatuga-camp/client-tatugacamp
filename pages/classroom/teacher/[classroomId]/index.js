@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { GetOneClassroom } from "../../../../service/classroom";
 import Head from "next/head";
@@ -19,11 +19,15 @@ import {
   sideMenusEnglish,
 } from "../../../../data/menubarsClassroom";
 import Trophy from "../../../../components/svg/Trophy";
+import { GetAllGroup, GetGroup } from "../../../../service/group";
+import DisplayGroup from "../../../../components/group/displayGroup";
 
 function Index({ user, error }) {
   const router = useRouter();
   const [loadedImages, setLoadedImages] = useState([]);
   const [skeletion, setSkeletion] = useState(["1", "2", "3", "4"]);
+  const [classroomGroupActive, setClassroomGroupActive] = useState("default");
+  const groupId = useRef();
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === "Thai") {
       return SideMenusThai();
@@ -47,6 +51,21 @@ function Index({ user, error }) {
     () => GetAllScoresClassroom({ classroomId: router.query.classroomId }),
     { enabled: false }
   );
+  const groups = useQuery(
+    ["classroom-groups"],
+    () => GetAllGroup({ classroomId: router.query.classroomId }),
+    {
+      enabled: false,
+    }
+  );
+
+  const groupQuery = useQuery(
+    ["group"],
+    () => GetGroup({ groupId: groupId.current }),
+    {
+      enabled: false,
+    }
+  );
 
   // Update sideMenus whenever the user's language changes
   useEffect(() => {
@@ -54,6 +73,7 @@ function Index({ user, error }) {
       classroom.refetch();
       students.refetch();
       scores.refetch();
+      groups.refetch();
       if (user?.language === "Thai") {
         setSideMenus(SideMenusThai(router));
       } else if (user?.language === "English") {
@@ -80,12 +100,13 @@ function Index({ user, error }) {
   const handleLoadingComplete = (id) => {
     setLoadedImages((prevImages) => [...prevImages, id]);
   };
+
   if (error?.statusCode === 401) {
     return <Unauthorized />;
   }
   return (
     <div className="w-full pb-96 bg-slate-100 ">
-      <Layout language={user.language} sideMenus={sideMenus} />
+      <Layout language={user.language} sideMenus={sideMenus} groups={groups} />
       <Head>
         <title>{`classroom - ${classroom.data?.data?.title}`}</title>
       </Head>
@@ -95,165 +116,216 @@ function Index({ user, error }) {
           {/* header section */}
 
           {/* main part */}
-          <main className="w-full max-w-6xl h-full flex flex-col items-center justify-start  ">
+          <main className="w-full max-w-7xl h-full flex flex-col items-center justify-start  ">
+            <div className="font-Poppins font-semibold text-lg flex flex-col justify-center items-center text-black gap-2">
+              <span>{user.language === "Thai" && "แสดงผลการจัดกลุ่ม"}</span>
+              <div className="flex gap-5">
+                <button
+                  onClick={() => {
+                    setClassroomGroupActive(() => "default");
+                    groupId.current = "";
+                  }}
+                  className={`w-28  ring-2 p-2  rounded-lg hover:bg-orange-400 hover:ring-black hover:text-white hover:drop-shadow-lg
+               truncate transition duration-150 ${
+                 classroomGroupActive === "default"
+                   ? "bg-orange-500 text-white"
+                   : "bg-white text-black"
+               } ease-out`}
+                >
+                  <span>ห้องเรียน</span>
+                </button>
+                {groups?.data?.map((group, index) => {
+                  return (
+                    <button
+                      key={group.id}
+                      onClick={() => {
+                        setClassroomGroupActive(() => index);
+                        groupId.current = group.id;
+                        groupQuery.refetch();
+                      }}
+                      className={`w-28 ring-2 p-2  rounded-lg hover:bg-orange-600 hover:ring-black hover:text-white hover:drop-shadow-lg
+               truncate transition duration-150 ease-out ${
+                 classroomGroupActive === index
+                   ? "bg-orange-500 text-white"
+                   : "bg-white text-black"
+               } `}
+                    >
+                      <span>{group.title}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+            {groupId.current && (
+              <DisplayGroup
+                user={user}
+                group={groupQuery}
+                groups={groups}
+                setClassroomGroupActive={setClassroomGroupActive}
+                groupId={groupId}
+              />
+            )}
             {/*
               students' avatar are here */}
-            <div
-              className=" md:w-11/12 lg:w-full max-w-7xl grid grid-cols-2 gap-4 items-center justify-center md:justify-start
-              md:grid md:grid-cols-4 lg:grid-cols-5 md:gap-5 mt-10 place-items-center	"
-            >
-              <Popover>
-                {({ open }) => (
-                  <>
-                    <Popover.Button>
-                      <Trophy />
-                    </Popover.Button>
-                    <Popover.Panel>
-                      {({ close }) => (
-                        <UpdateScore
-                          close={close}
-                          language={user.language}
-                          classroomScore={true}
-                          scores={scores.data}
-                          students={students}
-                          refetchScores={scores.refetch}
-                        />
-                      )}
-                    </Popover.Panel>
-                  </>
-                )}
-              </Popover>
-
-              {students.isLoading
-                ? skeletion.map((number) => {
-                    return (
-                      <Skeleton key={number} variant="rounded">
-                        <button className="bg-transparent border-none active:border-none appearance-none focus:outline-none">
-                          <div
-                            className="w-40 h-36 cursor-pointer  flex-col items-center justify-start flex hover:drop-shadow-md
-                         duration-200 rounded-2xl bg-white relative hover:bg-orange-100 transition drop-shadow-md"
-                          >
-                            <div
-                              className={`absolute w-10 h-10 rounded-full    ring-2 ring-white
-                        flex justify-center items-center font-sans font-bold text-xl z-10 text-white right-5 top-5`}
-                            ></div>
-                            <div className="w-24 h-24 relative overflow-hidden rounded-full mt-2 bg-white"></div>
-                            <div className="font-Kanit text-xl flex items-center justify-start gap-2">
-                              <div className=" bg-blue-500 font-semibold text-white w-5 h-5 flex items-center justify-center  rounded-md"></div>
-                            </div>
-                          </div>
-                        </button>
-                      </Skeleton>
-                    );
-                  })
-                : students?.data?.data.map((student) => {
-                    const shortName = student.firstName.replace(
-                      /^(นาย|นางสาว|นาง|เด็กชาย|เด็กหญิง|ด\.ช\.|ด\.ญ\.)(.*)$/,
-                      "$2"
-                    );
-                    var firstName = shortName.split(" ")[0];
-                    return (
-                      <Popover key={student.id}>
-                        {(open) => (
-                          <div>
-                            <Popover.Button
-                              onClick={() => {
-                                document.body.style.overflow = "hidden";
-                              }}
-                            >
-                              <div className="w-40 overflow-hidden rounded-3xl  flex relative justify-center drop-shadow-md">
-                                <div
-                                  className={`w-14 h-10 rounded-r-full absolute left-0  top-4  ${
-                                    student.score.totalPoints < 0
-                                      ? "bg-red-600"
-                                      : "bg-[#EDBA02] "
-                                  } ring-2 ring-white
-  flex justify-center items-center font-sans font-bold text-xl z-10 text-white`}
-                                >
-                                  {student.score.totalPoints}
-                                </div>
-                                <div
-                                  className="w-40 h-52 cursor-pointer  flex-col items-center justify-start flex
-  duration-200  bg-white  overflow-hidden  hover:bg-orange-100 transition "
-                                >
-                                  {!loadedImages.includes(student.id) && (
-                                    <div>
-                                      <Skeleton
-                                        variant="circular"
-                                        width={96}
-                                        height={96}
-                                      />
-                                    </div>
-                                  )}
-
-                                  <div className="w-24 h-24 ring-2 ring-gray-200 relative overflow-hidden rounded-full mt-2 ">
-                                    {students.isFetching && !router.isReady ? (
-                                      <Skeleton
-                                        variant="circular"
-                                        width={96}
-                                        height={96}
-                                      />
-                                    ) : (
-                                      <Image
-                                        src={student.picture}
-                                        layout="fill"
-                                        quality={60}
-                                        sizes="(max-width: 500px) 100vw, 700px"
-                                        placeholder="blur"
-                                        blurDataURL="/logo/TaTuga camp.png"
-                                        alt="student's avatar"
-                                        className=" hover:scale-150 object-cover
-               transition duration-150 "
-                                        onLoad={() =>
-                                          handleLoadingComplete(student.id)
-                                        }
-                                      />
-                                    )}
-                                  </div>
-
-                                  <div className="font-Kanit text-xl flex items-center flex-col mt-2 justify-start gap-1">
-                                    <div
-                                      className="w-full truncate font-medium lg:text-xl flex-col
-        flex justify-center items-center"
-                                    >
-                                      <span className="text-xl text-blue-700   ">
-                                        {firstName}
-                                      </span>
-                                      <span className="text-sm text-gray-600 font-normal ">
-                                        {student?.lastName}
-                                      </span>
-                                    </div>
-                                    <div
-                                      className="text-gray-700 font-normal  w-full h-5 flex
-         items-center justify-center text-base  rounded-md"
-                                    >
-                                      {user.language === "Thai" && "เลขที่"}
-                                      {user.language === "English" &&
-                                        "number"}{" "}
-                                      {student.number}
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </Popover.Button>
-                            <Popover.Panel>
-                              {({ close }) => (
-                                <UpdateScore
-                                  language={user.language}
-                                  close={close}
-                                  student={student}
-                                  scores={scores.data}
-                                  students={students}
-                                  refetchScores={scores.refetch}
-                                />
-                              )}
-                            </Popover.Panel>
-                          </div>
+            {classroomGroupActive === "default" && (
+              <div
+                className=" md:w-11/12 lg:w-full max-w-7xl grid grid-cols-2 gap-4 items-center justify-center md:justify-start
+              md:grid md:grid-cols-4 lg:grid-cols-6 md:gap-5 mt-10 place-items-center	"
+              >
+                <Popover>
+                  {({ open }) => (
+                    <>
+                      <Popover.Button>
+                        <Trophy />
+                      </Popover.Button>
+                      <Popover.Panel>
+                        {({ close }) => (
+                          <UpdateScore
+                            close={close}
+                            language={user.language}
+                            classroomScore={true}
+                            scores={scores.data}
+                            students={students}
+                            refetchScores={scores.refetch}
+                          />
                         )}
-                      </Popover>
-                    );
-                  })}
-            </div>
+                      </Popover.Panel>
+                    </>
+                  )}
+                </Popover>
+
+                {students.isLoading
+                  ? skeletion.map((number) => {
+                      return (
+                        <Skeleton key={number} variant="rounded">
+                          <button className="bg-transparent border-none active:border-none appearance-none focus:outline-none">
+                            <div
+                              className="w-40 h-36 cursor-pointer  flex-col items-center justify-start flex hover:drop-shadow-md
+                         duration-200 rounded-2xl bg-white relative hover:bg-orange-100 transition drop-shadow-md"
+                            >
+                              <div
+                                className={`absolute w-10 h-10 rounded-full    ring-2 ring-white
+                        flex justify-center items-center font-sans font-bold text-xl z-10 text-white right-5 top-5`}
+                              ></div>
+                              <div className="w-24 h-24 relative overflow-hidden rounded-full mt-2 bg-white"></div>
+                              <div className="font-Kanit text-xl flex items-center justify-start gap-2">
+                                <div className=" bg-blue-500 font-semibold text-white w-5 h-5 flex items-center justify-center  rounded-md"></div>
+                              </div>
+                            </div>
+                          </button>
+                        </Skeleton>
+                      );
+                    })
+                  : students?.data?.data.map((student) => {
+                      const shortName = student.firstName.replace(
+                        /^(นาย|นางสาว|นาง|เด็กชาย|เด็กหญิง|ด\.ช\.|ด\.ญ\.)(.*)$/,
+                        "$2"
+                      );
+                      const firstName = shortName.split(" ")[0];
+                      return (
+                        <Popover key={student.id}>
+                          {(open) => (
+                            <div>
+                              <Popover.Button
+                                onClick={() => {
+                                  document.body.style.overflow = "hidden";
+                                }}
+                              >
+                                <div className="w-40 overflow-hidden rounded-3xl  flex relative justify-center drop-shadow-md">
+                                  <div
+                                    className={`w-14 h-10 rounded-r-full absolute left-0  top-4  ${
+                                      student.score.totalPoints < 0
+                                        ? "bg-red-600"
+                                        : "bg-[#EDBA02] "
+                                    } ring-2 ring-white
+  flex justify-center items-center font-sans font-bold text-xl z-10 text-white`}
+                                  >
+                                    {student.score.totalPoints}
+                                  </div>
+                                  <div
+                                    className="w-40 h-52 cursor-pointer  flex-col items-center justify-start flex
+  duration-200  bg-white  overflow-hidden  hover:bg-orange-100 transition "
+                                  >
+                                    {!loadedImages.includes(student.id) && (
+                                      <div>
+                                        <Skeleton
+                                          variant="circular"
+                                          width={96}
+                                          height={96}
+                                        />
+                                      </div>
+                                    )}
+
+                                    <div className="w-24 h-24 ring-2 ring-gray-200 relative overflow-hidden rounded-full mt-2 ">
+                                      {students.isFetching &&
+                                      !router.isReady ? (
+                                        <Skeleton
+                                          variant="circular"
+                                          width={96}
+                                          height={96}
+                                        />
+                                      ) : (
+                                        <Image
+                                          src={student.picture}
+                                          layout="fill"
+                                          quality={60}
+                                          sizes="(max-width: 500px) 100vw, 700px"
+                                          placeholder="blur"
+                                          blurDataURL="/logo/TaTuga camp.png"
+                                          alt="student's avatar"
+                                          className=" hover:scale-150 object-cover
+               transition duration-150 "
+                                          onLoad={() =>
+                                            handleLoadingComplete(student.id)
+                                          }
+                                        />
+                                      )}
+                                    </div>
+
+                                    <div className="font-Kanit text-xl flex items-center flex-col mt-2 justify-start gap-1">
+                                      <div
+                                        className="w-full truncate font-medium lg:text-xl flex-col
+        flex justify-center items-center"
+                                      >
+                                        <span className="text-xl text-blue-700   ">
+                                          {firstName}
+                                        </span>
+                                        <span className="text-sm text-gray-600 font-normal ">
+                                          {student?.lastName}
+                                        </span>
+                                      </div>
+                                      <div
+                                        className="text-gray-700 font-normal  w-full h-5 flex
+         items-center justify-center text-base  rounded-md"
+                                      >
+                                        {user.language === "Thai" && "เลขที่"}
+                                        {user.language === "English" &&
+                                          "number"}{" "}
+                                        {student.number}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </Popover.Button>
+                              <Popover.Panel>
+                                {({ close }) => (
+                                  <UpdateScore
+                                    language={user.language}
+                                    close={close}
+                                    student={student}
+                                    scores={scores.data}
+                                    students={students}
+                                    refetchScores={scores.refetch}
+                                  />
+                                )}
+                              </Popover.Panel>
+                            </div>
+                          )}
+                        </Popover>
+                      );
+                    })}
+              </div>
+            )}
           </main>
         </div>
       </div>
