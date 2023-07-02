@@ -13,7 +13,7 @@ import { GetAllAssignment } from "../../../../service/student/assignment";
 import { Skeleton } from "@mui/material";
 import { GetAttendances } from "../../../../service/student/attendance";
 import { HiOutlineHandRaised } from "react-icons/hi2";
-import { BiErrorCircle, BiHappyBeaming } from "react-icons/bi";
+import { BiErrorCircle, BiHappyBeaming, BiRun } from "react-icons/bi";
 import Head from "next/head";
 import { BsImage, BsImageFill } from "react-icons/bs";
 import { GetStudent, UpdateStudent } from "../../../../service/student/student";
@@ -365,6 +365,13 @@ function Index() {
                       </span>
                     </span>
                     <span>
+                      จำนวนมาสาย{" "}
+                      <span className="font-semibold text-orange-500">
+                        {attendances?.data?.data?.statistics?.number?.late}{" "}
+                        ครั้ง
+                      </span>
+                    </span>
+                    <span>
                       จำนวนลา{" "}
                       <span className="font-semibold text-yellow-500">
                         {attendances?.data?.data?.statistics?.number?.holiday}{" "}
@@ -473,6 +480,24 @@ function Index() {
                         </div>
                         <div className="w-14 text-center rounded-sm p-2 mr-5 bg-red-500   text-white">
                           <span>ขาด</span>
+                        </div>
+                      </li>
+                    );
+                  } else if (attendance.late) {
+                    return (
+                      <li className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md">
+                        <div className="flex justify-start items-center ml-5 gap-2">
+                          <div className="w-10 h-10  rounded-full bg-orange-100 flex items-center justify-center">
+                            <div className="flex items-center justify-center text-orange-400 text-3xl">
+                              <BiRun />
+                            </div>
+                          </div>
+                          <span className=" font-semibold text-lg">
+                            {formattedDate}
+                          </span>
+                        </div>
+                        <div className="w-14 text-center rounded-sm p-2 mr-5 bg-orange-500   text-white">
+                          <span>สาย</span>
                         </div>
                       </li>
                     );
