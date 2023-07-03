@@ -6,6 +6,7 @@ import {
   HideScore,
   UpdateScoreOnStudent,
   UpdateScoreOnWholeClass,
+  UpdateScoreOnWholeGroup,
 } from "../../service/scores";
 import * as animationData from "../../public/json/well-done-output.json";
 import fileSoundPositive from "../../public/sound/ging.mp3";
@@ -24,7 +25,7 @@ import CreateScore from "./createScore";
 import { avartars } from "../../data/students";
 import { useRouter } from "next/router";
 import Loading from "../loading/loading";
-import { AiFillCloseSquare, AiOutlineCloseCircle } from "react-icons/ai";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 function UpdateScore({
   close,
   student,
@@ -33,6 +34,10 @@ function UpdateScore({
   refetchScores,
   classroomScore,
   language,
+  groupScore,
+  groupId,
+  group,
+  miniGroupId,
 }) {
   const router = useRouter();
   const [classroomId, setClassroomId] = useState();
@@ -180,8 +185,17 @@ function UpdateScore({
           </div>
         );
       });
-      if (classroomScore === true) {
+      if (classroomScore === true && !groupScore) {
         await UpdateScoreOnWholeClass(data, pointsValue, classroomId);
+      }
+      if (classroomScore === true && groupScore) {
+        await UpdateScoreOnWholeGroup({
+          pointsValue,
+          scoreId: data.scoreId,
+          miniGroupId,
+          groupId,
+        });
+        group?.refetch();
       } else if (classroomScore !== true) {
         await UpdateScoreOnStudent(data, pointsValue);
       }
@@ -234,7 +248,7 @@ function UpdateScore({
         close();
       }, 1500);
       document.body.style.overflow = "auto";
-      students.refetch();
+      students?.refetch();
     } catch (err) {
       console.log(err);
     }
@@ -522,12 +536,18 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
         {triggerSetting === false && (
           <div className=" flex-col  w-full md:w-max px-5   ">
             <div className="flex items-center justify-center h-5 mt-2 text-lg w-full mb-2 ">
-              {classroomScore === true && language === "Thai" && (
-                <p>ให้คะแนนทั้งห้องเรียน</p>
+              {classroomScore === true && language === "Thai" && groupScore && (
+                <p>ให้คะแนนกลุ่ม</p>
               )}
-              {classroomScore === true && language === "English" && (
-                <p>give a class score</p>
-              )}
+              {classroomScore === true &&
+                language === "English" &&
+                groupScore && <p>give a group score</p>}
+              {classroomScore === true &&
+                language === "Thai" &&
+                !groupScore && <p>ให้คะแนนทั้งห้องเรียน</p>}
+              {classroomScore === true &&
+                language === "English" &&
+                !groupScore && <p>give a class score</p>}
               {language === "Thai" && !classroomScore && <p>คะแนนพิเศษ</p>}
               {language === "English" && !classroomScore && (
                 <p>give student a motivative score</p>
@@ -608,7 +628,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                     />
                   </div>
                 )}
-                {!triggerCreateNewScore && (
+                {!triggerCreateNewScore && !groupId && (
                   <div
                     onClick={() => setTriggerCreateNewScore(true)}
                     className="flex items-center justify-center "

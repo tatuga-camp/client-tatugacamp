@@ -96,6 +96,42 @@ export async function UpdateScoreOnWholeClass(
   }
 }
 
+export async function UpdateScoreOnWholeGroup({
+  scoreId,
+  pointsValue,
+  miniGroupId,
+  groupId,
+}) {
+  try {
+    let points = 1;
+    if (!pointsValue) {
+      points = 1;
+    } else if (pointsValue) {
+      points = Number(pointsValue);
+    }
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+
+    const updateScore = await axios.put(
+      `${process.env.Server_Url}/user/score/update/group-students`,
+      {
+        points,
+        miniGroupId,
+        groupId,
+        scoreId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    return updateScore;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 export async function CreateScoreOnClass({ title, emoji, classroomId }) {
   try {
     const cookies = parseCookies();
