@@ -3,13 +3,13 @@ import React from "react";
 function Loading({ width, hight }) {
   return (
     <div>
-      <div role="status">
+      <div role="status" className="flex justify-center items-center w-full">
         <svg
           aria-hidden="true"
-          className={`${width ? `w-[${width}px]` : "w-8"} 
+          className={`${width ? `w-[${width}px]` : "w-6"} 
           ${
-            hight ? `w-[${hight}px]` : "h-8"
-          } mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600 `}
+            hight ? `w-[${hight}px]` : "h-6"
+          }  text-gray-200 animate-spin dark:text-gray-600 fill-blue-600 `}
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

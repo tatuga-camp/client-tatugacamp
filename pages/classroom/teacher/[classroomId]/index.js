@@ -21,10 +21,12 @@ import {
 import Trophy from "../../../../components/svg/Trophy";
 import { GetAllGroup, GetGroup } from "../../../../service/group";
 import DisplayGroup from "../../../../components/group/displayGroup";
+import Loading from "../../../../components/loading/loading";
 
 function Index({ user, error }) {
   const router = useRouter();
   const [loadedImages, setLoadedImages] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [skeletion, setSkeletion] = useState(["1", "2", "3", "4"]);
   const [classroomGroupActive, setClassroomGroupActive] = useState("default");
   const groupId = useRef();
@@ -143,14 +145,19 @@ function Index({ user, error }) {
                         groupId.current = group.id;
                         groupQuery.refetch();
                       }}
-                      className={`w-28 ring-2 p-2  rounded-lg hover:bg-orange-600 hover:ring-black hover:text-white hover:drop-shadow-lg
+                      className={`w-28 ring-2 p-2 flex items-center justify-center   rounded-lg hover:bg-orange-600 hover:ring-black hover:text-white hover:drop-shadow-lg
                truncate transition duration-150 ease-out ${
                  classroomGroupActive === index
                    ? "bg-orange-500 text-white"
                    : "bg-white text-black"
                } `}
                     >
-                      <span>{group.title}</span>
+                      {groupQuery.isFetching &&
+                      classroomGroupActive === index ? (
+                        <Loading />
+                      ) : (
+                        <span>{group.title}</span>
+                      )}
                     </button>
                   );
                 })}
