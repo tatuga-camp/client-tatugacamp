@@ -19,7 +19,7 @@ function DisplayGroup({
   groupId,
 }) {
   const handle = useFullScreenHandle();
-  if (group.isLoading) {
+  if (group.isLoading || group.isFetching) {
     return (
       <div className="mt-5">
         <Loading />
