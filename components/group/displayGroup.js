@@ -8,6 +8,7 @@ import { DeleteGroup } from "../../service/group";
 import Swal from "sweetalert2";
 import { Popover } from "@headlessui/react";
 import UpdateScore from "../form/updateScore";
+import Skeleton from "@mui/material/Skeleton";
 
 function DisplayGroup({
   user,
@@ -19,7 +20,7 @@ function DisplayGroup({
   groupId,
 }) {
   const handle = useFullScreenHandle();
-  if (group.isLoading || group.isFetching) {
+  if (group.isLoading) {
     return (
       <div className="mt-5">
         <Loading />
@@ -130,6 +131,7 @@ function DisplayGroup({
                           <div className="w-max px-2 rounded-md  text-white text-2xl font-Poppins font-semibold bg-blue-500">
                             {miniGroup.data.points}
                           </div>
+
                           <div className="font-Kanit text-lg font-semibold text-black">
                             {miniGroup.data.title}
                           </div>
