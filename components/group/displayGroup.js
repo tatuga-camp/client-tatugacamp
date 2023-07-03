@@ -103,12 +103,12 @@ function DisplayGroup({
           className={`grid  py-5  mt-10 ${
             handle.active
               ? group?.data?.miniGroups.length > 2
-                ? "grid-cols-3 gap-5"
+                ? "md:grid-cols-2 lg:grid-cols-3 gap-5"
                 : "grid-cols-2 gap-5"
               : group?.data?.miniGroups.length > 2
-              ? "grid-cols-3 gap-10"
+              ? "md:grid-cols-2 lg:grid-cols-3 gap-10"
               : "grid-cols-2 gap-5"
-          } place-items-center items-start  `}
+          } place-items-center  items-start  `}
         >
           {group?.data?.miniGroups?.map((miniGroup, index) => {
             return (
@@ -119,7 +119,7 @@ function DisplayGroup({
                       <div
                         className={` ${
                           group?.data?.miniGroups.length > 2
-                            ? " w-80"
+                            ? "md:w-80 lg:w-80 "
                             : "w-max max-w-3xl"
                         }   h-max p-2 ring-2 flex justify-start
                bg-white flex-col  items-center hover:scale-110 transition duration-150

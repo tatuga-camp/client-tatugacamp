@@ -228,9 +228,9 @@ function AttendanceChecker({ close, students, language }) {
     <div className="fixed top-0 right-0 left-0 bottom-0 m-auto righ z-40">
       <div
         className="md:w-11/12 lg:w-3/4 h-5/6 max-h-[35rem]  fixed z-40 top-0 bottom-0 right-0
-       left-0 m-auto flex  items-center justify-center gap-5 bg-white p-5 rounded-lg  "
+       left-0 m-auto flex  items-center justify-center gap-5  bg-white p-5 rounded-lg  "
       >
-        <div className="md:w-9/12 md:h-full bg-white flex flex-col items-center justify-start gap-5 ">
+        <div className="md:w-full  md:h-full  flex flex-col items-center justify-start gap-5 ">
           {/* headers parts */}
           <div className="w-full flex items-center justify-between ">
             <div className="flex">
@@ -283,14 +283,14 @@ function AttendanceChecker({ close, students, language }) {
               )}
             </div>
           </div>
-          <table>
-            <thead className=" ">
+          <table className="">
+            <thead className="">
               <tr className=" w-full text-black font-Kanit flex md:gap-3 lg:gap-5 ">
                 <th className="w-20">
                   {language === "Thai" && "เลขที่"}
                   {language === "English" && "number"}
                 </th>
-                <th className="w-60">
+                <th className="md:w-40 lg:w-60">
                   {language === "Thai" && "รายชื่อ"}
                   {language === "English" && "name"}
                 </th>
@@ -402,7 +402,7 @@ function AttendanceChecker({ close, students, language }) {
                     className="w-full text-black font-Kanit flex  md:gap-3 lg:gap-5 "
                   >
                     <td className="w-20 text-center">{student.number}</td>
-                    <td className="col-span-2 w-60">
+                    <td className="md:w-40 lg:w-60 truncate">
                       {student.firstName} {student?.lastName}
                     </td>
                     <td className="w-20 flex justify-center">
