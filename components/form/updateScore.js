@@ -195,7 +195,17 @@ function UpdateScore({
           miniGroupId,
           groupId,
         });
-        group?.refetch();
+        await group.refetch();
+        async function waitForFalse() {
+          while (group.isFetching) {
+            await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 1 second
+          }
+
+          // Code here will execute once group.isFetching is false
+          console.log("group.isFetching is now false!");
+        }
+
+        waitForFalse();
       } else if (classroomScore !== true) {
         await UpdateScoreOnStudent(data, pointsValue);
       }
