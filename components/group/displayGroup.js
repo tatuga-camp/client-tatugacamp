@@ -124,7 +124,7 @@ function DisplayGroup({
                 </div>
 
                 <ul
-                  className={`w-full h-max grid gap-2 ${
+                  className={`w-full pl-0 h-max grid gap-2 ${
                     group?.data?.miniGroups.length > 2
                       ? " grid-cols-1"
                       : "grid-cols-1"
@@ -134,7 +134,7 @@ function DisplayGroup({
                     return (
                       <li
                         key={student.id}
-                        className="flex gap-2 font-Kanit text-base"
+                        className="flex gap-2 justify-between   font-Kanit text-base"
                       >
                         <span>
                           {user.language === "Thai"
@@ -145,10 +145,10 @@ function DisplayGroup({
                         <div className="flex gap-2">
                           <span>{student.firstName}</span>
                           <span>{student?.lastName}</span>
-                          <span className="w-5 h-5 bg-orange-400 text-center p-1 rounded-md text-white">
-                            {student?.score?.totalPoints}
-                          </span>
                         </div>
+                        <span className="w-max h-5 bg-orange-400 text-center p-1 px-2 rounded-md text-white">
+                          {student?.score?.totalPoints}
+                        </span>
                       </li>
                     );
                   })}
