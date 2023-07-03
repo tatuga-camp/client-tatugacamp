@@ -158,7 +158,9 @@ function Index({ user, error }) {
             </div>
             {groupId.current && (
               <DisplayGroup
+                scores={scores}
                 user={user}
+                students={students}
                 group={groupQuery}
                 groups={groups}
                 setClassroomGroupActive={setClassroomGroupActive}
