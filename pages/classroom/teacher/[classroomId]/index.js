@@ -117,7 +117,7 @@ function Index({ user, error }) {
 
           {/* main part */}
           <main className="w-full max-w-7xl h-full flex flex-col items-center justify-start  ">
-            <div className="font-Poppins font-semibold text-lg flex flex-col justify-center items-center text-black gap-2">
+            <div className="font-Poppins hidden font-semibold text-lg md:flex flex-col justify-center items-center text-black gap-2">
               <span>{user.language === "Thai" && "แสดงผลการจัดกลุ่ม"}</span>
               <div className="flex gap-5">
                 <button

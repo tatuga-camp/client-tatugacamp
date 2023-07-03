@@ -227,12 +227,12 @@ function AttendanceChecker({ close, students, language }) {
   return (
     <div className="fixed top-0 right-0 left-0 bottom-0 m-auto righ z-40">
       <div
-        className="md:w-11/12 lg:w-3/4 h-5/6 max-h-[35rem]  fixed z-40 top-0 bottom-0 right-0
-       left-0 m-auto flex  items-center justify-center gap-5  bg-white p-5 rounded-lg  "
+        className="w-screen  md:w-11/12 lg:w-3/4 h-5/6 max-h-[35rem]  fixed z-40 top-0 bottom-0 right-0
+       left-0 m-auto flex  items-center justify-center gap-5 py-5  bg-white p-0 md:p-5 rounded-none md:rounded-lg  "
       >
-        <div className="md:w-full  md:h-full  flex flex-col items-center justify-start gap-5 ">
+        <div className="w-full md:w-full   md:h-full  flex flex-col items-center justify-start gap-5 ">
           {/* headers parts */}
-          <div className="w-full flex items-center justify-between ">
+          <div className="w-full flex-col  md:flex-row flex items-center justify-between ">
             <div className="flex">
               <span className="font-Kanit text-xl font-semibold text-black">
                 {language === "Thai" && "เช็คชื่อผู้เรียน"}
@@ -257,7 +257,7 @@ function AttendanceChecker({ close, students, language }) {
                   }
                   defaultValue={currentDate}
                   name="deadline"
-                  className="w-40 appearance-none outline-none border-none ring-2 rounded-md px-5 
+                  className="w-20 md:w-40 appearance-none outline-none border-none ring-2 rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black "
                   type="date"
                   placeholder="Please select a date"
@@ -285,23 +285,23 @@ function AttendanceChecker({ close, students, language }) {
           </div>
           <table className="">
             <thead className="">
-              <tr className=" w-full text-black font-Kanit flex md:gap-3 lg:gap-5 ">
-                <th className="w-20">
+              <tr className=" w-full text-black font-Kanit flex gap-2 md:gap-3 lg:gap-5 ">
+                <th className="w-9 text-xs md:text-base md:w-20">
                   {language === "Thai" && "เลขที่"}
                   {language === "English" && "number"}
                 </th>
-                <th className="md:w-40 lg:w-60">
+                <th className="w-16 text-xs md:text-base md:w-40 lg:w-60">
                   {language === "Thai" && "รายชื่อ"}
                   {language === "English" && "name"}
                 </th>
-                <th className="w-20">
+                <th className="w-10 text-xs md:text-base md:w-20">
                   <button
                     onClick={handleCheckAllstudent}
                     name="present"
                     role="button"
                     aria-label="check all"
                     className="w-full bg-green-500 rounded-2xl text-white text-center 
-                  hover:scale-110 transition duration-150 cursor-pointer group"
+                  hover:scale-110 transition duration-150 truncate cursor-pointer group"
                   >
                     <span className="block group-hover:hidden">
                       {language === "Thai" && "เข้าเรียน"}
@@ -313,7 +313,7 @@ function AttendanceChecker({ close, students, language }) {
                     </span>
                   </button>
                 </th>
-                <th className="w-20">
+                <th className="w-10 text-xs md:text-base md:w-20">
                   <button
                     onClick={handleCheckAllstudent}
                     name="holiday"
@@ -332,7 +332,7 @@ function AttendanceChecker({ close, students, language }) {
                     </span>
                   </button>
                 </th>
-                <th className="w-20">
+                <th className="w-10 text-xs md:text-base md:w-20">
                   <button
                     onClick={handleCheckAllstudent}
                     name="sick"
@@ -351,7 +351,7 @@ function AttendanceChecker({ close, students, language }) {
                     </span>
                   </button>
                 </th>
-                <th className="w-20">
+                <th className="w-10 text-xs md:text-base md:w-20">
                   <button
                     onClick={handleCheckAllstudent}
                     name="absent"
@@ -370,7 +370,7 @@ function AttendanceChecker({ close, students, language }) {
                     </span>
                   </button>
                 </th>
-                <th className="w-20">
+                <th className="w-10 text-xs md:text-base md:w-20">
                   <button
                     onClick={handleCheckAllstudent}
                     name="late"
@@ -399,13 +399,15 @@ function AttendanceChecker({ close, students, language }) {
                 return (
                   <tr
                     key={student.id}
-                    className="w-full text-black font-Kanit flex  md:gap-3 lg:gap-5 "
+                    className="w-full text-black font-Kanit flex gap-2 md:gap-3 lg:gap-5 "
                   >
-                    <td className="w-20 text-center">{student.number}</td>
-                    <td className="md:w-40 lg:w-60 truncate">
+                    <td className="w-9 text-xs md:text-base md:w-20 text-center">
+                      {student.number}
+                    </td>
+                    <td className="w-16 text-xs md:text-base md:w-40 lg:w-60 truncate hover:overflow-visible hover:relative hover:z-30">
                       {student.firstName} {student?.lastName}
                     </td>
-                    <td className="w-20 flex justify-center">
+                    <td className="w-10 text-xs md:text-base md:w-20 flex justify-center">
                       <div
                         className=" bg-green-500 rounded text-white w-6 text-center
                        p-1  flex items-center  justify-center"
@@ -424,7 +426,7 @@ function AttendanceChecker({ close, students, language }) {
                         />
                       </div>
                     </td>
-                    <td className="w-20 flex justify-center">
+                    <td className="w-10 text-xs md:text-base md:w-20 flex justify-center">
                       <div
                         className=" bg-yellow-500 rounded-md text-white text-center 
                       p-1  w-6 h-6 flex items-center justify-center"
@@ -443,7 +445,7 @@ function AttendanceChecker({ close, students, language }) {
                         />
                       </div>
                     </td>
-                    <td className="w-20 flex justify-center">
+                    <td className="w-10 text-xs md:text-base md:w-20 flex justify-center">
                       <div
                         className=" bg-blue-500 rounded-md text-white text-center 
                       p-1  w-6 h-6 flex items-center justify-center"
@@ -462,7 +464,7 @@ function AttendanceChecker({ close, students, language }) {
                         />
                       </div>
                     </td>
-                    <td className="w-20 flex justify-center">
+                    <td className="w-10 text-xs md:text-base md:w-20 flex justify-center">
                       <div
                         className=" bg-red-500 rounded-md text-white text-center 
                       p-1  w-6 h-6 flex items-center justify-center"
@@ -481,7 +483,7 @@ function AttendanceChecker({ close, students, language }) {
                         />
                       </div>
                     </td>
-                    <td className="w-20 flex justify-center">
+                    <td className="w-10 text-xs md:text-base md:w-20 flex justify-center">
                       <div
                         className=" bg-orange-500 rounded-md text-white text-center 
                       p-1  w-6 h-6 flex items-center justify-center"
