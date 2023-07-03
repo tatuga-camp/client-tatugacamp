@@ -312,7 +312,40 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
           </div>
         </div>
       )}
-      <div className="w-10/12 md:hidden text-center mt-5 font-Kanit bg-red-500 text-white p-4 rounded-xl">
+      <Popover className="block md:hidden">
+        {({ open }) => (
+          <div>
+            <Popover.Button>
+              <div
+                onClick={() => {
+                  document.body.style.overflow = "hidden";
+                }}
+                role="button"
+                className="font-Kanit flex items-center my-5 justify-center gap-2 text-white
+           bg-green-700 w-max p-3 rounded-2xl hover:scale-110 transition duration-150 cursor-pointer"
+              >
+                <div>
+                  <MdEmojiPeople />
+                </div>
+                <span className="font-Kanit font-semibold text-lg">
+                  {language === "Thai" && "เช็คชื่อ"}
+                  {language === "English" && "Attendance check"}
+                </span>
+              </div>
+            </Popover.Button>
+            <Popover.Panel>
+              {({ close }) => (
+                <AttendanceChecker
+                  language={language}
+                  close={close}
+                  students={students}
+                />
+              )}
+            </Popover.Panel>
+          </div>
+        )}
+      </Popover>
+      <div className="w-10/12 md:hidden text-center  font-Kanit bg-red-500 text-white p-4 rounded-xl">
         <div className="text-2xl">
           <IoWarningOutline />
         </div>
