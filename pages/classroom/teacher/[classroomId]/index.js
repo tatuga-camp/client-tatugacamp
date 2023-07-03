@@ -141,9 +141,11 @@ function Index({ user, error }) {
                     <button
                       key={group.id}
                       onClick={() => {
-                        setClassroomGroupActive(() => index);
-                        groupId.current = group.id;
-                        groupQuery.refetch();
+                        if (classroomGroupActive !== index) {
+                          setClassroomGroupActive(() => index);
+                          groupId.current = group.id;
+                          groupQuery.refetch();
+                        }
                       }}
                       className={`w-28 ring-2 p-2 flex items-center justify-center   rounded-lg hover:bg-orange-600 hover:ring-black hover:text-white hover:drop-shadow-lg
                truncate transition duration-150 ease-out ${
