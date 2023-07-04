@@ -57,8 +57,8 @@ function Index() {
     ["comments"],
     () =>
       GetComments({
-        assignmentId: assignment.id,
-        studentId: router.query.studentId,
+        assignmentId: assignment?.id,
+        studentId: router?.query?.studentId,
       }),
     {
       enabled: false,
@@ -518,6 +518,7 @@ function Index() {
             </button>
             <button
               onClick={() => {
+                comments.refetch();
                 if (triggerMenu === false) {
                   handleOpenTrigerMenu();
                   setActiveMenu(() => 2);
