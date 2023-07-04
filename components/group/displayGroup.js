@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Loading from "../loading/loading";
 import Image from "next/image";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
-import { DeleteGroup } from "../../service/group";
+import { DeleteGroup, RandomGroup } from "../../service/group";
 import Swal from "sweetalert2";
 import { Popover } from "@headlessui/react";
-import UpdateScore from "../form/updateScore";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
+import { useRouter } from "next/router";
+import UpdateScore from "../form/updateScore";
 
 function DisplayGroup({
   user,
@@ -19,7 +20,9 @@ function DisplayGroup({
   setClassroomGroupActive,
   groupId,
 }) {
+  const router = useRouter();
   const handle = useFullScreenHandle();
+  const [loading, setLoading] = useState(false);
   if (group.isLoading) {
     return (
       <div className="mt-5">
@@ -57,7 +60,24 @@ function DisplayGroup({
       console.log(err);
     }
   };
-
+  async function handleRandomGroup() {
+    try {
+      setLoading(() => true);
+      await RandomGroup({
+        classroomId: router.query.classroomId,
+        groupId: group?.data.group.id,
+      });
+      await group.refetch();
+      setLoading(() => false);
+    } catch (err) {
+      setLoading(() => false);
+      Swal.fire({
+        title: "error",
+        icon: "error",
+      });
+      console.log(err);
+    }
+  }
   return (
     <div className=" mt-10 font-Kanit w-full   ">
       <div className="w-full flex justify-end gap-5  ">
@@ -72,17 +92,21 @@ function DisplayGroup({
               : user.language === "English" && "delete group"}
           </span>
         </button>
-        <button
-          onClick={handleDeleteGroup}
-          className="flex justify-center items-center  hover:text-sky-500 text-3xl "
-        >
-          <GiPerspectiveDiceSixFacesRandom />
-          <span className="text-base">
-            {user.language === "Thai"
-              ? "สุ่มนักเรียนใหม่"
-              : user.language === "English" && "shuffle students"}
-          </span>
-        </button>
+        {loading ? (
+          <Loading />
+        ) : (
+          <button
+            onClick={handleRandomGroup}
+            className="flex justify-center items-center  hover:text-sky-500 text-3xl "
+          >
+            <GiPerspectiveDiceSixFacesRandom />
+            <span className="text-base">
+              {user.language === "Thai"
+                ? "สุ่มนักเรียนใหม่"
+                : user.language === "English" && "shuffle students"}
+            </span>
+          </button>
+        )}
       </div>
       <FullScreen
         handle={handle}

@@ -1,6 +1,27 @@
 import axios from "axios";
 import Error from "next/error";
-
+export async function GetAssignment({ assignmentId }) {
+  try {
+    if (!assignmentId) {
+      return null;
+    }
+    const assignment = await axios.get(
+      `${process.env.Server_Url}/student/student-assignment/get-assignment`,
+      {
+        params: {
+          assignmentId: assignmentId,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return assignment.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
 export async function GetAllAssignment({ studentId, classroomId }) {
   try {
     if (!studentId || !classroomId) {

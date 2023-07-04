@@ -554,19 +554,17 @@ function Index() {
               );
               return (
                 <button
+                  type="button"
                   key={assignment.assignment?.id}
                   onClick={() => {
-                    const serializedAssignment = JSON.stringify(assignment);
-                    localStorage.setItem("assignment", serializedAssignment);
                     router.push({
-                      pathname: `/classroom/student/${student?.data?.data.id}/assignment/${assignment.assignment?.id}`,
+                      pathname: `/classroom/student/${student?.data?.data?.id}/assignment/${assignment?.assignment?.id}`,
                       query: {
-                        classroomId: router.query.classroomId,
+                        classroomId: router?.query?.classroomId,
                       },
                     });
                   }}
-                  aria-label="open assignment"
-                  className="w-11/12 md:w-10/12 flex gap-5 justify-between bg-white ring-2 overflow-auto ring-blue-600 rounded-2xl p-3"
+                  className="w-11/12 md:w-10/12 flex gap-5 relative z-50 justify-between bg-white ring-2 overflow-auto ring-blue-600 rounded-2xl p-3"
                 >
                   <div className="w-full h-28 flex flex-col justify-center  text-left   ">
                     <div className="w-48 md:w-72 text-left truncate scrollbar-hide">
