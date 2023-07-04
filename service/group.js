@@ -27,6 +27,29 @@ export async function CreateGroupApi({ title, classroomId, groupNumber }) {
     throw new Error(err);
   }
 }
+export async function RandomGroup({ classroomId, groupId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+
+    const group = await axios.put(
+      `${process.env.Server_Url}/user/group/random-group`,
+      {
+        groupId,
+        classroomId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    return group.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
 export async function GetGroup({ groupId }) {
   try {
     if (!groupId) {

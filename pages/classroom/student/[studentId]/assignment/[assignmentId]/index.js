@@ -5,6 +5,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { IoCaretBackOutline, IoDocumentText } from "react-icons/io5";
 import { Box, Skeleton, TextField } from "@mui/material";
 import {
+  GetAssignment,
   GetMyWork,
   SummitWork,
 } from "../../../../../../service/student/assignment";
@@ -44,7 +45,6 @@ function Index() {
   const [loading, setLoading] = useState(false);
   const [activeMenu, setActiveMenu] = useState(0);
   const [studentWork, setStudnetWork] = useState();
-  const [assignment, setAssignment] = useState();
   const [deadline, setDeadline] = useState();
   const [fileSize, setFilesSize] = useState(0);
   const [classroom, setClassroom] = useState();
@@ -53,17 +53,37 @@ function Index() {
     body: "",
   });
   const [triggerMenu, setTriggerMenu] = useState(false);
-  const comments = useQuery(
-    ["comments"],
-    () =>
-      GetComments({
-        assignmentId: assignment?.id,
-        studentId: router?.query?.studentId,
-      }),
+  const assignment = useQuery(
+    ["assignment"],
+    () => GetAssignment({ assignmentId: router.query.assignmentId }),
     {
       enabled: false,
     }
   );
+
+  const comments = useQuery(
+    ["comments"],
+    () =>
+      GetComments({
+        assignmentId: assignment.data.id,
+        studentId: router?.query?.studentId,
+      }),
+    {
+      enabled: assignment.isSuccess,
+    }
+  );
+
+  useEffect(() => {
+    setDeadline(() => {
+      const date = new Date(assignment?.data?.deadline);
+      const formattedDate = date.toLocaleDateString("th-TH", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+      return formattedDate;
+    });
+  }, [assignment.data]);
   const student = useQuery(
     ["student"],
     () => GetStudent({ studentId: router.query.studentId }),
@@ -75,7 +95,7 @@ function Index() {
   const fetchStudentWork = useQuery(["student-work"], () =>
     GetMyWork({
       studentId: router.query.studentId,
-      assignmentId: assignment.id,
+      assignmentId: assignment.data.id,
     }).then((res) => {
       setStudnetWork(() => {
         let pictures = [];
@@ -135,7 +155,7 @@ function Index() {
             const summitWork = await SummitWork({
               formFiles,
               studentId: router.query.studentId,
-              assignmentId: assignment.id,
+              assignmentId: assignment.data.id,
             });
 
             fetchStudentWork.refetch();
@@ -179,7 +199,7 @@ function Index() {
             const summitWork = await SummitWork({
               formFiles,
               studentId: router.query.studentId,
-              assignmentId: assignment.id,
+              assignmentId: assignment.data.id,
             });
             setLoading(() => false);
             fetchStudentWork.refetch();
@@ -226,6 +246,7 @@ function Index() {
     if (router.isReady) {
       student.refetch();
       comments.refetch();
+      assignment.refetch();
     }
   }, [router.isReady]);
 
@@ -240,21 +261,7 @@ function Index() {
       return classroomConverted;
     });
     initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, "individual");
-    const studentWork = localStorage.getItem("assignment");
-    setAssignment(() => {
-      const assignment = localStorage.getItem("assignment");
-      const convertAssignment = JSON.parse(assignment);
-      setDeadline(() => {
-        const date = new Date(convertAssignment.assignment.deadline);
-        const formattedDate = date.toLocaleDateString("th-TH", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        });
-        return formattedDate;
-      });
-      return convertAssignment.assignment;
-    });
+
     setTimeout(() => {
       fetchStudentWork.refetch();
     }, 500);
@@ -264,7 +271,7 @@ function Index() {
     try {
       e.preventDefault();
       await PostComment({
-        assignmentId: assignment.id,
+        assignmentId: assignment.data.id,
         studentId: router.query.studentId,
         body: studentSummit.body,
       });
@@ -357,7 +364,7 @@ function Index() {
         <div className="w-60 md:w-96 lg:w-3/4 flex gap-2 items-center justify-center mb-5">
           <div className="  text-center w-60 md:w-96 lg:w-3/4">
             <span className="font-Kanit text-2xl  break-words  font-bold text-black ">
-              {assignment?.title}
+              {assignment?.data?.title}
             </span>
           </div>
         </div>
@@ -415,7 +422,7 @@ function Index() {
                     <div className="text-lg">
                       <span>{!studentWork?.score ? 0 : studentWork.score}</span>
                       <span>/</span>
-                      <span>{assignment?.maxScore}</span>
+                      <span>{assignment?.data?.maxScore}</span>
                     </div>
                   )}
                 </td>
@@ -469,7 +476,7 @@ function Index() {
             <div
               className=" p-5  text-black font-Kanit"
               dangerouslySetInnerHTML={{
-                __html: assignment?.description,
+                __html: assignment?.data?.description,
               }}
             />
           </div>
