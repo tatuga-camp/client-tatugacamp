@@ -286,7 +286,6 @@ function Index() {
   }
 
   const handleOpenTrigerMenu = () => {
-    document.body.style.overflow = "hidden";
     setTriggerMenu(() => true);
     api.start({
       from: {
