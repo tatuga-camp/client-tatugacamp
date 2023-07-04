@@ -8,7 +8,7 @@ import { DeleteGroup } from "../../service/group";
 import Swal from "sweetalert2";
 import { Popover } from "@headlessui/react";
 import UpdateScore from "../form/updateScore";
-import Skeleton from "@mui/material/Skeleton";
+import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 
 function DisplayGroup({
   user,
@@ -60,12 +60,28 @@ function DisplayGroup({
 
   return (
     <div className=" mt-10 font-Kanit w-full   ">
-      <div className="w-full flex justify-end ">
+      <div className="w-full flex justify-end gap-5  ">
         <button
           onClick={handleDeleteGroup}
           className="flex justify-center items-center hover:text-red-500 text-3xl "
         >
           <MdDelete />
+          <span className="text-base">
+            {user.language === "Thai"
+              ? "ลบกลุ่ม"
+              : user.language === "English" && "delete group"}
+          </span>
+        </button>
+        <button
+          onClick={handleDeleteGroup}
+          className="flex justify-center items-center  hover:text-sky-500 text-3xl "
+        >
+          <GiPerspectiveDiceSixFacesRandom />
+          <span className="text-base">
+            {user.language === "Thai"
+              ? "สุ่มนักเรียนใหม่"
+              : user.language === "English" && "shuffle students"}
+          </span>
         </button>
       </div>
       <FullScreen
