@@ -25,7 +25,6 @@ import { BiDuplicate, BiNews } from "react-icons/bi";
 import { sanityClient } from "../../../sanity";
 import { myPortableTextComponents } from "../../../data/portableContent";
 import { PortableText } from "@portabletext/react";
-
 import Link from "next/link";
 import Loading from "../../../components/loading/loading";
 
@@ -50,8 +49,10 @@ function Index({ error, user, whatsNews }) {
   });
 
   const deleteClassroom = useMutation(async (classroomid) => {
+    setLoading(() => true);
     const deleting = await DeleteClassroom(classroomid);
     classrooms.refetch();
+    setLoading(() => false);
     return deleting;
   });
 
@@ -473,58 +474,62 @@ function Index({ error, user, whatsNews }) {
                     rounded-3xl overflow-hidden relative bg-white "
                   >
                     <div className="text-right w-full">
-                      <div className="text-3xl absolute right-4 top-3">
-                        {!classroom.selected && (
-                          <div
-                            onClick={() => handleOpenClasssDeleted(index)}
-                            role="button"
-                            className="text-gray-700 text-base   hover:text-red-500 
+                      {loading ? (
+                        <Loading />
+                      ) : (
+                        <div className="text-3xl absolute right-4 top-3">
+                          {!classroom.selected && (
+                            <div
+                              onClick={() => handleOpenClasssDeleted(index)}
+                              role="button"
+                              className="text-gray-700 text-base   hover:text-red-500 
                         cursor-pointer flex"
-                          >
-                            <MdDelete />
-                          </div>
-                        )}
-                        {classroom.selected && (
-                          <div className="flex gap-x-4">
-                            <div
-                              role="button"
-                              onClick={() => {
-                                Swal.fire({
-                                  title: "Are you sure?",
-                                  text: "You won't be able to revert this!",
-                                  icon: "warning",
-                                  showCancelButton: true,
-                                  confirmButtonColor: "#3085d6",
-                                  cancelButtonColor: "#d33",
-                                  confirmButtonText: "Yes, delete it!",
-                                }).then((result) => {
-                                  if (result.isConfirmed) {
-                                    deleteClassroom.mutate(classroom.id);
-                                    Swal.fire(
-                                      "Deleted!",
-                                      "Your classroom has been deleted.",
-                                      "success"
-                                    );
-                                  }
+                            >
+                              <MdDelete />
+                            </div>
+                          )}
+                          {classroom.selected && (
+                            <div className="flex gap-x-4">
+                              <div
+                                role="button"
+                                onClick={() => {
+                                  Swal.fire({
+                                    title: "Are you sure?",
+                                    text: "You won't be able to revert this!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Yes, delete it!",
+                                  }).then((result) => {
+                                    if (result.isConfirmed) {
+                                      deleteClassroom.mutate(classroom.id);
+                                      Swal.fire(
+                                        "Deleted!",
+                                        "Your classroom has been deleted.",
+                                        "success"
+                                      );
+                                    }
+                                    handleCloseClasssDeleted(index);
+                                  });
+                                }}
+                                className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
+                              >
+                                <FcCheckmark />
+                              </div>
+                              <div
+                                role="button"
+                                onClick={() => {
                                   handleCloseClasssDeleted(index);
-                                });
-                              }}
-                              className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
-                            >
-                              <FcCheckmark />
+                                }}
+                                className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
+                              >
+                                <FcCancel />
+                              </div>
                             </div>
-                            <div
-                              role="button"
-                              onClick={() => {
-                                handleCloseClasssDeleted(index);
-                              }}
-                              className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
-                            >
-                              <FcCancel />
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                     <div className="flex w-full justify-center gap-2 md:gap-10  items-center">
                       <div className="flex flex-col w-3/4 md:w-40 ">
