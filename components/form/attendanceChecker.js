@@ -232,7 +232,7 @@ function AttendanceChecker({ close, students, language }) {
       >
         <div className="w-full md:w-full   md:h-full  flex flex-col items-center justify-start gap-5 ">
           {/* headers parts */}
-          <div className="w-full flex-col  md:flex-row flex items-center justify-between ">
+          <div className="w-full flex-col  md:flex-row flex items-center justify-between md:justify-around ">
             <div className="flex">
               <span className="font-Kanit text-xl font-semibold text-black">
                 {language === "Thai" && "เช็คชื่อผู้เรียน"}
@@ -285,7 +285,7 @@ function AttendanceChecker({ close, students, language }) {
           </div>
           <table className="">
             <thead className="">
-              <tr className=" w-full text-black font-Kanit flex gap-2 md:gap-3 lg:gap-5 ">
+              <tr className=" w-full  text-black font-Kanit flex gap-2 md:gap-3 lg:gap-5 ">
                 <th className="w-9 text-xs md:text-base md:w-20">
                   {language === "Thai" && "เลขที่"}
                   {language === "English" && "number"}
@@ -399,9 +399,9 @@ function AttendanceChecker({ close, students, language }) {
                 return (
                   <tr
                     key={student.id}
-                    className="w-full text-black font-Kanit flex gap-2 md:gap-3 lg:gap-5 "
+                    className="w-full text-black hover:bg-slate-200 transition duration-150 ease-in-out  font-Kanit flex gap-2 md:gap-3 lg:gap-5 "
                   >
-                    <td className="w-9 text-xs md:text-base md:w-20 text-center">
+                    <td className="w-9 text-xs  md:text-base md:w-20 text-center">
                       {student.number}
                     </td>
                     <td className="w-16 text-xs md:text-base md:w-40 lg:w-60 truncate hover:overflow-visible hover:relative hover:z-30">
