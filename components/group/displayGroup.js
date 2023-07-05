@@ -115,7 +115,7 @@ function DisplayGroup({
             </span>
           </button>
         )}
-        <div className="flex flex-col hidden justify-center items-center">
+        {/* <div className="flex flex-col  justify-center items-center">
           <Switch
             checked={isSetting}
             onChange={setIsSetting}
@@ -141,7 +141,7 @@ function DisplayGroup({
                 : user.language === "English" && "Open setting"}
             </span>
           )}
-        </div>
+        </div> */}
       </div>
       <FullScreen
         handle={handle}
