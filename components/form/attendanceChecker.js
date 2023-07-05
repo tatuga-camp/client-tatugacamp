@@ -392,8 +392,8 @@ function AttendanceChecker({ close, students, language }) {
               </tr>
             </thead>
             <tbody
-              className="w-full scrollbar-hide  h-full items-center justify-start max-h-96 mt-2 
-            overflow-auto lg:scrollbar-hide fade-mask-short flex flex-col "
+              className="w-full   h-full items-center justify-start max-h-96 mt-2 
+            overflow-auto  fade-mask-short flex flex-col "
             >
               {isCheckStudent?.map((student) => {
                 return (

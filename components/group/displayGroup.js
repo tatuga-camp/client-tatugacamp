@@ -6,10 +6,12 @@ import { BsFullscreen, BsFullscreenExit } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { DeleteGroup, RandomGroup } from "../../service/group";
 import Swal from "sweetalert2";
-import { Popover } from "@headlessui/react";
+import { Popover, Switch } from "@headlessui/react";
 import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import { useRouter } from "next/router";
 import UpdateScore from "../form/updateScore";
+import { AiOutlineSetting } from "react-icons/ai";
+import { FaUserMinus } from "react-icons/fa";
 
 function DisplayGroup({
   user,
@@ -22,6 +24,7 @@ function DisplayGroup({
 }) {
   const router = useRouter();
   const handle = useFullScreenHandle();
+  const [isSetting, setIsSetting] = useState(false);
   const [loading, setLoading] = useState(false);
   if (group.isLoading) {
     return (
@@ -30,6 +33,11 @@ function DisplayGroup({
       </div>
     );
   }
+
+  const handleDeleteStudent = ({ studentId, miniGroupId }) => {
+    console.log(studentId);
+    console.log(miniGroupId);
+  };
 
   const handleDeleteGroup = async () => {
     try {
@@ -107,6 +115,33 @@ function DisplayGroup({
             </span>
           </button>
         )}
+        <div className="flex flex-col hidden justify-center items-center">
+          <Switch
+            checked={isSetting}
+            onChange={setIsSetting}
+            className={`${isSetting ? "bg-blue-400" : "bg-teal-700"}
+          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+          >
+            <span
+              aria-hidden="true"
+              className={`${isSetting ? "translate-x-9" : "translate-x-0"}
+            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+            />
+          </Switch>
+          {isSetting ? (
+            <span className="text-base">
+              {user.language === "Thai"
+                ? "ปิดตั้งค่าจัดกลุ่ม"
+                : user.language === "English" && "Close setting"}
+            </span>
+          ) : (
+            <span className="text-base">
+              {user.language === "Thai"
+                ? "เปิดตั้งค่าจัดกลุ่ม"
+                : user.language === "English" && "Open setting"}
+            </span>
+          )}
+        </div>
       </div>
       <FullScreen
         handle={handle}
@@ -152,83 +187,149 @@ function DisplayGroup({
           } place-items-center  items-start  `}
         >
           {group?.data?.miniGroups?.map((miniGroup, index) => {
-            return (
-              <Popover key={index}>
-                {({ open }) => (
-                  <>
-                    <Popover.Button>
-                      <div
-                        className={` ${
-                          group?.data?.miniGroups.length > 2
-                            ? "md:w-80 lg:w-80 "
-                            : "w-max max-w-3xl"
-                        }   h-max p-2 ring-2 flex justify-start
-               bg-white flex-col  items-center hover:scale-110 transition duration-150
-                hover:drop-shadow-md cursor-pointer hover:ring-orange-400 relative  rounded-lg ring-orange-400"
-            `}
-                      >
-                        <div className="flex gap-2 mb-5">
-                          <div className="w-max px-2 rounded-md  text-white text-2xl font-Poppins font-semibold bg-blue-500">
-                            {miniGroup.data.points}
-                          </div>
-
-                          <div className="font-Kanit text-lg font-semibold text-black">
-                            {miniGroup.data.title}
-                          </div>
-                        </div>
-
-                        <ul
-                          className={`w-full pl-0 h-max grid gap-2 ${
+            if (isSetting === false) {
+              return (
+                <Popover key={index}>
+                  {({ open }) => (
+                    <>
+                      <Popover.Button>
+                        <div
+                          className={` ${
                             group?.data?.miniGroups.length > 2
-                              ? " grid-cols-1"
-                              : "grid-cols-1"
-                          }`}
+                              ? "md:w-80 lg:w-80 "
+                              : "w-max max-w-3xl"
+                          }   h-max p-2 ring-2 flex justify-start
+                 bg-white flex-col  items-center hover:scale-110 transition duration-150
+                  hover:drop-shadow-md cursor-pointer hover:ring-orange-400 relative  rounded-lg ring-orange-400"
+              `}
                         >
-                          {miniGroup.students.map((student) => {
-                            return (
-                              <li
-                                key={student.id}
-                                className="flex gap-2 justify-between   font-Kanit text-base"
-                              >
-                                <span>
-                                  {user.language === "Thai"
-                                    ? "เลขที่"
-                                    : user.language === "English" &&
-                                      "number"}{" "}
-                                  {student.number}
-                                </span>
-                                <div className="flex gap-2">
-                                  <span>{student.firstName}</span>
-                                  <span>{student?.lastName}</span>
-                                </div>
-                                <span className="w-max h-5 bg-orange-400 text-center p-1 px-2 rounded-md text-white">
-                                  {student?.score?.totalPoints}
-                                </span>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    </Popover.Button>
-                    <Popover.Panel>
-                      {({ close }) => (
-                        <UpdateScore
-                          close={close}
-                          language={user.language}
-                          scores={scores.data}
-                          groupScore={true}
-                          groupId={group?.data.group.id}
-                          miniGroupId={miniGroup.data.id}
-                          classroomScore={true}
-                          group={group}
-                          students={students}
-                        />
-                      )}
-                    </Popover.Panel>
-                  </>
-                )}
-              </Popover>
-            );
+                          <div className="flex gap-2 mb-5">
+                            <div className="w-max px-2 rounded-md  text-white text-2xl font-Poppins font-semibold bg-blue-500">
+                              {miniGroup.data.points}
+                            </div>
+
+                            <div className="font-Kanit text-lg font-semibold text-black">
+                              {miniGroup.data.title}
+                            </div>
+                          </div>
+
+                          <ul
+                            className={`w-full pl-0 h-max grid gap-2 ${
+                              group?.data?.miniGroups.length > 2
+                                ? " grid-cols-1"
+                                : "grid-cols-1"
+                            }`}
+                          >
+                            {miniGroup.students.map((student) => {
+                              return (
+                                <li
+                                  key={student.id}
+                                  className="flex gap-2 justify-between   font-Kanit text-base"
+                                >
+                                  <span>
+                                    {user.language === "Thai"
+                                      ? "เลขที่"
+                                      : user.language === "English" &&
+                                        "number"}{" "}
+                                    {student.number}
+                                  </span>
+                                  <div className="flex gap-2">
+                                    <span>{student.firstName}</span>
+                                    <span>{student?.lastName}</span>
+                                  </div>
+                                  <span className="w-max h-5 bg-orange-400 text-center p-1 px-2 rounded-md text-white">
+                                    {student?.score?.totalPoints}
+                                  </span>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      </Popover.Button>
+                      <Popover.Panel>
+                        {({ close }) => (
+                          <UpdateScore
+                            close={close}
+                            language={user.language}
+                            scores={scores.data}
+                            groupScore={true}
+                            groupId={group?.data.group.id}
+                            miniGroupId={miniGroup.data.id}
+                            classroomScore={true}
+                            group={group}
+                            students={students}
+                          />
+                        )}
+                      </Popover.Panel>
+                    </>
+                  )}
+                </Popover>
+              );
+            } else if (isSetting === true) {
+              return (
+                <div
+                  key={index}
+                  className={` ${
+                    group?.data?.miniGroups.length > 2
+                      ? "md:w-80 lg:w-80 "
+                      : "w-max max-w-3xl"
+                  }   h-max p-2 ring-2 flex justify-start
+    flex-col  items-center transition duration-150
+      hover:drop-shadow-md bg-sky-100  hover:ring-orange-400 relative  rounded-lg ring-orange-400"
+  `}
+                >
+                  <div className="flex gap-2 mb-5">
+                    <div className="w-max px-2 rounded-md  text-white text-2xl font-Poppins font-semibold bg-blue-500">
+                      {miniGroup.data.points}
+                    </div>
+
+                    <div className="font-Kanit text-lg font-semibold text-black">
+                      {miniGroup.data.title}
+                    </div>
+                  </div>
+
+                  <ul
+                    className={`w-full pl-0 h-max grid gap-2 ${
+                      group?.data?.miniGroups.length > 2
+                        ? " grid-cols-1"
+                        : "grid-cols-1"
+                    }`}
+                  >
+                    {miniGroup.students.map((student) => {
+                      return (
+                        <li
+                          key={student.id}
+                          className="flex gap-2 justify-between   font-Kanit text-base"
+                        >
+                          <span>
+                            {user.language === "Thai"
+                              ? "เลขที่"
+                              : user.language === "English" && "number"}{" "}
+                            {student.number}
+                          </span>
+                          <div className="flex gap-2">
+                            <span>{student.firstName}</span>
+                            <span>{student?.lastName}</span>
+                          </div>
+                          <button
+                            onClick={() =>
+                              handleDeleteStudent({
+                                studentId: student.id,
+                                miniGroupId: miniGroup.data.id,
+                              })
+                            }
+                            className="w-max h-max p hover:bg-red-500 cursor-pointer bg-gray-400 text-center p-1 flex items-center justify-center
+                             rounded-md text-white"
+                          >
+                            <FaUserMinus />
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              );
+            }
           })}
         </div>
       </FullScreen>
