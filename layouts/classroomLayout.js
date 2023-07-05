@@ -484,9 +484,6 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                         className="font-Kanit flex items-center justify-center gap-2 text-white
            bg-violet-500 w-max p-3 rounded-xl hover:scale-110 relative transition duration-150 cursor-pointer"
                       >
-                        <div className="w-max p-1 rounded-lg  bg-yellow-500 text-white">
-                          BETA
-                        </div>
                         <div className="flex items-center justify-center">
                           <HiRectangleGroup />
                         </div>
