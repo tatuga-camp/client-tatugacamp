@@ -109,7 +109,7 @@ export default function CreateAssignment({
         deadline: assignmentData.deadline,
       });
 
-      assignments.refetch();
+      assignments?.refetch();
 
       Swal.fire("success", "assignment has been createed", "success");
       setAssignmentCreated(createAssignment);
