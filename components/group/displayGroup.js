@@ -249,7 +249,7 @@ function DisplayGroup({
             {unGroupStudents?.map((student) => {
               return (
                 <div
-                  className="flex  justify-between gap-2 just truncate"
+                  className="flex hover:bg-blue-100 px-2 justify-between gap-2 just truncate"
                   key={student.id}
                 >
                   <div className="flex gap-3">
