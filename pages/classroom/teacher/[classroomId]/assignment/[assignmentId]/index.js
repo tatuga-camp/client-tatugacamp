@@ -30,6 +30,7 @@ import {
 } from "../../../../../../service/comment.js";
 import SendIcon from "@mui/icons-material/Send";
 import { parseCookies } from "nookies";
+import ReactPlayer from "react-player";
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -892,10 +893,13 @@ function Index({ error, user }) {
                                 key={index}
                                 className="w-full flex  justify-center"
                               >
-                                <video controls width="80%">
-                                  <source src={file.url} type="video/mp4" />
-                                  Sorry, your browser doesn't support videos.
-                                </video>
+                                <ReactPlayer
+                                  playsinline
+                                  controls
+                                  width="100%"
+                                  height="100%"
+                                  url={file.url}
+                                />
                               </div>
                             );
                           }
