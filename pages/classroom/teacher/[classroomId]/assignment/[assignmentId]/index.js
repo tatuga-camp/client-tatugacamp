@@ -44,6 +44,12 @@ function Index({ error, user }) {
   const [triggerUpdateAssignment, setTriggerUpdateAssignment] = useState(false);
   const [comment, setComment] = useState();
   const [files, setFiles] = useState([]);
+  const [studentSummitDate, setStudentSummitDate] = useState({
+    summitDate: "",
+    isDue: "",
+    deadline: "",
+  });
+
   const [comfirmDeleteComment, setComfirmDeleteComment] = useState(false);
   const assignment = useQuery(
     ["assignment"],
@@ -183,7 +189,6 @@ function Index({ error, user }) {
     });
     setComment(() => newItems);
   };
-
   //handle make sure to cancel deleting classroom
   const handleUnConfirmDelete = (index) => {
     const newItems = comment.map((item, i) => {
@@ -199,6 +204,28 @@ function Index({ error, user }) {
   const handleSelectWork = async (student) => {
     try {
       if (student.studentWork) {
+        setStudentSummitDate((prev) => {
+          const createDate = new Date(student.studentWork.createAt); // Replace with your specific date and time
+          let isDue = false;
+          // Formatting the date and time
+          const formattedCreateDateTime = createDate.toLocaleString("th-TH", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+          if (createDate > date) {
+            isDue = true;
+          } else if (createDate < date) {
+            isDue = false;
+          }
+          return {
+            isDue: isDue,
+            summitDate: formattedCreateDateTime,
+          };
+        });
         setFiles(() => []);
         setImages(() => {
           let pictures = [];
@@ -236,6 +263,7 @@ function Index({ error, user }) {
           }
         });
       } else if (!student.studentWork) {
+        setStudentSummitDate(() => null);
         setFiles(() => []);
         setImages(null);
       }
@@ -637,6 +665,16 @@ function Index({ error, user }) {
                       ) : (
                         studentOnAssignments?.data?.data?.map(
                           (student, index) => {
+                            let IsDue = false;
+                            const currentTime = new Date();
+                            const deadlineDate = new Date(
+                              assignment?.data?.data?.deadline
+                            );
+                            if (currentTime > deadlineDate) {
+                              IsDue = true;
+                            } else if (currentTime < deadlineDate) {
+                              IsDue = false;
+                            }
                             return (
                               <tr
                                 key={index}
@@ -658,14 +696,24 @@ function Index({ error, user }) {
                                     0
                                   </td>
                                 )}
-                                {student.status === "no-work" && (
+                                {student.status === "no-work" && !IsDue && (
+                                  <td
+                                    onClick={() => handleSelectWork(student)}
+                                    className=" bg-orange-500 py-1 px-2 rounded-lg text-white cursor-pointer 
+                                      hover:scale-105 transition duration-150 md:w-20 md:text-sm lg:w-32 text-center"
+                                  >
+                                    {user.language === "Thai" && "ไม่ส่งงาน"}
+                                    {user.language === "English" && "NO WORK"}
+                                  </td>
+                                )}
+                                {student.status === "no-work" && IsDue && (
                                   <td
                                     onClick={() => handleSelectWork(student)}
                                     className=" bg-red-500 py-1 px-2 rounded-lg text-white cursor-pointer 
                                       hover:scale-105 transition duration-150 md:w-20 md:text-sm lg:w-32 text-center"
                                   >
-                                    {user.language === "Thai" && "ไม่ส่งงาน"}
-                                    {user.language === "English" && "NO WORK"}
+                                    {user.language === "Thai" && "เลยกำหนดส่ง"}
+                                    {user.language === "English" && "PASS DUE"}
                                   </td>
                                 )}
                                 {student.status === "have-work" &&
@@ -765,26 +813,50 @@ function Index({ error, user }) {
                       </form>
                     )}
                   </div>
-                  <div className="w-full flex justify-start items-center gap-2 mb-10">
-                    <span>
-                      {user.language === "Thai" && "เลขที่"}
-                      {user.language === "English" && "number"}{" "}
-                      {currentStudentWork?.number}
-                    </span>
-                    <span
-                      className="md:text-sm lg:text-base
+                  <div className="flex flex-col justify-start w-full">
+                    <div className="w-full flex justify-start items-center gap-2 ">
+                      <span>
+                        {user.language === "Thai" && "เลขที่"}
+                        {user.language === "English" && "number"}{" "}
+                        {currentStudentWork?.number}
+                      </span>
+                      <span
+                        className="md:text-sm lg:text-base
                     "
-                    >
-                      {currentStudentWork?.firstName}
-                      {currentStudentWork?.lastName}
-                    </span>
-                    {currentStudentWork?.picture && (
-                      <div className="lg:w-10 lg:h-10 md:w-8 md:h-8 bg-orange-500 rounded-full overflow-hidden relative">
-                        <Image
-                          src={currentStudentWork?.picture}
-                          layout="fill"
-                          className="object-cover"
-                        />
+                      >
+                        {currentStudentWork?.firstName}
+                        {currentStudentWork?.lastName}
+                      </span>
+                      {currentStudentWork?.picture && (
+                        <div className="lg:w-10 lg:h-10 md:w-8 md:h-8 bg-orange-500 rounded-full overflow-hidden relative">
+                          <Image
+                            src={currentStudentWork?.picture}
+                            layout="fill"
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                    </div>
+                    {studentSummitDate?.summitDate && (
+                      <div className="flex gap-2 my-3">
+                        <div
+                          className={`flex gap-2 ${
+                            studentSummitDate.isDue
+                              ? "bg-red-500"
+                              : "bg-green-400"
+                          }  w-max p-2 rounded-lg drop-shadow-md text-white `}
+                        >
+                          <span>
+                            {user.language === "Thai" && "ส่งงานเมื่อ"}
+                            {user.language === "English" && "summited work on"}
+                          </span>
+                          <span>{studentSummitDate.summitDate}</span>
+                        </div>
+                        {studentSummitDate.isDue && (
+                          <div className="w-max p-2 rounded-lg bg-red-500 text-white">
+                            เลยกำหนดส่ง
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -947,6 +1019,7 @@ function Index({ error, user }) {
                               {currentStudentWork?.firstName}
                               {currentStudentWork?.lastName}
                             </div>
+
                             <div
                               className="pl-4 break-words "
                               dangerouslySetInnerHTML={{

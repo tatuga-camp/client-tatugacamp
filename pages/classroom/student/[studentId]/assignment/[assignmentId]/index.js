@@ -48,6 +48,8 @@ function Index() {
   const [deadline, setDeadline] = useState();
   const [fileSize, setFilesSize] = useState(0);
   const [classroom, setClassroom] = useState();
+  const [isDue, setIsDue] = useState(false);
+  const currentTime = new Date();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [studentSummit, setStudentSummit] = useState({
     body: "",
@@ -74,6 +76,13 @@ function Index() {
   );
 
   useEffect(() => {
+    const deadlineSet = new Date(assignment?.data?.deadline);
+    if (currentTime > deadlineSet) {
+      setIsDue(() => true);
+    } else if (currentTime < deadlineSet) {
+      setIsDue(() => false);
+    }
+
     setDeadline(() => {
       const date = new Date(assignment?.data?.deadline);
       const formattedDate = date.toLocaleDateString("th-TH", {
@@ -430,9 +439,21 @@ function Index() {
               <tr>
                 <td className="w-20 text-center">สถานะ</td>
                 <td>
-                  {studentWork?.status === "no-work" && (
+                  {studentWork?.status === "no-work" && isDue && (
                     <div
                       className="w-max px-2 h-4 bg-red-500 py-1 rounded-lg border-2 border-solid border-white
+          flex items-center justify-center"
+                    >
+                      <span className="flex items-center justify-center font-Kanit text-white flex-col">
+                        <div className="text-sm">
+                          <span>เลยกำหนดส่ง</span>
+                        </div>
+                      </span>
+                    </div>
+                  )}
+                  {studentWork?.status === "no-work" && !isDue && (
+                    <div
+                      className="w-max px-2 h-4 bg-orange-500 py-1 rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
                     >
                       <span className="flex items-center justify-center font-Kanit text-white flex-col">

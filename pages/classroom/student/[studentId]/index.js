@@ -26,6 +26,7 @@ function Index() {
   const [file, setFile] = useState();
   const [selectedImage, setSelectedImage] = useState(null);
   const [classroom, setClassroom] = useState();
+
   const menus = [
     {
       title: "ชิ้นงาน",
@@ -543,7 +544,16 @@ function Index() {
                   year: "numeric",
                 }
               );
+              let IsDue = false;
+              const currentTime = new Date();
               const deadlineDate = new Date(assignment.assignment?.deadline);
+              if (currentTime > deadlineDate) {
+                IsDue = true;
+                console.log("Assignment is past due.");
+              } else if (currentTime < deadlineDate) {
+                IsDue = false;
+                console.log("Assignment is not yet due.");
+              }
               const formatteDeadlineDate = deadlineDate.toLocaleDateString(
                 "th-TH",
                 {
@@ -583,9 +593,20 @@ function Index() {
                   </div>
                   <div className="w-20  h-full flex items-center justify-center">
                     <div className=" font-Kanit flex-col font-semibold flex justify-center items-center">
-                      {assignment?.student.status === "no-work" && (
-                        <div className="w-20 h-20 bg-red-600 rounded-2xl text-white font-Kanit font-semibold flex justify-center items-center">
-                          <span>ไม่ส่งงาน</span>
+                      {assignment?.student.status === "no-work" && IsDue && (
+                        <div
+                          className="w-20 h-20 bg-red-600 rounded-2xl text-base text-white font-Kanit font-semibold
+                         flex justify-center items-center"
+                        >
+                          <span className="w-10/12">เลยกำหนดส่ง</span>
+                        </div>
+                      )}
+                      {assignment?.student.status === "no-work" && !IsDue && (
+                        <div
+                          className="w-20 h-20 bg-orange-500 rounded-2xl text-base text-white font-Kanit font-semibold
+                         flex justify-center items-center"
+                        >
+                          <span className="w-10/12">ไม่ส่งงาน</span>
                         </div>
                       )}
                       {assignment?.student?.status === "have-work" &&
