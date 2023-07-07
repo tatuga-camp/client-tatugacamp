@@ -75,6 +75,7 @@ export async function UpdateUserData(updateddata) {
         lastName: updateddata?.lastName,
         school: updateddata.school,
         phone: updateddata.phone,
+        role: updateddata?.role,
         language: updateddata.language,
       },
       {
