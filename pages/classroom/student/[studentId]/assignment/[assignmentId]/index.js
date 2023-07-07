@@ -76,15 +76,18 @@ function Index() {
   );
 
   useEffect(() => {
-    const deadlineSet = new Date(assignment?.data?.deadline);
+    let deadlineSet = new Date(assignment?.data?.deadline);
+    deadlineSet.setHours(23);
+    deadlineSet.setMinutes(59);
+    deadlineSet.setSeconds(0);
     if (currentTime > deadlineSet) {
       setIsDue(() => true);
     } else if (currentTime < deadlineSet) {
       setIsDue(() => false);
     }
-
     setDeadline(() => {
       const date = new Date(assignment?.data?.deadline);
+
       const formattedDate = date.toLocaleDateString("th-TH", {
         day: "2-digit",
         month: "short",
