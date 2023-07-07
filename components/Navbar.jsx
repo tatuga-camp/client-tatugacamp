@@ -31,9 +31,7 @@ function Navbar() {
   }, [router.isReady]);
   return (
     <nav
-      className={`w-full bg-transparent fixed md:sticky  h-max top-0 z-50 font-Inter transition duration-200 ease-in-out ${
-        scrollDirection === "up" ? "translate-y-0 " : "-translate-y-28 "
-      }`}
+      className={`w-full bg-transparent fixed md:sticky  h-max top-0 z-50 font-Inter transition duration-200 ease-in-out `}
     >
       <div>
         <Script
@@ -155,9 +153,7 @@ function Navbar() {
 
         <ul
           className={`hidden md:flex  list-none justify-end pl-0 content-center w-full drop-shadow-md h-max 
-          bg-white gap-x-8  py-5 font-normal items-center text-black transition-all duration-500 ${
-            scrollDirection === "up" ? "translate-y-0 " : "-translate-y-28 "
-          }`}
+          bg-white gap-x-8  py-5 font-normal items-center text-black transition-all duration-500 `}
         >
           <li className="mr-auto ml-5">
             <Link href="/">
@@ -179,9 +175,16 @@ function Navbar() {
             </Link>
           </li>
           <li className="">
+            <Link href="/school">
+              <button className="focus:outline-none text-base font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
+                <span>tatuga school 🏫</span>
+              </button>
+            </Link>
+          </li>
+          <li className="">
             <Link href="/classroom">
               <button className="focus:outline-none text-base font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
-                <span>tatuga class 🧑‍🎓</span>
+                <span>tatuga class 👩‍🏫</span>
               </button>
             </Link>
           </li>
