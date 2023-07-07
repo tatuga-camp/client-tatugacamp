@@ -206,6 +206,10 @@ function Index({ error, user }) {
       if (student.studentWork) {
         setStudentSummitDate((prev) => {
           const createDate = new Date(student.studentWork.createAt); // Replace with your specific date and time
+          const deadlineDate = new Date(assignment?.data?.data?.deadline);
+          deadlineDate.setHours(23);
+          deadlineDate.setMinutes(59);
+          deadlineDate.setSeconds(0);
           let isDue = false;
           // Formatting the date and time
           const formattedCreateDateTime = createDate.toLocaleString("th-TH", {
@@ -216,9 +220,9 @@ function Index({ error, user }) {
             minute: "2-digit",
             second: "2-digit",
           });
-          if (createDate > date) {
+          if (createDate > deadlineDate) {
             isDue = true;
-          } else if (createDate < date) {
+          } else if (createDate < deadlineDate) {
             isDue = false;
           }
           return {
@@ -670,6 +674,9 @@ function Index({ error, user }) {
                             const deadlineDate = new Date(
                               assignment?.data?.data?.deadline
                             );
+                            deadlineDate.setHours(23);
+                            deadlineDate.setMinutes(59);
+                            deadlineDate.setSeconds(0);
                             if (currentTime > deadlineDate) {
                               IsDue = true;
                             } else if (currentTime < deadlineDate) {
