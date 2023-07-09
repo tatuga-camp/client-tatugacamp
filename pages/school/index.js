@@ -10,27 +10,11 @@ import {
 } from "../../data/school/menubarsHomepage";
 import Head from "next/head";
 import Image from "next/image";
+import { BiImport } from "react-icons/bi";
+import { Disclosure } from "@headlessui/react";
+import { IoChevronUpCircleOutline } from "react-icons/io5";
 
 function Index({ user, error }) {
-  const [currentDate, setCurrentDate] = useState(() => {
-    const date = new Date();
-    const formattedCreateDateTime = date.toLocaleString("th-TH", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-    return formattedCreateDateTime;
-  });
-  const [currentTime, setCurrentTime] = useState(() => {
-    const date = new Date();
-    const formattedCreateDateTime = date.toLocaleString("th-TH", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-    return formattedCreateDateTime;
-  });
-
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === "Thai") {
       return sideMenusThai;
@@ -38,6 +22,8 @@ function Index({ user, error }) {
       return sideMenusEnglish;
     }
   });
+  const [currentDate, setCurrentDate] = useState();
+  const [currentTime, setCurrentTime] = useState();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -78,15 +64,15 @@ function Index({ user, error }) {
       <Head>
         <title>tatuga school</title>
       </Head>
-      <div className="w-full flex flex-col items-center justify-start h-screen bg-gradient-to-t from-blue-200 to-white">
-        <main className="w-11/12  h-5/6 mt-20 grid grid-cols-6 grid-rows-5  ">
-          <header className="bg-blue-400 row-span-2 col-span-4 rounded-xl flex overflow-hidden">
+      <div className="w-full flex flex-col items-center justify-start h-screen pb-20 bg-gradient-to-t from-blue-200 to-blue-100">
+        <main className="w-11/12  h-5/6 mt-28 grid grid-cols-6 grid-rows-5 gap-5  ">
+          <header className=" row-span-2 col-span-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-300  flex overflow-hidden">
             <div className=" h-full w-96 flex justify-center items-center">
-              <div className="w-40 h-40 overflow-hidden ring-2 ring-white rounded-lg relative">
+              <div className="w-40 h-40 overflow-hidden ring-2 bg-white ring-white rounded-lg relative">
                 <Image
                   src={user.picture}
                   layout="fill"
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
             </div>
@@ -105,6 +91,15 @@ function Index({ user, error }) {
                   {user?.lastName}
                 </span>
               </div>
+              <button
+                className="bg-white w-max text-black ring-black ring-2 mt-10 hover:scale-110 transition duration-150
+               flex justify-center items-center gap-2 px-4 py-2 rounded-xl active:ring-blue-600"
+              >
+                นำเข้าห้องเรียน
+                <div>
+                  <BiImport />
+                </div>
+              </button>
             </div>
             <div className="w-80 h-full flex items-center justify-center">
               <div className="w-full h-full bg-white flex text-center flex-col gap-2 justify-center items-center">
@@ -115,8 +110,91 @@ function Index({ user, error }) {
               </div>
             </div>
           </header>
-          <div className=" row-span-6 col-span-2 "></div>
-          <div className=" row-span-3 col-span-4 "></div>
+          <div className=" row-span-6 col-span-2 ">
+            <div className="w-10/12 h-full flex-col flex justify-start  items-center bg-white rounded-2xl drop-shadow-lg">
+              <Disclosure>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="flex w-10/12 mt-5 justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                      <span>What is your refund policy?</span>
+                      <IoChevronUpCircleOutline
+                        className={`${
+                          open ? "rotate-180 transform" : ""
+                        } h-5 w-5 text-purple-500`}
+                      />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                      If you're unhappy with your purchase for any reason, email
+                      us within 90 days and we'll refund you in full, no
+                      questions asked.
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+              <Disclosure>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="flex w-10/12 mt-5 justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                      <span>What is your refund policy?</span>
+                      <IoChevronUpCircleOutline
+                        className={`${
+                          open ? "rotate-180 transform" : ""
+                        } h-5 w-5 text-purple-500`}
+                      />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                      If you're unhappy with your purchase for any reason, email
+                      us within 90 days and we'll refund you in full, no
+                      questions asked.
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+              <Disclosure>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="flex w-10/12 mt-5 justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                      <span>What is your refund policy?</span>
+                      <IoChevronUpCircleOutline
+                        className={`${
+                          open ? "rotate-180 transform" : ""
+                        } h-5 w-5 text-purple-500`}
+                      />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                      If you're unhappy with your purchase for any reason, email
+                      us within 90 days and we'll refund you in full, no
+                      questions asked.
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+              <Disclosure>
+                {({ open }) => (
+                  <>
+                    <Disclosure.Button className="flex w-10/12 mt-5 justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+                      <span>What is your refund policy?</span>
+                      <IoChevronUpCircleOutline
+                        className={`${
+                          open ? "rotate-180 transform" : ""
+                        } h-5 w-5 text-purple-500`}
+                      />
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
+                      If you're unhappy with your purchase for any reason, email
+                      us within 90 days and we'll refund you in full, no
+                      questions asked.
+                    </Disclosure.Panel>
+                  </>
+                )}
+              </Disclosure>
+            </div>
+          </div>
+          <div className=" row-span-3 col-span-4 flex flex-warp">
+            <div className="w-60 h-40 bg-white rounded-xl">
+              <div></div>
+            </div>
+          </div>
         </main>
       </div>
     </Layout>
