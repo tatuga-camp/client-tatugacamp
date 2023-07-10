@@ -163,7 +163,15 @@ function Index() {
                 <HiLockClosed />
               </div>
             </div>
-            <div className="w-full text-right my-3">
+            <div className="w-full flex justify-between text-right my-3">
+              <Link href="/auth/forget-password">
+                <span
+                  className="cursor-pointer text-sm  font-Kanit font-medium text-blue-700
+                 bg-white px-2 rounded-lg border-black broder-2 border-solid md:border-none"
+                >
+                  ลืมรหัสผ่าน
+                </span>
+              </Link>
               <Link href="/auth/signUp">
                 <span
                   className="cursor-pointer text-sm  font-Kanit font-medium text-blue-700
