@@ -31,9 +31,7 @@ function Navbar() {
   }, [router.isReady]);
   return (
     <nav
-      className={`w-full bg-transparent fixed md:sticky  h-max top-0 z-50 font-Inter transition duration-200 ease-in-out ${
-        scrollDirection === "up" ? "translate-y-0 " : "-translate-y-28 "
-      }`}
+      className={`w-full bg-transparent fixed md:sticky  h-max top-0 z-50 font-Inter transition duration-200 ease-in-out `}
     >
       <div>
         <Script
@@ -155,9 +153,7 @@ function Navbar() {
 
         <ul
           className={`hidden md:flex  list-none justify-end pl-0 content-center w-full drop-shadow-md h-max 
-          bg-white gap-x-8  py-5 font-normal items-center text-black transition-all duration-500 ${
-            scrollDirection === "up" ? "translate-y-0 " : "-translate-y-28 "
-          }`}
+          bg-white gap-x-8  py-5 font-normal items-center text-black transition-all duration-500 `}
         >
           <li className="mr-auto ml-5">
             <Link href="/">
