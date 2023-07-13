@@ -105,7 +105,6 @@ function CreateGroup({ close, language, groups }) {
                 placeholder:italic placeholder:font-light"
                 type="number"
                 min="1"
-                max="10"
                 name="groupNumber"
                 placeholder={
                   language === "Thai" ? "เช่น 5" : language === "English" && "5"
