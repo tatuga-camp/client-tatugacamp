@@ -175,9 +175,16 @@ function Navbar() {
             </Link>
           </li>
           <li className="">
+            <Link href="/school">
+              <button className="focus:outline-none text-base font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
+                <span>tatuga school 🏫</span>
+              </button>
+            </Link>
+          </li>
+          <li className="">
             <Link href="/classroom">
               <button className="focus:outline-none text-base font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
-                <span>tatuga class 🧑‍🎓</span>
+                <span>tatuga class 👩‍🏫</span>
               </button>
             </Link>
           </li>

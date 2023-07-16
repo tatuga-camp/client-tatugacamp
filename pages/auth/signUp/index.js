@@ -127,7 +127,7 @@ function Index() {
           title: "Login success",
         });
         router.push(
-          `/classroom/teacher/?access_token=${data.data.access_token}`,
+          `/account/reception/?access_token=${data.data.access_token}`,
           undefined,
           {
             shallow: true,
