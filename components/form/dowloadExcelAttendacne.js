@@ -70,7 +70,7 @@ function DowloadExcelAttendacne({ close, language }) {
             </label>
             <input
               onChange={handleChangeExcelData}
-              className="w-60 h-7 rounded-md   pl-10 
+              className="w-60 h-7 rounded-md ring-2  pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="present"
@@ -92,7 +92,7 @@ function DowloadExcelAttendacne({ close, language }) {
             </label>
             <input
               onChange={handleChangeExcelData}
-              className="w-60 h-7 rounded-md   pl-10 
+              className="w-60 h-7 rounded-md ring-2  pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="sick"
@@ -114,7 +114,7 @@ function DowloadExcelAttendacne({ close, language }) {
             </label>
             <input
               onChange={handleChangeExcelData}
-              className="w-60 h-7 rounded-md   pl-10 
+              className="w-60 h-7 rounded-md  ring-2 pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="absent"
@@ -136,7 +136,7 @@ function DowloadExcelAttendacne({ close, language }) {
             </label>
             <input
               onChange={handleChangeExcelData}
-              className="w-60 h-7 rounded-md   pl-10 
+              className="w-60 h-7 rounded-md  ring-2  pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="holiday"
@@ -158,7 +158,7 @@ function DowloadExcelAttendacne({ close, language }) {
             </label>
             <input
               onChange={handleChangeExcelData}
-              className="w-60 h-7 rounded-md   pl-10 
+              className="w-60 h-7 rounded-md ring-2  pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="late"

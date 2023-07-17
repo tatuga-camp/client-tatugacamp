@@ -244,7 +244,7 @@ function CreateStudent({ close, language }) {
                     {language === "English" && "first name"}
                   </label>
                   <input
-                    className="w-60 h-7 rounded-md   pl-10 
+                    className="w-60 h-7 rounded-md ring-2   pl-10 
                 placeholder:italic placeholder:font-light"
                     type="text"
                     name="firstName"
@@ -265,7 +265,7 @@ function CreateStudent({ close, language }) {
                     {language === "English" && "last name (optional)"}
                   </label>
                   <input
-                    className="w-60 h-7 rounded-md   pl-10 
+                    className="w-60 h-7 rounded-md ring-2  pl-10 
                 placeholder:italic placeholder:font-light"
                     type="text"
                     name="lastName"
@@ -285,7 +285,7 @@ function CreateStudent({ close, language }) {
                     {language === "English" && "number"}
                   </label>
                   <input
-                    className="w-60 h-7 rounded-md   pl-10 
+                    className="w-60 h-7 rounded-md ring-2   pl-10 
                 placeholder:italic placeholder:font-light"
                     type="number"
                     name="number"

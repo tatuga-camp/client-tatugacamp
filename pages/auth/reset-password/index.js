@@ -140,7 +140,7 @@ function Index() {
               <label className="font-sans font-normal">New Password</label>
               <input
                 required
-                className="w-60 h-7 rounded-md border-none bg-[#FFC800] pl-10 
+                className="w-60 h-7 rounded-md border-none ring-2 bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"
                 type="password"
                 name="password"
@@ -165,7 +165,7 @@ function Index() {
               <label className="font-sans font-normal">Confirm password</label>
               <input
                 required
-                className="w-60 h-7 rounded-md border-none bg-[#FFC800] pl-10 
+                className="w-60 h-7 rounded-md border-none ring-2 bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"
                 type="password"
                 name="confirmPassword"

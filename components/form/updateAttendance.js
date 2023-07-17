@@ -100,7 +100,7 @@ function UpdateAttendance({
   return (
     <div className=" fixed top-0 right-0 left-0 bottom-0 m-auto righ z-40 font-Kanit">
       <div
-        className="w-full h-full md:w-96 md:h-72 fixed z-40 top-0 bottom-0 right-0
+        className="w-full h-full md:w-max md:h-max fixed z-40 top-0 bottom-0 right-0
        left-0 m-auto flex flex-col  items-center justify-center md:justify-start gap-2 bg-white p-0 md:p-5 rounded-lg  "
       >
         <div className="w-full block md:hidden">
@@ -130,7 +130,7 @@ function UpdateAttendance({
             <span>{formattedDate}</span>
             <div className="w-80 h-[1px] bg-blue-500"></div>
           </div>
-          <div className="flex items-center w-10/12 md:w-full h-3/4 gap-5 justify-center">
+          <div className="grid items-center w-10/12 md:w-full h-3/4 grid-cols-3 place-items-center my-5">
             {checkList.map((attendance, index) => {
               return (
                 <div
@@ -183,7 +183,7 @@ function UpdateAttendance({
                   key={index}
                   className={`
                   ${attendance.bgColor}
-                  w-24 h-8 text-center flex items-center justify-center text-white rounded-lg cursor-pointer 
+                  w-max min-w-[5rem] h-8 text-center flex items-center justify-center text-white rounded-lg cursor-pointer 
                   border-2 border-solid hover:scale-105 transition duration-150 ${
                     activeAttendance === index ? "border-black" : "border-white"
                   }

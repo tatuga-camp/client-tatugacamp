@@ -109,7 +109,7 @@ function Index({ commonQuestions }) {
               <input
                 value={classroomCode}
                 onChange={(e) => setClassroomCode(e.target.value)}
-                className="bg-blue-200  appearance-none border-none border-gray-200 rounded w-full py-2 px-4  
+                className="bg-blue-200 ring-2  appearance-none border-none border-gray-200 rounded w-full py-2 px-4  
               leading-tight focus:outline-none focus:bg-blue-400 focus:border-2 focus:right-4 placeholder:text-md 
               placeholder:text-black text-lg font-Poppins placeholder:text-md placeholder:font-Kanit placeholder:font-medium focus:placeholder:text-white text-black focus:text-white font-semibold "
                 type="number"
@@ -205,7 +205,7 @@ function Index({ commonQuestions }) {
               return (
                 <div
                   key={index}
-                  className="w-52 h-60 lg:h-64 md:h-60  rounded-lg drop-shadow-lg bg-white hover:bg-[#EDBA02] transition duration-200 ease-in-out
+                  className="w-52 h-60 lg:h-72 md:h-60  rounded-lg drop-shadow-lg bg-white hover:bg-[#EDBA02] transition duration-200 ease-in-out
            hover:scale-110 hover:text-white text-blue-900 group  flex flex-col items-start justify-start font-Poppins p-6 gap-2"
                 >
                   <div className="font-Poppins text-xl font-bold ">
@@ -222,7 +222,7 @@ function Index({ commonQuestions }) {
                       className="object-contain  object-center  transition duration-150  "
                     />
                   </div>
-                  <div className="h-10 text-xs lg:relative  -bottom-4 leading-tight text-black group-hover:text-white font-semibold ">
+                  <div className="h-10 text-xs lg:relative  leading-tight text-black group-hover:text-white font-semibold ">
                     {list.description}
                   </div>
                 </div>

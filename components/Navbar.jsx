@@ -54,10 +54,10 @@ function Navbar() {
             <input
               value={classroomCode || ""}
               onChange={(e) => setClassroomCode(e.target.value)}
-              className="bg-blue-200  appearance-none border-none border-gray-200 rounded w-full py-2 px-4  
+              className="bg-blue-200 ring-2  appearance-none border-none border-gray-200 rounded w-full py-2 px-4  
               leading-tight focus:outline-none focus:bg-blue-400 focus:border-2 focus:right-4 placeholder:text-md placeholder:font-Kanit
               placeholder:text-black placeholder:font-medium focus:placeholder:text-white text-black focus:text-white font-sans font-semibold "
-              type="number"
+              type="number "
               name="classroomCode"
               placeholder="รหัสห้องเรียน"
               maxLength="6"

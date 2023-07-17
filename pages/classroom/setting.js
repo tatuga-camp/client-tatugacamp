@@ -215,7 +215,7 @@ function Setting({ userServerSide, error }) {
                       onChange={handleFileInputChange}
                       type="file"
                       accept="image/png, image/gif, image/jpeg"
-                      className="text-sm text-grey-500
+                      className="text-sm text-grey-500 ring-2
             file:mr-5 md:file:w-max file:w-20 w-full file:py-2
             file:rounded-full file:border-0
             file:text-sm file:font-medium 
@@ -256,7 +256,7 @@ function Setting({ userServerSide, error }) {
                   name="firstName"
                   className="appearance-none block w-60 md:w-40 lg:w-full bg-[#EDBA02]
                  text-black font-bold font-sans focus:bg-[#e7c95c] placeholder:text-whit  border-none
-                  border-red-500 rounded py-3 px-4 mb-3 leading-tight 
+                  border-red-500 rounded py-3 px-4 mb-3 leading-tight ring-2 
                  focus:outline-none e"
                   id="grid-first-name"
                   type="text"
@@ -274,7 +274,7 @@ function Setting({ userServerSide, error }) {
                   value={userData.lastName}
                   onChange={handleChange}
                   name="lastName"
-                  className="appearance-none block w-60 md:w-40 lg:w-full
+                  className="appearance-none block w-60 md:w-40 lg:w-full ring-2
                 bg-[#EDBA02] text-black font-bold font-sans focus:bg-[#e7c95c] placeholder:text-whit  border-none
                  rounded py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                   id="grid-last-name"
@@ -294,7 +294,7 @@ function Setting({ userServerSide, error }) {
                   value={userData.phone}
                   onChange={handleChange}
                   name="phone"
-                  className="appearance-none block w-60 md:w-40 lg:w-full
+                  className="appearance-none block w-60 md:w-40 lg:w-full ring-2
                 bg-[#EDBA02] text-black font-bold font-sans focus:bg-[#e7c95c] placeholder:text-red-500 placeholder:font-normal border-none
                  rounded py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                   id="grid-last-name"
@@ -313,7 +313,7 @@ function Setting({ userServerSide, error }) {
                   value={userData.school}
                   onChange={handleChange}
                   name="school"
-                  className="appearance-none block w-60 md:w-40 lg:w-full
+                  className="appearance-none block w-60 md:w-40 lg:w-full ring-2
                 bg-[#EDBA02] text-black font-bold font-sans focus:bg-[#e7c95c] placeholder:text-red-500 placeholder:font-normal border-none
                 rounded py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                   id="grid-last-name"

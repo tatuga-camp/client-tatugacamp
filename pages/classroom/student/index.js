@@ -273,7 +273,7 @@ function Index() {
                     ) : (
                       <div
                         className=" text-white flex items-center justify-center bg-gray-600 mt-6 
-           py-2 px-4 w-2/4 font-Poppins rounded-md ring-2 font-semibold ring-white border-white"
+           py-2 px-4 w-max font-Poppins rounded-md ring-2 font-semibold ring-white border-white"
                       >
                         โปรดเลือกก่อน
                       </div>
