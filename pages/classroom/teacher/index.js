@@ -318,14 +318,15 @@ function Index({ error, user, whatsNews }) {
         >
           <div className="xl:w-full  h-max m-5  flex flex-col  justify-center items-center pb-14 ">
             <header className="mt-28 md:mt-2  rounded-lg  p-0  md:p-5 md:px-10 xl:px-20 w-max  relative     ">
-              <div className=" w-full md:block flex items-center justify-center    bg-transparent">
+              <div className=" w-full  flex items-center justify-center   bg-transparent">
                 <div
-                  className="xl:w-[35rem] w-40   md:w-96 p-20 flex flex-col items-center justify-center
-                   text-left leading-[3.5rem] md:mt-32 lg:mt-20   md:ml-28 md:pl-10 py-5 rounded-lg 
+                  className="xl:w-[35rem] w-40    md:w-96 p-20 flex flex-col items-center justify-center
+                    leading-[3.5rem] md:mt-32 lg:mt-20   py-5 rounded-lg 
                   h-10 md:h-max z-10 relative "
                 >
                   <div
-                    className="xl:text-6xl text-xl w-40 md:w-96 lg:w-[30rem] mt-20 md:mt-0   md:text-left md:text-2xl font-semibold  
+                    className="xl:text-6xl text-xl w-40 md:w-96 lg:w-[30rem] mt-20 md:mt-0 
+                      md:text-center md:text-2xl font-semibold  
                   font-Kanit tracking-wider  "
                   >
                     <span className="md:text-8xl text-5xl hover:text-[#2C7CD1] text-black duration-150 transition">
@@ -338,9 +339,9 @@ function Index({ error, user, whatsNews }) {
                     </span>
                   </div>
                 </div>
-                <div className="absolute md:-top-20 lg:-top-20 lg:-left-36 ">
+                {/* <div className="absolute md:-top-20 lg:-top-20 lg:-left-36 ">
                   <Lottie animationData={teacherAnimation} style={style} />
-                </div>
+                </div> */}
               </div>
               <div className="w-full flex flex-col justify-center items-center">
                 <Popover className="relative">

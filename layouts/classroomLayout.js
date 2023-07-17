@@ -115,7 +115,7 @@ function Layout({ children, sideMenus, language, groups }) {
           <div className="w-full h-80  bg-gradient-to-r from-blue-400 to-orange-300  overflow-hidden">
             <div
               className=" w-full h-80  
-        bg-cover  bg-center bg-no-repeat blur-sm bg hover:scale-125 transition duration-[2000ms]  
+        bg-cover  bg-center bg-no-repeat 
          bg-[url('https://storage.googleapis.com/tatugacamp.com/backgroud/sea%20backgroud.png')] 
          flex items-center justify-center	"
             ></div>
