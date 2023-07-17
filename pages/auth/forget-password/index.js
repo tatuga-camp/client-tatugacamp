@@ -4,6 +4,7 @@ import Layout from "../../../components/layout";
 import { PostRequestResetPassword } from "../../../service/auth";
 import Swal from "sweetalert2";
 import Loading from "../../../components/loading/loading";
+import Head from "next/head";
 
 function Index() {
   const [email, setEmail] = useState("");
@@ -53,6 +54,14 @@ function Index() {
   };
   return (
     <Layout>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width; initial-scale=1.0;"
+        />
+        <meta charset="UTF-8" />
+        <title>forget password</title>
+      </Head>
       <div
         className="font-sans h-screen w-full bg-[url('/background-Auth.svg')] bg-no-repeat bg-cover
 flex flex-col justify-center items-center"

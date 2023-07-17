@@ -148,6 +148,11 @@ function Index() {
     >
       <Head>
         <title>student - homepage</title>
+        <meta
+          name="viewport"
+          content="width=device-width; initial-scale=1.0;"
+        />
+        <meta charset="UTF-8" />
       </Head>
       <div
         className=" bg-cover h-60 w-full absolute top-0  bg-center bg-no-repeat 

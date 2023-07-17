@@ -110,6 +110,11 @@ function Index({ user, error }) {
     <div className="w-full pb-96 bg-slate-100 ">
       <Layout language={user.language} sideMenus={sideMenus} groups={groups} />
       <Head>
+        <meta
+          name="viewport"
+          content="width=device-width; initial-scale=1.0;"
+        />
+        <meta charset="UTF-8" />
         <title>{`classroom - ${classroom.data?.data?.title}`}</title>
       </Head>
 

@@ -76,6 +76,11 @@ function Index({ error, user }) {
   return (
     <div className="bg-blue-50 pb-40">
       <Head>
+        <meta
+          name="viewport"
+          content="width=device-width; initial-scale=1.0;"
+        />
+        <meta charset="UTF-8" />
         <title>attendance</title>
       </Head>
       <Layout language={user.language} sideMenus={sideMenus}>
