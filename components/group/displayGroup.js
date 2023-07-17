@@ -400,7 +400,7 @@ function DisplayGroup({
                                     <span>{student.firstName}</span>
                                     <span>{student?.lastName}</span>
                                   </div>
-                                  <span className="w-max h-5 bg-orange-400 text-center p-1 px-2 rounded-md text-white">
+                                  <span className="w-max h-5 flex items-center justify-center bg-orange-400 text-center p-1 px-2 rounded-md text-white">
                                     {student?.score?.totalPoints}
                                   </span>
                                 </li>
