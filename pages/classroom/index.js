@@ -57,15 +57,18 @@ function Index({ commonQuestions }) {
             learning English, card game, activities in classroom, กิจกรรมค่ายภาษาอังกฤษ,
              การ์ดเกมเพื่อการเรียนรู้, การ์ดเกม, `}
         />
-        <meta charSet="UTF-8" />
         <meta
           name="description"
           content="ห้องเรียนจาก Tatuga class หรือ ทาทูก้าคาส ที่จะพาคุณครูไปสู่การบริหารห้องเรียนอย่างสะดวกและสนุก กับ tatuga class 
           TaTuga Class Classroom Management for Everyone
           จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ สะดวก และ รวดเร็ว - tatuga class"
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Tatuga class</title>
+        <meta
+          name="viewport"
+          content="width=device-width; initial-scale=1.0;"
+        />
+        <meta charset="UTF-8" />
       </Head>
       <Layout>
         {/* <Alert className="fixed bottom-0 z-40  md:w-full" severity="success">

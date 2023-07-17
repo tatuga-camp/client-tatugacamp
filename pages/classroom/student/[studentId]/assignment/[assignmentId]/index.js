@@ -337,6 +337,11 @@ function Index() {
     >
       <Head>
         <title>students - assignment</title>
+        <meta
+          name="viewport"
+          content="width=device-width; initial-scale=1.0;"
+        />
+        <meta charset="UTF-8" />
       </Head>
       <nav className="w-full fixed z-10 top-5 flex justify-between items-center ">
         <button

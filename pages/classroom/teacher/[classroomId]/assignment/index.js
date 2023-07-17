@@ -64,6 +64,11 @@ function Assignment({ error, user }) {
   return (
     <div className="w-full pb-96 bg-blue-50 ">
       <Head>
+        <meta
+          name="viewport"
+          content="width=device-width; initial-scale=1.0;"
+        />
+        <meta charset="UTF-8" />
         <title>assignments</title>
       </Head>
       <Layout sideMenus={sideMenus} language={user.language} />

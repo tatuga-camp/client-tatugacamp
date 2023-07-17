@@ -146,6 +146,11 @@ function Setting({ userServerSide, error }) {
   return (
     <div className="flex font-sans">
       <Head>
+        <meta
+          name="viewport"
+          content="width=device-width; initial-scale=1.0;"
+        />
+        <meta charset="UTF-8" />
         <title>setting - account</title>
       </Head>
       <Layout sideMenus={sideMenus} user={userData} trigger={chooseMessage} />

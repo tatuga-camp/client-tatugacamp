@@ -165,14 +165,18 @@ function Index() {
   return (
     <Layout>
       <Head>
-        <meta charSet="UTF-8" />
         <meta
           name="description"
           content="Login tatuga camp - เข้าสู่ระบบเว็บ tatuga camp"
         />
         <meta name="keywords" content="login, เข้าวสู่ระบบ" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         <title>ลงทะเบียน - sign up </title>
+        <meta
+          name="viewport"
+          content="width=device-width; initial-scale=1.0;"
+        />
+        <meta charset="UTF-8" />
       </Head>
       <div
         className="font-sans h-screen w-full bg-[url('/background-Auth.svg')] bg-no-repeat bg-cover
