@@ -165,23 +165,23 @@ text-black transition duration-150 cursor-pointer"
                       });
                     }}
                     key={index}
-                    className={`w-11/12 md:w-[35rem] group  h-36  md:px-10 md:py-5 drop-shadow-lg 
+                    className={`w-11/12 md:w-max px-2 md:max-w-lg lg:max-w-2xl group  h-36  md:px-10 md:py-5 drop-shadow-lg 
                      bg-white  hover:scale-105 cursor-pointer overflow-hidden
                  duration-150 transition relative
                rounded-lg flex flex-col justify-center `}
                   >
-                    <div className="flex md:justify-between justify-center gap-3 md:gap-0">
-                      <div className="flex">
+                    <div className="flex justify-around  w-full">
+                      <div className="flex w-52  md:w-80 lg:w-96 truncate">
                         <div
                           className={`flex flex-col  justify-center h-full
-                            gap-2 w-60 md:w-3/4 max-w-md  font-Poppins text-center
+                            gap-2 w-full  md:w-3/4  md:max-w-md  font-Poppins text-center
                              md:text-left text-black `}
                         >
-                          <span className=" font text-xl font-bold w-full h-max max-h-8  truncate">
+                          <span className=" font text-base md:text-xl font-bold w-full h-max max-h-8  truncate">
                             {assignment.title}
                           </span>
-                          <div className="relative">
-                            <div className="w-96 hidden md:block bg-gray-200 h-2 rounded-full overflow-hidden">
+                          <div className="relative text-left">
+                            <div className="w-full hidden md:block bg-gray-200 h-2 rounded-full overflow-hidden">
                               <div
                                 style={{ width: assignment.progress.progress }}
                                 className={` bg-blue-800 h-2 `}

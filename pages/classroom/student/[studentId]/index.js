@@ -430,7 +430,7 @@ function Index() {
                             {formattedDate}
                           </span>
                         </div>
-                        <div className="w-14 rounded-sm p-2 mr-5 bg-green-500 text-white">
+                        <div className="w-max rounded-sm p-2 mr-5 bg-green-500 text-white">
                           <span>มาเรียน</span>
                         </div>
                       </li>
@@ -520,7 +520,7 @@ function Index() {
                             {formattedDate}
                           </span>
                         </div>
-                        <div className="w-14 text-center rounded-sm p-2 mr-5 text-sm bg-gray-500 text-white">
+                        <div className="w-max text-center rounded-sm p-2 mr-5 text-sm bg-gray-500 text-white">
                           <span>ไม่มีข้อมูล</span>
                         </div>
                       </li>

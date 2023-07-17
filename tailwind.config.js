@@ -5,7 +5,6 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./layouts/**/*.{js,ts,jsx,tsx}",
   ],
-  important: "#__next",
   theme: {
     extend: {
       keyframes: {
@@ -31,9 +30,6 @@ module.exports = {
         boxShadow2: "-4px 3px 0 0 #ffffff",
       },
     },
-  },
-  corePlugins: {
-    preflight: false,
   },
   plugins: [],
 };

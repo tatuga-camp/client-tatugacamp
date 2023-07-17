@@ -88,6 +88,7 @@ function CreateFeedback({ handleCloseFeedback, language }) {
                   <input
                     type="checkbox"
                     name="unAuth"
+                    className="ring-2"
                     checked={checkAuth.unAuth}
                     onChange={handleChangeCheckAuth}
                   />
@@ -100,6 +101,7 @@ function CreateFeedback({ handleCloseFeedback, language }) {
                   <input
                     type="checkbox"
                     name="auth"
+                    className="ring-2"
                     checked={checkAuth.auth}
                     onChange={handleChangeCheckAuth}
                   />

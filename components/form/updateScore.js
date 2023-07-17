@@ -408,7 +408,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                       </label>
                       <input
                         onChange={handleOnChange}
-                        className="w-40 h-7 rounded-md   pl-10 
+                        className="w-40 h-7 rounded-md ring-2  pl-10 
                 placeholder:italic placeholder:font-light"
                         type="text"
                         name="firstName"
@@ -431,7 +431,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                       </label>
                       <input
                         onChange={handleOnChange}
-                        className="w-40 h-7 rounded-md   pl-10 
+                        className="w-40 h-7 rounded-md  ring-2 pl-10 
                 placeholder:italic placeholder:font-light"
                         type="text"
                         name="lastName"
@@ -453,7 +453,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                       </label>
                       <input
                         onChange={handleOnChange}
-                        className="w-40 h-7 rounded-md   pl-10 
+                        className="w-40 h-7 rounded-md ring-2   pl-10 
                 placeholder:italic placeholder:font-light"
                         type="number"
                         name="number"
@@ -528,7 +528,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                         accept="image/png, image/gif, image/jpeg"
                         className="text-sm text-grey-500
             file:mr-5 md:file:w-40 file:w-40 w-full file:py-2
-            file:rounded-full file:border-0 file:h-full
+            file:rounded-full file:border-0 file:h-full 
             file:text-sm file:font-medium 
             file:bg-blue-50 file:text-blue-700
             hover:file:cursor-pointer hover:file:bg-amber-50
@@ -663,7 +663,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                 <input
                   placeholder=""
                   onChange={handleChangeScore}
-                  className="w-20 text-lg font-sans font-semibold rounded-md border-0 ring-blue-500 ring-2 active:border-0 focus:border-0 text-center placeholder:text-black"
+                  className="w-20 text-lg  font-sans font-semibold rounded-md border-0 ring-blue-500 ring-2 active:border-0 focus:border-0 text-center placeholder:text-black"
                   value={pointsValue}
                   type="number"
                   name="points"

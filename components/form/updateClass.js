@@ -56,7 +56,7 @@ function UpdateClass({ close, classroom, refetch, language }) {
             </label>
             <input
               onChange={handleChange}
-              className="w-60 h-7 rounded-md   pl-10 
+              className="w-60 h-7 rounded-md  ring-2 pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="title"
@@ -82,7 +82,7 @@ function UpdateClass({ close, classroom, refetch, language }) {
               {language === "English" && "level"}
             </label>
             <input
-              className="w-60 h-7 rounded-md   pl-10 
+              className="w-60 h-7 rounded-md ring-2 pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               onChange={handleChange}
@@ -108,7 +108,7 @@ function UpdateClass({ close, classroom, refetch, language }) {
               {language === "English" && "description (optional)"}
             </label>
             <input
-              className="w-60 h-7 rounded-md   pl-10 
+              className="w-60 h-7 rounded-md ring-2  pl-10 
                 placeholder:italic placeholder:font-light"
               onChange={handleChange}
               type="text"

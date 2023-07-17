@@ -75,7 +75,7 @@ function CreateGroup({ close, language, groups }) {
               </label>
               <input
                 onChange={handleChagne}
-                className="w-60 h-7 rounded-md   pl-10 
+                className="w-60 h-7 rounded-md ring-2   pl-10 
                 placeholder:italic placeholder:font-light"
                 type="text"
                 name="title"
@@ -101,7 +101,7 @@ function CreateGroup({ close, language, groups }) {
               </label>
               <input
                 onChange={handleChagne}
-                className="w-60 h-7 rounded-md   pl-10 
+                className="w-60 h-7 rounded-md  ring-2  pl-10 
                 placeholder:italic placeholder:font-light"
                 type="number"
                 min="1"
