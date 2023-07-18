@@ -341,7 +341,7 @@ function Index() {
           name="viewport"
           content="width=device-width; initial-scale=1.0;"
         />
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
       </Head>
       <nav className="w-full fixed z-10 top-5 flex justify-between items-center ">
         <button
@@ -635,7 +635,7 @@ application/pdf,
                     }}
                     className=" absolute -top-2 z-20 -right-2 "
                   >
-                    <div className="flex justify-center items-center w-5 h-5 text-white bg-blue-500 rounded-full p-2">
+                    <div className="flex justify-center items-center w-8 h-8 text-xl text-white bg-blue-500 rounded-full p-2">
                       <FiRefreshCw />
                     </div>
                   </div>

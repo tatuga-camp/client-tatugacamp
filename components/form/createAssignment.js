@@ -12,6 +12,7 @@ import Loading from "../loading/loading";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { MdError } from "react-icons/md";
 import { Box, TextField } from "@mui/material";
+import { FcCancel } from "react-icons/fc";
 
 export default function CreateAssignment({
   close,
@@ -22,12 +23,14 @@ export default function CreateAssignment({
 }) {
   const rounter = useRouter();
   const [assignmentCreated, setAssignmentCreated] = useState();
+  const [imagesBase64, setImagesBase64] = useState();
   const [assignmentData, setAssignmentData] = useState({
     title: "",
     body: "",
     deadline: "",
     maxScore: "",
   });
+
   const [isChecked, setIsChecked] = useState();
   const [isAssignStudent, setIsAssignmentStdent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -92,8 +95,21 @@ export default function CreateAssignment({
         assignmentCreated: assignmentCreated.data,
       });
       setIsChecked(assign);
+      Swal.fire("success", "You have been assign to students", "success");
       setLoading(false);
+      document.body.style.overflow = "auto";
+      setIsChecked(() =>
+        students?.data?.data?.map((student) => {
+          return {
+            ...student,
+            [student.id]: false,
+          };
+        })
+      );
+      setIsAssignmentStdent(false);
+      setTriggerAssignment(false);
     } catch (err) {
+      Swal.fire("error", "error", "success");
       console.log(err);
     }
   };
@@ -107,18 +123,16 @@ export default function CreateAssignment({
         description: assignmentData.body,
         maxScore: assignmentData.maxScore,
         deadline: assignmentData.deadline,
+        imagesBase64,
       });
-
       assignments?.refetch();
-
       Swal.fire("success", "assignment has been createed", "success");
-      setAssignmentCreated(createAssignment);
 
+      setAssignmentCreated(createAssignment);
       setLoading(() => false);
       setIsAssignmentStdent(true);
     } catch (err) {
       console.log(err);
-
       setLoading(() => false);
       Swal.fire(
         "error",
@@ -128,16 +142,57 @@ export default function CreateAssignment({
     }
   };
 
+  const handleEditorChange = (content, editor) => {
+    setAssignmentData((prev) => {
+      return {
+        ...prev,
+        body: content,
+      };
+    });
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, "text/html");
+    const imageElements = doc.getElementsByTagName("img");
+    const imageUrls = Array.from(imageElements).map((img) => img.src);
+    setImagesBase64(() => imageUrls);
+  };
+
   return (
     <div className="">
       <form
         onSubmit={handleSubmit}
-        className="flex lg:w-5/6 md:h-3/6  md:w-11/12 lg:h-5/6  font-Kanit bg-white border-2 border-solid rounded-lg drop-shadow-xl p-5 z-40 
-    top-0 right-0 left-0 bottom-0 m-auto fixed items-center justify-center"
+        className="flex md:w-screen  md:h-screen lg:h-screen   lg:rounded-none  
+        font-Kanit bg-white border-2 border-solid rounded-lg drop-shadow-xl p-5 z-40 
+    top-0 right-0 left-0 bottom-0 m-auto fixed items-start justify-center"
       >
         {isAssignStudent === false ? (
-          <div className="w-full  flex gap-8">
-            <div className="flex-col flex gap-4 w-3/4 ">
+          <div className="w-full h-full   flex-col-reverse lg:flex-row items-end justify-end lg:items-start flex gap-5">
+            <div className="flex-col w-full h-full  flex gap-4  ">
+              <div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    document.body.style.overflow = "auto";
+                    setIsChecked(() =>
+                      students?.data?.data?.map((student) => {
+                        return {
+                          ...student,
+                          [student.id]: false,
+                        };
+                      })
+                    );
+                    setIsAssignmentStdent(false);
+                    setTriggerAssignment(false);
+                  }}
+                  className="text-3xl flex gap-1 justify-center items-center"
+                >
+                  <FcCancel />
+                  <span className="text-red-400 text-lg">
+                    {language === "Thai"
+                      ? "ยกเลิก"
+                      : language === "English" && "Cancel"}
+                  </span>
+                </button>
+              </div>
               <div className="flex flex-col gap-0">
                 <Box width="100%">
                   <TextField
@@ -161,6 +216,8 @@ export default function CreateAssignment({
                   menubar: true,
                   image_title: true,
                   automatic_uploads: true,
+                  file_picker_types: "image",
+
                   file_picker_types: "image",
                   file_picker_callback: (cb, value, meta) => {
                     const input = document.createElement("input");
@@ -219,14 +276,7 @@ export default function CreateAssignment({
                   content_style:
                     "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                 }}
-                onEditorChange={(newText) =>
-                  setAssignmentData((prev) => {
-                    return {
-                      ...prev,
-                      body: newText,
-                    };
-                  })
-                }
+                onEditorChange={handleEditorChange}
               />
 
               {loading ? (
@@ -234,23 +284,25 @@ export default function CreateAssignment({
                   <Loading />
                 </div>
               ) : (
-                <button
-                  type="submit"
-                  className="w-full py-2 mt-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
+                <div className="w-full flex justify-center">
+                  <button
+                    type="submit"
+                    className="w-40 py-2 mt-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
               text-md cursor-pointer hover: active:border-2  active:border-gray-300
                active:border-solid  focus:border-2 hover:bg-red-500 transition duration-150
               focus:border-solid"
-                >
-                  {language === "Thai" && "สร้าง"}
-                  {language === "English" && "CREATE"}
-                </button>
+                  >
+                    {language === "Thai" && "สร้าง"}
+                    {language === "English" && "CREATE"}
+                  </button>
+                </div>
               )}
             </div>
             <div
-              className="w-[30%] h-full border-2 border-solid border-gray-200 rounded-xl 
-          flex flex-col items-center justify-start gap-5"
+              className="lg:w-60  md:w-full md:h-max  lg:h-full md:border-0  
+          flex md:flex-row lg:flex-col items-center md:gap-10 justify-center lg:justify-start gap-5"
             >
-              <div className="mt-5 flex flex-col">
+              <div className=" flex flex-col mt-0 lg:mt-10">
                 <label>
                   {language === "Thai" && "กำหนดส่ง"}
                   {language === "English" && "Due by"}
@@ -258,7 +310,7 @@ export default function CreateAssignment({
                 <input
                   onChange={handleChange}
                   name="deadline"
-                  className="w-40 appearance-none outline-none border-none ring-2 rounded-md px-5 
+                  className="w-60 appearance-none outline-none border-none ring-2 rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black "
                   type="date"
                   placeholder="Please select a date"
@@ -272,13 +324,13 @@ export default function CreateAssignment({
                 </label>
                 <input
                   min="1"
-                  required
                   onChange={handleChange}
                   name="maxScore"
-                  className="w-40 appearance-none outline-none border-none ring-2 rounded-md px-5 
+                  className="w-60 appearance-none outline-none border-none ring-2 rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black placeholder:text-sm"
                   type="number"
                   step="0.01"
+                  required
                   placeholder={
                     language === "Thai"
                       ? "ใส่คะแนนของงาน"
@@ -288,13 +340,6 @@ export default function CreateAssignment({
                 <div className="text-lg absolute top-8 right-5">
                   <GrScorecard />
                 </div>
-              </div>
-              <div className="relative w-60 h-80">
-                <Image
-                  src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/IMG_3053.PNG"
-                  layout="fill"
-                  className="object-contain"
-                />
               </div>
             </div>
           </div>
@@ -358,30 +403,40 @@ export default function CreateAssignment({
                 })
               )}
             </div>
-            <div className="flex gap-5">
-              <button
-                type="button"
-                onClick={onClickIsCheck}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                {language === "Thai" && "เลือกผู้เรียนทั้งหมด"}
-                {language === "English" && "Choose all students"}
-              </button>
-              <button
-                type="button"
-                onClick={onClickAssignWork}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              >
-                {language === "Thai" && "มอบหมายงาน"}
-                {language === "English" && "Assign"}
-              </button>
-            </div>
+            {!loading && (
+              <div className="flex gap-5">
+                <button
+                  type="button"
+                  onClick={onClickIsCheck}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  {language === "Thai" && "เลือกผู้เรียนทั้งหมด"}
+                  {language === "English" && "Choose all students"}
+                </button>
+                <button
+                  type="button"
+                  onClick={onClickAssignWork}
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  {language === "Thai" && "มอบหมายงาน"}
+                  {language === "English" && "Assign"}
+                </button>
+              </div>
+            )}
           </form>
         )}
       </form>
       <div
         onClick={() => {
           document.body.style.overflow = "auto";
+          setIsChecked(() =>
+            students?.data?.data?.map((student) => {
+              return {
+                ...student,
+                [student.id]: false,
+              };
+            })
+          );
           setIsAssignmentStdent(false);
           setTriggerAssignment(false);
         }}

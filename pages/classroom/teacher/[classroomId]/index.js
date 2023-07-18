@@ -114,7 +114,7 @@ function Index({ user, error }) {
           name="viewport"
           content="width=device-width; initial-scale=1.0;"
         />
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <title>{`classroom - ${classroom.data?.data?.title}`}</title>
       </Head>
 

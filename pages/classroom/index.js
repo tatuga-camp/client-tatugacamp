@@ -68,7 +68,7 @@ function Index({ commonQuestions }) {
           name="viewport"
           content="width=device-width; initial-scale=1.0;"
         />
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
       </Head>
       <Layout>
         {/* <Alert className="fixed bottom-0 z-40  md:w-full" severity="success">

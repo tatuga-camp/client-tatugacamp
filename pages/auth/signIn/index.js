@@ -106,22 +106,22 @@ function Index() {
           name="viewport"
           content="width=device-width; initial-scale=1.0;"
         />
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
       </Head>
       <div
         className="font-sans h-screen w-full bg-[url('/background-Auth.svg')] bg-no-repeat bg-cover
      flex flex-col justify-center items-center"
       >
         <div
-          className="w-full md:w-96  md:h-max md:pb-20 border-2 flex flex-col justify-start items-center 
+          className="w-full md:w-96  md:h-max md:pb-20 border-2 border-black flex flex-col justify-start items-center 
         md:border-solid broder-black relative rounded-xl bg-transparent md:bg-white md:drop-shadow-md "
         >
           <div
-            className=" w-28 h-16 border-t-0 rounded-br-3xl  rounded-bl-3xl px-5 
-           border-y-2 md:border-solid absolute right-0 left-0 mx-auto -top-[2px] bg-white"
+            className=" w-28 h-16 border-t-0 rounded-br-3xl border-black  rounded-bl-3xl px-5 
+           border-y-2 border-x-2 md:border-solid absolute right-0 left-0 mx-auto -top-[2px] "
           >
             <div className="w-full h-2 bg-white  absolute right-0 left-0 mx-auto -top-[2px]"></div>
-            <div className="w-28 h-28 absolute -top-14">
+            <div className="w-28  h-28 absolute -top-16 right-0 left-0">
               <Hands />
             </div>
           </div>
