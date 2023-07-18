@@ -342,9 +342,9 @@ function Index({ error, user, whatsNews }) {
                     </span>
                   </div>
                 </div>
-                <div className="absolute md:-top-20 lg:-top-20 lg:-left-36 ">
+                {/* <div className="absolute md:-top-20 lg:-top-20 lg:-left-36 ">
                   <Lottie animationData={teacherAnimation} style={style} />
-                </div>
+                </div> */}
               </div>
               <div className="w-full flex flex-col justify-center items-center">
                 <Popover className="relative">

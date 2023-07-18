@@ -54,7 +54,7 @@ function Index() {
         });
         localStorage.setItem("access_token", data.data.access_token);
         router.push(
-          `/classroom/teacher/?access_token=${data.data.access_token}`,
+          `/classroom/?access_token=${data.data.access_token}`,
           undefined,
           {
             shallow: true,
@@ -62,8 +62,8 @@ function Index() {
         );
       }
     } catch (err) {
+      setLoading(false);
       if (err.code === "ERR_BAD_REQUEST") {
-        setLoading(false);
         Swal.fire({
           icon: "error",
           title: "Login error",
@@ -143,43 +143,6 @@ function Index() {
                 <div
                   className="absolute bottom-1 left-2 bg-white text-[#2C7CD1] w-5 h-5 text-xl 
                rounded-full flex items-center justify-center "
-<<<<<<< HEAD
-              >
-                <FaUserCircle />
-              </div>
-            </div>
-
-            <div className="flex flex-col relative mt-2">
-              <label className="font-sans font-normal">Password</label>
-              <input
-                className="w-60 h-7 rounded-md border-none bg-[#FFC800] pl-10 
-                placeholder:italic placeholder:font-light"
-                type="password"
-                name="password"
-                placeholder="type your password"
-              />
-              <div
-                className="absolute bottom-1 left-2  text-[#2C7CD1] w-5 h-5 text-xl 
-               rounded-full flex items-center justify-center "
-              >
-                <HiLockClosed />
-              </div>
-            </div>
-            <div className="w-full flex justify-between text-right my-3">
-              <Link href="/auth/forget-password">
-                <span
-                  className="cursor-pointer text-sm  font-Kanit font-medium text-blue-700
-                 bg-white px-2 rounded-lg border-black broder-2 border-solid md:border-none"
-                >
-                  ลืมรหัสผ่าน
-                </span>
-              </Link>
-              <Link href="/auth/signUp">
-                <span
-                  className="cursor-pointer text-sm  font-Kanit font-medium text-blue-700
-                 bg-white px-2 rounded-lg border-black broder-2 border-solid md:border-none"
-=======
->>>>>>> school
                 >
                   <FaUserCircle />
                 </div>
@@ -201,7 +164,15 @@ function Index() {
                   <HiLockClosed />
                 </div>
               </div>
-              <div className="w-full text-right my-3">
+              <div className="w-full flex justify-between text-right my-3">
+                <Link href="/auth/forget-password">
+                  <span
+                    className="cursor-pointer text-sm  font-Kanit font-medium text-blue-700
+                 bg-white px-2 rounded-lg border-black broder-2 border-solid md:border-none"
+                  >
+                    ลืมรหัสผ่าน
+                  </span>
+                </Link>
                 <Link href="/auth/signUp">
                   <span
                     className="cursor-pointer text-sm  font-Kanit font-medium text-blue-700
@@ -211,6 +182,7 @@ function Index() {
                   </span>
                 </Link>
               </div>
+
               {!loading ? (
                 <button
                   className="w-full border-none h-9 mt-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold

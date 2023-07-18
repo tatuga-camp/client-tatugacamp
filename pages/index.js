@@ -88,6 +88,7 @@ export default function Home({ post, blurData }) {
             name="keywords"
             content="TaTuga camp, tatugacamp, tatuga camp, English, English camp, camp for learning English, card game, activities in classroom, กิจกรรมค่ายภาษาอังกฤษ, การ์ดเกมเพื่อการเรียนรู้, การ์ดเกม"
           />
+
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
