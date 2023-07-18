@@ -71,7 +71,7 @@ function Index({ user, error }) {
   }
 
   return (
-    <div className="h-full pb-20  bg-gradient-to-t from-blue-400 to-white">
+    <div className="h-full pb-20  bg-gradient-to-t from-blue-100 to-white">
       <Navbar />
       <div className="w-full flex justify-start items-center flex-col  font-Kanit">
         <header className="bg-white w-max h-max mt-40 md:mt-10 max-w-xs md:max-w-5xl drop-shadow-md p-3 px-10 rounded-lg ring-2">

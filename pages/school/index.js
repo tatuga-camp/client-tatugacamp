@@ -22,6 +22,8 @@ function Index({ user, error }) {
       return sideMenusEnglish;
     }
   });
+  console.log(user);
+
   const [currentDate, setCurrentDate] = useState();
   const [currentTime, setCurrentTime] = useState();
 
@@ -69,11 +71,13 @@ function Index({ user, error }) {
           <header className=" row-span-2 col-span-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-300  flex overflow-hidden">
             <div className=" h-full w-96 flex justify-center items-center">
               <div className="w-40 h-40 overflow-hidden ring-2 bg-white ring-white rounded-lg relative">
-                <Image
-                  src={user.picture}
-                  layout="fill"
-                  className="object-contain"
-                />
+                {user.picture && (
+                  <Image
+                    src={user.picture}
+                    layout="fill"
+                    className="object-contain"
+                  />
+                )}
               </div>
             </div>
             <div className="w-full flex flex-col font-Kanit justify-center ">
@@ -206,7 +210,6 @@ export async function getServerSideProps(context) {
   const { req, res, query } = context;
   const cookies = parseCookies(context);
   const accessToken = cookies.access_token;
-
   if (!accessToken && !query.access_token) {
     return {
       props: {
@@ -221,7 +224,9 @@ export async function getServerSideProps(context) {
       const userData = await GetUserCookie({
         access_token: query.access_token,
       });
+
       const user = userData.data;
+
       if (user.role === "TEACHER") {
         return {
           props: {
@@ -253,7 +258,8 @@ export async function getServerSideProps(context) {
         access_token: accessToken,
       });
       const user = userData.data;
-      if (user.role === "TEACHER") {
+
+      if (user.role !== "SCHOOL") {
         return {
           props: {
             user,
@@ -263,12 +269,13 @@ export async function getServerSideProps(context) {
             },
           },
         };
+      } else if (user.role === "SCHOOL") {
+        return {
+          props: {
+            user,
+          },
+        };
       }
-      return {
-        props: {
-          user,
-        },
-      };
     } catch (err) {
       return {
         props: {

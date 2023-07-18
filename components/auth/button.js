@@ -120,11 +120,17 @@ function AuthButton() {
         md:right-10 md:top-26 w-24 cursor-pointe  relative  "
               >
                 <li
-                  onClick={() =>
-                    router.push({
-                      pathname: "/classroom/setting",
-                    })
-                  }
+                  onClick={() => {
+                    if (data?.data?.role === "SCHOOL") {
+                      router.push({
+                        pathname: "/school/setting",
+                      });
+                    } else if (data?.data?.role === "TEACHER") {
+                      router.push({
+                        pathname: "/classroom/setting",
+                      });
+                    }
+                  }}
                   className="flex justify-center items-center text-base font-light 
                   gap-x-2 hover:font-bold cursor-pointer group  "
                 >
