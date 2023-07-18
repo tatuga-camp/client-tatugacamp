@@ -176,7 +176,7 @@ function Index() {
           name="viewport"
           content="width=device-width; initial-scale=1.0;"
         />
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
       </Head>
       <div
         className="font-sans h-screen w-full bg-[url('/background-Auth.svg')] bg-no-repeat bg-cover

@@ -8,24 +8,91 @@ export async function CreateAssignmentApi({
   description,
   deadline,
   maxScore,
+  imagesBase64,
 }) {
   try {
     const maxScoreNum = Number(maxScore);
+    console.log(maxScoreNum);
     const dateFormat = new Date(deadline);
-
     const cookies = parseCookies();
     const access_token = cookies.access_token;
-    const assignment = await axios.post(
-      `${process.env.Server_Url}/user/assignment/create`,
+    const formData = new FormData();
+
+    for (const imageBase64 of imagesBase64) {
+      const response = await fetch(imageBase64);
+      const blob = await response.blob();
+      const file = new File([blob], "image.jpg", { type: "image/jpeg" });
+
+      formData.append("files", file);
+    }
+    const filesOld = formData.getAll("files");
+
+    const files = await Promise.all(
+      filesOld.map(async (file) => {
+        if (file.type === "") {
+          const blob = await heic2any({
+            blob: file,
+            toType: "image/jpeg",
+          });
+          file = new File([blob], file.name, { type: "image/jpeg" });
+          return {
+            file: file,
+            fileName: file.name,
+            fileType: file.type,
+          };
+        } else {
+          return {
+            file: file,
+            fileName: file.name,
+            fileType: file.type,
+          };
+        }
+      })
+    );
+
+    const urls = await axios.post(
+      `${process.env.Server_Url}/user/assignment/upload-signUrl`,
       {
+        files,
         title: title,
         deadline: dateFormat,
-        description: description,
         maxScore: maxScoreNum,
+        classroomId: classroomId,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+
+    for (let i = 0; i < urls.data.urls.length; i++) {
+      const response = await fetch(urls.data.urls[i].SignedURL, {
+        method: "PUT",
+        headers: {
+          "Content-Type": `${urls.data.urls[i].contentType}`,
+        },
+        body: files[i].file,
+      }).catch((err) => console.log(err));
+    }
+
+    let updatedContent = description;
+    for (let i = 0; i < imagesBase64.length; i++) {
+      const base64Image = imagesBase64[i];
+      const imageUrl = urls.data.baseUrls[i];
+      updatedContent = updatedContent.replace(base64Image, imageUrl);
+    }
+    console.log("updatedContent", updatedContent);
+
+    const updateAssignment = await axios.put(
+      `${process.env.Server_Url}/user/assignment/update`,
+      {
+        description: updatedContent,
       },
       {
         params: {
-          classroomId: classroomId,
+          assignmentId: urls.data.assignment.id,
         },
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +100,7 @@ export async function CreateAssignmentApi({
         },
       }
     );
-    return assignment;
+    return updateAssignment;
   } catch (err) {
     throw new Error(err);
   }

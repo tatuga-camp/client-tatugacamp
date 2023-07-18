@@ -107,7 +107,7 @@ function Index() {
           name="viewport"
           content="width=device-width; initial-scale=1.0;"
         />
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <title>ตั้งค่ารหัสผ่านใหม่ - Reset password </title>
       </Head>
       <div
