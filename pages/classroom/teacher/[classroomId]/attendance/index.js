@@ -233,7 +233,7 @@ function Index({ error, user }) {
                           return (
                             <Popover key={status.id}>
                               {({ open }) => (
-                                <td className="w-max flex items-center justify-center">
+                                <td className="w-28 flex items-center justify-center">
                                   <Popover.Button
                                     onClick={() => {
                                       document.body.style.overflow = "hidden";
