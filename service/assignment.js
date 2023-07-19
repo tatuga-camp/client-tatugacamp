@@ -17,12 +17,10 @@ export async function CreateAssignmentApi({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const formData = new FormData();
-
     for (const imageBase64 of imagesBase64) {
       const response = await fetch(imageBase64);
       const blob = await response.blob();
       const file = new File([blob], "image.jpg", { type: "image/jpeg" });
-
       formData.append("files", file);
     }
     const filesOld = formData.getAll("files");

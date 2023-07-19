@@ -13,6 +13,7 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { MdError } from "react-icons/md";
 import { Box, TextField } from "@mui/material";
 import { FcCancel } from "react-icons/fc";
+import Error from "next/error";
 
 export default function CreateAssignment({
   close,
@@ -116,7 +117,15 @@ export default function CreateAssignment({
   const handleSubmit = async (e) => {
     try {
       setLoading(() => true);
+
       e.preventDefault();
+      if (assignmentData.body === "") {
+        throw new Error(
+          language === "Thai"
+            ? "กรุณาใส่คำอธิบายชิ้นงาน"
+            : "Description is required"
+        );
+      }
       const createAssignment = await CreateAssignmentApi({
         classroomId: rounter.query.classroomId,
         title: assignmentData.title,
@@ -134,11 +143,7 @@ export default function CreateAssignment({
     } catch (err) {
       console.log(err);
       setLoading(() => false);
-      Swal.fire(
-        "error",
-        err?.props?.response?.data?.message.toString(),
-        "error"
-      );
+      Swal.fire("error", err.props, "error");
     }
   };
 
@@ -217,7 +222,6 @@ export default function CreateAssignment({
                   image_title: true,
                   automatic_uploads: true,
                   file_picker_types: "image",
-
                   file_picker_types: "image",
                   file_picker_callback: (cb, value, meta) => {
                     const input = document.createElement("input");
