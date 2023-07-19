@@ -49,6 +49,7 @@ function UpdateScore({
   const [pointsValue, setpointsValue] = useState(1);
   const [data, setData] = useState(animationData);
   const [error, setError] = useState();
+  const [loadingDeleteStudent, setLoadingDeleteStudent] = useState(false);
   const [loadingPoint, setLoadingPoint] = useState(false);
   const [isDeleteStudent, setIsDeleteStudent] = useState(false);
   const [triggerSetting, setTriggerSetting] = useState(false);
@@ -113,11 +114,14 @@ function UpdateScore({
   //handle delete student
   const handleDelteStudent = async (data) => {
     try {
+      setLoadingDeleteStudent(() => true);
       const deletedStudent = await DelteStudent({ studentId: data.studentId });
       Swal.fire("success", deletedStudent.data.message, "success");
       document.body.style.overflow = "auto";
+      setLoadingDeleteStudent(() => false);
       students.refetch();
     } catch (err) {
+      setLoadingDeleteStudent(() => false);
       Swal.fire(
         "error",
         err?.props?.response?.data?.message.toString(),
@@ -310,24 +314,29 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
               </div>
             )}
 
-            {isDeleteStudent === true && (
-              <div className="flex gap-x-4">
-                <div
-                  onClick={() => handleDelteStudent({ studentId: student.id })}
-                  role="button"
-                  className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
-                >
-                  <FcCheckmark size={25} />
+            {isDeleteStudent === true &&
+              (loadingDeleteStudent === true ? (
+                <Loading />
+              ) : (
+                <div className="flex gap-x-4">
+                  <div
+                    onClick={() =>
+                      handleDelteStudent({ studentId: student.id })
+                    }
+                    role="button"
+                    className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
+                  >
+                    <FcCheckmark size={25} />
+                  </div>
+                  <div
+                    role="button"
+                    onClick={() => setIsDeleteStudent(false)}
+                    className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
+                  >
+                    <FcCancel size={25} />
+                  </div>
                 </div>
-                <div
-                  role="button"
-                  onClick={() => setIsDeleteStudent(false)}
-                  className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
-                >
-                  <FcCancel size={25} />
-                </div>
-              </div>
-            )}
+              ))}
           </div>
         )}
         {runAnimation && (
