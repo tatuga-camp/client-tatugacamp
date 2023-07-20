@@ -239,7 +239,7 @@ function Index({ error, user, whatsNews }) {
 
         <Popover>
           {({ open }) => (
-            <div className="fixed bottom-20 z-20 right-7 flex justify-center items-end flex-col ">
+            <div className="fixed hidden  bottom-20 z-20 right-7 md:flexflex justify-center items-end flex-col ">
               <Popover.Panel>
                 {({ close }) => {
                   return (
@@ -388,7 +388,7 @@ function Index({ error, user, whatsNews }) {
                   )}
                 </Popover>
                 <div
-                  className="flex gap-3 mt-20 bg-white ring-2 w-10/12 md:w-max  rounded-lg p-5 items-center 
+                  className="flex gap-3 mt-20 bg-white ring-2  w-80 md:w-max  rounded-lg p-2 items-center 
                 flex-col md:mt-10 justify-center "
                 >
                   {(user.plan === "FREE" ||
@@ -428,7 +428,7 @@ function Index({ error, user, whatsNews }) {
                   user.subscriptions === "active" ? (
                     <div></div>
                   ) : (
-                    <div className="w-80 text-center h-max py-2 rounded-xl text-black ">
+                    <div className="text-center h-max py-2 rounded-xl text-black ">
                       <span
                         className={`${
                           acceessFeature
