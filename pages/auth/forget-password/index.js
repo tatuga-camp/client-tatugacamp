@@ -66,7 +66,10 @@ function Index() {
         className="font-sans h-screen w-full bg-[url('/background-Auth.svg')] bg-no-repeat bg-cover
 flex flex-col justify-center items-center"
       >
-        <form className="w-96 flex flex-col gap-2" onSubmit={handleSummit}>
+        <form
+          className="w-80 md:w-96 flex flex-col gap-2"
+          onSubmit={handleSummit}
+        >
           <span className="font-bold text-xl">Enter your email</span>
           <Box width="100%">
             <TextField

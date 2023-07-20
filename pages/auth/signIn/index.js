@@ -113,7 +113,7 @@ function Index() {
      flex flex-col justify-center items-center"
       >
         <div
-          className="w-full md:w-96  md:h-max md:pb-20 border-2 border-black flex flex-col justify-start items-center 
+          className="w-11/12 p-2 md:p-0 md:w-96  md:h-max md:pb-20 border-2 bg-white border-black flex flex-col justify-start items-center 
         md:border-solid broder-black relative rounded-xl bg-transparent md:bg-white md:drop-shadow-md "
         >
           <div
@@ -121,8 +121,10 @@ function Index() {
            border-y-2 border-x-2 md:border-solid absolute right-0 left-0 mx-auto -top-[2px] "
           >
             <div className="w-full h-2 bg-white  absolute right-0 left-0 mx-auto -top-[2px]"></div>
-            <div className="w-28  h-28 absolute -top-16 right-0 left-0">
-              <Hands />
+            <div className="w-28  h-28 flex justify-center items-center absolute -top-14 right-0 left-0">
+              <div className="w-20 h-20 ">
+                <Hands />
+              </div>
             </div>
           </div>
           <div className="mt-20">
@@ -211,7 +213,7 @@ function Index() {
               <a
                 onClick={GetAccesTokenGoogle}
                 className="w-full  h-9 mt-2 rounded-full bg-white text-black font-sans font-bold
-              text-md cursor-pointer border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
+              text-md cursor-pointer border-2 border-solid border-black hover:scale-110 transition duration-200  ease-in-out
                 active:border-2 active:text-black active:border-gray-300
                active:border-solid  focus:border-2 
               focus:border-solid flex items-center justify-center gap-x-2"
@@ -224,7 +226,7 @@ function Index() {
             ) : (
               <a
                 className="w-full  h-9 mt-2 rounded-full bg-gray-200 text-black font-sans font-bold
-            text-md cursor-pointer border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
+            text-md cursor-pointer border-2 border-solid   transition duration-200  ease-in-out
               active:border-2 active:text-black active:border-gray-300
              active:border-solid  focus:border-2 
             focus:border-solid flex items-center justify-center gap-x-2"
