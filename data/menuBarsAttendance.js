@@ -1,8 +1,6 @@
 import React from "react";
-import { useRouter } from "next/router";
 import { FiArrowLeftCircle } from "react-icons/fi";
-export function sideMenusThai() {
-  const router = useRouter();
+export function sideMenusThai({ router }) {
   const sideMenusThai = [
     {
       title: "โรงเรียน",
@@ -39,8 +37,7 @@ export function sideMenusThai() {
   return sideMenusThai;
 }
 
-export function sideMenusEnglish() {
-  const router = useRouter();
+export function sideMenusEnglish({ router }) {
   const sideMenusEnglish = [
     {
       title: "school",

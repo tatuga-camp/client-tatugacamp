@@ -428,7 +428,7 @@ function Index({ error, user, whatsNews }) {
                   user.subscriptions === "active" ? (
                     <div></div>
                   ) : (
-                    <div className="text-center h-max py-2 rounded-xl text-black ">
+                    <div className="text-center flex flex-col h-max py-2 rounded-xl text-black ">
                       <span
                         className={`${
                           acceessFeature
@@ -443,7 +443,11 @@ function Index({ error, user, whatsNews }) {
                       </span>
                       <span>
                         สมัครเป็นสมาชิก Tatuga class{" "}
-                        <Link href="/classroom/subscriptions">คลิก</Link>
+                        <Link href="/classroom/subscriptions">
+                          <span className="text-blue-400 underline cursor-pointer">
+                            คลิก
+                          </span>
+                        </Link>
                       </span>
                     </div>
                   )}
