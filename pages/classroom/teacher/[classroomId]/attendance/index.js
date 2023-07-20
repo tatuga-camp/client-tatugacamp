@@ -28,13 +28,7 @@ import DowloadExcelAttendacne from "../../../../../components/form/dowloadExcelA
 
 function Index({ error, user }) {
   const router = useRouter();
-  const [sideMenus, setSideMenus] = useState(() => {
-    if (user?.language === "Thai") {
-      return sideMenusThai();
-    } else if (user?.language === "English") {
-      return sideMenusEnglish();
-    }
-  });
+  const [sideMenus, setSideMenus] = useState();
   const attendances = useQuery(
     ["attendance"],
     () => GetAllAttendance({ classroomId: router.query.classroomId }),
@@ -44,6 +38,13 @@ function Index({ error, user }) {
   );
   useEffect(() => {
     attendances.refetch();
+    if (router.isReady) {
+      if (user?.language === "Thai") {
+        setSideMenus(() => sideMenusThai({ router }));
+      } else if (user?.language === "English") {
+        setSideMenus(() => sideMenusEnglish({ router }));
+      }
+    }
   }, [router.isReady]);
 
   const handleDeleteAttendance = async ({ groupId }) => {
@@ -76,10 +77,7 @@ function Index({ error, user }) {
   return (
     <div className="bg-blue-50 pb-40">
       <Head>
-        <meta
-          name="viewport"
-          content="width=device-width; initial-scale=1.0;"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta charSet="UTF-8" />
         <title>attendance</title>
       </Head>
@@ -89,12 +87,12 @@ function Index({ error, user }) {
             {({ open }) => (
               <>
                 <Popover.Button>
-                  <button className="w-max px-5 flex gap-1 mb-2 hover:scale-105 transition duration-150 active:bg-blue-800 bg-blue-500 font-Poppins font-semibold text-white rounded-lg py-2">
+                  <div className="w-max px-5 flex gap-1 mb-2 hover:scale-105 transition duration-150 active:bg-blue-800 bg-blue-500 font-Poppins font-semibold text-white rounded-lg py-2">
                     dowload
                     <div>
                       <SiMicrosoftexcel />
                     </div>
-                  </button>
+                  </div>
                 </Popover.Button>
 
                 <Popover.Panel>
@@ -231,79 +229,84 @@ function Index({ error, user }) {
 
                         {item.data.map((status) => {
                           return (
-                            <Popover key={status.id}>
-                              {({ open }) => (
-                                <td className="w-28 flex items-center justify-center">
-                                  <Popover.Button
-                                    onClick={() => {
-                                      document.body.style.overflow = "hidden";
-                                    }}
-                                  >
-                                    <div className="w-28  flex items-center justify-center ">
-                                      {status.present && (
-                                        <div className="bg-green-600 w-full items-center justify-center py-1  text-white">
-                                          {user.language === "Thai" &&
-                                            "มาเรียน"}
-                                          {user.language === "English" &&
-                                            "Presnt"}
-                                        </div>
-                                      )}
-                                      {status.absent && (
-                                        <div className="bg-red-600 w-full flex items-center justify-center py-1  text-white">
-                                          {user.language === "Thai" && "ขาด"}
-                                          {user.language === "English" &&
-                                            "Absent"}
-                                        </div>
-                                      )}
-                                      {status.holiday && (
-                                        <div className="bg-yellow-500 w-full flex items-center justify-center py-1  text-white">
-                                          {user.language === "Thai" && "ลา"}
-                                          {user.language === "English" &&
-                                            "Take a leave"}
-                                        </div>
-                                      )}
-                                      {status.sick && (
-                                        <div className="bg-blue-500 w-full flex items-center justify-center py-1  text-white">
-                                          {user.language === "Thai" && "ป่วย"}
-                                          {user.language === "English" &&
-                                            "sick"}
-                                        </div>
-                                      )}
-                                      {status.late && (
-                                        <div className="bg-orange-500 w-full flex items-center justify-center py-1  text-white">
-                                          {user.language === "Thai" && "สาย"}
-                                          {user.language === "English" &&
-                                            "late"}
-                                        </div>
-                                      )}
-                                      {!status.holiday &&
-                                        !status.absent &&
-                                        !status.present &&
-                                        !status.sick &&
-                                        !status.late && (
-                                          <div className="bg-gray-600 w-full flex items-center justify-center py-1  text-white">
+                            <td
+                              key={status.id}
+                              className="w-28 flex items-center justify-center"
+                            >
+                              <Popover>
+                                {({ open }) => (
+                                  <>
+                                    <Popover.Button
+                                      onClick={() => {
+                                        document.body.style.overflow = "hidden";
+                                      }}
+                                    >
+                                      <div className="w-28  flex items-center justify-center ">
+                                        {status.present && (
+                                          <div className="bg-green-600 w-full items-center justify-center py-1  text-white">
                                             {user.language === "Thai" &&
-                                              "ไม่มีข้อมูล"}
+                                              "มาเรียน"}
                                             {user.language === "English" &&
-                                              "NO DATA"}
+                                              "Presnt"}
                                           </div>
                                         )}
-                                    </div>
-                                  </Popover.Button>
-                                  <Popover.Panel>
-                                    {({ close }) => (
-                                      <UpdateAttendance
-                                        language={user.language}
-                                        attendances={attendances}
-                                        close={close}
-                                        student={item.student}
-                                        attendanceData={status}
-                                      />
-                                    )}
-                                  </Popover.Panel>
-                                </td>
-                              )}
-                            </Popover>
+                                        {status.absent && (
+                                          <div className="bg-red-600 w-full flex items-center justify-center py-1  text-white">
+                                            {user.language === "Thai" && "ขาด"}
+                                            {user.language === "English" &&
+                                              "Absent"}
+                                          </div>
+                                        )}
+                                        {status.holiday && (
+                                          <div className="bg-yellow-500 w-full flex items-center justify-center py-1  text-white">
+                                            {user.language === "Thai" && "ลา"}
+                                            {user.language === "English" &&
+                                              "Take a leave"}
+                                          </div>
+                                        )}
+                                        {status.sick && (
+                                          <div className="bg-blue-500 w-full flex items-center justify-center py-1  text-white">
+                                            {user.language === "Thai" && "ป่วย"}
+                                            {user.language === "English" &&
+                                              "sick"}
+                                          </div>
+                                        )}
+                                        {status.late && (
+                                          <div className="bg-orange-500 w-full flex items-center justify-center py-1  text-white">
+                                            {user.language === "Thai" && "สาย"}
+                                            {user.language === "English" &&
+                                              "late"}
+                                          </div>
+                                        )}
+                                        {!status.holiday &&
+                                          !status.absent &&
+                                          !status.present &&
+                                          !status.sick &&
+                                          !status.late && (
+                                            <div className="bg-gray-600 w-full flex items-center justify-center py-1  text-white">
+                                              {user.language === "Thai" &&
+                                                "ไม่มีข้อมูล"}
+                                              {user.language === "English" &&
+                                                "NO DATA"}
+                                            </div>
+                                          )}
+                                      </div>
+                                    </Popover.Button>
+                                    <Popover.Panel>
+                                      {({ close }) => (
+                                        <UpdateAttendance
+                                          language={user.language}
+                                          attendances={attendances}
+                                          close={close}
+                                          student={item.student}
+                                          attendanceData={status}
+                                        />
+                                      )}
+                                    </Popover.Panel>
+                                  </>
+                                )}
+                              </Popover>
+                            </td>
                           );
                         })}
                         <td className="w-36 flex items-center justify-center ">

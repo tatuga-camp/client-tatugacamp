@@ -215,7 +215,7 @@ function Setting({ userServerSide, error }) {
                       onChange={handleFileInputChange}
                       type="file"
                       accept="image/png, image/gif, image/jpeg"
-                      className="text-sm text-grey-500 ring-2
+                      className="text-sm text-grey-500
             file:mr-5 md:file:w-max file:w-20 w-full file:py-2
             file:rounded-full file:border-0
             file:text-sm file:font-medium 
