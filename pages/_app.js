@@ -26,26 +26,24 @@ const stripePromise = loadStripe(
 );
 function MyApp({ Component, pageProps: { ...pageProps } }) {
   return (
-    <StyledEngineProvider injectFirst>
-      <QueryClientProvider client={queryClient}>
-        <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-WZH3JD3STK"
-        />
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
-        >{` window.dataLayer = window.dataLayer || [];
+    <QueryClientProvider client={queryClient}>
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-WZH3JD3STK"
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+      >{` window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-WZH3JD3STK');`}</Script>
-        <Elements stripe={stripePromise}>
-          <Component {...pageProps} />
-        </Elements>
-        <ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
-      </QueryClientProvider>
-    </StyledEngineProvider>
+      <Elements stripe={stripePromise}>
+        <Component {...pageProps} />
+      </Elements>
+      <ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
+    </QueryClientProvider>
   );
 }
 
