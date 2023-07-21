@@ -10,11 +10,17 @@ import {
 } from "../../data/school/menubarsHomepage";
 import Head from "next/head";
 import Image from "next/image";
-import { BiImport } from "react-icons/bi";
-import { Disclosure } from "@headlessui/react";
-import { IoChevronUpCircleOutline } from "react-icons/io5";
+import { AiOutlineUserAdd } from "react-icons/ai";
+import { SiGoogleclassroom } from "react-icons/si";
+import { BsFillPeopleFill } from "react-icons/bs";
+import { FaUserCheck } from "react-icons/fa";
+import CreateAccount from "../../components/form/school/createAccount";
 
 function Index({ user, error }) {
+  const [currentDate, setCurrentDate] = useState();
+  const [currentTime, setCurrentTime] = useState();
+  const [triggerAccountManagement, setTriggerAccountManagement] =
+    useState(false);
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === "Thai") {
       return sideMenusThai;
@@ -22,10 +28,6 @@ function Index({ user, error }) {
       return sideMenusEnglish;
     }
   });
-  console.log(user);
-
-  const [currentDate, setCurrentDate] = useState();
-  const [currentTime, setCurrentTime] = useState();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -62,145 +64,116 @@ function Index({ user, error }) {
   }
 
   return (
-    <Layout sideMenus={sideMenus} user={user}>
+    <Layout
+      currentTime={currentTime}
+      currentDate={currentDate}
+      sideMenus={sideMenus}
+      user={user}
+    >
       <Head>
         <title>tatuga school</title>
       </Head>
-      <div className="w-full flex flex-col items-center justify-start h-screen pb-20 bg-gradient-to-t from-blue-200 to-blue-100">
-        <main className="w-11/12  h-5/6 mt-28 grid grid-cols-6 grid-rows-5 gap-5  ">
-          <header className=" row-span-2 col-span-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-300  flex overflow-hidden">
-            <div className=" h-full w-96 flex justify-center items-center">
-              <div className="w-40 h-40 overflow-hidden ring-2 bg-white ring-white rounded-lg relative">
-                {user.picture && (
-                  <Image
-                    src={user.picture}
-                    layout="fill"
-                    className="object-contain"
-                  />
-                )}
-              </div>
+      {triggerAccountManagement && (
+        <CreateAccount
+          close={triggerAccountManagement}
+          setTriggerAccountManagement={setTriggerAccountManagement}
+        />
+      )}
+      <main className="w-full h-screen flex justify-center items-center font-Poppins bg-slate-100 ">
+        <div className="w-11/12 h-[90%] grid grid-cols-8 grid-rows-5 gap-5 ">
+          <button
+            onClick={() => {
+              setTriggerAccountManagement(() => true);
+              document.body.style.overflow = "hidden";
+            }}
+            className="row-span-1 col-span-2 transition duration-150 hover:bg-blue-400 group bg-white drop-shadow-lg
+             rounded-lg
+           flex justify-center gap-10 items-center relative"
+          >
+            <div
+              className="flex justify-center items-center text-3xl 
+            w-16 h-16 rounded-full text-blue-600 group-hover:text-black group-hover:bg-white transition bg-blue-100 "
+            >
+              <AiOutlineUserAdd />
             </div>
-            <div className="w-full flex flex-col font-Kanit justify-center ">
-              <span className=" text-white font-light text-lg">
-                ยินดีต้อนรับ
+            <div className="flex flex-col  items-start">
+              <span className="font-semibold text-2xl text-black font-Kanit group-hover:text-white">
+                5,000 <span className="text-sm font-normal">บัญชี</span>
               </span>
-              <span className=" text-white tracking-wide uppercase text-4xl font-semibold">
-                {user?.school}
+              <span className="font-normal text-slate-500 font-Kanit text-base group-hover:text-slate-100">
+                เพิ่ม/จัดการ บัญชี
               </span>
-              <div className="flex gap-2">
-                <span className=" text-white font-light text-lg">
-                  {user.firstName}
-                </span>
-                <span className=" text-white font-light text-lg">
-                  {user?.lastName}
-                </span>
-              </div>
-              <button
-                className="bg-white w-max text-black ring-black ring-2 mt-10 hover:scale-110 transition duration-150
-               flex justify-center items-center gap-2 px-4 py-2 rounded-xl active:ring-blue-600"
-              >
-                นำเข้าห้องเรียน
-                <div>
-                  <BiImport />
-                </div>
-              </button>
             </div>
-            <div className="w-80 h-full flex items-center justify-center">
-              <div className="w-full h-full bg-white flex text-center flex-col gap-2 justify-center items-center">
-                <span className="font-semibold text-4xl">{currentDate}</span>
-                <span className="font-normal text-base bg-orange-400 text-white p-1 rounded-lg">
-                  {currentTime}
-                </span>
-              </div>
+          </button>
+          <button
+            className="row-span-1 col-span-2 transition duration-150 hover:bg-green-400 group bg-white drop-shadow-lg rounded-lg
+           flex justify-center gap-10 items-center relative"
+          >
+            <div
+              className="flex justify-center items-center text-3xl 
+            w-16 h-16 rounded-full text-green-600 group-hover:text-black
+             group-hover:bg-white transition bg-green-100 "
+            >
+              <SiGoogleclassroom />
             </div>
-          </header>
-          <div className=" row-span-6 col-span-2 ">
-            <div className="w-10/12 h-full flex-col flex justify-start  items-center bg-white rounded-2xl drop-shadow-lg">
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="flex w-10/12 mt-5 justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                      <span>What is your refund policy?</span>
-                      <IoChevronUpCircleOutline
-                        className={`${
-                          open ? "rotate-180 transform" : ""
-                        } h-5 w-5 text-purple-500`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                      If you're unhappy with your purchase for any reason, email
-                      us within 90 days and we'll refund you in full, no
-                      questions asked.
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="flex w-10/12 mt-5 justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                      <span>What is your refund policy?</span>
-                      <IoChevronUpCircleOutline
-                        className={`${
-                          open ? "rotate-180 transform" : ""
-                        } h-5 w-5 text-purple-500`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                      If you're unhappy with your purchase for any reason, email
-                      us within 90 days and we'll refund you in full, no
-                      questions asked.
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="flex w-10/12 mt-5 justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                      <span>What is your refund policy?</span>
-                      <IoChevronUpCircleOutline
-                        className={`${
-                          open ? "rotate-180 transform" : ""
-                        } h-5 w-5 text-purple-500`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                      If you're unhappy with your purchase for any reason, email
-                      us within 90 days and we'll refund you in full, no
-                      questions asked.
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
-              <Disclosure>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="flex w-10/12 mt-5 justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
-                      <span>What is your refund policy?</span>
-                      <IoChevronUpCircleOutline
-                        className={`${
-                          open ? "rotate-180 transform" : ""
-                        } h-5 w-5 text-purple-500`}
-                      />
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                      If you're unhappy with your purchase for any reason, email
-                      us within 90 days and we'll refund you in full, no
-                      questions asked.
-                    </Disclosure.Panel>
-                  </>
-                )}
-              </Disclosure>
+            <div className="flex flex-col  items-start">
+              <span className="font-semibold text-2xl text-black font-Kanit group-hover:text-white">
+                1,500 <span className="text-sm font-normal">ห้องเรียน</span>
+              </span>
+              <span className="font-normal text-slate-500 font-Kanit text-base group-hover:text-slate-100">
+                ตรวจสอบห้องเรียน
+              </span>
             </div>
+          </button>
+          <button
+            className="row-span-1 col-span-2 transition duration-150 hover:bg-pink-400 group bg-white drop-shadow-lg rounded-lg
+           flex justify-center gap-10 items-center relative"
+          >
+            <div
+              className="flex justify-center items-center text-3xl 
+            w-16 h-16 rounded-full text-pink-600 group-hover:text-black
+             group-hover:bg-white transition bg-pink-100 "
+            >
+              <BsFillPeopleFill />
+            </div>
+            <div className="flex flex-col  items-start">
+              <span className="font-semibold text-2xl text-black font-Kanit group-hover:text-white">
+                3,556 <span className="text-sm font-normal">นักเรียน</span>
+              </span>
+              <span className="font-normal text-slate-500 font-Kanit text-base group-hover:text-slate-100">
+                ตรวจสอบนักเรียน
+              </span>
+            </div>
+          </button>
+          <button
+            className="row-span-1 col-span-2 transition duration-150 hover:bg-orange-400 group bg-white drop-shadow-lg rounded-lg
+           flex justify-center gap-10 items-center relative"
+          >
+            <div
+              className="flex justify-center items-center text-3xl 
+            w-16 h-16 rounded-full text-orange-600 group-hover:text-black
+             group-hover:bg-white transition bg-orange-100 "
+            >
+              <FaUserCheck />
+            </div>
+            <div className="flex flex-col  items-start">
+              <span className="font-semibold text-lg text-black font-Kanit group-hover:text-white">
+                ตรวจสอบการเข้าเรียน
+              </span>
+              <span className="font-normal text-slate-500 font-Kanit text-base group-hover:text-slate-100">
+                ของผู้เรียน
+              </span>
+            </div>
+          </button>
+          <div className="bg-white drop-shadow-md row-span-2 rounded-lg col-span-6"></div>
+          <div className="bg-white drop-shadow-md row-span-4 p-5 rounded-lg col-span-2 flex flex-col justify-start items-center">
+            <h3 className="font-Kanit">ขาดเรียน 10 อันดับแรก </h3>
+            <div className="w-full h-full bg-slate-400"></div>
           </div>
-          <div className=" row-span-3 col-span-4 flex flex-warp">
-            <div className="w-60 h-40 bg-white rounded-xl">
-              <div></div>
-            </div>
-          </div>
-        </main>
-      </div>
+          <div className="bg-white drop-shadow-md row-span-2 rounded-lg col-span-4"></div>
+          <div className="bg-white drop-shadow-md row-span-2 rounded-lg col-span-2"></div>
+        </div>
+      </main>
     </Layout>
   );
 }
