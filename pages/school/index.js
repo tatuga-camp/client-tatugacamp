@@ -75,6 +75,7 @@ function Index({ user, error }) {
       </Head>
       {triggerAccountManagement && (
         <CreateAccount
+          user={user}
           close={triggerAccountManagement}
           setTriggerAccountManagement={setTriggerAccountManagement}
         />
