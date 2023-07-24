@@ -15,8 +15,10 @@ import { SiGoogleclassroom } from "react-icons/si";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { FaUserCheck } from "react-icons/fa";
 import CreateAccount from "../../components/form/school/createAccount";
+import { GetAllTeachersNumber } from "../../service/school/teacher";
+import NumberAnimated from "../../components/overview/numberAnimated";
 
-function Index({ user, error }) {
+function Index({ user, error, teachersNumber }) {
   const [currentDate, setCurrentDate] = useState();
   const [currentTime, setCurrentTime] = useState();
   const [triggerAccountManagement, setTriggerAccountManagement] =
@@ -99,7 +101,8 @@ function Index({ user, error }) {
             </div>
             <div className="flex flex-col  items-start">
               <span className="font-semibold text-2xl text-black font-Kanit group-hover:text-white">
-                5,000 <span className="text-sm font-normal">บัญชี</span>
+                <NumberAnimated n={teachersNumber} />{" "}
+                <span className="text-sm font-normal">บัญชี</span>
               </span>
               <span className="font-normal text-slate-500 font-Kanit text-base group-hover:text-slate-100">
                 เพิ่ม/จัดการ บัญชี
@@ -180,10 +183,12 @@ function Index({ user, error }) {
 }
 
 export default Index;
+
 export async function getServerSideProps(context) {
   const { req, res, query } = context;
   const cookies = parseCookies(context);
   const accessToken = cookies.access_token;
+
   if (!accessToken && !query.access_token) {
     return {
       props: {
@@ -198,7 +203,6 @@ export async function getServerSideProps(context) {
       const userData = await GetUserCookie({
         access_token: query.access_token,
       });
-
       const user = userData.data;
 
       if (user.role === "TEACHER") {
@@ -210,12 +214,17 @@ export async function getServerSideProps(context) {
             },
           },
         };
+      } else if (user.role === "SCHOOL") {
+        const teachersNumber = await GetAllTeachersNumber({
+          access_token: accessToken,
+        });
+        return {
+          props: {
+            user,
+            teachersNumber,
+          },
+        };
       }
-      return {
-        props: {
-          user,
-        },
-      };
     } catch (err) {
       return {
         props: {
@@ -232,7 +241,6 @@ export async function getServerSideProps(context) {
         access_token: accessToken,
       });
       const user = userData.data;
-
       if (user.role !== "SCHOOL") {
         return {
           props: {
@@ -244,16 +252,20 @@ export async function getServerSideProps(context) {
           },
         };
       } else if (user.role === "SCHOOL") {
+        const teachersNumber = await GetAllTeachersNumber({
+          access_token: accessToken,
+        });
         return {
           props: {
+            teachersNumber,
             user,
           },
         };
       }
     } catch (err) {
+      console.log(err);
       return {
         props: {
-          user,
           error: {
             statusCode: 401,
             message: "unauthorized",

@@ -46,20 +46,29 @@ function Index() {
         )
         .then(setLoading(true));
 
-      if (data.data.access_token) {
+      if (data.data.token.access_token) {
         setLoading(false);
         Swal.fire({
           icon: "success",
           title: "Login success",
         });
-        localStorage.setItem("access_token", data.data.access_token);
-        router.push(
-          `/classroom/?access_token=${data.data.access_token}`,
-          undefined,
-          {
-            shallow: true,
-          }
-        );
+        if (data.data.user.IsResetPassword === true) {
+          router.push(
+            `/auth/new-password?access_token=${data.data.token.access_token}`,
+            undefined,
+            {
+              shallow: true,
+            }
+          );
+        } else if (data.data.user.IsResetPassword === false) {
+          router.push(
+            `/classroom/?access_token=${data.data.token.access_token}`,
+            undefined,
+            {
+              shallow: true,
+            }
+          );
+        }
       }
     } catch (err) {
       setLoading(false);

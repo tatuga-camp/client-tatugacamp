@@ -7,13 +7,15 @@ import {
   OutlinedInput,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { CreateAccount } from "../../../service/school/teacher";
 import Swal from "sweetalert2";
+import Loading from "../../loading/loading";
 
 function CreateAccountForm({ teachers }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [teacherData, setTeacherData] = useState({
     email: "",
     password: "",
@@ -24,7 +26,7 @@ function CreateAccountForm({ teachers }) {
   });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
-
+  const [require, setRequire] = useState(true);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const validatePassword = () => {
@@ -45,12 +47,27 @@ function CreateAccountForm({ teachers }) {
     });
   };
 
+  useEffect(() => {
+    if (
+      teacherData.email !== "" &&
+      teacherData.lastName !== "" &&
+      teacherData.password !== "" &&
+      teacherData.phone !== "" &&
+      teacherData.school !== ""
+    ) {
+      setRequire(() => false);
+    } else {
+      setRequire(() => true);
+    }
+  }, [teacherData]);
+
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
   };
 
   const handleSummitCreateTeacher = async () => {
     try {
+      setLoading(() => true);
       await CreateAccount({
         email: teacherData.email,
         password: teacherData.password,
@@ -70,11 +87,17 @@ function CreateAccountForm({ teachers }) {
         };
       });
       teachers.refetch();
+      setLoading(() => false);
       setConfirmPassword(() => "");
       Swal.fire("success", "success", "success");
     } catch (err) {
+      setLoading(() => false);
       console.log(err);
-      Swal.fire("Error", err.props.response.data.message, "error");
+      Swal.fire(
+        "Error",
+        err?.props?.response?.data?.message.toString(),
+        "error"
+      );
     }
   };
   return (
@@ -180,12 +203,16 @@ function CreateAccountForm({ teachers }) {
           />
         </Box>
       </div>
-      {passwordError ? (
+      {passwordError || require ? (
         <div
           type="button"
           className="bg-slate-400 p-2 rounded-xl drop-shadow-md text-white px-10"
         >
           CREATE
+        </div>
+      ) : loading ? (
+        <div>
+          <Loading />
         </div>
       ) : (
         <button
