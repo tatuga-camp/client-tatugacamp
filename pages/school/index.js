@@ -14,13 +14,20 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 import { SiGoogleclassroom } from "react-icons/si";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { FaUserCheck } from "react-icons/fa";
-import CreateAccount from "../../components/form/school/createAccount";
 import { GetAllTeachersNumber } from "../../service/school/teacher";
 import NumberAnimated from "../../components/overview/numberAnimated";
+import { useQuery } from "react-query";
+import { GetTopTenAbsent } from "../../service/school/attendance";
+import { Skeleton } from "@mui/material";
+import ShowStudentInfo from "../../components/form/school/student/showStudentInfo";
+import { useRouter } from "next/router";
+import { GetAllClassroomNumber } from "../../service/school/classroom";
 
-function Index({ user, error, teachersNumber }) {
-  const [currentDate, setCurrentDate] = useState();
-  const [currentTime, setCurrentTime] = useState();
+function Index({ user, error, teachersNumber, classroomNumber }) {
+  const [page, setPage] = useState(1);
+  const router = useRouter();
+  const [triggerStudentInfo, setTriggerStudentInfo] = useState(false);
+  const [currentStudentInfo, setCurrentStudentInfo] = useState();
   const [triggerAccountManagement, setTriggerAccountManagement] =
     useState(false);
   const [sideMenus, setSideMenus] = useState(() => {
@@ -30,34 +37,19 @@ function Index({ user, error, teachersNumber }) {
       return sideMenusEnglish;
     }
   });
+  const topTenAbsent = useQuery(["top-ten-absent"], () => GetTopTenAbsent(), {
+    enabled: false,
+  });
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentDate(() => {
-        const date = new Date();
-        const formattedCreateDateTime = date.toLocaleString("th-TH", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        });
-        return formattedCreateDateTime;
-      });
-      setCurrentTime(() => {
-        const date = new Date();
-        const formattedCreateDateTime = date.toLocaleString("th-TH", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        });
-        return formattedCreateDateTime;
-      });
-    }, 1000);
-
-    // Clear the interval when the component is unmounted
-    return () => {
-      clearInterval(timer);
-    };
+    topTenAbsent.refetch();
   }, []);
+
+  const handleTriggerStudentInfo = ({ student }) => {
+    document.body.style.overflow = "hidden";
+    setTriggerStudentInfo(() => true);
+    setCurrentStudentInfo(() => student);
+  };
 
   if (error?.statusCode === 401) {
     return <Unauthorized />;
@@ -67,117 +59,86 @@ function Index({ user, error, teachersNumber }) {
 
   return (
     <Layout
-      currentTime={currentTime}
-      currentDate={currentDate}
       sideMenus={sideMenus}
       user={user}
+      teachersNumber={teachersNumber}
+      classroomNumber={classroomNumber}
+      router={router}
     >
       <Head>
         <title>tatuga school</title>
       </Head>
-      {triggerAccountManagement && (
-        <CreateAccount
-          user={user}
-          close={triggerAccountManagement}
-          setTriggerAccountManagement={setTriggerAccountManagement}
-        />
-      )}
-      <main className="w-full h-screen flex justify-center items-center font-Poppins bg-slate-100 ">
-        <div className="w-11/12 h-[90%] grid grid-cols-8 grid-rows-5 gap-5 ">
-          <button
-            onClick={() => {
-              setTriggerAccountManagement(() => true);
-              document.body.style.overflow = "hidden";
-            }}
-            className="row-span-1 col-span-2 transition duration-150 hover:bg-blue-400 group bg-white drop-shadow-lg
-             rounded-lg
-           flex justify-center gap-10 items-center relative"
+
+      <main className="w-full py-10 gap-10 h-max flex flex-col justify-center items-center font-Poppins  ">
+        {triggerStudentInfo && (
+          <ShowStudentInfo
+            setTriggerStudentInfo={setTriggerStudentInfo}
+            currentStudentInfo={currentStudentInfo}
+          />
+        )}
+        <div className=" flex w-11/12 ">
+          <div
+            className="bg-white w-96 ring-2 ring-black drop-shadow-md p-5 rounded-lg
+           flex flex-col justify-start items-center"
           >
-            <div
-              className="flex justify-center items-center text-3xl 
-            w-16 h-16 rounded-full text-blue-600 group-hover:text-black group-hover:bg-white transition bg-blue-100 "
-            >
-              <AiOutlineUserAdd />
-            </div>
-            <div className="flex flex-col  items-start">
-              <span className="font-semibold text-2xl text-black font-Kanit group-hover:text-white">
-                <NumberAnimated n={teachersNumber} />{" "}
-                <span className="text-sm font-normal">บัญชี</span>
-              </span>
-              <span className="font-normal text-slate-500 font-Kanit text-base group-hover:text-slate-100">
-                เพิ่ม/จัดการ บัญชี
-              </span>
-            </div>
-          </button>
-          <button
-            className="row-span-1 col-span-2 transition duration-150 hover:bg-green-400 group bg-white drop-shadow-lg rounded-lg
-           flex justify-center gap-10 items-center relative"
-          >
-            <div
-              className="flex justify-center items-center text-3xl 
-            w-16 h-16 rounded-full text-green-600 group-hover:text-black
-             group-hover:bg-white transition bg-green-100 "
-            >
-              <SiGoogleclassroom />
-            </div>
-            <div className="flex flex-col  items-start">
-              <span className="font-semibold text-2xl text-black font-Kanit group-hover:text-white">
-                1,500 <span className="text-sm font-normal">ห้องเรียน</span>
-              </span>
-              <span className="font-normal text-slate-500 font-Kanit text-base group-hover:text-slate-100">
-                ตรวจสอบห้องเรียน
-              </span>
-            </div>
-          </button>
-          <button
-            className="row-span-1 col-span-2 transition duration-150 hover:bg-pink-400 group bg-white drop-shadow-lg rounded-lg
-           flex justify-center gap-10 items-center relative"
-          >
-            <div
-              className="flex justify-center items-center text-3xl 
-            w-16 h-16 rounded-full text-pink-600 group-hover:text-black
-             group-hover:bg-white transition bg-pink-100 "
-            >
-              <BsFillPeopleFill />
-            </div>
-            <div className="flex flex-col  items-start">
-              <span className="font-semibold text-2xl text-black font-Kanit group-hover:text-white">
-                3,556 <span className="text-sm font-normal">นักเรียน</span>
-              </span>
-              <span className="font-normal text-slate-500 font-Kanit text-base group-hover:text-slate-100">
-                ตรวจสอบนักเรียน
-              </span>
-            </div>
-          </button>
-          <button
-            className="row-span-1 col-span-2 transition duration-150 hover:bg-orange-400 group bg-white drop-shadow-lg rounded-lg
-           flex justify-center gap-10 items-center relative"
-          >
-            <div
-              className="flex justify-center items-center text-3xl 
-            w-16 h-16 rounded-full text-orange-600 group-hover:text-black
-             group-hover:bg-white transition bg-orange-100 "
-            >
-              <FaUserCheck />
-            </div>
-            <div className="flex flex-col  items-start">
-              <span className="font-semibold text-lg text-black font-Kanit group-hover:text-white">
-                ตรวจสอบการเข้าเรียน
-              </span>
-              <span className="font-normal text-slate-500 font-Kanit text-base group-hover:text-slate-100">
-                ของผู้เรียน
-              </span>
-            </div>
-          </button>
-          <div className="bg-white drop-shadow-md row-span-2 rounded-lg col-span-6"></div>
-          <div className="bg-white drop-shadow-md row-span-4 p-5 rounded-lg col-span-2 flex flex-col justify-start items-center">
-            <h3 className="font-Kanit">ขาดเรียน 10 อันดับแรก </h3>
-            <div className="w-full h-full bg-slate-400"></div>
+            <h3 className="font-Kanit font-normal text-blue-600 mb-3">
+              ขาดเรียน 10 อันดับแรก{" "}
+            </h3>
+            <ul className="w-max h-full  grid list-none pl-0">
+              {topTenAbsent.isLoading ? (
+                <div className="flex flex-col gap-3">
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                </div>
+              ) : (
+                topTenAbsent.data?.map((list, index) => {
+                  return (
+                    <li
+                      onClick={() =>
+                        handleTriggerStudentInfo({ student: list })
+                      }
+                      className="w-full transition p-2 duration-0  cursor-pointer hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
+                      key={index}
+                    >
+                      <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
+                        <Image
+                          src={list.student.picture}
+                          layout="fill"
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-0  items-start justify-center">
+                        <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
+                          <span className="truncate">
+                            {list.student.firstName}
+                          </span>
+                          <span className="truncate ">
+                            {list.student?.lastName}
+                          </span>
+                        </div>
+                        <div className="flex gap-5">
+                          <span className="text-gray-600 text-sm font-normal">
+                            เลขที่ {list.student.number}
+                          </span>
+                          <span className="text-red-600 text-sm font-bold">
+                            ขาดเรียน {list.numberAbsent} ครั้ง
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="w-full h-[1px] rounded-full bg-slate-200 absolute bottom-0 left-0"></div>
+                    </li>
+                  );
+                })
+              )}
+            </ul>
           </div>
-          <div className="bg-white drop-shadow-md row-span-2 rounded-lg col-span-4"></div>
-          <div className="bg-white drop-shadow-md row-span-2 rounded-lg col-span-2"></div>
         </div>
       </main>
+
+      <footer></footer>
     </Layout>
   );
 }
@@ -218,10 +179,14 @@ export async function getServerSideProps(context) {
         const teachersNumber = await GetAllTeachersNumber({
           access_token: accessToken,
         });
+        const classroomNumber = await GetAllClassroomNumber({
+          access_token: accessToken,
+        });
         return {
           props: {
             user,
             teachersNumber,
+            classroomNumber,
           },
         };
       }
@@ -255,8 +220,12 @@ export async function getServerSideProps(context) {
         const teachersNumber = await GetAllTeachersNumber({
           access_token: accessToken,
         });
+        const classroomNumber = await GetAllClassroomNumber({
+          access_token: accessToken,
+        });
         return {
           props: {
+            classroomNumber,
             teachersNumber,
             user,
           },

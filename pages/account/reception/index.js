@@ -20,27 +20,8 @@ function Index({ user, error }) {
   const [userData, setUserData] = useState({
     firstName: user.firstName,
     lastName: user?.lastName,
-    role: "TEACHER",
     language: options[0],
   });
-  const roles = [
-    {
-      role: "TEACHER",
-      title:
-        userData.language === "Thai"
-          ? "คุณครู"
-          : userData.language === "English" && "A teacher",
-      emoji: "👩‍🏫",
-    },
-    {
-      role: "SCHOOL",
-      title:
-        userData.language === "Thai"
-          ? "โรงเรียน"
-          : userData.language === "English" && "A school",
-      emoji: "🏫",
-    },
-  ];
 
   const handleSaveUser = async () => {
     try {
@@ -71,7 +52,7 @@ function Index({ user, error }) {
   }
 
   return (
-    <div className="h-full pb-20  bg-gradient-to-t from-blue-100 to-white">
+    <div className="h-screen  bg-gradient-to-t from-blue-100 to-white">
       <Navbar />
       <div className="w-full flex justify-start items-center flex-col  font-Kanit">
         <header className="bg-white w-max h-max mt-40 md:mt-10 max-w-xs md:max-w-5xl drop-shadow-md p-3 px-10 rounded-lg ring-2">
@@ -142,40 +123,6 @@ function Index({ user, error }) {
               />
             </div>
           </div>
-          <div className="font-semibold text-4xl">
-            {userData.language === "Thai"
-              ? "คุณคือใคร ?"
-              : userData.language === "English" && "Who are you?"}
-          </div>
-          <ul className="pl-0 list-none flex-col md:flex-row flex gap-5">
-            {roles.map((role, index) => {
-              return (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setUserData((prev) => {
-                      return {
-                        ...prev,
-                        role: role.role,
-                      };
-                    });
-                    setActiveRole(() => index);
-                  }}
-                  className={`w-60 h-40 p-3 hover:bg-orange-200 cursor-pointer hover:scale-105 hover:ring-2 active:ring-4
-            transition duration-150 group bg-white rounded-2xl flex flex-col gap-2 justify-center 
-            items-center drop-shadow-xl ${
-              activeRole === index ? "ring-4 ring-black" : "ring-0"
-            }`}
-                >
-                  <span className="text-6xl">{role.emoji}</span>
-
-                  <span className="text-2xl text-blue-400 font-medium group-hover:text-black">
-                    {role.title}
-                  </span>
-                </button>
-              );
-            })}
-          </ul>
           <button
             onClick={handleSaveUser}
             className="w-max p-2 hover:scale-110 transition duration-150 flex items-center gap-1 text-lg bg-green-400 uppercase text-white rounded-lg ring-2"

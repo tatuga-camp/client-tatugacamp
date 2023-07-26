@@ -24,15 +24,16 @@ export async function RetrieveClassroom({ classroomCode }) {
   }
 }
 
-export async function GetAllClassroom() {
+export async function GetAClassroom({ teacherId, classroomId }) {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.get(
-      `${process.env.Server_Url}/user/school/get-classrooms`,
+      `${process.env.Server_Url}/user/school/classroom/get-classroom`,
       {
         params: {
-          classroomCode: classroomCode,
+          teacherId: teacherId,
+          classroomId: classroomId,
         },
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +41,46 @@ export async function GetAllClassroom() {
         },
       }
     );
-    return classroom;
+    return classroom.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+export async function GetAllClassroom({ page }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const classroom = await axios.get(
+      `${process.env.Server_Url}/user/school/classroom/get-classrooms`,
+      {
+        params: {
+          page: page,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    return classroom.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+export async function GetAllClassroomNumber({ access_token }) {
+  try {
+    const classroom = await axios.get(
+      `${process.env.Server_Url}/user/school/classroom/get-classrooms-number`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    return classroom.data;
   } catch (err) {
     throw new Error(err);
   }
