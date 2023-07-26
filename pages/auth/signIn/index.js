@@ -121,36 +121,6 @@ function Index() {
         className="font-sans h-screen  w-full bg-[url('/background-Auth.svg')] bg-no-repeat bg-cover
      flex flex-col justify-center items-center"
       >
-<<<<<<< HEAD
-        <div
-          className="w-11/12 p-2 md:p-0 md:w-96  md:h-max md:pb-20 border-2 bg-white border-black flex flex-col justify-start items-center 
-        md:border-solid broder-black relative rounded-xl bg-transparent md:bg-white md:drop-shadow-md "
-        >
-          <div
-            className=" w-28 h-16 border-t-0 rounded-br-3xl border-black  rounded-bl-3xl px-5 
-           border-y-2 border-x-2 md:border-solid absolute right-0 left-0 mx-auto -top-[2px] "
-          >
-            <div className="w-full h-2 bg-white  absolute right-0 left-0 mx-auto -top-[2px]"></div>
-            <div className="w-28  h-28 flex justify-center items-center absolute -top-14 right-0 left-0">
-              <div className="w-20 h-20 ">
-                <Hands />
-              </div>
-            </div>
-          </div>
-          <div className="mt-20">
-            <span className="font-sans font-bold text-2xl  tracking-widest">
-              sign in
-            </span>
-          </div>
-          <form
-            onSubmit={handleSubmit}
-            className=" w-80 flex flex-col justify-center items-center"
-          >
-            <div className="flex flex-col relative">
-              <label className="font-sans font-normal">Username</label>
-              <input
-                className="w-60 h-7 rounded-md border-none  ring-2 bg-[#FFC800] pl-10 
-=======
         <div className="md:w-[28rem] flex relative justify-center h-max pt-12">
           <div className="w-28 h-28 absolute -top-3 z-20">
             <Hands />
@@ -178,7 +148,6 @@ function Index() {
                 <label className="font-sans font-normal">Username</label>
                 <input
                   className="w-60 h-7 rounded-md border-none bg-[#FFC800] pl-10 
->>>>>>> 70a24b6530e4324248693cc96c21df518b1a3d07
                 placeholder:italic placeholder:font-light"
                   type="text"
                   name="username"
@@ -192,17 +161,10 @@ function Index() {
                 </div>
               </div>
 
-<<<<<<< HEAD
-            <div className="flex flex-col relative mt-2">
-              <label className="font-sans font-normal">Password</label>
-              <input
-                className="w-60 h-7 rounded-md border-none ring-2 bg-[#FFC800] pl-10 
-=======
               <div className="flex flex-col relative mt-2">
                 <label className="font-sans font-normal">Password</label>
                 <input
                   className="w-60 h-7 rounded-md border-none bg-[#FFC800] pl-10 
->>>>>>> 70a24b6530e4324248693cc96c21df518b1a3d07
                 placeholder:italic placeholder:font-light"
                   type="password"
                   name="password"
@@ -250,32 +212,6 @@ function Index() {
             text-md cursor-pointer hover:bg-[#FFC800] active:border-2 active:text-black active:border-gray-300
              active:border-solid  focus:border-2 
             focus:border-solid"
-<<<<<<< HEAD
-              >
-                <Loading />
-              </button>
-            )}
-          </form>
-          <div className="w-80">
-            {brower !== "scoial media browser" ? (
-              <a
-                onClick={GetAccesTokenGoogle}
-                className="w-full  h-9 mt-2 rounded-full bg-white text-black font-sans font-bold
-              text-md cursor-pointer border-2 border-solid border-black hover:scale-110 transition duration-200  ease-in-out
-                active:border-2 active:text-black active:border-gray-300
-               active:border-solid  focus:border-2 
-              focus:border-solid flex items-center justify-center gap-x-2"
-              >
-                <div className="flex items-center justify-center text-2xl">
-                  <FcGoogle />
-                </div>
-                <span>continue with Google</span>
-              </a>
-            ) : (
-              <a
-                className="w-full  h-9 mt-2 rounded-full bg-gray-200 text-black font-sans font-bold
-            text-md cursor-pointer border-2 border-solid   transition duration-200  ease-in-out
-=======
                 >
                   <Loading />
                 </button>
@@ -300,7 +236,6 @@ function Index() {
                 <a
                   className="w-full  h-9 mt-2 rounded-full bg-gray-200 text-black font-sans font-bold
             text-md cursor-pointer border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
->>>>>>> 70a24b6530e4324248693cc96c21df518b1a3d07
               active:border-2 active:text-black active:border-gray-300
              active:border-solid  focus:border-2 
             focus:border-solid flex items-center justify-center gap-x-2"
