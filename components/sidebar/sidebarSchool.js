@@ -8,30 +8,17 @@ function SidebarSchool({ user, sideMenus, triggersidebar, close }) {
   const pathname = router.pathname; // e.g. "/classroom/setting"
 
   const lastRoute = pathname.split("/").pop();
-  console.log(lastRoute);
   const [isClick, setIsClick] = useState();
   useEffect(() => {
     if (lastRoute === "setting") {
       setIsClick(1);
-    } else if (lastRoute === "subscriptions") {
-      setIsClick(1);
     } else if (lastRoute === "school") {
       setIsClick(0);
-    } else if (lastRoute === "[classroomId]") {
-      setIsClick(1);
-    } else if (lastRoute === "assignment") {
-      setIsClick(2);
-    } else if (lastRoute === "timer") {
-      setIsClick(2);
-    } else if (lastRoute === "attendance") {
-      setIsClick(3);
-    } else if (lastRoute === "scores") {
-      setIsClick(4);
     }
   }, []);
 
   return (
-    <div className="fixed z-20">
+    <div className="fixed z-40">
       <div
         className={`bg-white w-[280px] h-full rounded-tr-md  
         transition duration-300  rounded-br-md fixed font-Kanit  top-0 left-0 z-20`}

@@ -110,7 +110,7 @@ function SettingAccountForm({ selectTeacher, teachers }) {
   };
   return (
     <div className="w-96 p-3 h-full flex flex-col items-center justify-start ring-2 gap-3 rounded-3xl">
-      <div className="w-24  h-24  bg-blue-400 flex justify-center items-center text-white mt-2 rounded-md">
+      <div className="w-24  h-24 relative  bg-blue-400 flex justify-center items-center text-white mt-2 rounded-md">
         {selectTeacher?.picture ? (
           <Image
             src={selectTeacher.picture}

@@ -344,7 +344,7 @@ function Index({ error, user }) {
             {user.language === "English" &&
               `The teacher has taught this class for ${attendances?.data?.data?.[0]?.sum} periods`}
           </span>
-          {attendances?.data?.data[0].dateTimes.length === 0 && (
+          {attendances?.data?.data?.[0]?.dateTimes.length === 0 && (
             <div className="w-full flex items-center justify-center h-96 text-8xl">
               <span>ไม่มีข้อมูล</span>
               <div className="text-red-400">
