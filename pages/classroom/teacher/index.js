@@ -27,6 +27,8 @@ import { myPortableTextComponents } from "../../../data/portableContent";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import Loading from "../../../components/loading/loading";
+import SchoolOnly from "../../../components/error/schoolOnly";
+import TeacherOnly from "../../../components/error/teacherOnly";
 
 function Index({ error, user, whatsNews }) {
   const [sideMenus, setSideMenus] = useState(() => {
@@ -196,6 +198,8 @@ function Index({ error, user, whatsNews }) {
   };
   if (error?.statusCode === 401) {
     return <Unauthorized />;
+  } else if (error?.statusCode === 403) {
+    return <TeacherOnly user={user} />;
   }
 
   const handleReadNews = () => {
@@ -627,7 +631,18 @@ export async function getServerSideProps(context) {
         access_token: query.access_token,
       });
       const user = userData.data;
-
+      if (user.role === "SCHOOL") {
+        return {
+          props: {
+            user,
+            whatsNews: sortDateWhatsNews,
+            error: {
+              statusCode: 403,
+              message: "teacherOnly",
+            },
+          },
+        };
+      }
       return {
         props: {
           user,
@@ -650,6 +665,18 @@ export async function getServerSideProps(context) {
         access_token: accessToken,
       });
       const user = userData.data;
+      if (user.role === "SCHOOL") {
+        return {
+          props: {
+            user,
+            whatsNews: sortDateWhatsNews,
+            error: {
+              statusCode: 403,
+              message: "teacherOnly",
+            },
+          },
+        };
+      }
       return {
         props: {
           user,
