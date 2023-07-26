@@ -541,8 +541,8 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
               <div className="bg-white/40 backdrop-blur-sm p-3 rounded-lg ml-5">
                 🥇
               </div>
-              <div className="flex items-start justify-center flex-col font-sans">
-                <span className="font-bold text-md md:text-md lg:text-2xl">
+              <div className="flex items-start justify-center flex-col font-sans truncate">
+                <span className="font-bold text-md md:text-md lg:text-2xl truncate">
                   {highestScorePlayer?.firstName}
                 </span>
                 <span className="text-sm font-medium">the highest score</span>
