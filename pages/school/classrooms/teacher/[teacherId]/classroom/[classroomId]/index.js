@@ -72,6 +72,9 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
         <div className="w-full flex justify-center pb-10">
           <div className="w-5/12 h-max flex flex-col relative rounded-lg overflow-hidden drop-shadow-md bg-white px-5  items-center justify-center ">
             <div className="w-full h-3/6 py-5 bg-blue-500 flex flex-col items-start justify-center px-5 ">
+              <span className="font-normal text-white text-base">
+                รายละเอียดห้องเรียน
+              </span>
               <span className="font-semibold text-white text-3xl">
                 {classroom?.data?.title}
               </span>
