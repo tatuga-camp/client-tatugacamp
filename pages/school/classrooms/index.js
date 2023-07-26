@@ -86,19 +86,20 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                       {classroom.title}
                     </span>
                     <div className="flex flex-col truncate text-white">
-                      <span>ม.6/2</span>
-                      <span>ท41564</span>
+                      <span>{classroom.level}</span>
+                      <span>{classroom?.description}</span>
                     </div>
                   </div>
                 </div>
                 <div className="flex bg-slate-50  justify-start items-start w-full h-3/6  ">
                   <div className="flex flex-col ml-5 truncate w-8/12 mt-5 text-left text-slate-700">
                     <span className="font-semibold">
-                      สอนโดย นายเพิ่มลาภ โพธิ์หล้า
+                      สอนโดย {classroom?.user.firstName}{" "}
+                      {classroom?.user?.lastName}
                     </span>
-                    <span className="font-light">permlap@tatugacamp.com</span>
-                    <span>0610277960</span>
-                    <span>โรงเรียนสุรธรรมพิทักษ์</span>
+                    <span className="font-light">{classroom?.user.email}</span>
+                    <span>{classroom?.user?.phone}</span>
+                    <span>{classroom?.user?.school}</span>
                   </div>
                 </div>
               </button>
