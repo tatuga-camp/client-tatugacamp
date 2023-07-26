@@ -278,7 +278,7 @@ function AttendanceChecker({ close, students, language }) {
                 cursor-pointer
                justify-center h-max px-8 py-2 rounded-lg font-Poppins"
                 >
-                  sumit
+                  submit
                 </button>
               )}
             </div>
