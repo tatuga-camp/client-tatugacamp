@@ -11,7 +11,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
   top-0 right-0 left-0 bottom-0 m-auto fixed flex justify-center items-center"
     >
       <div
-        className=" w-max  gap-8 max-w-5xl h-80 font-Kanit flex flex-col justify-start bg-white rounded-lg
+        className=" w-max  gap-8 max-w-5xl h-max font-Kanit flex flex-col justify-start bg-white rounded-lg
        drop-shadow-xl p-5 "
       >
         <div className="flex gap-5">
