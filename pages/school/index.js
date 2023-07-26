@@ -17,7 +17,11 @@ import { FaUserCheck } from "react-icons/fa";
 import { GetAllTeachersNumber } from "../../service/school/teacher";
 import NumberAnimated from "../../components/overview/numberAnimated";
 import { useQuery } from "react-query";
-import { GetTopTenAbsent } from "../../service/school/attendance";
+import {
+  GetTopTenAbsent,
+  GetTopTenHoliday,
+  GetTopTenSick,
+} from "../../service/school/attendance";
 import { Skeleton } from "@mui/material";
 import ShowStudentInfo from "../../components/form/school/student/showStudentInfo";
 import { useRouter } from "next/router";
@@ -40,9 +44,20 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
   const topTenAbsent = useQuery(["top-ten-absent"], () => GetTopTenAbsent(), {
     enabled: false,
   });
-
+  const topTenSick = useQuery(["top-ten-sick"], () => GetTopTenSick(), {
+    enabled: false,
+  });
+  const topTenHoliday = useQuery(
+    ["top-ten-holiday"],
+    () => GetTopTenHoliday(),
+    {
+      enabled: false,
+    }
+  );
   useEffect(() => {
     topTenAbsent.refetch();
+    topTenSick.refetch();
+    topTenHoliday.refetch();
   }, []);
 
   const handleTriggerStudentInfo = ({ student }) => {
@@ -76,15 +91,15 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
             currentStudentInfo={currentStudentInfo}
           />
         )}
-        <div className=" flex w-11/12 ">
+        <div className=" flex w-11/12 gap-5 justify-center ">
           <div
             className="bg-white w-96 ring-2 ring-black drop-shadow-md p-5 rounded-lg
            flex flex-col justify-start items-center"
           >
-            <h3 className="font-Kanit font-normal text-blue-600 mb-3">
+            <h3 className="font-Kanit font-normal text-red-600 mb-3">
               ขาดเรียน 10 อันดับแรก{" "}
             </h3>
-            <ul className="w-max h-full  grid list-none pl-0">
+            <ul className="w-max h-max  grid list-none pl-0">
               {topTenAbsent.isLoading ? (
                 <div className="flex flex-col gap-3">
                   <Skeleton variant="rectangular" width="100%" height={20} />
@@ -124,6 +139,124 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                           </span>
                           <span className="text-red-600 text-sm font-bold">
                             ขาดเรียน {list.numberAbsent} ครั้ง
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="w-full h-[1px] rounded-full bg-slate-200 absolute bottom-0 left-0"></div>
+                    </li>
+                  );
+                })
+              )}
+            </ul>
+          </div>
+
+          <div
+            className="bg-white w-96 ring-2 ring-black drop-shadow-md p-5 rounded-lg
+           flex flex-col justify-start items-center"
+          >
+            <h3 className="font-Kanit font-normal text-blue-600 mb-3">
+              สถิติป่วย 10 อันดับแรก{" "}
+            </h3>
+            <ul className="w-max h-max  grid list-none pl-0">
+              {topTenSick.isLoading ? (
+                <div className="flex flex-col gap-3">
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                </div>
+              ) : (
+                topTenSick.data?.map((list, index) => {
+                  return (
+                    <li
+                      onClick={() =>
+                        handleTriggerStudentInfo({ student: list })
+                      }
+                      className="w-full transition p-2 duration-0  cursor-pointer hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
+                      key={index}
+                    >
+                      <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
+                        <Image
+                          src={list.student.picture}
+                          layout="fill"
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-0  items-start justify-center">
+                        <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
+                          <span className="truncate">
+                            {list.student.firstName}
+                          </span>
+                          <span className="truncate ">
+                            {list.student?.lastName}
+                          </span>
+                        </div>
+                        <div className="flex gap-5">
+                          <span className="text-gray-600 text-sm font-normal">
+                            เลขที่ {list.student.number}
+                          </span>
+                          <span className="text-blue-600 text-sm font-bold">
+                            ป่วย {list.numberSick} ครั้ง
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="w-full h-[1px] rounded-full bg-slate-200 absolute bottom-0 left-0"></div>
+                    </li>
+                  );
+                })
+              )}
+            </ul>
+          </div>
+
+          <div
+            className="bg-white w-96 ring-2 ring-black drop-shadow-md p-5 rounded-lg
+           flex flex-col justify-start items-center"
+          >
+            <h3 className="font-Kanit font-normal text-orange-600 mb-3">
+              สถิติลา 10 อันดับแรก{" "}
+            </h3>
+            <ul className="w-max h-max  grid list-none pl-0">
+              {topTenHoliday.isLoading ? (
+                <div className="flex flex-col gap-3">
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                  <Skeleton variant="rectangular" width="100%" height={20} />
+                </div>
+              ) : (
+                topTenHoliday.data?.map((list, index) => {
+                  return (
+                    <li
+                      onClick={() =>
+                        handleTriggerStudentInfo({ student: list })
+                      }
+                      className="w-full transition p-2 duration-0  cursor-pointer hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
+                      key={index}
+                    >
+                      <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
+                        <Image
+                          src={list.student.picture}
+                          layout="fill"
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-0  items-start justify-center">
+                        <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
+                          <span className="truncate">
+                            {list.student.firstName}
+                          </span>
+                          <span className="truncate ">
+                            {list.student?.lastName}
+                          </span>
+                        </div>
+                        <div className="flex gap-5">
+                          <span className="text-gray-600 text-sm font-normal">
+                            เลขที่ {list.student.number}
+                          </span>
+                          <span className="text-orange-600 text-sm font-bold">
+                            ลา {list.numberHoliday} ครั้ง
                           </span>
                         </div>
                       </div>

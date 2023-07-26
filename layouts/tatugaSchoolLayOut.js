@@ -111,21 +111,34 @@ function Layout({
                 pathname: "/school",
               });
             }}
-            className="  ring-2 ring-black row-span-1 col-span-2 transition duration-150 hover:bg-pink-400 group bg-white drop-shadow-lg rounded-lg
-           flex justify-center gap-10 items-center relative"
+            className={`ring-2 ring-black row-span-1 col-span-2 transition duration-150
+            ${lastRoute === "school" ? "bg-pink-400" : "bg-white"}
+            hover:bg-pink-400 group drop-shadow-lg rounded-lg
+           flex justify-center gap-10 items-center relative`}
           >
             <div
-              className="flex justify-center items-center text-3xl 
-            w-16 h-16 rounded-full text-pink-600 group-hover:text-black
-             group-hover:bg-white transition bg-pink-100 "
+              className={`flex justify-center items-center text-3xl 
+              ${lastRoute === "school" ? "text-black" : "text-pink-600"}
+            w-16 h-16 rounded-full  group-hover:text-black
+             group-hover:bg-white transition bg-pink-100 `}
             >
               <AiFillHome />
             </div>
             <div className="flex flex-col  items-start">
-              <span className="font-semibold text-2xl text-black font-Kanit group-hover:text-white">
+              <span
+                className={`
+               ${lastRoute === "school" ? "text-white" : "text-black"}
+              font-semibold text-2xl  font-Kanit group-hover:text-white`}
+              >
                 หน้าหลัก
               </span>
-              <span className="font-normal text-slate-500 font-Kanit text-base group-hover:text-slate-100">
+              <span
+                className={`
+                ${
+                  lastRoute === "school" ? "text-slate-100" : "text-slate-500 k"
+                }
+              font-normal font-Kanit text-base group-hover:text-slate-100`}
+              >
                 homepage
               </span>
             </div>

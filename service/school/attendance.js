@@ -24,6 +24,50 @@ export async function GetTopTenAbsent() {
   }
 }
 
+export async function GetTopTenSick() {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const topTen = await axios.get(
+      `${process.env.Server_Url}/user/school/attendance/top-10-sick`,
+      {
+        params: {
+          page: 1,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    return topTen.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+export async function GetTopTenHoliday() {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const topTen = await axios.get(
+      `${process.env.Server_Url}/user/school/attendance/top-10-holiday`,
+      {
+        params: {
+          page: 1,
+        },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    return topTen.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 export async function GetAttendanceClassroom({ classroomId, teacherId }) {
   try {
     const cookies = parseCookies();
