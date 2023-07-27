@@ -184,7 +184,7 @@ function Index() {
       >
         <div
           className="w-11/12 p-2 md:p-0 md:w-96  md:h-max md:pb-20 border-2 bg-white border-black flex flex-col justify-start items-center 
-        md:border-solid broder-black relative rounded-xl bg-transparent md:bg-white md:drop-shadow-md "
+        md:border-solid broder-black relative rounded-xl bg-transparent md:bg-white  "
         >
           <div
             className=" w-28 h-16 border-t-0 rounded-br-3xl border-black  rounded-bl-3xl px-5 
@@ -356,7 +356,7 @@ function Index() {
             {brower !== "scoial media browser" ? (
               <a
                 onClick={GetAccesTokenGoogle}
-                className="w-full  h-9 mt-2 rounded-full bg-white text-black font-sans font-bold
+                className="w-full  h-9 mt-2 rounded-full bg-white border-black text-black font-sans font-bold
               text-md cursor-pointer border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
                 active:border-2 active:text-black active:border-gray-300
                active:border-solid  focus:border-2 

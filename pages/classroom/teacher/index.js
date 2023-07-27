@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { MdDelete } from "react-icons/md";
-import { FcCheckmark, FcCancel } from "react-icons/fc";
+import { MdSchool } from "react-icons/md";
+import { FcCancel } from "react-icons/fc";
 import CreateClass from "../../../components/form/createClass";
 import { Popover } from "@headlessui/react";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import {
-  DeleteClassroom,
+  AchieveClassroom,
   DuplicateClassroom,
+  GetAllAchievedClassrooms,
   GetAllClassrooms,
+  UpdateClassroomColor,
 } from "../../../service/classroom";
-import Lottie from "lottie-react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import * as teacherAnimation from "../../../components/98349-teacher-in-classroom.json";
-import { GetUser, GetUserCookie } from "../../../service/user";
+import { GetUserCookie } from "../../../service/user";
 import Unauthorized from "../../../components/error/unauthorized";
-import { Skeleton } from "@mui/material";
+import { Pagination, Skeleton, listClasses } from "@mui/material";
 import Layout from "../../../layouts/schoolLayout";
 import { parseCookies } from "nookies";
 import Swal from "sweetalert2";
@@ -27,9 +27,31 @@ import { myPortableTextComponents } from "../../../data/portableContent";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import Loading from "../../../components/loading/loading";
-import SchoolOnly from "../../../components/error/schoolOnly";
 import TeacherOnly from "../../../components/error/teacherOnly";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { AiOutlineBgColors } from "react-icons/ai";
+import { SiGoogleclassroom } from "react-icons/si";
+import AchieveClassroomComponent from "../../../components/classroom/achieveClassroom";
 
+const classroomMenus = [
+  {
+    title: "Active classrooms",
+    icon: <SiGoogleclassroom />,
+    bgColorMain: "bg-blue-600",
+    bgColorSecond: "bg-blue-100",
+    textColorMain: "text-blue-600",
+    textColorSecond: "text-blue-100",
+  },
+  {
+    title: "Achieved classrooms",
+    icon: <MdSchool />,
+    color: "blue",
+    bgColorMain: "bg-green-600",
+    bgColorSecond: "bg-green-100",
+    textColorMain: "text-green-600",
+    textColorSecond: "text-green-100",
+  },
+];
 function Index({ error, user, whatsNews }) {
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === "Thai") {
@@ -39,43 +61,30 @@ function Index({ error, user, whatsNews }) {
     }
   });
   const router = useRouter();
+  const [selectedColor, setSelectedColor] = useState({
+    index: 0,
+    color: "",
+  });
   const [classroomState, setClassroomState] = useState([]);
+  const [page, setPage] = useState(1);
+  const [activeMenu, setActiveMenu] = useState(0);
   const [isViewNews, setIsViewNews] = useState(false);
   const [acceessFeature, setAccessFeature] = useState(false);
   const [creditClassroom, setCreditClassroom] = useState(5);
   const [loading, setLoading] = useState(false);
-  const classrooms = useQuery(["classrooms"], async () => {
-    const classrooms = await GetAllClassrooms();
-    setClassroomState(() => classrooms.data);
-    return classrooms;
-  });
-
-  const deleteClassroom = useMutation(async (classroomid) => {
-    setLoading(() => true);
-    const deleting = await DeleteClassroom(classroomid);
-    classrooms.refetch();
-    setLoading(() => false);
-    return deleting;
-  });
+  const classrooms = useQuery(
+    ["classrooms", page],
+    () => GetAllClassrooms({ page: page }),
+    { keepPreviousData: true }
+  );
+  const achievedClassrooms = useQuery(
+    ["achieved-classrooms", page],
+    () => GetAllAchievedClassrooms({ page: page }),
+    { keepPreviousData: true }
+  );
 
   useEffect(() => {
     if (user) {
-      // Swal.fire({
-      //   title: "มาร่วมกลุ่ม tatuga class ใน Facebook กัน!",
-      //   html:
-      //     "<span>Tatuga class - เว็บไซต์สำหรับจัดการชั้นเรียน by Tatuga camp</span>" +
-      //     "<br/>" +
-      //     "<span>ขอเชิญทุก ๆ ท่านเข้าร่วมกลุ่ม Facebook เพื่อทราบข้อมูลต่างๆ ได้รวดเร็วก่อนใครแถมยังมีเทคนิคการใช้งาน tatug class อีกด้วย!😁</span>" +
-      //     "<br/>" +
-      //     '<a  target=”_blank” href="https://www.facebook.com/groups/201281862869927/">เข้าร่วม</a> ' +
-      //     "<span> กดเลย</span>",
-
-      //   imageUrl:
-      //     "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png",
-      //   imageWidth: 100,
-      //   imageHeight: 100,
-      //   imageAlt: "Facebook icon",
-      // });
       const viewNews = localStorage.getItem("IsViewNews");
       if (viewNews === whatsNews[0]._id) {
         setIsViewNews(() => true);
@@ -85,17 +94,21 @@ function Index({ error, user, whatsNews }) {
     }
     classrooms.refetch();
   }, []);
-  const handleCheckPlan = () => {
-    const classroomNumber = classroomState.length;
 
+  useEffect(() => {
+    setClassroomState(() => classrooms?.data?.classrooms);
+  }, [classrooms.isFetching, page]);
+  const handleCheckPlan = () => {
+    const classroomNumber = classrooms?.data?.classroomsTotal;
     if (user.plan === "FREE" || user?.subscriptions !== "active") {
       setCreditClassroom(() => {
-        const credit = 5 - classroomState.length;
+        const credit = 5 - classrooms?.data?.classroomsTotal;
+
         if (credit > 0) {
           setAccessFeature(() => true);
           return credit;
         } else if (credit <= 0) {
-          if (classroomState.length === 0) {
+          if (classrooms?.data?.classroomsTotal === 0) {
             setAccessFeature(() => true);
           } else {
             setAccessFeature(() => false);
@@ -128,10 +141,11 @@ function Index({ error, user, whatsNews }) {
       });
     }
   };
+
   useEffect(() => {
-    if (classroomState?.length > 0) {
+    if (classrooms?.data?.classroomsTotal > 0) {
       handleCheckPlan();
-    } else if (classroomState?.length === 0 && user) {
+    } else if (classrooms?.data?.classroomsTotal === 0 && user) {
       if (user.plan === "FREE" || user.subscriptions !== "active") {
         setCreditClassroom(() => 5);
         setAccessFeature(() => true);
@@ -193,22 +207,63 @@ function Index({ error, user, whatsNews }) {
     }
   };
 
-  const style = {
-    height: 500,
+  //handle achieve classroom
+  const handleAchieveClassroom = async ({ classroomId }) => {
+    try {
+      setLoading(() => true);
+      await AchieveClassroom({ classroomId });
+      Swal.fire("success", "achieve classroom successfully", "success");
+      achievedClassrooms.refetch();
+      classrooms.refetch();
+      setLoading(() => false);
+    } catch (err) {
+      setLoading(() => false);
+      console.log(err);
+      Swal.fire(
+        "error",
+        err?.props?.response?.data?.message.toString(),
+        "error"
+      );
+    }
   };
+
+  const handleColorChange = ({ e, index }) => {
+    setSelectedColor(() => {
+      return {
+        color: e.target.value,
+        index: index,
+      };
+    }); // Update the state with the selected color
+  };
+  const handleUpdateClassroom = async ({ classroomId }) => {
+    try {
+      setLoading(() => true);
+      classrooms.refetch();
+      await UpdateClassroomColor({ classroomId, color: selectedColor.color });
+      Swal.fire("success", "update successfully", "success");
+      setLoading(() => false);
+    } catch (err) {
+      Swal.fire(
+        "error",
+        err?.props?.response?.data?.message.toString(),
+        "error"
+      );
+      setLoading(() => false);
+    }
+  };
+  const handleReadNews = () => {
+    localStorage.setItem("IsViewNews", whatsNews[0]._id);
+    setIsViewNews(() => true);
+  };
+
   if (error?.statusCode === 401) {
     return <Unauthorized />;
   } else if (error?.statusCode === 403) {
     return <TeacherOnly user={user} />;
   }
 
-  const handleReadNews = () => {
-    localStorage.setItem("IsViewNews", whatsNews[0]._id);
-    setIsViewNews(() => true);
-  };
-
   return (
-    <div className="bg-white lg:w-full lg:h-full md:h-full  font-Kanit">
+    <div className="w-full bg-gradient-to-t from-blue-400 to-blue-50  lg:w-full pb-40  lg:h-full md:h-full  font-Kanit">
       <Head>
         <meta property="og:title" content={`TaTuga class`} />
         <meta
@@ -234,7 +289,7 @@ function Index({ error, user, whatsNews }) {
       </Head>
 
       <div
-        className={`flex  w-full  bg-[url('/blob-scene-haikei.svg')] bg-no-repeat bg-fixed bg-cover ${
+        className={`flex    ${
           classroomState?.[0] ? "h-full pb-60 md:pb-80 lg:pb-40" : "h-screen"
         } `}
       >
@@ -243,7 +298,7 @@ function Index({ error, user, whatsNews }) {
 
         <Popover>
           {({ open }) => (
-            <div className="fixed hidden  bottom-20 z-20 right-7 md:flexflex justify-center items-end flex-col ">
+            <div className="fixed   bottom-20 z-20 right-7 flex justify-center items-end flex-col ">
               <Popover.Panel>
                 {({ close }) => {
                   return (
@@ -251,7 +306,7 @@ function Index({ error, user, whatsNews }) {
                       className=" bg-gradient-to-r  from-slate-50 to-blue-100 mb-2 p-5
              w-max max-w-3xl h-max max-h-96 rounded-xl overflow-y-auto"
                     >
-                      <ul className="list-none pl-0">
+                      <ul className="list-none pl-5">
                         {whatsNews.map((news) => {
                           const date = new Date(news._createdAt);
                           const options = {
@@ -297,7 +352,8 @@ function Index({ error, user, whatsNews }) {
               </Popover.Panel>
               <Popover.Button
                 onClick={handleReadNews}
-                className="flex justify-center items-center gap-2 group hover:ring-2 active:ring-4 hover:bg-slate-200 bg-white p-3 rounded-xl drop-shadow-md"
+                className="flex justify-center items-center gap-2 group hover:ring-2 active:ring-4
+                 hover:bg-slate-200 bg-white p-3 rounded-xl drop-shadow-md"
               >
                 <div className="relative flex items-center justify-center">
                   {!isViewNews && (
@@ -320,7 +376,7 @@ function Index({ error, user, whatsNews }) {
         <div
           className={`flex justify-center items-center md:items-start    lg:items-center  w-full h-full`}
         >
-          <div className="xl:w-full  h-max m-5  flex flex-col  justify-center items-center pb-14 ">
+          <div className="w-full  h-max flex flex-col  justify-center items-center pb-14 ">
             <header className="mt-28 md:mt-2  rounded-lg  p-0  md:p-5 md:px-10 xl:px-20 w-max  relative     ">
               <div className=" w-full  flex items-center justify-center   bg-transparent">
                 <div
@@ -392,12 +448,12 @@ function Index({ error, user, whatsNews }) {
                   )}
                 </Popover>
                 <div
-                  className="flex gap-3 mt-20 bg-white ring-2  w-80 md:w-max  rounded-lg p-2 items-center 
+                  className="flex gap-3 mt-20   w-80 md:w-max  rounded-lg p-2 items-center 
                 flex-col md:mt-10 justify-center "
                 >
                   {(user.plan === "FREE" ||
                     user.subscriptions !== "active") && (
-                    <div className="w-max p-3 bg-slate-500 text-white rounded-xl">
+                    <div className="w-max p-3  bg-slate-500 text-white rounded-xl">
                       <span>
                         {user.language === "Thai"
                           ? `สมาชิกฟรี  5 ห้อง`
@@ -419,8 +475,8 @@ function Index({ error, user, whatsNews }) {
                     )}
                   {user.plan === "TATUGA-PREMIUM" &&
                     user.subscriptions === "active" && (
-                      <div className="w-max p-3 bg-[#ffd700] text-black rounded-xl">
-                        <span>
+                      <div className="w-max p-3 bg-[#ffd700] ring-2 ring-white text-black rounded-xl">
+                        <span className="font-semibold text-blue-600">
                           {user.language === "Thai"
                             ? `สมาชิกพรีเมี่ยมสร้างห้องไม่จำกัด`
                             : user.language === "English" &&
@@ -432,7 +488,7 @@ function Index({ error, user, whatsNews }) {
                   user.subscriptions === "active" ? (
                     <div></div>
                   ) : (
-                    <div className="text-center flex flex-col h-max py-2 rounded-xl text-black ">
+                    <div className="text-center bg-white p-3 flex flex-col h-max py-2 rounded-xl text-black ">
                       <span
                         className={`${
                           acceessFeature
@@ -459,144 +515,258 @@ function Index({ error, user, whatsNews }) {
               </div>
             </header>
 
-            {/* classrooms are here  */}
-            <main
-              className={`w-full h-max lg:pb-40 flex-col  
-              md:flex-row md:flex-wrap items-center md:items-start justify-center 
-       xl:gap-x-5 gap-5 mt-14 
-            ${classroomState?.[0] ? "flex" : "hidden"} `}
-            >
-              {classrooms.isLoading ||
-                (classrooms.isFetching && (
-                  <div className=" gap-10 grid grid-cols-4 ">
-                    <Skeleton variant="rectangular" width={320} height={210} />
-                    <Skeleton variant="rectangular" width={320} height={210} />
-                    <Skeleton variant="rectangular" width={320} height={210} />
-                    <Skeleton variant="rectangular" width={320} height={210} />
-                  </div>
-                ))}
-              {classroomState?.map((classroom, index) => {
+            <ul className="w-full bg-white h-20 my-5 mb-20 flex justify-center gap-x-20 shadow-md">
+              {classroomMenus.map((list, index) => {
                 return (
-                  <div
+                  <li
+                    onClick={() => setActiveMenu(() => index)}
                     key={index}
-                    className=" h-max  p-5 w-60 md:w-max md:h-max lg:w-max md:px-5 xl:w-max md:pb-3  border-2 border-solid 
-                    rounded-3xl overflow-hidden relative bg-white "
+                    className={`w-max px-2 cursor-pointer ${
+                      activeMenu === index ? list.bgColorMain : "bg-white"
+                    }
+h-20 group ${
+                      index === 0 ? "hover:bg-blue-600" : "hover:bg-green-600"
+                    } flex flex-col justify-center items-center`}
                   >
-                    <div className="text-right w-full">
-                      {loading ? (
-                        <Loading />
-                      ) : (
-                        <div className="text-3xl absolute right-4 top-3">
-                          {!classroom.selected && (
-                            <div
-                              onClick={() => handleOpenClasssDeleted(index)}
-                              role="button"
-                              className="text-gray-700 text-base   hover:text-red-500 
-                        cursor-pointer flex"
-                            >
-                              <MdDelete />
-                            </div>
-                          )}
-                          {classroom.selected && (
-                            <div className="flex gap-x-4">
-                              <div
-                                role="button"
-                                onClick={() => {
-                                  Swal.fire({
-                                    title: "Are you sure?",
-                                    text: "You won't be able to revert this!",
-                                    icon: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#3085d6",
-                                    cancelButtonColor: "#d33",
-                                    confirmButtonText: "Yes, delete it!",
-                                  }).then((result) => {
-                                    if (result.isConfirmed) {
-                                      deleteClassroom.mutate(classroom.id);
-                                      Swal.fire(
-                                        "Deleted!",
-                                        "Your classroom has been deleted.",
-                                        "success"
-                                      );
-                                    }
-                                    handleCloseClasssDeleted(index);
-                                  });
-                                }}
-                                className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
-                              >
-                                <FcCheckmark />
-                              </div>
-                              <div
-                                role="button"
-                                onClick={() => {
-                                  handleCloseClasssDeleted(index);
-                                }}
-                                className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
-                              >
-                                <FcCancel />
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                    <div
+                      className={`w-12 h-12 text-3xl rounded-full flex items-center justify-center ${list.bgColorSecond} ${list.textColorMain}`}
+                    >
+                      {list.icon}
                     </div>
-                    <div className="flex w-full justify-center gap-2 md:gap-10  items-center">
-                      <div className="flex flex-col w-3/4 md:w-40 ">
-                        <span className="text-sm md:text-lg text-gray-600 font-light truncate">
-                          {classroom.level}
-                        </span>
-                        <span className="font-bold truncate text-lg md:text-xl  text-[#EDBA02]">
-                          {classroom.title}
-                        </span>
-                        <span className="text-sm md:text-base truncate">
-                          {classroom.description}
-                        </span>
-                      </div>
-                      <div className="w-12 h-12 bg-orange-400 flex justify-center items-center text-white rounded-xl text-center">
-                        {classroom.studentNumber} คน
-                      </div>
-                    </div>
-                    <div className="flex justify-center items-center gap-2 pt-4 pb-3  w-full lg:mt-5 ">
-                      <button
-                        onClick={() => {
-                          localStorage.setItem("classroomId", classroom.id);
-                          router.push({
-                            pathname: `/classroom/teacher/${classroom.id}`,
-                          });
-                        }}
-                        className="w-3/4 mb-3 md:mb-0 md:relative   h-9  rounded-lg bg-[#2C7CD1] text-white font-sans font-bold
-              text-md cursor-pointer hover:bg-[#FFC800] active:border-2 active:text-black active:border-gray-300
-               active:border-solid  focus:border-2 
-              focus:border-solid"
-                      >
-                        <span>
-                          {user.language === "Thai" && "🚪เข้าชั้นเรียน"}
-                          {user.language === "English" && "Join"}
-                        </span>
-                      </button>
-                      {loading ? (
-                        <div className="w-10 h-10 p-2">
-                          <Loading />
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() =>
-                            handleDuplicateClassroom({
-                              classroomId: classroom.id,
-                            })
-                          }
-                          aria-label="button to duplicate classroom"
-                          className="text-lg w-10 h-10 p-2 rounded-md text-white
-                       bg-blue-400 flex items-center justify-center transition hover:bg-blue-600 duration-150"
-                        >
-                          <BiDuplicate />
-                        </button>
-                      )}
-                    </div>
-                  </div>
+                    <span
+                      className={`text-base   group-hover:text-white
+                    ${activeMenu === index ? "text-white" : "text-black"}
+                    
+                    `}
+                    >
+                      {list.title}
+                    </span>
+                  </li>
                 );
               })}
-            </main>
+            </ul>
+            {/* classrooms are here  */}
+
+            {activeMenu === 0 && (
+              <div className="flex  flex-col gap-10 justify-start items-center w-11/12 h-max">
+                <main
+                  className={`w-full  mx-10 h-max grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-8  gap-10
+            ${classroomState?.[0] ? "flex" : "hidden"} `}
+                >
+                  {classrooms.isLoading ? (
+                    <div className="  col-span-8 justify-center  flex flex-wrap gap-10">
+                      <Skeleton
+                        variant="rectangular"
+                        width={320}
+                        height={210}
+                      />
+                      <Skeleton
+                        variant="rectangular"
+                        width={320}
+                        height={210}
+                      />
+                      <Skeleton
+                        variant="rectangular"
+                        width={320}
+                        height={210}
+                      />
+                      <Skeleton
+                        variant="rectangular"
+                        width={320}
+                        height={210}
+                      />
+                    </div>
+                  ) : (
+                    classroomState?.map((classroom, index) => {
+                      return (
+                        <div
+                          style={{
+                            border: `${
+                              selectedColor.index === index
+                                ? `2px solid ${selectedColor.color}`
+                                : `2px solid ${classroom.color}`
+                            }`,
+                            outline: `${
+                              selectedColor.index === index
+                                ? `4px solid ${selectedColor.color}`
+                                : `4px solid  ${classroom.color}`
+                            }`,
+                            padding: "10px",
+                          }}
+                          key={index}
+                          className={` border-2   border-solid col-span-2 h-48
+                      rounded-3xl p-3 overflow-hidden relative  bg-white `}
+                        >
+                          <div className="text-right w-full">
+                            {loading ? (
+                              <Loading />
+                            ) : (
+                              <div className="text-3xl absolute right-4 top-3">
+                                {!classroom.selected && (
+                                  <div
+                                    onClick={() =>
+                                      handleOpenClasssDeleted(index)
+                                    }
+                                    role="button"
+                                    className="text-gray-700 text-base   hover:text-red-500 
+                          cursor-pointer flex"
+                                  >
+                                    <BsThreeDotsVertical />
+                                  </div>
+                                )}
+                                {classroom.selected && (
+                                  <div className="flex gap-x-4">
+                                    <div
+                                      role="button"
+                                      onClick={() => {
+                                        handleCloseClasssDeleted(index);
+                                      }}
+                                      className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
+                                    >
+                                      <FcCancel />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                          {classroom.selected && (
+                            <div className="w-full h-full items-center flex justify-center gap-3">
+                              <button
+                                onClick={() =>
+                                  handleAchieveClassroom({
+                                    classroomId: classroom.id,
+                                  })
+                                }
+                                className="w-28 h-20
+                              hover:bg-blue-100 group hover:text-blue-600 transition duration-150
+                               text-4xl flex flex-col justify-center  items-center text-blue-100
+                             bg-blue-600 rounded-lg"
+                              >
+                                <MdSchool />
+                                <span className="text-xs group-hover:text-black transition duration-150 text-white font-normal">
+                                  {user.language === "Thai"
+                                    ? "สำเร็จการศึกษา"
+                                    : "Achieve classroom"}
+                                </span>
+                              </button>
+                              <label
+                                htmlFor="dropzone-file"
+                                className="
+                              hover:bg-yellow-100 group hover:text-yellow-600 transition duration-150
+                              w-28 h-20 text-4xl flex flex-col justify-center  items-center text-yellow-200
+                             bg-yellow-600 rounded-lg"
+                              >
+                                <AiOutlineBgColors />
+                                <span className="text-xs group-hover:text-black text-white font-normal">
+                                  {user.language === "Thai"
+                                    ? "เปลี่ยนสี"
+                                    : "Change color"}
+                                </span>
+                                <input
+                                  className="opacity-0 w-0 h-0"
+                                  value={selectedColor}
+                                  onChange={(e) =>
+                                    handleColorChange({ e, index })
+                                  }
+                                  type="color"
+                                  id="dropzone-file"
+                                />
+                              </label>
+                              {loading ? (
+                                <div className="absolute bottom-2 right-0 left-0 m-auto">
+                                  <Loading />
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    handleUpdateClassroom({
+                                      classroomId: classroom.id,
+                                    })
+                                  }
+                                  className="w-max h-max px-3 py-1 rounded-lg hover:bg-green-400
+                               text-white bg-green-600 absolute bottom-2 right-0 left-0 m-auto"
+                                >
+                                  update
+                                </button>
+                              )}
+                            </div>
+                          )}
+                          <div
+                            className={`${
+                              classroom.selected ? "hidden" : "block"
+                            } flex  flex-col h-full justify-between`}
+                          >
+                            <div className="flex w-full justify-center gap-2 md:gap-10  items-center">
+                              <div className="flex flex-col w-3/4 md:w-40 ">
+                                <span className="text-sm md:text-lg text-gray-600 font-light truncate">
+                                  {classroom.level}
+                                </span>
+                                <span className="font-bold truncate text-lg md:text-xl  text-[#EDBA02]">
+                                  {classroom.title}
+                                </span>
+                                <span className="text-sm md:text-base truncate">
+                                  {classroom.description}
+                                </span>
+                              </div>
+                              <div className="w-12 h-12 bg-orange-400 flex justify-center items-center text-white rounded-xl text-center">
+                                {classroom.studentNumber} คน
+                              </div>
+                            </div>
+                            <div className="flex justify-center items-center gap-2 pt-4 pb-3  w-full lg:mt-5 ">
+                              <button
+                                onClick={() => {
+                                  localStorage.setItem(
+                                    "classroomId",
+                                    classroom.id
+                                  );
+                                  router.push({
+                                    pathname: `/classroom/teacher/${classroom.id}`,
+                                  });
+                                }}
+                                className="w-3/4 mb-3 md:mb-0 md:relative   h-9  rounded-lg bg-[#2C7CD1] text-white font-sans font-bold
+                text-md cursor-pointer hover:bg-[#FFC800] active:border-2 active:text-black active:border-gray-300
+                 active:border-solid  focus:border-2 
+                focus:border-solid"
+                              >
+                                <span>
+                                  {user.language === "Thai" &&
+                                    "🚪เข้าชั้นเรียน"}
+                                  {user.language === "English" && "Join"}
+                                </span>
+                              </button>
+                              {loading ? (
+                                <div className="w-10 h-10 p-2">
+                                  <Loading />
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={() =>
+                                    handleDuplicateClassroom({
+                                      classroomId: classroom.id,
+                                    })
+                                  }
+                                  aria-label="button to duplicate classroom"
+                                  className="text-lg w-10 h-10 p-2 rounded-md text-white
+                         bg-blue-400 flex items-center justify-center transition hover:bg-blue-600 duration-150"
+                                >
+                                  <BiDuplicate />
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </main>
+                <Pagination
+                  count={classrooms?.data?.totalPages}
+                  onChange={(e, page) => setPage(page)}
+                />
+              </div>
+            )}
+            {activeMenu === 1 && <AchieveClassroomComponent user={user} />}
           </div>
         </div>
       </div>
