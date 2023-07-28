@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Layout from "../../../components/layout";
-import Hands from "../../../components/svg/Hands";
-import { FaUserCircle } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { HiLockClosed } from "react-icons/hi";
-import { BsFacebook } from "react-icons/bs";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Swal from "sweetalert2";
-import { currentBrowser } from "../../../utils/platforms";
-import Loading from "../../../components/loading/loading";
-import Head from "next/head";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Layout from '../../../components/layout';
+import Hands from '../../../components/svg/Hands';
+import { FaUserCircle } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { HiLockClosed } from 'react-icons/hi';
+import { BsFacebook } from 'react-icons/bs';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
+import { currentBrowser } from '../../../utils/platforms';
+import Loading from '../../../components/loading/loading';
+import Head from 'next/head';
 
 function Index() {
   const [brower, setBrower] = useState();
@@ -36,21 +36,21 @@ function Index() {
           {
             email: inputObject.username,
             password: inputObject.password,
-            provider: "JWT",
+            provider: 'JWT',
           },
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
-          }
+          },
         )
         .then(setLoading(true));
 
       if (data.data.token.access_token) {
         setLoading(false);
         Swal.fire({
-          icon: "success",
-          title: "Login success",
+          icon: 'success',
+          title: 'Login success',
         });
         if (data.data.user.IsResetPassword === true) {
           router.push(
@@ -58,7 +58,7 @@ function Index() {
             undefined,
             {
               shallow: true,
-            }
+            },
           );
         } else if (data.data.user.IsResetPassword === false) {
           router.push(
@@ -66,23 +66,23 @@ function Index() {
             undefined,
             {
               shallow: true,
-            }
+            },
           );
         }
       }
     } catch (err) {
       setLoading(false);
-      if (err.code === "ERR_BAD_REQUEST") {
+      if (err.code === 'ERR_BAD_REQUEST') {
         Swal.fire({
-          icon: "error",
-          title: "Login error",
+          icon: 'error',
+          title: 'Login error',
           text: err.response.data.message,
         });
       } else {
         Swal.fire({
-          icon: "error",
-          title: "Login error",
-          text: "something wrong please try again next time",
+          icon: 'error',
+          title: 'Login error',
+          text: 'something wrong please try again next time',
         });
       }
     }
@@ -122,8 +122,8 @@ function Index() {
      flex flex-col justify-center items-center"
       >
         <div
-          className="w-full md:w-96  md:h-max md:pb-20 border-2 border-black flex flex-col justify-start items-center 
-        md:border-solid broder-black relative rounded-xl bg-transparent md:bg-white md:drop-shadow-md "
+          className="w-11/12 py-5 md:w-96  md:h-max md:pb-20 border-2 border-black flex flex-col justify-start items-center 
+        md:border-solid broder-black relative rounded-xl bg-transparent bg-white md:bg-white  "
         >
           <div
             className=" w-28 h-16 border-t-0 rounded-br-3xl border-black  rounded-bl-3xl px-5 
@@ -216,7 +216,7 @@ function Index() {
             )}
           </form>
           <div className="w-80">
-            {brower !== "scoial media browser" ? (
+            {brower !== 'scoial media browser' ? (
               <a
                 onClick={GetAccesTokenGoogle}
                 className="w-full  h-9 mt-2 rounded-full bg-white border-black text-black font-sans font-bold

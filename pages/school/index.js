@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../../layouts/tatugaSchoolLayOut";
-import { parseCookies } from "nookies";
-import { GetUserCookie } from "../../service/user";
-import Unauthorized from "../../components/error/unauthorized";
-import SchoolOnly from "../../components/error/schoolOnly";
+import React, { useEffect, useState } from 'react';
+import Layout from '../../layouts/tatugaSchoolLayOut';
+import { parseCookies } from 'nookies';
+import { GetUserCookie } from '../../service/user';
+import Unauthorized from '../../components/error/unauthorized';
+import SchoolOnly from '../../components/error/schoolOnly';
 import {
   sideMenusEnglish,
   sideMenusThai,
-} from "../../data/school/menubarsHomepage";
-import Head from "next/head";
-import Image from "next/image";
-import { AiOutlineUserAdd } from "react-icons/ai";
-import { SiGoogleclassroom } from "react-icons/si";
-import { BsFillPeopleFill } from "react-icons/bs";
-import { FaUserCheck } from "react-icons/fa";
-import { GetAllTeachersNumber } from "../../service/school/teacher";
-import NumberAnimated from "../../components/overview/numberAnimated";
-import { useQuery } from "react-query";
+} from '../../data/school/menubarsHomepage';
+import Head from 'next/head';
+import Image from 'next/image';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+import { SiGoogleclassroom } from 'react-icons/si';
+import { BsFillPeopleFill } from 'react-icons/bs';
+import { FaUserCheck } from 'react-icons/fa';
+import { GetAllTeachersNumber } from '../../service/school/teacher';
+import NumberAnimated from '../../components/overview/numberAnimated';
+import { useQuery } from 'react-query';
 import {
   GetTopTenAbsent,
   GetTopTenHoliday,
   GetTopTenSick,
-} from "../../service/school/attendance";
-import { Skeleton } from "@mui/material";
-import ShowStudentInfo from "../../components/form/school/student/showStudentInfo";
-import { useRouter } from "next/router";
-import { GetAllClassroomNumber } from "../../service/school/classroom";
+} from '../../service/school/attendance';
+import { Skeleton } from '@mui/material';
+import ShowStudentInfo from '../../components/form/school/student/showStudentInfo';
+import { useRouter } from 'next/router';
+import { GetAllClassroomNumber } from '../../service/school/classroom';
 
 function Index({ user, error, teachersNumber, classroomNumber }) {
   const [page, setPage] = useState(1);
@@ -35,24 +35,24 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
   const [triggerAccountManagement, setTriggerAccountManagement] =
     useState(false);
   const [sideMenus, setSideMenus] = useState(() => {
-    if (user?.language === "Thai") {
+    if (user?.language === 'Thai') {
       return sideMenusThai;
-    } else if (user?.language === "English") {
+    } else if (user?.language === 'English') {
       return sideMenusEnglish;
     }
   });
-  const topTenAbsent = useQuery(["top-ten-absent"], () => GetTopTenAbsent(), {
+  const topTenAbsent = useQuery(['top-ten-absent'], () => GetTopTenAbsent(), {
     enabled: false,
   });
-  const topTenSick = useQuery(["top-ten-sick"], () => GetTopTenSick(), {
+  const topTenSick = useQuery(['top-ten-sick'], () => GetTopTenSick(), {
     enabled: false,
   });
   const topTenHoliday = useQuery(
-    ["top-ten-holiday"],
+    ['top-ten-holiday'],
     () => GetTopTenHoliday(),
     {
       enabled: false,
-    }
+    },
   );
   useEffect(() => {
     topTenAbsent.refetch();
@@ -61,7 +61,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
   }, []);
 
   const handleTriggerStudentInfo = ({ student }) => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
     setTriggerStudentInfo(() => true);
     setCurrentStudentInfo(() => student);
   };
@@ -93,11 +93,11 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
         )}
         <div className=" flex w-11/12 gap-5 justify-center ">
           <div
-            className="bg-white w-96 ring-2 ring-black drop-shadow-md p-5 rounded-lg
+            className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
            flex flex-col justify-start items-center"
           >
             <h3 className="font-Kanit font-normal text-red-600 mb-3">
-              ขาดเรียน 10 อันดับแรก{" "}
+              ขาดเรียน 10 อันดับแรก{' '}
             </h3>
             <ul className="w-max h-max  grid list-none pl-0">
               {topTenAbsent.isLoading ? (
@@ -114,7 +114,8 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                       onClick={() =>
                         handleTriggerStudentInfo({ student: list })
                       }
-                      className="w-full transition p-2 duration-0  cursor-pointer hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
+                      className="w-full transition p-2 duration-0  cursor-pointer
+                       hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
                       key={index}
                     >
                       <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
@@ -152,11 +153,11 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
           </div>
 
           <div
-            className="bg-white w-96 ring-2 ring-black drop-shadow-md p-5 rounded-lg
+            className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
            flex flex-col justify-start items-center"
           >
             <h3 className="font-Kanit font-normal text-blue-600 mb-3">
-              สถิติป่วย 10 อันดับแรก{" "}
+              สถิติป่วย 10 อันดับแรก{' '}
             </h3>
             <ul className="w-max h-max  grid list-none pl-0">
               {topTenSick.isLoading ? (
@@ -211,11 +212,11 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
           </div>
 
           <div
-            className="bg-white w-96 ring-2 ring-black drop-shadow-md p-5 rounded-lg
+            className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
            flex flex-col justify-start items-center"
           >
             <h3 className="font-Kanit font-normal text-orange-600 mb-3">
-              สถิติลา 10 อันดับแรก{" "}
+              สถิติลา 10 อันดับแรก{' '}
             </h3>
             <ul className="w-max h-max  grid list-none pl-0">
               {topTenHoliday.isLoading ? (
@@ -288,7 +289,7 @@ export async function getServerSideProps(context) {
       props: {
         error: {
           statusCode: 401,
-          message: "unauthorized",
+          message: 'unauthorized',
         },
       },
     };
@@ -299,16 +300,16 @@ export async function getServerSideProps(context) {
       });
       const user = userData.data;
 
-      if (user.role === "TEACHER") {
+      if (user.role === 'TEACHER') {
         return {
           props: {
             error: {
               statusCode: 403,
-              message: "schoolUserOnly",
+              message: 'schoolUserOnly',
             },
           },
         };
-      } else if (user.role === "SCHOOL") {
+      } else if (user.role === 'SCHOOL') {
         const teachersNumber = await GetAllTeachersNumber({
           access_token: accessToken,
         });
@@ -328,7 +329,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };
@@ -339,17 +340,17 @@ export async function getServerSideProps(context) {
         access_token: accessToken,
       });
       const user = userData.data;
-      if (user.role !== "SCHOOL") {
+      if (user.role !== 'SCHOOL') {
         return {
           props: {
             user,
             error: {
               statusCode: 403,
-              message: "schoolUserOnly",
+              message: 'schoolUserOnly',
             },
           },
         };
-      } else if (user.role === "SCHOOL") {
+      } else if (user.role === 'SCHOOL') {
         const teachersNumber = await GetAllTeachersNumber({
           access_token: accessToken,
         });
@@ -370,7 +371,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };

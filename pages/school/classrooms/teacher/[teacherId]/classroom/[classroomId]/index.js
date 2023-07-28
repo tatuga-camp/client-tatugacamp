@@ -1,45 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   GetAClassroom,
   GetAllClassroomNumber,
-} from "../../../../../../../service/school/classroom";
-import { GetAllTeachersNumber } from "../../../../../../../service/school/teacher";
-import { GetUserCookie } from "../../../../../../../service/user";
-import { parseCookies } from "nookies";
-import Unauthorized from "../../../../../../../components/error/unauthorized";
-import SchoolOnly from "../../../../../../../components/error/schoolOnly";
-import Layout from "../../../../../../../layouts/tatugaSchoolLayOut";
+} from '../../../../../../../service/school/classroom';
+import { GetAllTeachersNumber } from '../../../../../../../service/school/teacher';
+import { GetUserCookie } from '../../../../../../../service/user';
+import { parseCookies } from 'nookies';
+import Unauthorized from '../../../../../../../components/error/unauthorized';
+import SchoolOnly from '../../../../../../../components/error/schoolOnly';
+import Layout from '../../../../../../../layouts/tatugaSchoolLayOut';
 import {
   sideMenusEnglish,
   sideMenusThai,
-} from "../../../../../../../data/school/menubarsHomepage";
-import { useQuery } from "react-query";
-import { GetAttendanceClassroom } from "../../../../../../../service/school/attendance";
-import { useRouter } from "next/router";
-import { Skeleton } from "@mui/material";
-import { Popover } from "@headlessui/react";
-import { BiMessageAltError } from "react-icons/bi";
-import Image from "next/image";
-import { BsFillTelephoneFill } from "react-icons/bs";
-import { MdSchool } from "react-icons/md";
+} from '../../../../../../../data/school/menubarsHomepage';
+import { useQuery } from 'react-query';
+import { GetAttendanceClassroom } from '../../../../../../../service/school/attendance';
+import { useRouter } from 'next/router';
+import { Skeleton } from '@mui/material';
+import { Popover } from '@headlessui/react';
+import { BiMessageAltError, BiNotepad } from 'react-icons/bi';
+import Image from 'next/image';
+import { BsFillTelephoneFill } from 'react-icons/bs';
+import { MdSchool } from 'react-icons/md';
+import ShowStudentAttendanceInfo from '../../../../../../../components/form/school/student/showStudentAttendanceInfo';
+import { SiMicrosoftexcel } from 'react-icons/si';
+import DowloadExcelAttendacne from '../../../../../../../components/form/dowloadExcelAttendacne';
 
 function Index({ user, error, teachersNumber, classroomNumber }) {
   const router = useRouter();
+  const [triggerAttendanceInfo, setTriggerAttendanceInfo] = useState(false);
+  const [selectAttendacne, setSelectAttendance] = useState({
+    student: '',
+    attendanceData: '',
+  });
   const [sideMenus, setSideMenus] = useState(() => {
-    if (user?.language === "Thai") {
+    if (user?.language === 'Thai') {
       return sideMenusThai;
-    } else if (user?.language === "English") {
+    } else if (user?.language === 'English') {
       return sideMenusEnglish;
     }
   });
-  const classroom = useQuery(["classroom"], () =>
+  const classroom = useQuery(['classroom'], () =>
     GetAClassroom({
       classroomId: router.query.classroomId,
       teacherId: router.query.teacherId,
-    })
+    }),
   );
   const attendances = useQuery(
-    ["attendance"],
+    ['attendance'],
     () =>
       GetAttendanceClassroom({
         classroomId: router.query.classroomId,
@@ -47,7 +55,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
       }),
     {
       enabled: false,
-    }
+    },
   );
   useEffect(() => {
     if (router.isReady) {
@@ -69,6 +77,14 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
       classroomNumber={classroomNumber}
     >
       <main className="flex w-full justify-center mt-10 flex-col font-Kanit  items-center">
+        {triggerAttendanceInfo && (
+          <ShowStudentAttendanceInfo
+            setTriggerAttendanceInfo={setTriggerAttendanceInfo}
+            student={selectAttendacne.student}
+            attendanceData={selectAttendacne.attendanceData}
+            user={user}
+          />
+        )}
         <div className="w-full flex justify-center pb-10">
           <div className="w-5/12 h-max flex flex-col relative rounded-lg overflow-hidden drop-shadow-md bg-white px-5  items-center justify-center ">
             <div className="w-full h-3/6 py-5 bg-blue-500 flex flex-col items-start justify-center px-5 ">
@@ -105,7 +121,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                 รายละเอียดครูประจำวิชา
               </span>
               <span className="font-semibold text-black text-3xl">
-                {classroom?.data?.user?.firstName}{" "}
+                {classroom?.data?.user?.firstName}{' '}
                 {classroom?.data?.user?.lastName}
               </span>
               <span className="font-normal text-black text-base">
@@ -132,6 +148,31 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
             </div>
           </div>
         </div>
+        <Popover>
+          {({ open }) => (
+            <>
+              <Popover.Button>
+                <div className="w-max px-5 flex gap-1 mb-2 hover:scale-105 transition duration-150 active:bg-blue-800 bg-blue-500 font-Poppins font-semibold text-white rounded-lg py-2">
+                  dowload
+                  <div>
+                    <SiMicrosoftexcel />
+                  </div>
+                </div>
+              </Popover.Button>
+
+              <Popover.Panel>
+                {({ close }) => (
+                  <DowloadExcelAttendacne
+                    close={close}
+                    language={user.language}
+                    teacherId={router.query.teacherId}
+                  />
+                )}
+              </Popover.Panel>
+            </>
+          )}
+        </Popover>
+
         {attendances.isLoading || attendances.isFetching ? (
           <div className="flex flex-col gap-5 mt-5">
             <Skeleton variant="rectangular" width={700} height={40} />
@@ -140,19 +181,19 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
           </div>
         ) : (
           <table
-            className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem]
-              lg:w-[80rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
+            className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem] lg:w-[60rem]
+              2xl:w-[80rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
           >
             <thead className="w-max sticky top-0 bg-white h-max py-3 z-10">
               <tr className="flex ">
                 <th className="flex w-10 md:w-24  items-center justify-center sticky left-0 bg-white">
-                  {user.language === "Thai" && "เลขที่"}
-                  {user.language === "English" && "number"}
+                  {user.language === 'Thai' && 'เลขที่'}
+                  {user.language === 'English' && 'number'}
                 </th>
                 <th className="w-20 md:w-60 flex items-center justify-center sticky left-10 md:left-20 bg-white">
                   <span className="text-center">
-                    {user.language === "Thai" && "รายชื่อ"}
-                    {user.language === "English" && "student's name"}
+                    {user.language === 'Thai' && 'รายชื่อ'}
+                    {user.language === 'English' && "student's name"}
                   </span>
                 </th>
 
@@ -160,15 +201,15 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                   const date = new Date(status.date);
                   const formattedDate = date.toLocaleDateString(
                     `${
-                      user.language === "Thai"
-                        ? "th-TH"
-                        : user.language === "English" && "en-US"
+                      user.language === 'Thai'
+                        ? 'th-TH'
+                        : user.language === 'English' && 'en-US'
                     }`,
                     {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    }
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                    },
                   );
                   return (
                     <th
@@ -181,38 +222,38 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                 })}
                 <th className="w-36 flex items-center justify-center ">
                   <span className="text-center">
-                    {user.language === "Thai" && "จำนวนเข้าเรียน"}
-                    {user.language === "English" && "Present"}
+                    {user.language === 'Thai' && 'จำนวนเข้าเรียน'}
+                    {user.language === 'English' && 'Present'}
                   </span>
                 </th>
                 <th className="w-36 flex items-center justify-center ">
                   <span className="text-center">
-                    {user.language === "Thai" && "จำนวนสาย"}
-                    {user.language === "English" && "late"}
+                    {user.language === 'Thai' && 'จำนวนสาย'}
+                    {user.language === 'English' && 'late'}
                   </span>
                 </th>
                 <th className="w-36 flex items-center justify-center ">
                   <span className="text-center">
-                    {user.language === "Thai" && "จำนวนลา"}
-                    {user.language === "English" && "take a leave"}
+                    {user.language === 'Thai' && 'จำนวนลา'}
+                    {user.language === 'English' && 'take a leave'}
                   </span>
                 </th>
                 <th className="w-36 flex items-center justify-center ">
                   <span className="text-center">
-                    {user.language === "Thai" && "จำนวนป่วย"}
-                    {user.language === "English" && "sick"}
+                    {user.language === 'Thai' && 'จำนวนป่วย'}
+                    {user.language === 'English' && 'sick'}
                   </span>
                 </th>
                 <th className="w-36 flex items-center justify-center ">
                   <span className="text-center">
-                    {user.language === "Thai" && "จำนวนขาดเรียน"}
-                    {user.language === "English" && "absent"}
+                    {user.language === 'Thai' && 'จำนวนขาดเรียน'}
+                    {user.language === 'English' && 'absent'}
                   </span>
                 </th>
                 <th className="w-36 flex items-center justify-center ">
                   <span className="text-center">
-                    {user.language === "Thai" && "เปอร์เซ็นมาเรียน"}
-                    {user.language === "English" && "Percentage of present"}
+                    {user.language === 'Thai' && 'เปอร์เซ็นมาเรียน'}
+                    {user.language === 'English' && 'Percentage of present'}
                   </span>
                 </th>
               </tr>
@@ -239,62 +280,75 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
 
                       {item.data.map((status) => {
                         return (
-                          <Popover key={status.id}>
-                            {({ open }) => (
-                              <td className="w-max flex items-center justify-center">
-                                <Popover.Button onClick={() => {}}>
-                                  <div className="w-28  flex items-center justify-center ">
-                                    {status.present && (
-                                      <div className="bg-green-600 w-full items-center justify-center py-1  text-white">
-                                        {user.language === "Thai" && "มาเรียน"}
-                                        {user.language === "English" &&
-                                          "Presnt"}
-                                      </div>
-                                    )}
-                                    {status.absent && (
-                                      <div className="bg-red-600 w-full flex items-center justify-center py-1  text-white">
-                                        {user.language === "Thai" && "ขาด"}
-                                        {user.language === "English" &&
-                                          "Absent"}
-                                      </div>
-                                    )}
-                                    {status.holiday && (
-                                      <div className="bg-yellow-500 w-full flex items-center justify-center py-1  text-white">
-                                        {user.language === "Thai" && "ลา"}
-                                        {user.language === "English" &&
-                                          "Take a leave"}
-                                      </div>
-                                    )}
-                                    {status.sick && (
-                                      <div className="bg-blue-500 w-full flex items-center justify-center py-1  text-white">
-                                        {user.language === "Thai" && "ป่วย"}
-                                        {user.language === "English" && "sick"}
-                                      </div>
-                                    )}
-                                    {status.late && (
-                                      <div className="bg-orange-500 w-full flex items-center justify-center py-1  text-white">
-                                        {user.language === "Thai" && "สาย"}
-                                        {user.language === "English" && "late"}
-                                      </div>
-                                    )}
-                                    {!status.holiday &&
-                                      !status.absent &&
-                                      !status.present &&
-                                      !status.sick &&
-                                      !status.late && (
-                                        <div className="bg-gray-600 w-full flex items-center justify-center py-1  text-white">
-                                          {user.language === "Thai" &&
-                                            "ไม่มีข้อมูล"}
-                                          {user.language === "English" &&
-                                            "NO DATA"}
-                                        </div>
-                                      )}
+                          <td
+                            key={status.id}
+                            className="w-max flex items-center justify-center"
+                          >
+                            <button
+                              className="relative"
+                              onClick={() => {
+                                setSelectAttendance(() => {
+                                  return {
+                                    student: item.student,
+                                    attendanceData: status,
+                                  };
+                                });
+                                setTriggerAttendanceInfo(() => true);
+                              }}
+                            >
+                              {status.note && (
+                                <div className="absolute text-xs p-1 top-0 bottom-0 m-auto w-5 h-5 right-1 ring-2 ring-black bg-white rounded-full flex items-center justify-center">
+                                  <BiNotepad />
+                                </div>
+                              )}
+                              <div
+                                className={`w-28 flex items-center justify-center `}
+                              >
+                                {status.present && (
+                                  <div className="bg-green-600 w-full items-center justify-center py-1  text-white">
+                                    {user.language === 'Thai' && 'มาเรียน'}
+                                    {user.language === 'English' && 'Presnt'}
                                   </div>
-                                </Popover.Button>
-                                <Popover.Panel></Popover.Panel>
-                              </td>
-                            )}
-                          </Popover>
+                                )}
+                                {status.absent && (
+                                  <div className="bg-red-600 w-full flex items-center justify-center py-1  text-white">
+                                    {user.language === 'Thai' && 'ขาด'}
+                                    {user.language === 'English' && 'Absent'}
+                                  </div>
+                                )}
+                                {status.holiday && (
+                                  <div className="bg-yellow-500 w-full flex items-center justify-center py-1  text-white">
+                                    {user.language === 'Thai' && 'ลา'}
+                                    {user.language === 'English' &&
+                                      'Take a leave'}
+                                  </div>
+                                )}
+                                {status.sick && (
+                                  <div className="bg-blue-500 w-full flex items-center justify-center py-1  text-white">
+                                    {user.language === 'Thai' && 'ป่วย'}
+                                    {user.language === 'English' && 'sick'}
+                                  </div>
+                                )}
+                                {status.late && (
+                                  <div className="bg-orange-500 w-full flex items-center justify-center py-1  text-white">
+                                    {user.language === 'Thai' && 'สาย'}
+                                    {user.language === 'English' && 'late'}
+                                  </div>
+                                )}
+                                {!status.holiday &&
+                                  !status.absent &&
+                                  !status.present &&
+                                  !status.sick &&
+                                  !status.late && (
+                                    <div className="bg-gray-600 w-full flex items-center justify-center py-1  text-white">
+                                      {user.language === 'Thai' &&
+                                        'ไม่มีข้อมูล'}
+                                      {user.language === 'English' && 'NO DATA'}
+                                    </div>
+                                  )}
+                              </div>
+                            </button>
+                          </td>
                         );
                       })}
                       <td className="w-36 flex items-center justify-center ">
@@ -335,9 +389,9 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
           </table>
         )}
         <span className="text-center font-Kanit text-xl font-semibold mt-2">
-          {user.language === "Thai" &&
+          {user.language === 'Thai' &&
             `จำนวนครูสอนทั้งหมด ${attendances?.data?.[0]?.sum} คาบ`}
-          {user.language === "English" &&
+          {user.language === 'English' &&
             `The teacher has taught this class for ${attendances?.data?.[0]?.sum} periods`}
         </span>
         {attendances?.data?.[0]?.dateTimes.length === 0 && (
@@ -364,7 +418,7 @@ export async function getServerSideProps(context) {
       props: {
         error: {
           statusCode: 401,
-          message: "unauthorized",
+          message: 'unauthorized',
         },
       },
     };
@@ -375,16 +429,16 @@ export async function getServerSideProps(context) {
       });
       const user = userData.data;
 
-      if (user.role === "TEACHER") {
+      if (user.role === 'TEACHER') {
         return {
           props: {
             error: {
               statusCode: 403,
-              message: "schoolUserOnly",
+              message: 'schoolUserOnly',
             },
           },
         };
-      } else if (user.role === "SCHOOL") {
+      } else if (user.role === 'SCHOOL') {
         const teachersNumber = await GetAllTeachersNumber({
           access_token: accessToken,
         });
@@ -404,7 +458,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };
@@ -415,17 +469,17 @@ export async function getServerSideProps(context) {
         access_token: accessToken,
       });
       const user = userData.data;
-      if (user.role !== "SCHOOL") {
+      if (user.role !== 'SCHOOL') {
         return {
           props: {
             user,
             error: {
               statusCode: 403,
-              message: "schoolUserOnly",
+              message: 'schoolUserOnly',
             },
           },
         };
-      } else if (user.role === "SCHOOL") {
+      } else if (user.role === 'SCHOOL') {
         const teachersNumber = await GetAllTeachersNumber({
           access_token: accessToken,
         });
@@ -446,7 +500,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };

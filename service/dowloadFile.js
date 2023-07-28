@@ -1,6 +1,6 @@
-import axios from "axios";
-import Error from "next/error";
-import { parseCookies } from "nookies";
+import axios from 'axios';
+import Error from 'next/error';
+import { parseCookies } from 'nookies';
 
 export async function DownloadExcelAttendance({
   classroomId,
@@ -9,6 +9,7 @@ export async function DownloadExcelAttendance({
   holiday,
   sick,
   late,
+  teacherId,
 }) {
   try {
     const cookies = parseCookies();
@@ -22,6 +23,7 @@ export async function DownloadExcelAttendance({
           holiday,
           sick,
           late,
+          teacherId,
         },
         {
           params: {
@@ -30,14 +32,14 @@ export async function DownloadExcelAttendance({
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
-          responseType: "blob", // to receive binary data
-        }
+          responseType: 'blob', // to receive binary data
+        },
       )
       .then((response) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = url;
-        link.setAttribute("download", "attendance.xlsx"); // set the filename for download
+        link.setAttribute('download', 'attendance.xlsx'); // set the filename for download
         document.body.appendChild(link);
         link.click();
       });
@@ -59,13 +61,13 @@ export async function DownloadExcelScore({ classroomId }) {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-        responseType: "blob", // to receive binary data
+        responseType: 'blob', // to receive binary data
       })
       .then((response) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = url;
-        link.setAttribute("download", "scores.xlsx"); // set the filename for download
+        link.setAttribute('download', 'scores.xlsx'); // set the filename for download
         document.body.appendChild(link);
         link.click();
       });
