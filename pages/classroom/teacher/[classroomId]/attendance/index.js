@@ -13,7 +13,7 @@ import { MdDelete } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import UpdateAttendance from '../../../../../components/form/updateAttendance';
 import { Popover } from '@headlessui/react';
-import { BiMessageAltError } from 'react-icons/bi';
+import { BiMessageAltError, BiNotepad } from 'react-icons/bi';
 import { DownloadExcelAttendance } from '../../../../../service/dowloadFile';
 import { SiMicrosoftexcel } from 'react-icons/si';
 import { Skeleton } from '@mui/material';
@@ -245,6 +245,7 @@ function Index({ error, user }) {
                               className="w-28 flex items-center justify-center"
                             >
                               <button
+                                className="relative"
                                 onClick={() => {
                                   setSelectAttendance(() => {
                                     return {
@@ -256,6 +257,11 @@ function Index({ error, user }) {
                                   document.body.style.overflow = 'hidden';
                                 }}
                               >
+                                {status.note && (
+                                  <div className="absolute text-xs p-1 top-0 bottom-0 m-auto w-5 h-5 right-1 ring-2 ring-black bg-white rounded-full flex items-center justify-center">
+                                    <BiNotepad />
+                                  </div>
+                                )}
                                 <div className="w-28  flex items-center justify-center ">
                                   {status.present && (
                                     <div className="bg-green-600 w-full items-center justify-center py-1  text-white">
