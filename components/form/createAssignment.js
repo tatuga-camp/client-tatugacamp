@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Editor } from "@tinymce/tinymce-react";
-import { GrScorecard } from "react-icons/gr";
-import Image from "next/image";
+import React, { useEffect, useState } from 'react';
+import { Editor } from '@tinymce/tinymce-react';
+import { GrScorecard } from 'react-icons/gr';
+import Image from 'next/image';
 import {
   AssignWorkToSTudent,
   CreateAssignmentApi,
-} from "../../service/assignment";
-import { useRouter } from "next/router";
-import Swal from "sweetalert2";
-import Loading from "../loading/loading";
-import { AiOutlineCheckCircle } from "react-icons/ai";
-import { MdError } from "react-icons/md";
-import { Box, TextField } from "@mui/material";
-import { FcCancel } from "react-icons/fc";
-import Error from "next/error";
+} from '../../service/assignment';
+import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
+import Loading from '../loading/loading';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { MdError } from 'react-icons/md';
+import { Box, TextField } from '@mui/material';
+import { FcCancel } from 'react-icons/fc';
+import Error from 'next/error';
 
 export default function CreateAssignment({
   close,
@@ -24,12 +24,11 @@ export default function CreateAssignment({
 }) {
   const rounter = useRouter();
   const [assignmentCreated, setAssignmentCreated] = useState();
-  const [imagesBase64, setImagesBase64] = useState();
   const [assignmentData, setAssignmentData] = useState({
-    title: "",
-    body: "",
-    deadline: "",
-    maxScore: "",
+    title: '',
+    body: '',
+    deadline: '',
+    maxScore: '',
   });
 
   const [isChecked, setIsChecked] = useState();
@@ -55,7 +54,7 @@ export default function CreateAssignment({
           ...student,
           [student.id]: false,
         };
-      })
+      }),
     );
   }, [students.data]);
 
@@ -96,34 +95,38 @@ export default function CreateAssignment({
         assignmentCreated: assignmentCreated.data,
       });
       setIsChecked(assign);
-      Swal.fire("success", "You have been assign to students", "success");
+      Swal.fire('success', 'You have been assign to students', 'success');
       setLoading(false);
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
       setIsChecked(() =>
         students?.data?.data?.map((student) => {
           return {
             ...student,
             [student.id]: false,
           };
-        })
+        }),
       );
       setIsAssignmentStdent(false);
       setTriggerAssignment(false);
     } catch (err) {
-      Swal.fire("error", "error", "success");
+      Swal.fire('error', 'error', 'success');
       console.log(err);
     }
   };
   const handleSubmit = async (e) => {
     try {
-      setLoading(() => true);
-
       e.preventDefault();
-      if (assignmentData.body === "") {
+      setLoading(() => true);
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(assignmentData.body, 'text/html');
+      const imageElements = doc.getElementsByTagName('img');
+      const imageUrls = Array.from(imageElements).map((img) => img.src);
+
+      if (assignmentData.body === '') {
         throw new Error(
-          language === "Thai"
-            ? "กรุณาใส่คำอธิบายชิ้นงาน"
-            : "Description is required"
+          language === 'Thai'
+            ? 'กรุณาใส่คำอธิบายชิ้นงาน'
+            : 'Description is required',
         );
       }
       const createAssignment = await CreateAssignmentApi({
@@ -132,18 +135,25 @@ export default function CreateAssignment({
         description: assignmentData.body,
         maxScore: assignmentData.maxScore,
         deadline: assignmentData.deadline,
-        imagesBase64,
+        imagesBase64: imageUrls,
       });
       assignments?.refetch();
-      Swal.fire("success", "assignment has been createed", "success");
+      Swal.fire('success', 'assignment has been createed', 'success');
 
       setAssignmentCreated(createAssignment);
       setLoading(() => false);
       setIsAssignmentStdent(true);
     } catch (err) {
-      console.log(err);
       setLoading(() => false);
-      Swal.fire("error", err.props, "error");
+      if (err.props === 'กรุณาใส่คำอธิบายชิ้นงาน') {
+        Swal.fire('error', 'กรุณาใส่คำอธิบายชิ้นงาน', 'error');
+      } else {
+        Swal.fire(
+          'error',
+          err?.props?.response?.data?.message?.toString(),
+          'error',
+        );
+      }
     }
   };
 
@@ -154,11 +164,6 @@ export default function CreateAssignment({
         body: content,
       };
     });
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(content, "text/html");
-    const imageElements = doc.getElementsByTagName("img");
-    const imageUrls = Array.from(imageElements).map((img) => img.src);
-    setImagesBase64(() => imageUrls);
   };
 
   return (
@@ -176,14 +181,14 @@ export default function CreateAssignment({
                 <button
                   type="button"
                   onClick={() => {
-                    document.body.style.overflow = "auto";
+                    document.body.style.overflow = 'auto';
                     setIsChecked(() =>
                       students?.data?.data?.map((student) => {
                         return {
                           ...student,
                           [student.id]: false,
                         };
-                      })
+                      }),
                     );
                     setIsAssignmentStdent(false);
                     setTriggerAssignment(false);
@@ -192,9 +197,9 @@ export default function CreateAssignment({
                 >
                   <FcCancel />
                   <span className="text-red-400 text-lg">
-                    {language === "Thai"
-                      ? "ยกเลิก"
-                      : language === "English" && "Cancel"}
+                    {language === 'Thai'
+                      ? 'ยกเลิก'
+                      : language === 'English' && 'Cancel'}
                   </span>
                 </button>
               </div>
@@ -214,34 +219,34 @@ export default function CreateAssignment({
                 textareaName="description"
                 initialValue={assignmentData?.description}
                 init={{
-                  selector: "textarea",
+                  selector: 'textarea',
                   link_context_toolbar: true,
-                  height: "100%",
-                  width: "100%",
+                  height: '100%',
+                  width: '100%',
                   menubar: true,
                   image_title: true,
                   automatic_uploads: true,
-                  file_picker_types: "image",
-                  file_picker_types: "image",
+                  file_picker_types: 'image',
+                  file_picker_types: 'image',
                   file_picker_callback: (cb, value, meta) => {
-                    const input = document.createElement("input");
-                    input.setAttribute("type", "file");
-                    input.setAttribute("accept", "image/*");
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
 
-                    input.addEventListener("change", (e) => {
+                    input.addEventListener('change', (e) => {
                       const file = e.target.files[0];
 
                       const reader = new FileReader();
-                      reader.addEventListener("load", () => {
+                      reader.addEventListener('load', () => {
                         /*
                           Note: Now we need to register the blob in TinyMCEs image blob
                           registry. In the next release this part hopefully won't be
                           necessary, as we are looking to handle it internally.
                         */
-                        const id = "blobid" + new Date().getTime();
+                        const id = 'blobid' + new Date().getTime();
                         const blobCache =
                           tinymce.activeEditor.editorUpload.blobCache;
-                        const base64 = reader.result.split(",")[1];
+                        const base64 = reader.result.split(',')[1];
                         const blobInfo = blobCache.create(id, file, base64);
                         blobCache.add(blobInfo);
 
@@ -254,31 +259,31 @@ export default function CreateAssignment({
                     input.click();
                   },
                   plugins: [
-                    "advlist",
-                    "autolink",
-                    "lists",
-                    "link",
-                    "image",
-                    "charmap",
-                    "preview",
-                    "anchor",
-                    "searchreplace",
-                    "visualblocks",
-                    "code",
-                    "fullscreen",
-                    "insertdatetime",
-                    "media",
-                    "table",
-                    "help",
-                    "wordcount",
+                    'advlist',
+                    'autolink',
+                    'lists',
+                    'link',
+                    'image',
+                    'charmap',
+                    'preview',
+                    'anchor',
+                    'searchreplace',
+                    'visualblocks',
+                    'code',
+                    'fullscreen',
+                    'insertdatetime',
+                    'media',
+                    'table',
+                    'help',
+                    'wordcount',
                   ],
                   toolbar:
-                    "undo redo | formatselect | blocks | " +
-                    "bold italic backcolor | alignleft aligncenter " +
-                    "alignright alignjustify | bullist numlist outdent indent | " +
-                    "removeformat | help | link | image",
+                    'undo redo | formatselect | blocks | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | help | link | image',
                   content_style:
-                    "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                    'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                 }}
                 onEditorChange={handleEditorChange}
               />
@@ -296,8 +301,8 @@ export default function CreateAssignment({
                active:border-solid  focus:border-2 hover:bg-red-500 transition duration-150
               focus:border-solid"
                   >
-                    {language === "Thai" && "สร้าง"}
-                    {language === "English" && "CREATE"}
+                    {language === 'Thai' && 'สร้าง'}
+                    {language === 'English' && 'CREATE'}
                   </button>
                 </div>
               )}
@@ -308,8 +313,8 @@ export default function CreateAssignment({
             >
               <div className=" flex flex-col mt-0 lg:mt-10">
                 <label>
-                  {language === "Thai" && "กำหนดส่ง"}
-                  {language === "English" && "Due by"}
+                  {language === 'Thai' && 'กำหนดส่ง'}
+                  {language === 'English' && 'Due by'}
                 </label>
                 <input
                   onChange={handleChange}
@@ -323,8 +328,8 @@ export default function CreateAssignment({
               </div>
               <div className="flex flex-col w-max relative  h-max ">
                 <label>
-                  {language === "Thai" && "คะแนนของงาน"}
-                  {language === "English" && "socres"}
+                  {language === 'Thai' && 'คะแนนของงาน'}
+                  {language === 'English' && 'socres'}
                 </label>
                 <input
                   min="1"
@@ -336,9 +341,9 @@ export default function CreateAssignment({
                   step="0.01"
                   required
                   placeholder={
-                    language === "Thai"
-                      ? "ใส่คะแนนของงาน"
-                      : language === "English" && "put scores"
+                    language === 'Thai'
+                      ? 'ใส่คะแนนของงาน'
+                      : language === 'English' && 'put scores'
                   }
                 />
                 <div className="text-lg absolute top-8 right-5">
@@ -350,8 +355,8 @@ export default function CreateAssignment({
         ) : (
           <form className="w-full h-full  flex items-center justify-start flex-col gap-10">
             <div className="text-2xl font-Kanit font-semibold">
-              {language === "Thai" && "เลือกผู้เรียนเพื่อมอบหมายงาน"}
-              {language === "English" && "Choose students to assign work to"}
+              {language === 'Thai' && 'เลือกผู้เรียนเพื่อมอบหมายงาน'}
+              {language === 'English' && 'Choose students to assign work to'}
             </div>
 
             <div className="lg:w-2/4 lg:h-3/4 md:w-10/12 md:h-80  flex relative items-center justify-start overflow-auto scrollbar  flex-col gap-2">
@@ -367,7 +372,7 @@ export default function CreateAssignment({
                     <div
                       key={student.id}
                       className={`grid grid-cols-4 w-full relative items-center justify-center ${
-                        oddNumber === 0 ? "bg-blue-100" : "bg-orange-100"
+                        oddNumber === 0 ? 'bg-blue-100' : 'bg-orange-100'
                       } py-2 
                   text-lg font-Kanit `}
                     >
@@ -414,16 +419,16 @@ export default function CreateAssignment({
                   onClick={onClickIsCheck}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
-                  {language === "Thai" && "เลือกผู้เรียนทั้งหมด"}
-                  {language === "English" && "Choose all students"}
+                  {language === 'Thai' && 'เลือกผู้เรียนทั้งหมด'}
+                  {language === 'English' && 'Choose all students'}
                 </button>
                 <button
                   type="button"
                   onClick={onClickAssignWork}
                   className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                 >
-                  {language === "Thai" && "มอบหมายงาน"}
-                  {language === "English" && "Assign"}
+                  {language === 'Thai' && 'มอบหมายงาน'}
+                  {language === 'English' && 'Assign'}
                 </button>
               </div>
             )}
@@ -432,14 +437,14 @@ export default function CreateAssignment({
       </form>
       <div
         onClick={() => {
-          document.body.style.overflow = "auto";
+          document.body.style.overflow = 'auto';
           setIsChecked(() =>
             students?.data?.data?.map((student) => {
               return {
                 ...student,
                 [student.id]: false,
               };
-            })
+            }),
           );
           setIsAssignmentStdent(false);
           setTriggerAssignment(false);

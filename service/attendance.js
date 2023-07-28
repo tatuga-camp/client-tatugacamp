@@ -1,7 +1,7 @@
-import axios from "axios";
-import Error from "next/error";
-import { parseCookies } from "nookies";
-import { v4 as uuidv4 } from "uuid";
+import axios from 'axios';
+import Error from 'next/error';
+import { parseCookies } from 'nookies';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function CreateAttendance({
   classroomId,
@@ -32,10 +32,10 @@ export async function CreateAttendance({
           classroomId: classroomId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     return attendacne;
@@ -56,10 +56,10 @@ export async function GetAllAttendance({ classroomId }) {
           classroomId: classroomId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return GetAllAttendacne;
   } catch (err) {
@@ -81,7 +81,7 @@ export async function DeleteAttendance({ groupId }) {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return deleteAttendance;
   } catch (err) {
@@ -91,19 +91,85 @@ export async function DeleteAttendance({ groupId }) {
 }
 
 export async function UpdateAttendnaceAPI({
-  attendanceId,
   absent,
   present,
   holiday,
   sick,
   late,
+  studentId,
+  attendanceId,
+  imagesBase64,
+  note,
 }) {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
+
+    const formData = new FormData();
+    for (const imageBase64 of imagesBase64) {
+      const response = await fetch(imageBase64);
+      const blob = await response.blob();
+      const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+      formData.append('files', file);
+    }
+    const filesOld = formData.getAll('files');
+    const files = await Promise.all(
+      filesOld.map(async (file) => {
+        if (file.type === '') {
+          const blob = await heic2any({
+            blob: file,
+            toType: 'image/jpeg',
+          });
+          file = new File([blob], file.name, { type: 'image/jpeg' });
+          return {
+            file: file,
+            fileName: file.name,
+            fileType: file.type,
+          };
+        } else {
+          return {
+            file: file,
+            fileName: file.name,
+            fileType: file.type,
+          };
+        }
+      }),
+    );
+
+    const urls = await axios.post(
+      `${process.env.Server_Url}/user/attendance/upload-signUrl`,
+      {
+        files,
+        studentId,
+        attendanceId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+
+    for (let i = 0; i < urls.data.urls.length; i++) {
+      const response = await fetch(urls.data.urls[i].SignedURL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': `${urls.data.urls[i].contentType}`,
+        },
+        body: files[i].file,
+      }).catch((err) => console.log(err));
+    }
+
+    let updatedContent = note;
+    for (let i = 0; i < imagesBase64.length; i++) {
+      const base64Image = imagesBase64[i];
+      const imageUrl = urls.data.baseUrls[i];
+      updatedContent = updatedContent.replace(base64Image, imageUrl);
+    }
     const update = await axios.put(
       `${process.env.Server_Url}/user/attendance/update`,
-      { absent, present, holiday, sick, late },
+      { absent, present, holiday, sick, late, note: updatedContent },
       {
         params: {
           attendanceId: attendanceId,
@@ -111,7 +177,7 @@ export async function UpdateAttendnaceAPI({
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return update;
   } catch (err) {

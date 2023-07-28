@@ -1,6 +1,6 @@
-import axios from "axios";
-import Error from "next/error";
-import { parseCookies } from "nookies";
+import axios from 'axios';
+import Error from 'next/error';
+import { parseCookies } from 'nookies';
 
 export async function CreateAssignmentApi({
   classroomId,
@@ -12,7 +12,6 @@ export async function CreateAssignmentApi({
 }) {
   try {
     const maxScoreNum = Number(maxScore);
-    console.log(maxScoreNum);
     const dateFormat = new Date(deadline);
     const cookies = parseCookies();
     const access_token = cookies.access_token;
@@ -20,19 +19,19 @@ export async function CreateAssignmentApi({
     for (const imageBase64 of imagesBase64) {
       const response = await fetch(imageBase64);
       const blob = await response.blob();
-      const file = new File([blob], "image.jpg", { type: "image/jpeg" });
-      formData.append("files", file);
+      const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+      formData.append('files', file);
     }
-    const filesOld = formData.getAll("files");
+    const filesOld = formData.getAll('files');
 
     const files = await Promise.all(
       filesOld.map(async (file) => {
-        if (file.type === "") {
+        if (file.type === '') {
           const blob = await heic2any({
             blob: file,
-            toType: "image/jpeg",
+            toType: 'image/jpeg',
           });
-          file = new File([blob], file.name, { type: "image/jpeg" });
+          file = new File([blob], file.name, { type: 'image/jpeg' });
           return {
             file: file,
             fileName: file.name,
@@ -45,7 +44,7 @@ export async function CreateAssignmentApi({
             fileType: file.type,
           };
         }
-      })
+      }),
     );
 
     const urls = await axios.post(
@@ -59,17 +58,17 @@ export async function CreateAssignmentApi({
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     for (let i = 0; i < urls.data.urls.length; i++) {
       const response = await fetch(urls.data.urls[i].SignedURL, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": `${urls.data.urls[i].contentType}`,
+          'Content-Type': `${urls.data.urls[i].contentType}`,
         },
         body: files[i].file,
       }).catch((err) => console.log(err));
@@ -81,7 +80,7 @@ export async function CreateAssignmentApi({
       const imageUrl = urls.data.baseUrls[i];
       updatedContent = updatedContent.replace(base64Image, imageUrl);
     }
-    console.log("updatedContent", updatedContent);
+    console.log('updatedContent', updatedContent);
 
     const updateAssignment = await axios.put(
       `${process.env.Server_Url}/user/assignment/update`,
@@ -93,10 +92,10 @@ export async function CreateAssignmentApi({
           assignmentId: urls.data.assignment.id,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return updateAssignment;
   } catch (err) {
@@ -116,10 +115,10 @@ export async function GetAllAssignments({ classroomId }) {
           classroomId: classroomId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     let progresses = [];
     for (const assignment of assignments.data) {
@@ -134,10 +133,10 @@ export async function GetAllAssignments({ classroomId }) {
               assignmentId: assignment.id,
             },
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${access_token}`,
             },
-          }
+          },
         );
         progresses.push({ ...assignment, progress: progress.data });
       } catch (err) {
@@ -166,10 +165,10 @@ export async function GetAssignment({ assignmentId }) {
           assignmentId: assignmentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return assignment;
   } catch (err) {
@@ -193,10 +192,10 @@ export async function GetAssignmentProgress({ assignments }) {
             assignmentId: assignment.id,
           },
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${access_token}`,
           },
-        }
+        },
       );
       progresses.push({ ...assignment, progress: progress.data });
     } catch (err) {
@@ -223,10 +222,10 @@ export async function AssignWorkToSTudent({ isChecked, assignmentCreated }) {
               assignmentId: assignmentCreated.id,
             },
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${access_token}`,
             },
-          }
+          },
         );
         stduentOnAssignment.push({ ...student, status: 201, assign: assign });
       } catch (err) {
@@ -252,10 +251,10 @@ export async function ViewAllAssignOnStudent({ classroomId, assignmentId }) {
           assignmentId: assignmentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return studentWorks;
   } catch (err) {
@@ -275,10 +274,10 @@ export async function DeleteAssignment({ assignmentId }) {
           assignmentId: assignmentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return deleteAssignment;
   } catch (err) {
@@ -313,10 +312,10 @@ export async function UpdateAssignmentApi({
           assignmentId: assignmentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return updatedAssignment;
   } catch (err) {
@@ -347,10 +346,10 @@ export async function ReviewStudentWork({
           studentId: studentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return review;
   } catch (err) {
@@ -381,10 +380,10 @@ export async function ReviewStudentWorkNoWork({
           studentId: studentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return review;
   } catch (err) {
@@ -404,10 +403,10 @@ export async function DeleteStudentWork({ assignmentId, studentId }) {
           studentId: studentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return deleteStudent;
   } catch (err) {
