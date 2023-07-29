@@ -1,36 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import {
   DeleteAssignment,
   DeleteStudentWork,
   ReviewStudentWork,
   ReviewStudentWorkNoWork,
   ViewAllAssignOnStudent,
-} from "../../../../../../service/assignment.js";
-import { FiSettings } from "react-icons/fi";
-import { Box, Skeleton, TextField } from "@mui/material";
-import { MdDelete } from "react-icons/md";
-import Swal from "sweetalert2";
-import Image from "next/image";
-import "lightbox.js-react/dist/index.css";
-import { SlideshowLightbox, initLightboxJS } from "lightbox.js-react";
-import { GetAssignment } from "../../../../../../service/assignment";
-import { useRouter } from "next/router";
-import { GetAllStudents } from "../../../../../../service/students";
-import UpdateAssignment from "../../../../../../components/form/updateAssignment.js";
-import Unauthorized from "../../../../../../components/error/unauthorized.js";
-import { GetUser, GetUserCookie } from "../../../../../../service/user.js";
-import { BiRefresh } from "react-icons/bi";
-import Head from "next/head.js";
+} from '../../../../../../service/assignment.js';
+import { FiSettings } from 'react-icons/fi';
+import { Box, Skeleton, TextField } from '@mui/material';
+import { MdDelete } from 'react-icons/md';
+import Swal from 'sweetalert2';
+import Image from 'next/image';
+import 'lightbox.js-react/dist/index.css';
+import { SlideshowLightbox, initLightboxJS } from 'lightbox.js-react';
+import { GetAssignment } from '../../../../../../service/assignment';
+import { useRouter } from 'next/router';
+import { GetAllStudents } from '../../../../../../service/students';
+import UpdateAssignment from '../../../../../../components/form/updateAssignment.js';
+import Unauthorized from '../../../../../../components/error/unauthorized.js';
+import { GetUser, GetUserCookie } from '../../../../../../service/user.js';
+import { BiRefresh } from 'react-icons/bi';
+import Head from 'next/head.js';
 import {
   DeleteStudentComment,
   DeleteTeachertComment,
   GetComments,
   PostComment,
-} from "../../../../../../service/comment.js";
-import SendIcon from "@mui/icons-material/Send";
-import { parseCookies } from "nookies";
-import ReactPlayer from "react-player";
+} from '../../../../../../service/comment.js';
+import SendIcon from '@mui/icons-material/Send';
+import { parseCookies } from 'nookies';
+import ReactPlayer from 'react-player';
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -45,25 +45,25 @@ function Index({ error, user }) {
   const [comment, setComment] = useState();
   const [files, setFiles] = useState([]);
   const [studentSummitDate, setStudentSummitDate] = useState({
-    summitDate: "",
-    isDue: "",
-    deadline: "",
+    summitDate: '',
+    isDue: '',
+    deadline: '',
   });
 
   const [comfirmDeleteComment, setComfirmDeleteComment] = useState(false);
   const assignment = useQuery(
-    ["assignment"],
+    ['assignment'],
     () => GetAssignment({ assignmentId: router.query.assignmentId }),
     {
       enabled: false,
-    }
+    },
   );
-  const students = useQuery(["students"], () => {
+  const students = useQuery(['students'], () => {
     GetAllStudents({ classroomId: router.query.classroomId });
   });
 
   const studentOnAssignments = useQuery(
-    ["studentOnAssignments"],
+    ['studentOnAssignments'],
     () =>
       ViewAllAssignOnStudent({
         assignmentId: assignment.data.data.id,
@@ -71,28 +71,29 @@ function Index({ error, user }) {
       }),
     {
       enabled: assignment.isSuccess,
-    }
+    },
   );
   const [activeMenu, setActiveMenu] = useState(0);
   const [teacherReview, setTeacherReview] = useState({
-    comment: "",
-    score: "",
+    comment: '',
+    score: '',
   });
+  console.log(teacherReview);
   const [currentStudentWork, setCurrentStudentWork] = useState();
   const [images, setImages] = useState([]);
   const menus = [
     {
-      titleThai: "งาน",
-      titleEnglish: "assignment",
+      titleThai: 'งาน',
+      titleEnglish: 'assignment',
     },
     {
-      titleThai: "ตรวจงาน",
-      titleEnglish: "check assignment",
+      titleThai: 'ตรวจงาน',
+      titleEnglish: 'check assignment',
     },
   ];
 
   useEffect(() => {
-    initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, "individual");
+    initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, 'individual');
   }, []);
 
   // refetch studentOnAssinment when  there is new assignment?.data?.data?
@@ -105,15 +106,15 @@ function Index({ error, user }) {
   const date = new Date(assignment?.data?.data?.deadline);
   const formattedDate = date.toLocaleDateString(
     `${
-      user?.language === "Thai"
-        ? "th-TH"
-        : user?.language === "English" && "en-US"
+      user?.language === 'Thai'
+        ? 'th-TH'
+        : user?.language === 'English' && 'en-US'
     }`,
     {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    },
   );
 
   //handle show update assignmnet compponent
@@ -122,13 +123,13 @@ function Index({ error, user }) {
   };
   const handleDelteStudentWork = async () => {
     Swal.fire({
-      title: "Are you sure?",
+      title: 'Are you sure?',
       text: "You won't be able to revert this!",
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
     }).then(async (result) => {
       if (result.isConfirmed) {
         const deleteStudentWork = await DeleteStudentWork({
@@ -136,7 +137,7 @@ function Index({ error, user }) {
           studentId: currentStudentWork.id,
         });
         studentOnAssignments.refetch();
-        Swal.fire("Deleted!", deleteStudentWork?.data, "success");
+        Swal.fire('Deleted!', deleteStudentWork?.data, 'success');
       }
     });
   };
@@ -144,20 +145,20 @@ function Index({ error, user }) {
   //handle click to delete assignment
   const handleDeleteAssignment = () => {
     Swal.fire({
-      title: "Are you sure?",
+      title: 'Are you sure?',
       text: "You won't be able to revert this!",
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
     }).then(async (result) => {
       if (result.isConfirmed) {
         const deleteAssignment = await DeleteAssignment({
           assignmentId: assignment?.data?.data?.id,
         });
 
-        Swal.fire("Deleted!", deleteAssignment?.data, "success");
+        Swal.fire('Deleted!', deleteAssignment?.data, 'success');
         router.push({
           pathname: `/classroom/teacher/${router.query.classroomId}/assignment`,
         });
@@ -175,7 +176,7 @@ function Index({ error, user }) {
 
   // check file type
   function get_url_extension(url) {
-    return url.split(/[#?]/)[0].split(".").pop().trim();
+    return url.split(/[#?]/)[0].split('.').pop().trim();
   }
 
   //handle open make sure to delete classroom
@@ -212,13 +213,13 @@ function Index({ error, user }) {
           deadlineDate.setSeconds(0);
           let isDue = false;
           // Formatting the date and time
-          const formattedCreateDateTime = createDate.toLocaleString("th-TH", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
+          const formattedCreateDateTime = createDate.toLocaleString('th-TH', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
           });
           if (createDate > deadlineDate) {
             isDue = true;
@@ -234,20 +235,20 @@ function Index({ error, user }) {
         setImages(() => {
           let pictures = [];
           if (!student?.studentWork?.picture) {
-            pictures.push({ src: "", alt: "student's work" });
+            pictures.push({ src: '', alt: "student's work" });
           } else if (student.studentWork.picture) {
-            const arrayPictures = student.studentWork.picture.split(", ");
+            const arrayPictures = student.studentWork.picture.split(', ');
             for (const arrayPicture of arrayPictures) {
               const fileType = get_url_extension(arrayPicture);
               if (
-                fileType === "jpg" ||
-                fileType === "jpeg" ||
-                fileType === "png" ||
-                fileType === "HEIC" ||
-                fileType === "JPEG" ||
-                fileType === "PNG" ||
-                fileType === "JPG" ||
-                fileType === "heic"
+                fileType === 'jpg' ||
+                fileType === 'jpeg' ||
+                fileType === 'png' ||
+                fileType === 'HEIC' ||
+                fileType === 'JPEG' ||
+                fileType === 'PNG' ||
+                fileType === 'JPG' ||
+                fileType === 'heic'
               ) {
                 pictures.push({ src: arrayPicture, alt: "student's work" });
               } else {
@@ -276,10 +277,10 @@ function Index({ error, user }) {
         return {
           ...prev,
           comment: !student?.studentWork?.comment
-            ? ""
+            ? ''
             : student?.studentWork?.comment,
           score: !student?.studentWork?.score
-            ? ""
+            ? ''
             : student?.studentWork?.score,
         };
       });
@@ -295,14 +296,14 @@ function Index({ error, user }) {
   const handleReviewWork = async (e) => {
     try {
       e.preventDefault();
-      if (currentStudentWork.status === "have-work") {
+      if (currentStudentWork.status === 'have-work') {
         const reviewWork = await ReviewStudentWork({
           studentId: currentStudentWork.id,
           assignmentId: assignment?.data?.data?.id,
           comment: teacherReview.comment,
           score: teacherReview.score,
         });
-        Swal.fire("success", "ตรวจงานเรียบร้อย", "success");
+        Swal.fire('success', 'ตรวจงานเรียบร้อย', 'success');
         studentOnAssignments.refetch();
         const nextStudentNumber = parseInt(currentStudentWork.number) + 1;
         // Check if the current student is the last student
@@ -311,18 +312,18 @@ function Index({ error, user }) {
           nextStudentNumber = 1;
         }
         const nextStudent = studentOnAssignments.data.data.find(
-          (student) => parseInt(student.number) === nextStudentNumber
+          (student) => parseInt(student.number) === nextStudentNumber,
         );
 
         handleSelectWork(nextStudent);
-      } else if (currentStudentWork.status === "no-work") {
+      } else if (currentStudentWork.status === 'no-work') {
         const reviewWork = await ReviewStudentWorkNoWork({
           studentId: currentStudentWork.id,
           assignmentId: assignment?.data?.data?.id,
           comment: teacherReview.comment,
           score: teacherReview.score,
         });
-        Swal.fire("success", "ตรวจงานเรียบร้อย", "success");
+        Swal.fire('success', 'ตรวจงานเรียบร้อย', 'success');
         studentOnAssignments.refetch();
 
         const nextStudentNumber = parseInt(currentStudentWork.number) + 1;
@@ -332,7 +333,7 @@ function Index({ error, user }) {
           nextStudentNumber = 1;
         }
         const nextStudent = studentOnAssignments.data.data.find(
-          (student) => parseInt(student.number) === nextStudentNumber
+          (student) => parseInt(student.number) === nextStudentNumber,
         );
 
         handleSelectWork(nextStudent);
@@ -340,9 +341,9 @@ function Index({ error, user }) {
     } catch (err) {
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.error?.message?.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -356,13 +357,13 @@ function Index({ error, user }) {
         studentId: studentId,
       });
       setComment(() => comment.data);
-      Swal.fire("success", "ลบคอมเมนต์เรียบร้อย", "success");
+      Swal.fire('success', 'ลบคอมเมนต์เรียบร้อย', 'success');
     } catch (err) {
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.error?.message?.toString(),
-        "error"
+        'error',
       );
     }
   }
@@ -377,13 +378,13 @@ function Index({ error, user }) {
         studentId: studentId,
       });
       setComment(() => comment.data);
-      Swal.fire("success", "ลบคอมเมนต์เรียบร้อย", "success");
+      Swal.fire('success', 'ลบคอมเมนต์เรียบร้อย', 'success');
     } catch (err) {
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.error?.message?.toString(),
-        "error"
+        'error',
       );
     }
   }
@@ -395,7 +396,7 @@ function Index({ error, user }) {
       setTeacherReview((prev) => {
         return {
           ...prev,
-          comment: "",
+          comment: '',
         };
       });
       await PostComment({
@@ -411,27 +412,29 @@ function Index({ error, user }) {
     } catch (err) {
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.error?.message?.toString(),
-        "error"
+        'error',
       );
     }
   };
   const handleOnChangeReviewWork = (e) => {
     const { name, value } = e.target;
 
-    if (value === "" || (validateScore(value) && name === "score")) {
+    if (value === '' || (validateScore(value) && name === 'score')) {
       setTeacherReview((prev) => {
         return {
           ...prev,
           score: value,
         };
       });
-    } else if (name === "comment") {
+    }
+    if (name === 'comment') {
+      console.log(value);
       setTeacherReview((prev) => {
         return {
           ...prev,
-          comment: value,
+          [name]: value,
         };
       });
     }
@@ -471,8 +474,8 @@ function Index({ error, user }) {
               className="font-Poppins z-20 hover:scale-110 transition 
               duration-150 absolute top-3 left-2 text-white bg-blue-500 px-5 py-3 rounded-xl "
             >
-              {user.language === "Thai" && "กลับ"}
-              {user.language === "English" && "back"}
+              {user.language === 'Thai' && 'กลับ'}
+              {user.language === 'English' && 'back'}
             </button>
             {menus.map((menu, index) => {
               return (
@@ -484,11 +487,11 @@ function Index({ error, user }) {
                 >
                   <span
                     className={`text-[#2C7CD1] ${
-                      activeMenu === index ? "font-bold" : "font-normal"
+                      activeMenu === index ? 'font-bold' : 'font-normal'
                     }`}
                   >
-                    {user.language === "Thai" && menu.titleThai}
-                    {user.language === "English" && menu.titleEnglish}
+                    {user.language === 'Thai' && menu.titleThai}
+                    {user.language === 'English' && menu.titleEnglish}
                   </span>
                 </div>
               );
@@ -520,8 +523,8 @@ function Index({ error, user }) {
                         )}
                       </div>
                       <span>
-                        {user.language === "Thai" && "คะแนนเต็ม"}
-                        {user.language === "English" && "score"}
+                        {user.language === 'Thai' && 'คะแนนเต็ม'}
+                        {user.language === 'English' && 'score'}
                       </span>
                     </div>
                   </div>
@@ -554,8 +557,8 @@ function Index({ error, user }) {
                   <div className="p-6 flex  items-end justify-between text-white">
                     <div>
                       <span>
-                        {user.language === "Thai" && "กำหนดส่ง"}
-                        {user.language === "English" && "due by"}
+                        {user.language === 'Thai' && 'กำหนดส่ง'}
+                        {user.language === 'English' && 'due by'}
                       </span>
                       <span className="text-xl ml-2 font-semibold text-white hover:text-red-500">
                         {formattedDate}
@@ -569,8 +572,8 @@ function Index({ error, user }) {
                       >
                         <MdDelete />
                         <span className="text-sm">
-                          {user.language === "Thai" && "ลบงาน"}
-                          {user.language === "English" && "delete assignment"}
+                          {user.language === 'Thai' && 'ลบงาน'}
+                          {user.language === 'English' && 'delete assignment'}
                         </span>
                       </div>
                       <div
@@ -580,8 +583,8 @@ function Index({ error, user }) {
                       >
                         <FiSettings />
                         <span className="text-sm">
-                          {user.language === "Thai" && "แก้ไข"}
-                          {user.language === "English" && "setting"}
+                          {user.language === 'Thai' && 'แก้ไข'}
+                          {user.language === 'English' && 'setting'}
                         </span>
                       </div>
                     </div>
@@ -596,8 +599,8 @@ function Index({ error, user }) {
                 <div className="lg:w-full md:w-2/4  top-10 sticky flex flex-col h-full items-center justify-center ">
                   <div className="text-xl font-Kanit font-semibold flex justify-center items-center gap-2">
                     <span>
-                      {user.language === "Thai" && "สถานะการส่งงานของผู้เรียน"}
-                      {user.language === "English" &&
+                      {user.language === 'Thai' && 'สถานะการส่งงานของผู้เรียน'}
+                      {user.language === 'English' &&
                         "student's status on assignment"}
                     </span>
 
@@ -614,20 +617,20 @@ function Index({ error, user }) {
                     <thead className="mt-4 flex text-base ">
                       <tr className="flex lg:gap-5 md:gap-2 w-full  justify-center">
                         <th className="flex justify-center text-center  w-10">
-                          {user.language === "Thai" && "เลขที่"}
-                          {user.language === "English" && "number"}
+                          {user.language === 'Thai' && 'เลขที่'}
+                          {user.language === 'English' && 'number'}
                         </th>
                         <th className="flex items-center justify-center md:w-28 xl:w-60 lg:w-40">
-                          {user.language === "Thai" && "ชื่อ"}
-                          {user.language === "English" && "student's name"}
+                          {user.language === 'Thai' && 'ชื่อ'}
+                          {user.language === 'English' && "student's name"}
                         </th>
                         <th className="flex items-center justify-center w-10">
-                          {user.language === "Thai" && "คะแนน"}
-                          {user.language === "English" && "score"}
+                          {user.language === 'Thai' && 'คะแนน'}
+                          {user.language === 'English' && 'score'}
                         </th>
                         <th className="flex items-center justify-center w-32 ">
-                          {user.language === "Thai" && "สถานะ"}
-                          {user.language === "English" && "status"}
+                          {user.language === 'Thai' && 'สถานะ'}
+                          {user.language === 'English' && 'status'}
                         </th>
                       </tr>
                     </thead>
@@ -677,7 +680,7 @@ function Index({ error, user }) {
                             let IsDue = false;
                             const currentTime = new Date();
                             const deadlineDate = new Date(
-                              assignment?.data?.data?.deadline
+                              assignment?.data?.data?.deadline,
                             );
                             deadlineDate.setHours(23);
                             deadlineDate.setMinutes(59);
@@ -708,27 +711,27 @@ function Index({ error, user }) {
                                     0
                                   </td>
                                 )}
-                                {student.status === "no-work" && !IsDue && (
+                                {student.status === 'no-work' && !IsDue && (
                                   <td
                                     onClick={() => handleSelectWork(student)}
                                     className=" bg-orange-500 py-1 px-2 rounded-lg text-white cursor-pointer 
                                       hover:scale-105 transition duration-150 md:w-20 md:text-sm lg:w-32 text-center"
                                   >
-                                    {user.language === "Thai" && "ไม่ส่งงาน"}
-                                    {user.language === "English" && "NO WORK"}
+                                    {user.language === 'Thai' && 'ไม่ส่งงาน'}
+                                    {user.language === 'English' && 'NO WORK'}
                                   </td>
                                 )}
-                                {student.status === "no-work" && IsDue && (
+                                {student.status === 'no-work' && IsDue && (
                                   <td
                                     onClick={() => handleSelectWork(student)}
                                     className=" bg-red-500 py-1 px-2 rounded-lg text-white cursor-pointer 
                                       hover:scale-105 transition duration-150 md:w-20 md:text-sm lg:w-32 text-center"
                                   >
-                                    {user.language === "Thai" && "เลยกำหนดส่ง"}
-                                    {user.language === "English" && "PASS DUE"}
+                                    {user.language === 'Thai' && 'เลยกำหนดส่ง'}
+                                    {user.language === 'English' && 'PASS DUE'}
                                   </td>
                                 )}
-                                {student.status === "have-work" &&
+                                {student.status === 'have-work' &&
                                   student.studentWork.score === 0 &&
                                   student.studentWork.isSummited === false && (
                                     <td
@@ -736,33 +739,33 @@ function Index({ error, user }) {
                                       className="md:w-20 md:text-sm lg:w-32 text-center  cursor-pointer hover:scale-105 transition duration-150
                                          bg-yellow-500 py-1 px-2 rounded-lg text-white lg:text-base flex items-center justify-center"
                                     >
-                                      {user.language === "Thai" && "รอการตรวจ"}
-                                      {user.language === "English" &&
-                                        "WAIT CHECK"}
+                                      {user.language === 'Thai' && 'รอการตรวจ'}
+                                      {user.language === 'English' &&
+                                        'WAIT CHECK'}
                                     </td>
                                   )}
-                                {student.status === "no-assign" && (
+                                {student.status === 'no-assign' && (
                                   <td className=" md:w-20 md:text-sm lg:w-32  bg-gray-500 py-1 px-2 rounded-lg text-white text-center">
-                                    {user.language === "Thai" &&
-                                      "ไม่ได้มอบหมาย"}
-                                    {user.language === "English" &&
-                                      "NOT ASSIGN"}
+                                    {user.language === 'Thai' &&
+                                      'ไม่ได้มอบหมาย'}
+                                    {user.language === 'English' &&
+                                      'NOT ASSIGN'}
                                   </td>
                                 )}
-                                {student.status === "have-work" &&
+                                {student.status === 'have-work' &&
                                   student.studentWork.isSummited === true && (
                                     <td
                                       onClick={() => handleSelectWork(student)}
                                       className=" md:w-20 md:text-sm lg:w-32  text-center bg-green-500 py-1 px-2 cursor-pointer hover:scale-105 transition duration-150 rounded-lg text-white"
                                     >
-                                      {user.language === "Thai" && "ตรวจแล้ว"}
-                                      {user.language === "English" &&
-                                        "FINISH CHECK"}
+                                      {user.language === 'Thai' && 'ตรวจแล้ว'}
+                                      {user.language === 'English' &&
+                                        'FINISH CHECK'}
                                     </td>
                                   )}
                               </tr>
                             );
-                          }
+                          },
                         )
                       )}
                     </tbody>
@@ -775,10 +778,10 @@ function Index({ error, user }) {
                     <div className="flex items-center md:w-5/12 lg:w-max justify-center relative ">
                       <div className="lg:text-3xl md:text-xl w-max font-Kanit flex">
                         <span>
-                          {user.language === "Thai" && "งานของผู้เรียน"}
-                          {user.language === "English" && "student's work"}
+                          {user.language === 'Thai' && 'งานของผู้เรียน'}
+                          {user.language === 'English' && "student's work"}
                         </span>
-                        {currentStudentWork?.status === "have-work" && (
+                        {currentStudentWork?.status === 'have-work' && (
                           <div
                             onClick={handleDelteStudentWork}
                             className="flex items-center md:ml-1 lg:ml-5 justify-center text-red-500 cursor-pointer
@@ -799,9 +802,9 @@ function Index({ error, user }) {
                           <TextField
                             fullWidth
                             label={
-                              user.language === "Thai"
-                                ? "คะแนน"
-                                : user.language === "English" && "score"
+                              user.language === 'Thai'
+                                ? 'คะแนน'
+                                : user.language === 'English' && 'score'
                             }
                             type="text"
                             name="score"
@@ -819,8 +822,8 @@ function Index({ error, user }) {
                active:border-solid  focus:border-2 
               focus:border-solid"
                         >
-                          {user.language === "Thai" && "ส่ง"}
-                          {user.language === "English" && "summit"}
+                          {user.language === 'Thai' && 'ส่ง'}
+                          {user.language === 'English' && 'summit'}
                         </button>
                       </form>
                     )}
@@ -828,8 +831,8 @@ function Index({ error, user }) {
                   <div className="flex flex-col justify-start w-full">
                     <div className="w-full flex justify-start items-center gap-2 ">
                       <span>
-                        {user.language === "Thai" && "เลขที่"}
-                        {user.language === "English" && "number"}{" "}
+                        {user.language === 'Thai' && 'เลขที่'}
+                        {user.language === 'English' && 'number'}{' '}
                         {currentStudentWork?.number}
                       </span>
                       <span
@@ -844,6 +847,7 @@ function Index({ error, user }) {
                           <Image
                             src={currentStudentWork?.picture}
                             layout="fill"
+                            sizes="(max-width: 768px) 100vw"
                             className="object-cover"
                           />
                         </div>
@@ -854,13 +858,13 @@ function Index({ error, user }) {
                         <div
                           className={`flex gap-2 ${
                             studentSummitDate.isDue
-                              ? "bg-red-500"
-                              : "bg-green-400"
+                              ? 'bg-red-500'
+                              : 'bg-green-400'
                           }  w-max p-2 rounded-lg drop-shadow-md text-white `}
                         >
                           <span>
-                            {user.language === "Thai" && "ส่งงานเมื่อ"}
-                            {user.language === "English" && "summited work on"}
+                            {user.language === 'Thai' && 'ส่งงานเมื่อ'}
+                            {user.language === 'English' && 'summited work on'}
                           </span>
                           <span>{studentSummitDate.summitDate}</span>
                         </div>
@@ -884,8 +888,8 @@ function Index({ error, user }) {
                           theme="day"
                           className={`container grid ${
                             images.length === 1
-                              ? "grid-cols-1"
-                              : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 "
+                              ? 'grid-cols-1'
+                              : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '
                           } lg:w-full md:w-60 mx-auto h-full  place-items-center
                          `}
                         >
@@ -903,6 +907,7 @@ function Index({ error, user }) {
                                   data-lightboxjs="lightbox1"
                                   quality={60}
                                   placeholder="blur"
+                                  sizes="(max-width: 768px) 100vw"
                                   blurDataURL="/logo/TaTuga camp.png"
                                 />
                               </div>
@@ -914,29 +919,29 @@ function Index({ error, user }) {
                           className="w-full   h-72 text-center flex items-center justify-center font-Kanit
                       font-bold text-2xl text-gray-300"
                         >
-                          {currentStudentWork?.status === "no-work" &&
-                            user.language === "Thai" &&
-                            "ผู้เรียนยังไม่ส่งงาน"}
-                          {currentStudentWork?.status === "have-work" &&
-                            user.language === "Thai" &&
-                            "ตรวจงานโดยผู้เรียนไม่ส่งงาน"}
+                          {currentStudentWork?.status === 'no-work' &&
+                            user.language === 'Thai' &&
+                            'ผู้เรียนยังไม่ส่งงาน'}
+                          {currentStudentWork?.status === 'have-work' &&
+                            user.language === 'Thai' &&
+                            'ตรวจงานโดยผู้เรียนไม่ส่งงาน'}
                           {!currentStudentWork &&
-                            user.language === "Thai" &&
-                            "โปรดเลือกงาน"}
-                          {currentStudentWork?.status === "no-work" &&
-                            user.language === "English" &&
+                            user.language === 'Thai' &&
+                            'โปรดเลือกงาน'}
+                          {currentStudentWork?.status === 'no-work' &&
+                            user.language === 'English' &&
                             "NO student's work"}
-                          {currentStudentWork?.status === "have-work" &&
-                            user.language === "English" &&
+                          {currentStudentWork?.status === 'have-work' &&
+                            user.language === 'English' &&
                             "Finish checking without student's work"}
                           {!currentStudentWork &&
-                            user.language === "English" &&
-                            "Please select some student"}
+                            user.language === 'English' &&
+                            'Please select some student'}
                         </div>
                       )}
                       <div className="flex flex-col gap-5 justify-start items-center">
                         {files.map((file, index) => {
-                          if (file.fileType === "pdf") {
+                          if (file.fileType === 'pdf') {
                             return (
                               <div
                                 key={index}
@@ -953,7 +958,7 @@ function Index({ error, user }) {
                               </div>
                             );
                           }
-                          if (file.fileType === "docx") {
+                          if (file.fileType === 'docx') {
                             return (
                               <div
                                 key={index}
@@ -968,9 +973,9 @@ function Index({ error, user }) {
                             );
                           }
                           if (
-                            file.fileType === "mp4" ||
-                            file.fileType === "mov" ||
-                            file.fileType === "MOV"
+                            file.fileType === 'mp4' ||
+                            file.fileType === 'mov' ||
+                            file.fileType === 'MOV'
                           ) {
                             return (
                               <div
@@ -988,8 +993,8 @@ function Index({ error, user }) {
                             );
                           }
                           if (
-                            file.fileType === "mp3" ||
-                            file.fileType === "aac"
+                            file.fileType === 'mp3' ||
+                            file.fileType === 'aac'
                           ) {
                             return (
                               <div
@@ -1015,6 +1020,7 @@ function Index({ error, user }) {
                               <Image
                                 src={currentStudentWork?.picture}
                                 alt="profile"
+                                sizes="(max-width: 768px) 100vw"
                                 layout="fill"
                                 className="object-cover"
                               />
@@ -1050,6 +1056,7 @@ function Index({ error, user }) {
                               <Image
                                 src={user.picture}
                                 alt="profile"
+                                sizes="(max-width: 768px) 100vw"
                                 layout="fill"
                                 className="object-cover"
                               />
@@ -1091,6 +1098,7 @@ function Index({ error, user }) {
                                     src={comment.user.picture}
                                     alt="profile"
                                     layout="fill"
+                                    sizes="(max-width: 768px) 100vw"
                                     className="object-cover"
                                   />
                                 </div>
@@ -1160,6 +1168,7 @@ function Index({ error, user }) {
                                     src={comment.student.picture}
                                     alt="profile"
                                     layout="fill"
+                                    sizes="(max-width: 768px) 100vw"
                                     className="object-cover"
                                   />
                                 </div>
@@ -1266,7 +1275,7 @@ export async function getServerSideProps(context) {
       props: {
         error: {
           statusCode: 401,
-          message: "unauthorized",
+          message: 'unauthorized',
         },
       },
     };
@@ -1287,7 +1296,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };
@@ -1308,7 +1317,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };

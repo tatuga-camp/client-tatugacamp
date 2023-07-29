@@ -1,49 +1,49 @@
-import { Popover, Transition } from "@headlessui/react";
-import React, { useEffect, useState } from "react";
-import { FiChevronsLeft, FiChevronsRight, FiSidebar } from "react-icons/fi";
-import AuthButton from "../components/auth/button";
-import { FiSettings, FiArrowLeftCircle } from "react-icons/fi";
-import SidebarClassroom from "../components/sidebar/sidebarClassroom";
-import Image from "next/image";
-import { BsFillPeopleFill, BsPeopleFill, BsQrCodeScan } from "react-icons/bs";
-import { GiCardRandom } from "react-icons/gi";
-import { CgMenuBoxed } from "react-icons/cg";
+import { Popover, Transition } from '@headlessui/react';
+import React, { useEffect, useState } from 'react';
+import { FiChevronsLeft, FiChevronsRight, FiSidebar } from 'react-icons/fi';
+import AuthButton from '../components/auth/button';
+import { FiSettings, FiArrowLeftCircle } from 'react-icons/fi';
+import SidebarClassroom from '../components/sidebar/sidebarClassroom';
+import Image from 'next/image';
+import { BsFillPeopleFill, BsPeopleFill, BsQrCodeScan } from 'react-icons/bs';
+import { GiCardRandom } from 'react-icons/gi';
+import { CgMenuBoxed } from 'react-icons/cg';
 
-import { AiOutlineUserAdd, AiTwotoneStar } from "react-icons/ai";
-import CreateStudent from "../components/form/createStudent";
-import { RxLapTimer } from "react-icons/rx";
-import { useRouter } from "next/router";
-import UpdateClass from "../components/form/updateClass";
-import { MdEmojiPeople } from "react-icons/md";
-import AttendanceChecker from "../components/form/attendanceChecker";
-import { GetOneClassroom } from "../service/classroom";
-import { GetUser } from "../service/user";
-import { GetAllStudents } from "../service/students";
-import { useQuery } from "react-query";
-import RandomStudents from "../components/form/randomStudents";
-import { IoPersonAdd, IoWarningOutline } from "react-icons/io5";
-import RandomIcon from "../components/svg/RandomIcon";
-import QRCode from "react-qr-code";
-import { HiRectangleGroup } from "react-icons/hi2";
-import CreateGroup from "../components/form/createGroup";
+import { AiOutlineUserAdd, AiTwotoneStar } from 'react-icons/ai';
+import CreateStudent from '../components/form/createStudent';
+import { RxLapTimer } from 'react-icons/rx';
+import { useRouter } from 'next/router';
+import UpdateClass from '../components/form/updateClass';
+import { MdEmojiPeople } from 'react-icons/md';
+import AttendanceChecker from '../components/form/attendanceChecker';
+import { GetOneClassroom } from '../service/classroom';
+import { GetUser } from '../service/user';
+import { GetAllStudents } from '../service/students';
+import { useQuery } from 'react-query';
+import RandomStudents from '../components/form/randomStudents';
+import { IoPersonAdd, IoWarningOutline } from 'react-icons/io5';
+import RandomIcon from '../components/svg/RandomIcon';
+import QRCode from 'react-qr-code';
+import { HiRectangleGroup } from 'react-icons/hi2';
+import CreateGroup from '../components/form/createGroup';
 
 function Layout({ children, sideMenus, language, groups }) {
   const router = useRouter();
   const [triggerRandomStudent, setTriggerRandomStudent] = useState(false);
-  const user = useQuery(["user"], () => GetUser());
+  const user = useQuery(['user'], () => GetUser());
   const classroom = useQuery(
-    ["classroom"],
+    ['classroom'],
     () => GetOneClassroom({ params: router.query.classroomId }),
     {
       enabled: false,
-    }
+    },
   );
   const students = useQuery(
-    ["students"],
+    ['students'],
     () => GetAllStudents({ classroomId: router.query.classroomId }),
     {
       enabled: false,
-    }
+    },
   );
   useEffect(() => {
     classroom.refetch();
@@ -57,10 +57,10 @@ function Layout({ children, sideMenus, language, groups }) {
   //covert date
   const date = new Date(classroom?.data?.data?.createAt);
 
-  const formattedDate = date.toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
+  const formattedDate = date.toLocaleDateString('en-US', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
   });
 
   //create new copy of students data
@@ -68,7 +68,7 @@ function Layout({ children, sideMenus, language, groups }) {
 
   //rearrange copy studens data to the first array is the highest score
   const highestScorePlayer = coppyStudentsData?.sort(
-    (a, b) => b.score.totalPoints - a.score.totalPoints
+    (a, b) => b.score.totalPoints - a.score.totalPoints,
   )[0];
 
   return (
@@ -161,8 +161,8 @@ function Layout({ children, sideMenus, language, groups }) {
                   </div>
                   <div className=" w-full flex justify-center flex-col items-center uppercase md:hidden  text-center mt-2">
                     <span className="text-lg">
-                      {language === "Thai" && "รหัสห้องเรียน"}
-                      {language === "English" && "classroom code"}
+                      {language === 'Thai' && 'รหัสห้องเรียน'}
+                      {language === 'English' && 'classroom code'}
                     </span>
                     <span className="text-lg">{classroomCode}</span>
                   </div>
@@ -174,7 +174,7 @@ function Layout({ children, sideMenus, language, groups }) {
                 <>
                   <Popover.Button
                     onClick={() => {
-                      document.body.style.overflow = "hidden";
+                      document.body.style.overflow = 'hidden';
                     }}
                     className="absolute top-24 z-20 left-3 text-2xl text-gray-500 cursor-pointer
 border-none flex  items-center justify-center hover:animate-spin bg-transparent animate-none 	"
@@ -206,8 +206,8 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
               w-60 h-12 relative"
               >
                 <span className="font-Kanit font-semibold text-2xl  text-gray-800">
-                  {language === "Thai" && "รหัสห้องเรียน"}
-                  {language === "English" && "Classroom's code"}
+                  {language === 'Thai' && 'รหัสห้องเรียน'}
+                  {language === 'English' && "Classroom's code"}
                 </span>
               </div>
 
@@ -269,9 +269,9 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                             <QRCode
                               size={256}
                               style={{
-                                height: "auto",
-                                maxWidth: "100%",
-                                width: "100%",
+                                height: 'auto',
+                                maxWidth: '100%',
+                                width: '100%',
                               }}
                               value={`${process.env.NEXT_PUBLIC_CLIENT_URL}/classroom/student?classroomCode=${classroomCode}`}
                               viewBox={`0 0 256 256`}
@@ -288,6 +288,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
               <div className="relative ">
                 <div className="w-40 h-40  relative ">
                   <Image
+                    sizes="(max-width: 768px) 100vw"
                     layout="fill"
                     src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/IMG_3064.PNG"
                     className="object-contain "
@@ -295,6 +296,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                 </div>
                 <div className="w-40 h-40 bg-transparent rotate-12 absolute top-3 -right-20">
                   <Image
+                    sizes="(max-width: 768px) 100vw"
                     src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/IMG_3052.PNG"
                     className="object-contain"
                     layout="fill"
@@ -302,6 +304,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                 </div>
                 <div className="w-40 h-40 bg-transparent absolute top-3 right-20 -rotate-12">
                   <Image
+                    sizes="(max-width: 768px) 100vw"
                     src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/mermaid/IMG_3205%20(1).PNG"
                     className="object-contain"
                     layout="fill"
@@ -318,7 +321,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
             <Popover.Button>
               <div
                 onClick={() => {
-                  document.body.style.overflow = "hidden";
+                  document.body.style.overflow = 'hidden';
                 }}
                 role="button"
                 className="font-Kanit flex items-center my-5 justify-center gap-2 text-white
@@ -328,8 +331,8 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                   <MdEmojiPeople />
                 </div>
                 <span className="font-Kanit font-semibold text-lg">
-                  {language === "Thai" && "เช็คชื่อ"}
-                  {language === "English" && "Attendance check"}
+                  {language === 'Thai' && 'เช็คชื่อ'}
+                  {language === 'English' && 'Attendance check'}
                 </span>
               </div>
             </Popover.Button>
@@ -349,10 +352,10 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
         <div className="text-2xl">
           <IoWarningOutline />
         </div>
-        {language === "Thai" &&
-          "กรุณาเข้าใช้งานใน แท็บเล็ตหรือคอมพิวเตอร์ เพื่อการใช้งาน Tatuga Class ได้อย่างมีประสิทธิภาพ"}
-        {language === "English" &&
-          "Please access tatuga again with tablet or computer for accessing full functionalities"}
+        {language === 'Thai' &&
+          'กรุณาเข้าใช้งานใน แท็บเล็ตหรือคอมพิวเตอร์ เพื่อการใช้งาน Tatuga Class ได้อย่างมีประสิทธิภาพ'}
+        {language === 'English' &&
+          'Please access tatuga again with tablet or computer for accessing full functionalities'}
       </div>
       {!user.isError && user?.data?.status === 200 && (
         <div className="md:flex hidden flex-col gap-3 lg:mt-0 md:pl-5 lg:pl-0 lg:w-3/4 md:w-11/12 items-center justify-center md:items-start">
@@ -375,8 +378,8 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                         <IoPersonAdd />
                       </div>
                       <span className="font-Kanit font-semibold text-lg text-white">
-                        {language === "Thai" && "สร้างนักเรียน"}
-                        {language === "English" && "Create students"}
+                        {language === 'Thai' && 'สร้างนักเรียน'}
+                        {language === 'English' && 'Create students'}
                       </span>
                     </div>
                   </Popover.Button>
@@ -395,7 +398,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
             <div
               onClick={() =>
                 router.push({
-                  pathname: "/teacher-tools/timer",
+                  pathname: '/teacher-tools/timer',
                 })
               }
               role="button"
@@ -406,8 +409,8 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                 <RxLapTimer />
               </div>
               <span className="font-Kanit font-semibold text-lg">
-                {language === "Thai" && "จับเวลา"}
-                {language === "English" && "Timer"}
+                {language === 'Thai' && 'จับเวลา'}
+                {language === 'English' && 'Timer'}
               </span>
             </div>
             <Popover>
@@ -416,7 +419,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                   <Popover.Button>
                     <div
                       onClick={() => {
-                        document.body.style.overflow = "hidden";
+                        document.body.style.overflow = 'hidden';
                       }}
                       role="button"
                       className="font-Kanit flex items-center justify-center gap-2 text-white
@@ -426,8 +429,8 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                         <MdEmojiPeople />
                       </div>
                       <span className="font-Kanit font-semibold text-lg">
-                        {language === "Thai" && "เช็คชื่อ"}
-                        {language === "English" && "Attendance check"}
+                        {language === 'Thai' && 'เช็คชื่อ'}
+                        {language === 'English' && 'Attendance check'}
                       </span>
                     </div>
                   </Popover.Button>
@@ -447,7 +450,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
               <button
                 onClick={() => {
                   setTriggerRandomStudent(() => true);
-                  document.body.style.overflow = "hidden";
+                  document.body.style.overflow = 'hidden';
                 }}
                 role="button"
                 className="font-Kanit flex items-center justify-center gap-2 text-white
@@ -457,8 +460,8 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                   <RandomIcon />
                 </div>
                 <span className="font-Kanit font-semibold text-lg">
-                  {language === "Thai" && "สุ่มชื่อ"}
-                  {language === "English" && "random student"}
+                  {language === 'Thai' && 'สุ่มชื่อ'}
+                  {language === 'English' && 'random student'}
                 </span>
               </button>
 
@@ -477,7 +480,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                   <>
                     <Popover.Button
                       onClick={() => {
-                        document.body.style.overflow = "hidden";
+                        document.body.style.overflow = 'hidden';
                       }}
                     >
                       <div
@@ -488,8 +491,8 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                           <HiRectangleGroup />
                         </div>
                         <span className="font-Kanit font-semibold text-lg">
-                          {language === "Thai" && "จัดกลุ่ม"}
-                          {language === "English" && "create group"}
+                          {language === 'Thai' && 'จัดกลุ่ม'}
+                          {language === 'English' && 'create group'}
                         </span>
                       </div>
                     </Popover.Button>

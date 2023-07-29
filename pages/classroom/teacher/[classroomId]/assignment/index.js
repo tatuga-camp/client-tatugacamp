@@ -1,52 +1,52 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { GetUser, GetUserCookie } from "../../../../../service/user";
-import { useRouter } from "next/router";
-import Unauthorized from "../../../../../components/error/unauthorized";
-import FullScreenLoading from "../../../../../components/loading/FullScreenLoading";
-import { GetOneClassroom } from "../../../../../service/classroom";
-import Image from "next/image";
-import CreateAssignment from "../../../../../components/form/createAssignment";
-import { GetAllAssignments } from "../../../../../service/assignment";
-import { GetAllStudents } from "../../../../../service/students";
-import Layout from "../../../../../layouts/classroomLayout";
-import { Skeleton } from "@mui/material";
-import Head from "next/head";
-import { parseCookies } from "nookies";
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { GetUser, GetUserCookie } from '../../../../../service/user';
+import { useRouter } from 'next/router';
+import Unauthorized from '../../../../../components/error/unauthorized';
+import FullScreenLoading from '../../../../../components/loading/FullScreenLoading';
+import { GetOneClassroom } from '../../../../../service/classroom';
+import Image from 'next/image';
+import CreateAssignment from '../../../../../components/form/createAssignment';
+import { GetAllAssignments } from '../../../../../service/assignment';
+import { GetAllStudents } from '../../../../../service/students';
+import Layout from '../../../../../layouts/classroomLayout';
+import { Skeleton } from '@mui/material';
+import Head from 'next/head';
+import { parseCookies } from 'nookies';
 import {
   sideMenusEnglish,
   sideMenusThai,
-} from "../../../../../data/menubarsAssignments";
+} from '../../../../../data/menubarsAssignments';
 function Assignment({ error, user }) {
   const router = useRouter();
   const [sideMenus, setSideMenus] = useState(() => {
-    if (user?.language === "Thai") {
+    if (user?.language === 'Thai') {
       return sideMenusThai();
-    } else if (user?.language === "English") {
+    } else if (user?.language === 'English') {
       return sideMenusEnglish();
     }
   });
   const [triggerAssignment, setTriggerAssignment] = useState(false);
   const classroom = useQuery(
-    ["classroom"],
+    ['classroom'],
     () => GetOneClassroom({ params: router.query.classroomId }),
     {
       enabled: false,
-    }
+    },
   );
   const assignments = useQuery(
-    ["assignments"],
+    ['assignments'],
     () => GetAllAssignments({ classroomId: router.query.classroomId }),
     {
       enabled: false,
-    }
+    },
   );
   const students = useQuery(
-    ["students"],
+    ['students'],
     () => GetAllStudents({ classroomId: router.query.classroomId }),
     {
       enabled: false,
-    }
+    },
   );
   //check whether there is authorrized acccess or not
   useEffect(() => {
@@ -83,6 +83,7 @@ function Assignment({ error, user }) {
                 <Image
                   src={user?.picture}
                   layout="fill"
+                  sizes="(max-width: 768px) 100vw"
                   className="object-contain"
                 />
               )}
@@ -90,21 +91,21 @@ function Assignment({ error, user }) {
             <button
               onClick={() => {
                 setTriggerAssignment(true);
-                document.body.style.overflow = "hidden";
+                document.body.style.overflow = 'hidden';
               }}
               className="w-8/12 md:w-80 border-none py-2 rounded-full bg-blue-100 text-center font-Poppins text-sm hover:bg-[#2C7CD1] hover:text-white
 text-black transition duration-150 cursor-pointer"
             >
               <div className="font-Kanit font-medium">
-                {user.language === "Thai" && "สร้างชิ้นงาน"}
-                {user.language === "English" && "create your assignment"}
+                {user.language === 'Thai' && 'สร้างชิ้นงาน'}
+                {user.language === 'English' && 'create your assignment'}
               </div>
             </button>
           </div>
 
           <div
             className={` top-0 right-0 left-0 bottom-0 m-auto righ z-40 ${
-              triggerAssignment === false ? "hidden" : "fixed"
+              triggerAssignment === false ? 'hidden' : 'fixed'
             }`}
           >
             <CreateAssignment
@@ -132,29 +133,29 @@ text-black transition duration-150 cursor-pointer"
 
                 const formattedDate = date.toLocaleDateString(
                   `${
-                    user.language === "Thai"
-                      ? "th-TH"
-                      : user.language === "English" && "en-US"
+                    user.language === 'Thai'
+                      ? 'th-TH'
+                      : user.language === 'English' && 'en-US'
                   }`,
                   {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  }
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                  },
                 );
                 const assignDate = new Date(assignment.createAt);
 
                 const formatAssigDate = assignDate.toLocaleDateString(
                   `${
-                    user.language === "Thai"
-                      ? "th-TH"
-                      : user.language === "English" && "en-US"
+                    user.language === 'Thai'
+                      ? 'th-TH'
+                      : user.language === 'English' && 'en-US'
                   }`,
                   {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  }
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                  },
                 );
 
                 return (
@@ -188,14 +189,14 @@ text-black transition duration-150 cursor-pointer"
                               ></div>
                             </div>
                             <div className="font-Kanit mt-2">
-                              {user.language === "Thai" && "ผู้เรียนส่งงานแล้ว"}
-                              {user.language === "English" &&
-                                "Students has summited thier work for"}{" "}
+                              {user.language === 'Thai' && 'ผู้เรียนส่งงานแล้ว'}
+                              {user.language === 'English' &&
+                                'Students has summited thier work for'}{' '}
                               {assignment.progress.progress}
                             </div>
                             <div className="font-Kanit mt-2">
-                              {user.language === "Thai" && "มอบหมายเมื่อ"}
-                              {user.language === "English" && "Assign on"}{" "}
+                              {user.language === 'Thai' && 'มอบหมายเมื่อ'}
+                              {user.language === 'English' && 'Assign on'}{' '}
                               <span className="w-max h-max p-1 px-2 bg-orange-300 text-black rounded-lg">
                                 {formatAssigDate}
                               </span>
@@ -212,15 +213,15 @@ text-black transition duration-150 cursor-pointer"
                             </span>
                           </div>
                           <div className="font-Poppins font-semibold group-hover:text-white text-black">
-                            {user.language === "Thai" && "คะแนน"}
-                            {user.language === "English" && "score"}
+                            {user.language === 'Thai' && 'คะแนน'}
+                            {user.language === 'English' && 'score'}
                           </div>
                         </div>
 
                         <div className="font-Poppins gap-1 text-sm flex flex-col justify-start items-center  w-full  ">
                           <span className="group-hover:text-white text-black">
-                            {user.language === "Thai" && "กำหนดส่ง"}
-                            {user.language === "English" && "due by"}
+                            {user.language === 'Thai' && 'กำหนดส่ง'}
+                            {user.language === 'English' && 'due by'}
                           </span>
                           <span className="group-hover:text-white text-black">
                             {formattedDate}
@@ -250,7 +251,7 @@ export async function getServerSideProps(context) {
       props: {
         error: {
           statusCode: 401,
-          message: "unauthorized",
+          message: 'unauthorized',
         },
       },
     };
@@ -271,7 +272,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };
@@ -292,7 +293,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };

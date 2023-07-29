@@ -1,37 +1,37 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../../../layouts/tatugaSchoolLayOut";
-import Unauthorized from "../../../components/error/unauthorized";
-import SchoolOnly from "../../../components/error/schoolOnly";
+import React, { useEffect, useState } from 'react';
+import Layout from '../../../layouts/tatugaSchoolLayOut';
+import Unauthorized from '../../../components/error/unauthorized';
+import SchoolOnly from '../../../components/error/schoolOnly';
 import {
   sideMenusEnglish,
   sideMenusThai,
-} from "../../../data/school/menubarsHomepage";
-import { GetAllTeachersNumber } from "../../../service/school/teacher";
-import { GetUserCookie } from "../../../service/user";
-import { parseCookies } from "nookies";
-import { Pagination } from "@mui/material";
+} from '../../../data/school/menubarsHomepage';
+import { GetAllTeachersNumber } from '../../../service/school/teacher';
+import { GetUserCookie } from '../../../service/user';
+import { parseCookies } from 'nookies';
+import { Pagination } from '@mui/material';
 import {
   GetAllClassroom,
   GetAllClassroomNumber,
-} from "../../../service/school/classroom";
-import { useQuery } from "react-query";
-import Image from "next/image";
-import { useRouter } from "next/router";
+} from '../../../service/school/classroom';
+import { useQuery } from 'react-query';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 function Index({ user, error, teachersNumber, classroomNumber }) {
   const [page, setPage] = useState(1);
   const router = useRouter();
   const [sideMenus, setSideMenus] = useState(() => {
-    if (user?.language === "Thai") {
+    if (user?.language === 'Thai') {
       return sideMenusThai;
-    } else if (user?.language === "English") {
+    } else if (user?.language === 'English') {
       return sideMenusEnglish;
     }
   });
   const classrooms = useQuery(
-    ["classrooms", page],
+    ['classrooms', page],
     () => GetAllClassroom({ page: page }),
-    { keepPreviousData: true }
+    { keepPreviousData: true },
   );
 
   useEffect(() => {
@@ -72,6 +72,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                     <Image
                       src={classroom.user.picture}
                       layout="fill"
+                      sizes="(max-width: 768px) 100vw"
                       className="object-cover"
                     />
                   ) : (
@@ -94,7 +95,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                 <div className="flex bg-slate-50  justify-start items-start w-full h-3/6  ">
                   <div className="flex flex-col ml-5 truncate w-8/12 mt-5 text-left text-slate-700">
                     <span className="font-semibold">
-                      สอนโดย {classroom?.user.firstName}{" "}
+                      สอนโดย {classroom?.user.firstName}{' '}
                       {classroom?.user?.lastName}
                     </span>
                     <span className="font-light">{classroom?.user.email}</span>
@@ -126,7 +127,7 @@ export async function getServerSideProps(context) {
       props: {
         error: {
           statusCode: 401,
-          message: "unauthorized",
+          message: 'unauthorized',
         },
       },
     };
@@ -137,16 +138,16 @@ export async function getServerSideProps(context) {
       });
       const user = userData.data;
 
-      if (user.role === "TEACHER") {
+      if (user.role === 'TEACHER') {
         return {
           props: {
             error: {
               statusCode: 403,
-              message: "schoolUserOnly",
+              message: 'schoolUserOnly',
             },
           },
         };
-      } else if (user.role === "SCHOOL") {
+      } else if (user.role === 'SCHOOL') {
         const teachersNumber = await GetAllTeachersNumber({
           access_token: accessToken,
         });
@@ -166,7 +167,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };
@@ -177,17 +178,17 @@ export async function getServerSideProps(context) {
         access_token: accessToken,
       });
       const user = userData.data;
-      if (user.role !== "SCHOOL") {
+      if (user.role !== 'SCHOOL') {
         return {
           props: {
             user,
             error: {
               statusCode: 403,
-              message: "schoolUserOnly",
+              message: 'schoolUserOnly',
             },
           },
         };
-      } else if (user.role === "SCHOOL") {
+      } else if (user.role === 'SCHOOL') {
         const teachersNumber = await GetAllTeachersNumber({
           access_token: accessToken,
         });
@@ -208,7 +209,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };

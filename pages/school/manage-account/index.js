@@ -1,34 +1,35 @@
-import React, { useState } from "react";
-import { FiXCircle } from "react-icons/fi";
-import { AiOutlineUserAdd } from "react-icons/ai";
-import { Box, Pagination, Skeleton, TextField } from "@mui/material";
+import React, { useState } from 'react';
+import { FiXCircle } from 'react-icons/fi';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+import { Box, Pagination, Skeleton, TextField } from '@mui/material';
 
-import { useQuery } from "react-query";
-import Image from "next/image";
-import { GetUserCookie } from "../../../service/user";
-import { parseCookies } from "nookies";
+import { useQuery } from 'react-query';
+import Image from 'next/image';
+import { GetUserCookie } from '../../../service/user';
+import { parseCookies } from 'nookies';
 import {
   GetAllTeachers,
   GetAllTeachersNumber,
-} from "../../../service/school/teacher";
-import CreateAccountForm from "../../../components/form/school/createAccountForm";
-import SettingAccountForm from "../../../components/form/school/settingAccountForm";
-import { useRouter } from "next/router";
-import Layout from "../../../layouts/tatugaSchoolLayOut";
+} from '../../../service/school/teacher';
+import CreateAccountForm from '../../../components/form/school/createAccountForm';
+import SettingAccountForm from '../../../components/form/school/settingAccountForm';
+import { useRouter } from 'next/router';
+import Layout from '../../../layouts/tatugaSchoolLayOut';
 import {
   sideMenusEnglish,
   sideMenusThai,
-} from "../../../data/school/menubarsHomepage";
-import Unauthorized from "../../../components/error/unauthorized";
-import SchoolOnly from "../../../components/error/schoolOnly";
-import { GetAllClassroomNumber } from "../../../service/school/classroom";
+} from '../../../data/school/menubarsHomepage';
+import Unauthorized from '../../../components/error/unauthorized';
+import SchoolOnly from '../../../components/error/schoolOnly';
+import { GetAllClassroomNumber } from '../../../service/school/classroom';
+import { BsPersonFillCheck, BsPersonFillX } from 'react-icons/bs';
 
 const loadingElements = [1, 2, 3, 4, 5];
 function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
   const [sideMenus, setSideMenus] = useState(() => {
-    if (user?.language === "Thai") {
+    if (user?.language === 'Thai') {
       return sideMenusThai;
-    } else if (user?.language === "English") {
+    } else if (user?.language === 'English') {
       return sideMenusEnglish;
     }
   });
@@ -37,9 +38,9 @@ function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
   const [triggerCreateUser, setTriggerCreateUser] = useState(false);
   const [selectTeacher, setSelectTeacher] = useState();
   const teachers = useQuery(
-    ["teachers", page],
+    ['teachers', page],
     () => GetAllTeachers({ page: page }),
-    { keepPreviousData: true }
+    { keepPreviousData: true },
   );
 
   if (error?.statusCode === 401) {
@@ -79,7 +80,7 @@ function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
           <main className="flex w-full h-full justify-center gap-10">
             <div
               className={`${
-                triggerCreateUser || selectTeacher ? "w-8/12" : "w-11/12"
+                triggerCreateUser || selectTeacher ? 'w-8/12' : 'w-11/12'
               } flex flex-col gap-2`}
             >
               <table
@@ -133,15 +134,15 @@ function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
                       const date = new Date(teacher.createAt);
                       const formattedDate = date.toLocaleDateString(
                         `${
-                          user.language === "Thai"
-                            ? "th-TH"
-                            : user.language === "English" && "en-US"
+                          user.language === 'Thai'
+                            ? 'th-TH'
+                            : user.language === 'English' && 'en-US'
                         }`,
                         {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        }
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        },
                       );
                       return (
                         <tr
@@ -162,6 +163,7 @@ function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
                                 <Image
                                   src={teacher.picture}
                                   layout="fill"
+                                  sizes="(max-width: 768px) 100vw"
                                   className="object-cover"
                                 />
                               ) : (
@@ -185,11 +187,23 @@ function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
 
                           <td className="w-32 flex justify-center">
                             {teacher.isDisabled ? (
-                              <div className="w-full bg-gray-400 text-white text-center p-2">
+                              <div
+                                className="w-full flex justify-center items-center rounded-3xl
+                        bg-slate-200 text-slate-700 gap-2 text-center p-2"
+                              >
+                                <div className="flex justify-center items-center">
+                                  <BsPersonFillX />
+                                </div>
                                 disable
                               </div>
                             ) : (
-                              <div className="w-full bg-green-400 text-white text-center p-2">
+                              <div
+                                className="w-full flex justify-center items-center rounded-3xl
+                           bg-green-200 text-green-700 gap-2 text-center p-2"
+                              >
+                                <div className="flex justify-center items-center">
+                                  <BsPersonFillCheck />
+                                </div>
                                 active
                               </div>
                             )}
@@ -239,7 +253,7 @@ export async function getServerSideProps(context) {
       props: {
         error: {
           statusCode: 401,
-          message: "unauthorized",
+          message: 'unauthorized',
         },
       },
     };
@@ -250,16 +264,16 @@ export async function getServerSideProps(context) {
       });
       const user = userData.data;
 
-      if (user.role === "TEACHER") {
+      if (user.role === 'TEACHER') {
         return {
           props: {
             error: {
               statusCode: 403,
-              message: "schoolUserOnly",
+              message: 'schoolUserOnly',
             },
           },
         };
-      } else if (user.role === "SCHOOL") {
+      } else if (user.role === 'SCHOOL') {
         const teachersNumber = await GetAllTeachersNumber({
           access_token: accessToken,
         });
@@ -279,7 +293,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };
@@ -290,17 +304,17 @@ export async function getServerSideProps(context) {
         access_token: accessToken,
       });
       const user = userData.data;
-      if (user.role !== "SCHOOL") {
+      if (user.role !== 'SCHOOL') {
         return {
           props: {
             user,
             error: {
               statusCode: 403,
-              message: "schoolUserOnly",
+              message: 'schoolUserOnly',
             },
           },
         };
-      } else if (user.role === "SCHOOL") {
+      } else if (user.role === 'SCHOOL') {
         const teachersNumber = await GetAllTeachersNumber({
           access_token: accessToken,
         });
@@ -321,7 +335,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };

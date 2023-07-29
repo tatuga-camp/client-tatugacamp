@@ -1,19 +1,19 @@
-import Head from "next/head";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import SideMenuBar from "../../../components/grammar/sideMenuBar";
-import { sanityClient, urlFor } from "../../../sanity";
-import { PortableText, toPlainText } from "@portabletext/react";
-import useWindowSize from "react-use/lib/useWindowSize";
-import Confetti from "react-confetti";
-import Layout from "../../../components/grammar/layout";
-import Script from "next/script";
+import Head from 'next/head';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import SideMenuBar from '../../../components/grammar/sideMenuBar';
+import { sanityClient, urlFor } from '../../../sanity';
+import { PortableText, toPlainText } from '@portabletext/react';
+import useWindowSize from 'react-use/lib/useWindowSize';
+import Confetti from 'react-confetti';
+import Layout from '../../../components/grammar/layout';
+import Script from 'next/script';
 /** @param {import('next').InferGetStaticPropsType<typeof getStaticProps> } props */
 function Index({ grammarData, getAuther }) {
   const { width, height } = useWindowSize();
   const [showConfetti, setShowConfetti] = useState(false);
-  const [date, setDate] = useState("loading...");
+  const [date, setDate] = useState('loading...');
   const [showMenuBar, setShowMenuBar] = useState(false);
   //trigger menubar
   //show menu bar
@@ -113,8 +113,8 @@ function Index({ grammarData, getAuther }) {
         <span style={{ color: value.hex }}>{children}</span>
       ),
       link: ({ children, value }) => {
-        const rel = !value.href.startsWith("/")
-          ? "noreferrer noopener"
+        const rel = !value.href.startsWith('/')
+          ? 'noreferrer noopener'
           : undefined;
         return (
           <a
@@ -150,7 +150,7 @@ function Index({ grammarData, getAuther }) {
           style={{
             backgroundImage: isImage(urlFor(asset).url())
               ? `url(/BgBlob${randomNumber.toString()}.svg)`
-              : "none",
+              : 'none',
           }}
           className={`w-full h-80  bg-cover bg-no-repeat relative `}
         >
@@ -159,6 +159,7 @@ function Index({ grammarData, getAuther }) {
             layout="fill"
             className="object-contain"
             placeholder="blur"
+            sizes="(max-width: 768px) 100vw"
             blurDataURL="/logo/TaTuga camp.png"
             alt="some images about TaTuga camp teaching you English grammar"
             onLoad={onLoad}
@@ -222,6 +223,7 @@ function Index({ grammarData, getAuther }) {
                     layout="fill"
                     className="object-cover"
                     quality={60}
+                    sizes="(max-width: 768px) 100vw"
                     alt={`Image of ${getAuther.name} `}
                   />
                 </li>

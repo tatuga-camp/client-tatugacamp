@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { sanityClient, urlFor } from "../../sanity";
-import Head from "next/head";
-import Script from "next/script";
-import Status from "../../components/activity/Status";
-import MainContent from "../../components/activity/MainContent";
-import { FacebookShareButton, TwitterShareButton } from "next-share";
-import FooterActivities from "../../components/footer/FooterActivities";
-import Layout from "../../components/layout";
-import Link from "next/link";
-import IconButton from "@mui/material/IconButton";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import ReactPlayer from "react-player";
-import Skeleton from "@mui/material/Skeleton";
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { sanityClient, urlFor } from '../../sanity';
+import Head from 'next/head';
+import Script from 'next/script';
+import Status from '../../components/activity/Status';
+import MainContent from '../../components/activity/MainContent';
+import { FacebookShareButton, TwitterShareButton } from 'next-share';
+import FooterActivities from '../../components/footer/FooterActivities';
+import Layout from '../../components/layout';
+import Link from 'next/link';
+import IconButton from '@mui/material/IconButton';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ReactPlayer from 'react-player';
+import Skeleton from '@mui/material/Skeleton';
 /** @param {import('next').InferGetStaticPropsType<typeof getStaticProps> } props */
 function Index(props) {
   const [likes, setLikes] = useState(props.likes);
@@ -52,8 +52,8 @@ function Index(props) {
     } else if (readLocalstore === props.data[0]._id) {
       setLikeHasBeenClicked(true);
     }
-    const res = await fetch("/api/handle-likes", {
-      method: "POST",
+    const res = await fetch('/api/handle-likes', {
+      method: 'POST',
       body: JSON.stringify({ _id: props.data[0]._id }),
     }).catch((error) => console.log(error));
     const data = await res.json();
@@ -132,6 +132,7 @@ function Index(props) {
                 <Image
                   src={urlFor(props.data[0].mainImage.asset._ref).url()}
                   layout="fill"
+                  sizes="(max-width: 768px) 100vw"
                   alt={props.data[0].title}
                   className="object-contain"
                   placeholder="blur"
@@ -162,7 +163,7 @@ function Index(props) {
                           quote={props.data[0].LongDescription}
                           hashtag={`#${props.data[0].slug}`}
                           media={urlFor(
-                            props.data[0].mainImage.asset._ref
+                            props.data[0].mainImage.asset._ref,
                           ).url()}
                         >
                           <div className="text-2xl  hover:text-[#F55E00] transition duration-200 ease-in-out">

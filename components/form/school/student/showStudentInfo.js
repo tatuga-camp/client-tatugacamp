@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { useRouter } from "next/router";
-import React from "react";
-import { SiGoogleclassroom } from "react-icons/si";
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { SiGoogleclassroom } from 'react-icons/si';
 
 function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
   const router = useRouter();
@@ -19,17 +19,18 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
             <Image
               src={currentStudentInfo.student.picture}
               layout="fill"
+              sizes="(max-width: 768px) 100vw"
               className="object-cover"
             />
           </div>
           <div className="flex flex-col items-start gap-3 w-96 truncate">
             <span className="font-Kanit text-2xl  font-semibold truncate">
-              {currentStudentInfo.student.firstName}{" "}
+              {currentStudentInfo.student.firstName}{' '}
               {currentStudentInfo.student.firstName}
             </span>
             <div className="flex gap-5">
               <span className="font-Kanit w-max p-2 bg-blue-500 rounded-md  text-base  font-normal text-white truncate">
-                เลขที่ {currentStudentInfo.student.number}{" "}
+                เลขที่ {currentStudentInfo.student.number}{' '}
               </span>
               {currentStudentInfo.numberAbsent && (
                 <span className="font-Kanit w-max p-2 bg-red-500 rounded-md  text-base  font-normal text-white truncate">
@@ -51,7 +52,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
         </div>
         <div
           onClick={() => {
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = 'auto';
             router.push({
               pathname: `/school/classrooms/teacher/${currentStudentInfo.classroom.user.id}/classroom/${currentStudentInfo.classroom.id}`,
             });
@@ -81,6 +82,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
               <Image
                 src={currentStudentInfo.classroom.user.picture}
                 layout="fill"
+                sizes="(max-width: 768px) 100vw"
                 className="object-cover"
               />
             ) : (
@@ -92,7 +94,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
           <div className="flex flex-col">
             <span className="font-semibold">
               Teacher: {currentStudentInfo.classroom.user.firstName}
-              {"  "}
+              {'  '}
               {currentStudentInfo.classroom.user?.lastName}
             </span>
             <div className="flex gap-2">
@@ -107,7 +109,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
       </div>
       <div
         onClick={() => {
-          document.body.style.overflow = "auto";
+          document.body.style.overflow = 'auto';
           setTriggerStudentInfo(() => false);
         }}
         className="w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/30 "

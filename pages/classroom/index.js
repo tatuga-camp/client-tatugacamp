@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../../components/layout";
-import Image from "next/image";
-import Lottie from "lottie-react";
-import * as teacherAnimation from "../../components/98349-teacher-in-classroom.json";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import { useQuery } from "react-query";
-import { GetNumberStudent, GetNumberUsers } from "../../service/overview/users";
-import { useInView } from "react-intersection-observer";
-import NumberAnimated from "../../components/overview/numberAnimated";
-import ReactPlayer from "react-player";
-import { Alert, AlertTitle, Skeleton } from "@mui/material";
-import { Disclosure } from "@headlessui/react";
-import { RiArrowDropDownLine } from "react-icons/ri";
-import { sanityClient } from "../../sanity";
-import { PortableText } from "@portabletext/react";
-import { myPortableTextComponents } from "../../data/portableContent";
-import { cardData } from "../../data/card-classroom";
+import React, { useEffect, useState } from 'react';
+import Layout from '../../components/layout';
+import Image from 'next/image';
+import Lottie from 'lottie-react';
+import * as teacherAnimation from '../../components/98349-teacher-in-classroom.json';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
+import { useQuery } from 'react-query';
+import { GetNumberStudent, GetNumberUsers } from '../../service/overview/users';
+import { useInView } from 'react-intersection-observer';
+import NumberAnimated from '../../components/overview/numberAnimated';
+import ReactPlayer from 'react-player';
+import { Alert, AlertTitle, Skeleton } from '@mui/material';
+import { Disclosure } from '@headlessui/react';
+import { RiArrowDropDownLine } from 'react-icons/ri';
+import { sanityClient } from '../../sanity';
+import { PortableText } from '@portabletext/react';
+import { myPortableTextComponents } from '../../data/portableContent';
+import { cardData } from '../../data/card-classroom';
 
 function Index({ commonQuestions }) {
   const router = useRouter();
@@ -27,7 +27,7 @@ function Index({ commonQuestions }) {
   const [domLoaded, setDomLoaded] = useState(false);
   const [classroomCode, setClassroomCode] = useState();
   const style = {
-    height: "100%",
+    height: '100%',
   };
   useEffect(() => {
     setDomLoaded(true);
@@ -120,7 +120,7 @@ function Index({ commonQuestions }) {
               <button
                 onClick={() =>
                   router.push({
-                    pathname: "/classroom/student",
+                    pathname: '/classroom/student',
                     query: {
                       classroomCode: classroomCode,
                     },
@@ -141,7 +141,7 @@ function Index({ commonQuestions }) {
               <button
                 onClick={() =>
                   router.push({
-                    pathname: "/classroom/teacher",
+                    pathname: '/classroom/teacher',
                   })
                 }
                 className="w-40  h-9  rounded-full bg-[#2C7CD1] hover:scale-110 transition duration-150 text-white font-sans font-bold
@@ -215,6 +215,7 @@ function Index({ commonQuestions }) {
                     <Image
                       alt="tatuga avatar"
                       priority
+                      sizes="(max-width: 768px) 100vw"
                       src={list.picture}
                       layout="fill"
                       placeholder="blur"
@@ -237,7 +238,7 @@ function Index({ commonQuestions }) {
           >
             <div
               className={`flex flex-col justify-center w-20 md:w-80  items-center gap-5 text-right ${
-                inView ? "xyz-in" : "xyz-out"
+                inView ? 'xyz-in' : 'xyz-out'
               } `}
             >
               <div className="">
@@ -259,7 +260,7 @@ function Index({ commonQuestions }) {
             <div className="h-80 w-[2px] bg-white"></div>
             <div
               className={`flex flex-col jjustify-center w-20 md:w-80  items-center gap-5 text-right ${
-                inView ? "xyz-in" : "xyz-out"
+                inView ? 'xyz-in' : 'xyz-out'
               } `}
             >
               <div className="">
@@ -297,7 +298,7 @@ function Index({ commonQuestions }) {
                           <span>{commonQuestion.questionThai}</span>
                           <RiArrowDropDownLine
                             className={`${
-                              open ? "rotate-180 transform" : ""
+                              open ? 'rotate-180 transform' : ''
                             } h-5 w-5 text-purple-500`}
                           />
                         </Disclosure.Button>

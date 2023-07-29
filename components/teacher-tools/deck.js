@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useSprings, animated, to as interpolate } from "@react-spring/web";
-import { useDrag } from "react-use-gesture";
-import Image from "next/image";
+import React, { useEffect, useState } from 'react';
+import { useSprings, animated, to as interpolate } from '@react-spring/web';
+import { useDrag } from 'react-use-gesture';
+import Image from 'next/image';
 
 const to = (i) => ({
   x: 0,
@@ -58,7 +58,7 @@ function Deck({ students }) {
           gone.clear();
           api.start((i) => to(i));
         }, 600);
-    }
+    },
   );
 
   // Now we're just mapping the animated values to our view, that's it. Btw, this component only renders once. :-)
@@ -89,6 +89,7 @@ function Deck({ students }) {
                   <Image
                     src={students[i].picture}
                     layout="fill"
+                    sizes="(max-width: 768px) 100vw"
                     className="object-cover"
                   />
                 </animated.div>
@@ -110,12 +111,12 @@ function Deck({ students }) {
                  flex flex-col justify-center  text-center pl-0  items-center"
               >
                 <span>
-                  {activeCard === i ? ` เลขที่ ${students[i].number}` : "****"}
+                  {activeCard === i ? ` เลขที่ ${students[i].number}` : '****'}
                 </span>
                 <span>
-                  {activeCard === i ? students[i].firstName : "******"}
+                  {activeCard === i ? students[i].firstName : '******'}
                 </span>
-                <span>{activeCard === i ? students[i].lastName : "***"}</span>
+                <span>{activeCard === i ? students[i].lastName : '***'}</span>
               </animated.ul>
             </animated.div>
           </animated.button>

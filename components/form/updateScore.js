@@ -1,31 +1,31 @@
-import Lottie from "lottie-react";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { FiPlus, FiPlusSquare, FiSave, FiSettings } from "react-icons/fi";
+import Lottie from 'lottie-react';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import { FiPlus, FiPlusSquare, FiSave, FiSettings } from 'react-icons/fi';
 import {
   HideScore,
   UpdateScoreOnStudent,
   UpdateScoreOnWholeClass,
   UpdateScoreOnWholeGroup,
-} from "../../service/scores";
-import * as animationData from "../../public/json/well-done-output.json";
-import fileSoundPositive from "../../public/sound/ging.mp3";
-import fileSoundNagative from "../../public/sound/wrong.mp3";
+} from '../../service/scores';
+import * as animationData from '../../public/json/well-done-output.json';
+import fileSoundPositive from '../../public/sound/ging.mp3';
+import fileSoundNagative from '../../public/sound/wrong.mp3';
 import {
   FcBusinessContact,
   FcCancel,
   FcCheckmark,
   FcLineChart,
   FcViewDetails,
-} from "react-icons/fc";
-import { DelteStudent, UpdateStudent } from "../../service/students";
-import { MdDelete } from "react-icons/md";
-import Swal from "sweetalert2";
-import CreateScore from "./createScore";
-import { avartars } from "../../data/students";
-import { useRouter } from "next/router";
-import Loading from "../loading/loading";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+} from 'react-icons/fc';
+import { DelteStudent, UpdateStudent } from '../../service/students';
+import { MdDelete } from 'react-icons/md';
+import Swal from 'sweetalert2';
+import CreateScore from './createScore';
+import { avartars } from '../../data/students';
+import { useRouter } from 'next/router';
+import Loading from '../loading/loading';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 function UpdateScore({
   close,
   student,
@@ -57,9 +57,9 @@ function UpdateScore({
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState();
   const [studentData, setStdentData] = useState({
-    firstName: "",
-    lastName: "",
-    number: "",
+    firstName: '',
+    lastName: '',
+    number: '',
   });
   //prepare sound
   useEffect(() => {
@@ -98,7 +98,7 @@ function UpdateScore({
       const hideScore = await HideScore({ scoreId });
       refetchScores();
     } catch (err) {
-      Swal.fire("error", err?.response?.data?.message.toString(), "error");
+      Swal.fire('error', err?.response?.data?.message.toString(), 'error');
     }
   };
 
@@ -116,18 +116,18 @@ function UpdateScore({
     try {
       setLoadingDeleteStudent(() => true);
       const deletedStudent = await DelteStudent({ studentId: data.studentId });
-      Swal.fire("success", deletedStudent.data.message, "success");
-      document.body.style.overflow = "auto";
+      Swal.fire('success', deletedStudent.data.message, 'success');
+      document.body.style.overflow = 'auto';
       setLoadingDeleteStudent(() => false);
       students.refetch();
     } catch (err) {
       setLoadingDeleteStudent(() => false);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
       students.refetch();
     }
   };
@@ -137,11 +137,11 @@ function UpdateScore({
     try {
       setLoading(() => true);
       const formData = new FormData();
-      formData.append("file", file);
-      formData.append("firstName", studentData.firstName);
-      formData.append("lastName", studentData?.lastName);
-      formData.append("number", studentData.number);
-      formData.append("picture", studentData.picture);
+      formData.append('file', file);
+      formData.append('firstName', studentData.firstName);
+      formData.append('lastName', studentData?.lastName);
+      formData.append('number', studentData.number);
+      formData.append('picture', studentData.picture);
       await UpdateStudent({
         formData,
         studentId: student.id,
@@ -153,7 +153,7 @@ function UpdateScore({
       setLoading(() => false);
       setError((prev) => (prev = err?.props?.response?.data?.message));
       setTimeout(() => {
-        setError("");
+        setError('');
       }, 3000);
     }
   };
@@ -180,10 +180,10 @@ function UpdateScore({
             <span>{data.scoreTitle}</span>
             <div
               className={`font-bold ${
-                checkNagativePoint ? "text-red-500" : "text-yellow-500"
+                checkNagativePoint ? 'text-red-500' : 'text-yellow-500'
               }  `}
             >
-              {checkNagativePoint ? "" : "+"}
+              {checkNagativePoint ? '' : '+'}
               {points}
             </div>
           </div>
@@ -206,7 +206,7 @@ function UpdateScore({
           }
 
           // Code here will execute once group.isFetching is false
-          console.log("group.isFetching is now false!");
+          console.log('group.isFetching is now false!');
         }
 
         waitForFalse();
@@ -230,7 +230,7 @@ function UpdateScore({
                       ...prev.layers[8].t.d.k[0],
                       s: {
                         ...prev.layers[8].t.d.k[0].s,
-                        t: "",
+                        t: '',
                       },
                     },
                     ...prev.layers[8].t.d.k.slice(1),
@@ -261,7 +261,7 @@ function UpdateScore({
         setLoadingPoint(false);
         close();
       }, 1500);
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
       students?.refetch();
     } catch (err) {
       console.log(err);
@@ -289,7 +289,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
           <button
             onClick={() => {
               close();
-              document.body.style.overflow = "auto";
+              document.body.style.overflow = 'auto';
             }}
             className="ml-3 text-2xl flex justify-center items-center"
           >
@@ -308,8 +308,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
               >
                 <MdDelete size={25} />
                 <span className="text-sm">
-                  {language === "Thai" && "ลบนักเรียน"}
-                  {language === "English" && "delete"}
+                  {language === 'Thai' && 'ลบนักเรียน'}
+                  {language === 'English' && 'delete'}
                 </span>
               </div>
             )}
@@ -371,8 +371,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                     <div
                       className={`absolute w-14 h-14  rounded-full ${
                         student?.score?.totalPoints < 0
-                          ? "bg-red-600"
-                          : "bg-[#EDBA02] "
+                          ? 'bg-red-600'
+                          : 'bg-[#EDBA02] '
                       } ring-2 ring-white
                     flex justify-center items-center font-sans font-bold text-3xl z-10 text-white -left-5 top-2 md:-top-5`}
                     >
@@ -385,8 +385,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                     <span>{student?.lastName}</span>
                   </div>
                   <div className="font-light">
-                    {language === "Thai" && "เลขที่"}
-                    {language === "English" && "number"} {student?.number}
+                    {language === 'Thai' && 'เลขที่'}
+                    {language === 'English' && 'number'} {student?.number}
                   </div>
                   <div
                     role="button"
@@ -396,8 +396,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                   text-white p-1 rounded-md flex gap-2 px-6 transition duration-150 ease-in-out z-20 group hover:ring-2  bottom-0 ring-black"
                   >
                     <span>
-                      {language === "Thai" && "ตั้งค่า"}
-                      {language === "English" && "setting"}
+                      {language === 'Thai' && 'ตั้งค่า'}
+                      {language === 'English' && 'setting'}
                     </span>
                     <div className="text-white group-hover:text-red-500 flex items-center justify-center ">
                       <FiSettings />
@@ -412,8 +412,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                   <div className="flex items-center justify-center flex-col">
                     <div className="flex flex-col relative">
                       <label className="font-sans font-normal">
-                        {language === "Thai" && "แก้ไขชื่อจริง"}
-                        {language === "English" && "first name"}
+                        {language === 'Thai' && 'แก้ไขชื่อจริง'}
+                        {language === 'English' && 'first name'}
                       </label>
                       <input
                         onChange={handleOnChange}
@@ -435,8 +435,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
 
                     <div className="flex flex-col relative mt-2">
                       <label className="font-sans font-normal">
-                        {language === "Thai" && "แก้ไขนาสกุล"}
-                        {language === "English" && "last name"}
+                        {language === 'Thai' && 'แก้ไขนาสกุล'}
+                        {language === 'English' && 'last name'}
                       </label>
                       <input
                         onChange={handleOnChange}
@@ -457,8 +457,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                     </div>
                     <div className="flex flex-col relative mt-2 mb-2">
                       <label className="font-sans font-normal">
-                        {language === "Thai" && "แก้ไขเลขที่"}
-                        {language === "English" && "number"}
+                        {language === 'Thai' && 'แก้ไขเลขที่'}
+                        {language === 'English' && 'number'}
                       </label>
                       <input
                         onChange={handleOnChange}
@@ -490,8 +490,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
               transition duration-150 ease-in-out"
                     >
                       <span>
-                        {language === "Thai" && "บันทึก"}
-                        {language === "English" && "save"}
+                        {language === 'Thai' && 'บันทึก'}
+                        {language === 'English' && 'save'}
                       </span>
                       <div className="text-white flex items-center justify-center ">
                         {loading ? <Loading /> : <FiSave />}
@@ -500,8 +500,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                   </div>
                   <div className="flex flex-col items-center justify-center ">
                     <div className="mb-10 text-xl">
-                      {language === "Thai" && "เลือก Avatar ผู้เรียน"}
-                      {language === "English" && "choose student an avatar"}
+                      {language === 'Thai' && 'เลือก Avatar ผู้เรียน'}
+                      {language === 'English' && 'choose student an avatar'}
                     </div>
                     <div className="grid grid-cols-5 gap-4">
                       {avartars.map((avartar, index) => {
@@ -514,14 +514,15 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                             }
                             className={`bg-white drop-shadow-md  hover:scale-110 ${
                               studentData?.index === index
-                                ? "border-black border-2"
-                                : "border-black border-none"
+                                ? 'border-black border-2'
+                                : 'border-black border-none'
                             }
                          border-solid rounded-lg relative w-16 h-16 transition duration-150`}
                           >
                             <Image
                               src={avartar}
                               layout="fill"
+                              sizes="(max-width: 768px) 100vw"
                               className="object-contain"
                             />
                           </button>
@@ -555,20 +556,20 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
         {triggerSetting === false && (
           <div className=" flex-col  w-full md:w-max px-5   ">
             <div className="flex items-center justify-center h-5 mt-2 text-lg w-full mb-2 ">
-              {classroomScore === true && language === "Thai" && groupScore && (
+              {classroomScore === true && language === 'Thai' && groupScore && (
                 <p>ให้คะแนนกลุ่ม</p>
               )}
               {classroomScore === true &&
-                language === "English" &&
+                language === 'English' &&
                 groupScore && <p>give a group score</p>}
               {classroomScore === true &&
-                language === "Thai" &&
+                language === 'Thai' &&
                 !groupScore && <p>ให้คะแนนทั้งห้องเรียน</p>}
               {classroomScore === true &&
-                language === "English" &&
+                language === 'English' &&
                 !groupScore && <p>give a class score</p>}
-              {language === "Thai" && !classroomScore && <p>คะแนนพิเศษ</p>}
-              {language === "English" && !classroomScore && (
+              {language === 'Thai' && !classroomScore && <p>คะแนนพิเศษ</p>}
+              {language === 'English' && !classroomScore && (
                 <p>give student a motivative score</p>
               )}
             </div>
@@ -577,8 +578,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
               <div
                 className={`md:w-96  w-full  h-full grid ${
                   triggerCreateNewScore
-                    ? " grid-cols-1"
-                    : "grid-cols-2 md:grid-cols-3"
+                    ? ' grid-cols-1'
+                    : 'grid-cols-2 md:grid-cols-3'
                 } gap-5 place-items-center  items-center justify-center`}
               >
                 {triggerCreateNewScore === false ? (
@@ -660,8 +661,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                     >
                       <FiPlus />
                       <span className="text-sm">
-                        {language === "Thai" && "สร้างคะแนน"}
-                        {language === "English" && "Create score"}
+                        {language === 'Thai' && 'สร้างคะแนน'}
+                        {language === 'English' && 'Create score'}
                       </span>
                     </div>
                   </div>
@@ -680,9 +681,9 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                 <div className="w-full md:w-max flex  text-center justify-center h-max text-sm mt-2 text-red-600 text">
                   <div className="w-80 md:w-full">
                     <span>
-                      {language === "Thai" &&
-                        "**หมายเหตุ สามารถลบคะแนนผู้เรียนได้โดยใส่เครื่องหมาย - เช่น -5"}
-                      {language === "English" &&
+                      {language === 'Thai' &&
+                        '**หมายเหตุ สามารถลบคะแนนผู้เรียนได้โดยใส่เครื่องหมาย - เช่น -5'}
+                      {language === 'English' &&
                         "Note: you can minus student's score by putting a minus symbol like -5 "}
                     </span>
                   </div>
@@ -695,7 +696,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
 
       <div
         onClick={() => {
-          document.body.style.overflow = "auto";
+          document.body.style.overflow = 'auto';
           close();
         }}
         className="w-full h-full fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/20 "

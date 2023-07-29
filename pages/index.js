@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import ListActivity from "../components/activities/ListActivity";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import Footer from "../components/footer/Footer";
-import Hands from "../components/svg/Hands";
-import Image from "next/image";
-import Script from "next/script";
-import { sanityClient, urlFor } from "../sanity";
-import { useQuery } from "react-query";
-import axios from "axios";
-import SearchAutoComplete from "../components/search/searchAutoComplete";
-import Loading from "../components/loading/loading";
-import Layout from "../components/layout";
-import { returnProps } from "../utils/imageMetadata";
+import React, { useEffect, useRef, useState } from 'react';
+import ListActivity from '../components/activities/ListActivity';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
+import Footer from '../components/footer/Footer';
+import Hands from '../components/svg/Hands';
+import Image from 'next/image';
+import Script from 'next/script';
+import { sanityClient, urlFor } from '../sanity';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import SearchAutoComplete from '../components/search/searchAutoComplete';
+import Loading from '../components/loading/loading';
+import Layout from '../components/layout';
+import { returnProps } from '../utils/imageMetadata';
 
 export default function Home({ post, blurData }) {
   const router = useRouter();
@@ -23,13 +23,13 @@ export default function Home({ post, blurData }) {
   const [postsData, setPostsData] = useState(post);
 
   const [activeMenu, setActiveMenu] = useState(0);
-  const Menus = [{ name: "ล้างการค้นหา" }];
+  const Menus = [{ name: 'ล้างการค้นหา' }];
 
   // fetch data to next list
   const { isLoading, isFetching, error, refetch } = useQuery({
-    queryKey: ["posts"],
+    queryKey: ['posts'],
     queryFn: () =>
-      axios.post("/api/handle-posts", { index: activeMenu }).then((res) => {
+      axios.post('/api/handle-posts', { index: activeMenu }).then((res) => {
         setPostsData(res.data.posts);
         return res.data.posts;
       }),
@@ -128,13 +128,14 @@ export default function Home({ post, blurData }) {
                   <div
                     className={
                       index === current
-                        ? "opacity-100 relative duration-300 transition translate-y-0  w-full h-full "
-                        : "opacity-0 -translate-y-full"
+                        ? 'opacity-100 relative duration-300 transition translate-y-0  w-full h-full '
+                        : 'opacity-0 -translate-y-full'
                     }
                     key={index}
                   >
                     {index === current && (
                       <Image
+                        sizes="(max-width: 768px) 100vw"
                         className="object-center"
                         src={urlFor(silder.mainImage.asset._ref).url()}
                         layout="fill"
@@ -182,7 +183,7 @@ export default function Home({ post, blurData }) {
             <ul className="list-none pl-0 w-full  h-24 flex mt-10 flex-col-reverse  md:flex-row items-center justify-center md:items-end  md:gap-x-12 font-Kanit font-light text-lg">
               <li className="z-30   ">
                 <SearchAutoComplete
-                  searchFor={"ค้นหากิจกรรม"}
+                  searchFor={'ค้นหากิจกรรม'}
                   activityPosts={postsData}
                   handleSelectedActivity={handleSelectedActivity}
                 />
@@ -194,8 +195,8 @@ export default function Home({ post, blurData }) {
                     key={index}
                     className={` ${
                       activeMenu === index
-                        ? "border-[#EDBA02] text-[#EDBA02] font-semibold"
-                        : "border-transparent"
+                        ? 'border-[#EDBA02] text-[#EDBA02] font-semibold'
+                        : 'border-transparent'
                     } underLineHover cursor-pointer `}
                   >
                     <span className="active:text-[#EDBA02]">{list.name}</span>
@@ -247,13 +248,13 @@ export async function getStaticProps(ctx) {
   const blurData = await Promise.all(
     mainImages.map(async (item) => {
       const imageProps = await returnProps(
-        urlFor(item.mainImage.asset._ref).url()
+        urlFor(item.mainImage.asset._ref).url(),
       );
 
       // This will return the image a well as the needed plaiceholder
       // info in the same object within the array 🤯
       return { ...item, imageProps };
-    })
+    }),
   );
   return {
     props: {

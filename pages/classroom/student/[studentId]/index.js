@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import {
   MdCardTravel,
   MdOutlineMoodBad,
   MdOutlineSick,
   MdWork,
-} from "react-icons/md";
-import { IoHome } from "react-icons/io5";
-import { useRouter } from "next/router";
-import { useQuery } from "react-query";
-import { GetAllAssignment } from "../../../../service/student/assignment";
-import { Skeleton } from "@mui/material";
-import { GetAttendances } from "../../../../service/student/attendance";
-import { HiOutlineHandRaised } from "react-icons/hi2";
-import { BiErrorCircle, BiHappyBeaming, BiRun } from "react-icons/bi";
-import Head from "next/head";
-import { BsImage, BsImageFill } from "react-icons/bs";
-import { GetStudent, UpdateStudent } from "../../../../service/student/student";
-import Swal from "sweetalert2";
+} from 'react-icons/md';
+import { IoHome } from 'react-icons/io5';
+import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
+import { GetAllAssignment } from '../../../../service/student/assignment';
+import { Skeleton } from '@mui/material';
+import { GetAttendances } from '../../../../service/student/attendance';
+import { HiOutlineHandRaised } from 'react-icons/hi2';
+import { BiErrorCircle, BiHappyBeaming, BiRun } from 'react-icons/bi';
+import Head from 'next/head';
+import { BsImage, BsImageFill } from 'react-icons/bs';
+import { GetStudent, UpdateStudent } from '../../../../service/student/student';
+import Swal from 'sweetalert2';
 
 function Index() {
   const [classroomCode, setClassroomCode] = useState();
@@ -29,27 +29,27 @@ function Index() {
 
   const menus = [
     {
-      title: "ชิ้นงาน",
+      title: 'ชิ้นงาน',
       icon: <MdWork />,
-      color: "bg-yellow-400",
+      color: 'bg-yellow-400',
     },
     {
-      title: "ข้อมูลการเข้าเรียน",
+      title: 'ข้อมูลการเข้าเรียน',
       icon: <HiOutlineHandRaised />,
-      color: "bg-gray-400",
+      color: 'bg-gray-400',
     },
   ];
   const router = useRouter();
   const student = useQuery(
-    ["student"],
+    ['student'],
     () => GetStudent({ studentId: router.query.studentId }),
     {
       enabled: false,
-    }
+    },
   );
 
   const assignments = useQuery(
-    ["assignments-student"],
+    ['assignments-student'],
     () =>
       GetAllAssignment({
         studentId: router.query.studentId,
@@ -57,10 +57,10 @@ function Index() {
       }),
     {
       enabled: false,
-    }
+    },
   );
   const attendances = useQuery(
-    ["attendances"],
+    ['attendances'],
     () =>
       GetAttendances({
         studentId: router.query.studentId,
@@ -68,17 +68,17 @@ function Index() {
       }),
     {
       enabled: false,
-    }
+    },
   );
 
   useEffect(() => {
     setClassroomCode(() => {
-      const rawClassroomCode = localStorage.getItem("classroomCode");
+      const rawClassroomCode = localStorage.getItem('classroomCode');
       const classroomCode = JSON.parse(rawClassroomCode);
       return classroomCode;
     });
     setClassroom(() => {
-      const classroom = localStorage.getItem("classroom-student");
+      const classroom = localStorage.getItem('classroom-student');
       const classroomConverted = JSON.parse(classroom);
       return classroomConverted;
     });
@@ -97,30 +97,30 @@ function Index() {
     e.preventDefault();
     if (!file) {
       return Swal.fire(
-        "No file chosen❗",
-        "please select one image to be your avatar",
-        "error"
+        'No file chosen❗',
+        'please select one image to be your avatar',
+        'error',
       );
     }
     try {
       setLoading(() => true);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
       await UpdateStudent({
         formData,
         studentId: student?.data?.data?.id,
       });
       student.refetch();
-      Swal.fire("success", "เปลี่ยนรูปโปรไฟล์สำเร็จ", "success");
-      document.body.style.overflow = "auto";
+      Swal.fire('success', 'เปลี่ยนรูปโปรไฟล์สำเร็จ', 'success');
+      document.body.style.overflow = 'auto';
       setSelectedImage(() => null);
     } catch (err) {
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
       setSelectedImage(() => null);
     }
   };
@@ -132,7 +132,7 @@ function Index() {
     const reader = new FileReader();
 
     reader.onload = function (e) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
       setSelectedImage(() => e.target.result);
     };
 
@@ -143,7 +143,7 @@ function Index() {
   return (
     <div
       className={` w-full bg-slate-100  ${
-        assignments?.data?.data.length > 2 ? "h-full" : "h-screen"
+        assignments?.data?.data.length > 2 ? 'h-full' : 'h-screen'
       }  md:h-full md:pb-40 lg:pb-96 lg:h-full`}
     >
       <Head>
@@ -204,6 +204,7 @@ function Index() {
                   <Skeleton variant="rectangular" width="100%" height="100%" />
                 ) : (
                   <Image
+                    sizes="(max-width: 768px) 100vw"
                     priority={true}
                     src={student?.data?.data?.picture}
                     layout="fill"
@@ -232,6 +233,7 @@ function Index() {
                 <div className="w-28 h-28 relative">
                   <Image
                     layout="fill"
+                    sizes="(max-width: 768px) 100vw"
                     src={selectedImage}
                     alt="Selected Image"
                     className="object-cover"
@@ -247,7 +249,7 @@ function Index() {
                   </button>
                   <button
                     onClick={() => {
-                      document.body.style.overflow = "auto";
+                      document.body.style.overflow = 'auto';
                       setSelectedImage(() => null);
                     }}
                     className="w-40 bg-red-700  font-Kanit py-2 rounded-lg hover:scale-105 transition
@@ -261,7 +263,7 @@ function Index() {
               <div
                 onClick={() => {
                   setSelectedImage(() => null);
-                  document.body.style.overflow = "auto";
+                  document.body.style.overflow = 'auto';
                 }}
                 className="w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto z-10 bg-black/80 "
               ></div>
@@ -296,7 +298,7 @@ function Index() {
                   key={index}
                   onClick={() => setActiveMenu(() => index)}
                   className={`w-max px-2 h-10 rounded-md ${menu.color} ${
-                    activeMenu === index ? "ring-2 ring-white" : "ring-0"
+                    activeMenu === index ? 'ring-2 ring-white' : 'ring-0'
                   }  items-center flex justify-center hover:scale-110 
                  gap-2 transition duration-150 hover:ring-1 active:ring-2`}
                 >
@@ -332,8 +334,8 @@ function Index() {
                     menu.color
                   } ${
                     activeMenu === index
-                      ? "ring-2 md:ring-4  ring-white"
-                      : "ring-0"
+                      ? 'ring-2 md:ring-4  ring-white'
+                      : 'ring-0'
                   }  items-center flex justify-center hover:scale-110 md:justify-between
                  gap-2 md:gap-10 transition duration-150 hover:ring-1 active:ring-2 `}
                 >
@@ -357,50 +359,50 @@ function Index() {
                   <h2 className="mb-2">สถิติ</h2>
                   <div className="grid grid-cols-2 gap-4 w-max md:w-full md:place-items-center place-items-start">
                     <span className="col-span-2">
-                      เปอเซ็นต์การเข้าเรียน{" "}
+                      เปอเซ็นต์การเข้าเรียน{' '}
                       {attendances?.data?.data?.statistics?.percent?.present?.toFixed(
-                        2
+                        2,
                       )}
                       %
                     </span>
                     <span>
-                      จำนวนมาเรียน{" "}
+                      จำนวนมาเรียน{' '}
                       <span className="font-semibold text-green-500">
-                        {attendances?.data?.data?.statistics?.number?.present}{" "}
+                        {attendances?.data?.data?.statistics?.number?.present}{' '}
                         ครั้ง
                       </span>
                     </span>
                     <span>
-                      จำนวนมาสาย{" "}
+                      จำนวนมาสาย{' '}
                       <span className="font-semibold text-orange-500">
-                        {attendances?.data?.data?.statistics?.number?.late}{" "}
+                        {attendances?.data?.data?.statistics?.number?.late}{' '}
                         ครั้ง
                       </span>
                     </span>
                     <span>
-                      จำนวนลา{" "}
+                      จำนวนลา{' '}
                       <span className="font-semibold text-yellow-500">
-                        {attendances?.data?.data?.statistics?.number?.holiday}{" "}
+                        {attendances?.data?.data?.statistics?.number?.holiday}{' '}
                         ครั้ง
                       </span>
                     </span>
                     <span>
-                      จำนวนป่วย{" "}
+                      จำนวนป่วย{' '}
                       <span className="font-semibold text-blue-500">
-                        {attendances?.data?.data?.statistics?.number?.sick}{" "}
+                        {attendances?.data?.data?.statistics?.number?.sick}{' '}
                         ครั้ง
                       </span>
                     </span>
                     <span>
-                      จำนวนขาดเรียน{" "}
+                      จำนวนขาดเรียน{' '}
                       <span className="font-semibold text-red-500">
-                        {attendances?.data?.data?.statistics?.number?.absent}{" "}
+                        {attendances?.data?.data?.statistics?.number?.absent}{' '}
                         ครั้ง
                       </span>
                     </span>
 
                     <span className="col-span-2">
-                      จำนวนคาบเรียนทั้งหมด{" "}
+                      จำนวนคาบเรียนทั้งหมด{' '}
                       {attendances?.data?.data?.statistics?.sum} ครั้ง
                     </span>
                   </div>
@@ -408,11 +410,11 @@ function Index() {
 
                 {attendances?.data?.data?.students?.map((attendance) => {
                   const date = new Date(attendance.date);
-                  const formattedDate = date.toLocaleDateString("th-TH", {
-                    weekday: "long",
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
+                  const formattedDate = date.toLocaleDateString('th-TH', {
+                    weekday: 'long',
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
                   });
                   if (attendance.present) {
                     return (
@@ -542,12 +544,12 @@ function Index() {
             assignments?.data?.data?.map((assignment) => {
               const createDate = new Date(assignment.assignment?.createAt);
               const formattedCreateDate = createDate.toLocaleDateString(
-                "th-TH",
+                'th-TH',
                 {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                }
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                },
               );
               let IsDue = false;
               const currentTime = new Date();
@@ -561,12 +563,12 @@ function Index() {
                 IsDue = false;
               }
               const formatteDeadlineDate = deadlineDate.toLocaleDateString(
-                "th-TH",
+                'th-TH',
                 {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                }
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                },
               );
               return (
                 <button
@@ -599,7 +601,7 @@ function Index() {
                   </div>
                   <div className="w-20  h-full flex items-center justify-center">
                     <div className=" font-Kanit flex-col font-semibold flex justify-center items-center">
-                      {assignment?.student.status === "no-work" && IsDue && (
+                      {assignment?.student.status === 'no-work' && IsDue && (
                         <div
                           className="w-20 h-20 bg-red-600 rounded-2xl text-base text-white font-Kanit font-semibold
                          flex justify-center items-center"
@@ -607,7 +609,7 @@ function Index() {
                           <span className="w-10/12">เลยกำหนดส่ง</span>
                         </div>
                       )}
-                      {assignment?.student.status === "no-work" && !IsDue && (
+                      {assignment?.student.status === 'no-work' && !IsDue && (
                         <div
                           className="w-20 h-20 bg-orange-500 rounded-2xl text-base text-white font-Kanit font-semibold
                          flex justify-center items-center"
@@ -615,13 +617,13 @@ function Index() {
                           <span className="w-10/12">ไม่ส่งงาน</span>
                         </div>
                       )}
-                      {assignment?.student?.status === "have-work" &&
+                      {assignment?.student?.status === 'have-work' &&
                         assignment?.student?.isSummited === false && (
                           <div className="w-20 h-20 bg-yellow-400 rounded-2xl text-white font-Kanit font-semibold flex justify-center items-center">
                             <span>ส่งแล้ว</span>
                           </div>
                         )}
-                      {assignment?.student?.status === "have-work" &&
+                      {assignment?.student?.status === 'have-work' &&
                         assignment?.student?.isSummited === true && (
                           <div className="w-20 h-20 bg-green-600 rounded-2xl text-white font-Kanit font-semibold flex justify-center items-center">
                             <span>ตรวจแล้ว</span>
