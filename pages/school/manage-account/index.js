@@ -23,6 +23,7 @@ import Unauthorized from '../../../components/error/unauthorized';
 import SchoolOnly from '../../../components/error/schoolOnly';
 import { GetAllClassroomNumber } from '../../../service/school/classroom';
 import { BsPersonFillCheck, BsPersonFillX } from 'react-icons/bs';
+import Head from 'next/head';
 
 const loadingElements = [1, 2, 3, 4, 5];
 function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
@@ -59,6 +60,11 @@ function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
       classroomNumber={classroomNumber}
       router={router}
     >
+      <Head>
+        <title>
+          {user.school ? user.school : user.firstName} - จัดการบัญชี
+        </title>
+      </Head>
       <div
         className="flex  w-full h-screen flex-col justify-start items-center relative font-Kanit
          "

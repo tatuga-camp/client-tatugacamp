@@ -1,9 +1,9 @@
-import { Popover, Transition } from "@headlessui/react";
-import React, { useState } from "react";
-import { FiSidebar } from "react-icons/fi";
-import AuthButton from "../components/auth/button";
+import { Popover, Transition } from '@headlessui/react';
+import React, { useState } from 'react';
+import { FiSidebar } from 'react-icons/fi';
+import AuthButton from '../components/auth/button';
 
-import SidebarClassroom from "../components/sidebar/sidebarClassroom";
+import SidebarClassroom from '../components/sidebar/sidebarClassroom';
 
 function Layout({ children, user, sideMenus }) {
   const [triggersidebar, setTriggerSidebar] = useState(true);
@@ -18,12 +18,11 @@ function Layout({ children, user, sideMenus }) {
           <>
             {user && (
               <Popover.Button className="w-max  h-max border-none active:border-none z-30 absolute">
-                <div className="flex p-2 ml-2 flex-col justify-center items-center ">
+                <div className="flex p-2 ml-2 flex-col font-Kanit justify-center items-center ">
                   <div
                     aria-label="Show sidebar"
-                    role="button"
                     className="text-2xl  z-30 w-10 h-10 
-        flex justify-center items-center   text-black drop-shadow cursor-pointer
+        flex justify-center items-center bg-white rounded-2xl   text-black drop-shadow cursor-pointer
         hover:scale-125 transition duration-100 ease-in-out "
                   >
                     <FiSidebar />

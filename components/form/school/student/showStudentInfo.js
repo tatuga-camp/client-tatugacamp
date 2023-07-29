@@ -47,6 +47,15 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
                   ลา {currentStudentInfo.numberHoliday} ครั้ง
                 </span>
               )}
+              {currentStudentInfo.student.nationality ? (
+                <span className="font-Kanit w-max p-2 bg-pink-500 rounded-md  text-base  font-normal text-white truncate">
+                  {currentStudentInfo.student.nationality}{' '}
+                </span>
+              ) : (
+                <span className="font-Kanit w-max p-2 bg-pink-500 rounded-md  text-base  font-normal text-white truncate">
+                  ยังไม่เลือกสัญชาติ
+                </span>
+              )}
             </div>
           </div>
         </div>

@@ -73,6 +73,9 @@ function ShowStudentAttendanceInfo({
               )}
               <span>{formattedDate}</span>
             </div>
+            <span className="font-Kanit w-max p-2 bg-pink-500 rounded-md  text-base  font-normal text-white truncate">
+              {student.nationality ? student.nationality : 'ยังไม่เลือกสัญชาติ'}
+            </span>
           </div>
         </div>
       </div>
