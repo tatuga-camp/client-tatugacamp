@@ -1,13 +1,13 @@
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { sanityClient, urlFor } from "../../sanity";
-import "swiper/css";
-import { Swiper, SwiperSlide } from "swiper/react";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
-import Head from "next/head";
-import Layout from "../../components/layout";
-import { returnProps } from "../../utils/imageMetadata";
-import Hands from "../../components/svg/Hands";
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import { sanityClient, urlFor } from '../../sanity';
+import 'swiper/css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
+import Head from 'next/head';
+import Layout from '../../components/layout';
+import { returnProps } from '../../utils/imageMetadata';
+import Hands from '../../components/svg/Hands';
 
 function Index({ members }) {
   const { height, width } = useWindowDimensions();
@@ -77,6 +77,7 @@ function Index({ members }) {
               src="https://storage.googleapis.com/tatugacamp.com/logo%20/tatugacamp%20facebook.jpg"
               width={200}
               height={200}
+              sizes="(max-width: 768px) 100vw"
               quality={100}
               className=""
             />
@@ -94,6 +95,7 @@ function Index({ members }) {
                     <Image
                       src={urlFor(member.mainImage.asset._ref).url()}
                       layout="fill"
+                      sizes="(max-width: 768px) 100vw"
                       className="object-cover scale-110 drop-shadow-xl relative z-10"
                       placeholder="blur"
                       blurDataURL={member.imageProps.blurDataURL}
@@ -105,6 +107,7 @@ function Index({ members }) {
                     <Image
                       src={urlFor(member.secondImage.asset._ref).url()}
                       layout="fill"
+                      sizes="(max-width: 768px) 100vw"
                       className="object-cover scale-110 drop-shadow-xl relative z-10"
                       placeholder="blur"
                       blurDataURL={member.imageProps.blurDataURL}
@@ -135,13 +138,13 @@ export const getStaticProps = async (ctx) => {
   const blurData = await Promise.all(
     members.map(async (item) => {
       const imageProps = await returnProps(
-        urlFor(item.mainImage.asset._ref).url()
+        urlFor(item.mainImage.asset._ref).url(),
       );
 
       // This will return the image a well as the needed plaiceholder
       // info in the same object within the array 🤯
       return { ...item, imageProps };
-    })
+    }),
   );
   return {
     props: {

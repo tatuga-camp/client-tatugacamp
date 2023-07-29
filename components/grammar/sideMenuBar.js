@@ -1,11 +1,11 @@
-import Image from "next/image";
-import React, { useRef, useState } from "react";
-import { FiChevronRight, FiChevronDown } from "react-icons/fi";
-import { BsFacebook } from "react-icons/bs";
-import { menuGrammar } from "../../data/menuGrammar";
-import { useRouter } from "next/router";
-import { AiFillHome } from "react-icons/ai";
-import Link from "next/link";
+import Image from 'next/image';
+import React, { useRef, useState } from 'react';
+import { FiChevronRight, FiChevronDown } from 'react-icons/fi';
+import { BsFacebook } from 'react-icons/bs';
+import { menuGrammar } from '../../data/menuGrammar';
+import { useRouter } from 'next/router';
+import { AiFillHome } from 'react-icons/ai';
+import Link from 'next/link';
 function SideMenuBar({ trigger, handleCloseMenu }) {
   const [isClickMain, setIsClickMain] = useState(0);
   const [isClickList, setIsClickList] = useState(0);
@@ -29,7 +29,7 @@ function SideMenuBar({ trigger, handleCloseMenu }) {
     <div
       className={`md:w-max lg:pl-5 md:h-screen bg-white drop-shadow-md rounded-none md:rounded-r-2xl 
       md:sticky top-0 fixed z-10 w-screen h-screen mt-0 md:mt-0   md:block  ${
-        trigger ? "block" : "hidden"
+        trigger ? 'block' : 'hidden'
       }`}
     >
       {/* desktop point of view */}
@@ -47,6 +47,7 @@ function SideMenuBar({ trigger, handleCloseMenu }) {
                   priority
                   className="w-full h-full object-contain"
                   layout="fill"
+                  sizes="(max-width: 768px) 100vw"
                   alt="TaTuga camp logo"
                 />
               </li>
@@ -86,7 +87,7 @@ function SideMenuBar({ trigger, handleCloseMenu }) {
                   >
                     <p
                       className={`first-letter:uppercase text-left text-black ${
-                        index === isClickMain && "text-red-700 font-bold "
+                        index === isClickMain && 'text-red-700 font-bold '
                       }`}
                     >
                       {menu.title}
@@ -118,7 +119,7 @@ function SideMenuBar({ trigger, handleCloseMenu }) {
                               <p
                                 className={`text-black ${
                                   index === isClickList &&
-                                  "text-blue-600 font-bold"
+                                  'text-blue-600 font-bold'
                                 }`}
                               >
                                 {list.list}

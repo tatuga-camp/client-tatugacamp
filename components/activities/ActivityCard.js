@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import Heart from "../svg/Heart";
-import Link from "next/link";
-import { urlFor } from "../../sanity";
-import AddShoppingCart from "@mui/icons-material/AddShoppingCart";
-import { BsCameraVideoFill } from "react-icons/bs";
-import { FaGamepad } from "react-icons/fa";
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import Heart from '../svg/Heart';
+import Link from 'next/link';
+import { urlFor } from '../../sanity';
+import AddShoppingCart from '@mui/icons-material/AddShoppingCart';
+import { BsCameraVideoFill } from 'react-icons/bs';
+import { FaGamepad } from 'react-icons/fa';
 
 function ActivityCard(props) {
   const [slug, setSlug] = useState(props?.slug?.current || null);
   const router = useRouter();
   const [loader, setLoader] = useState(false);
-  const emojis = ["😀", "😄", "🤣", "😍", "🤗", "😜", "😚", "💖", "👍"];
+  const emojis = ['😀', '😄', '🤣', '😍', '🤗', '😜', '😚', '💖', '👍'];
   function handleIdPush() {
-    router.push("/" + props.id);
+    router.push('/' + props.id);
     setLoader(true);
   }
 
@@ -44,6 +44,7 @@ function ActivityCard(props) {
             className=" w-full h-full object-contain z-10 group-hover:scale-125  ease-in-out transition duration-300"
             placeholder="blur"
             quality={40}
+            sizes="(max-width: 768px) 100vw"
             blurDataURL="LURfXxtP.8RRtRoLofWq?^aMMxo|"
           />
         </div>

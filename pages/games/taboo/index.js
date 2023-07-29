@@ -1,15 +1,15 @@
-import axios from "axios";
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
-import { useQuery } from "react-query";
-import Layout from "../../../components/layout";
-import { urlFor } from "../../../sanity";
-import Confetti from "react-confetti";
-import { useWindowSize } from "react-use";
-import Head from "next/head";
-import { Skeleton } from "@mui/material";
-import Swal from "sweetalert2";
-import { FcLock, FcUnlock } from "react-icons/fc";
+import axios from 'axios';
+import Image from 'next/image';
+import React, { useEffect, useRef, useState } from 'react';
+import { useQuery } from 'react-query';
+import Layout from '../../../components/layout';
+import { urlFor } from '../../../sanity';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
+import Head from 'next/head';
+import { Skeleton } from '@mui/material';
+import Swal from 'sweetalert2';
+import { FcLock, FcUnlock } from 'react-icons/fc';
 function Index() {
   const [taboo, setTaboo] = useState();
   const [random, setRandom] = useState();
@@ -23,18 +23,18 @@ function Index() {
   const [showConfirm, setShowConfirm] = useState(false);
   const { width, height } = useWindowSize();
   const [loading, setLoading] = useState(false);
-  const tabooCategory = useRef("animal");
+  const tabooCategory = useRef('animal');
   const [loginFirst, setLoginFirst] = useState(false);
 
-  console.log("indexRandom", indexRandom);
-  console.log("nextCard", nextCard);
-  console.log("random", random);
+  console.log('indexRandom', indexRandom);
+  console.log('nextCard', nextCard);
+  console.log('random', random);
   //fectching taboo data
   const { isLoading, isFetching, error, refetch, data } = useQuery(
-    ["taboo"],
+    ['taboo'],
     () =>
       axios
-        .get("/api/taboo", {
+        .get('/api/taboo', {
           params: {
             category: tabooCategory.current,
           },
@@ -42,12 +42,12 @@ function Index() {
         .then((res) => {
           setTaboo(res.data);
           return res;
-        })
+        }),
   );
 
   //set new category to taboo api
   function handleTabooCatergory(category) {
-    if (category === "country" || category === "sport") {
+    if (category === 'country' || category === 'sport') {
       tabooCategory.current = category;
       setNextCard((prev) => {
         prev = Math.floor(Math.random() * 15);
@@ -98,7 +98,7 @@ function Index() {
 
   //show confirmation
   const NextTaboo = () => {
-    if (scores === "win") {
+    if (scores === 'win') {
       setScores(0);
     } else {
       setShowConfirm(true);
@@ -107,7 +107,7 @@ function Index() {
 
   //generate uniqe array of random number
   function GenerateRandom(length) {
-    console.log("gererate!! random");
+    console.log('gererate!! random');
     const nums = new Set();
     while (nums.size !== length) {
       nums.add(Math.floor(Math.random() * length));
@@ -122,9 +122,9 @@ function Index() {
   }, [length]);
 
   useEffect(() => {
-    if (scores === "win") {
+    if (scores === 'win') {
       setRandom(GenerateRandom(length));
-      console.log("useEffect Runs!");
+      console.log('useEffect Runs!');
     }
   }, [scores, length]);
 
@@ -138,7 +138,7 @@ function Index() {
       });
     } else if (indexRandom >= length - 1) {
       setRandom(GenerateRandom(length));
-      console.log("loop finish");
+      console.log('loop finish');
       setIndexRandom(0);
       setNextCard((current) => {
         return (current = random[indexRandom]);
@@ -147,7 +147,7 @@ function Index() {
     setShowConfirm(false);
 
     // set score
-    setScores((current) => (current === length ? "win" : current + 1));
+    setScores((current) => (current === length ? 'win' : current + 1));
   };
 
   // handle no confirm
@@ -169,7 +169,7 @@ function Index() {
       </Head>
       <Layout>
         <div className="font-sans pt-10 bg-slate-100 h-screen">
-          {scores === "win" && <Confetti width={width} height={height} />}
+          {scores === 'win' && <Confetti width={width} height={height} />}
           <header className="w-full h-max  flex justify-center flex-col items-center pt-10">
             {isLoading || isFetching ? (
               <h1>กำลังโหลด...</h1>
@@ -214,7 +214,7 @@ function Index() {
                 </div>
               )}
 
-              {scores === "win" ? (
+              {scores === 'win' ? (
                 <li className="text-2xl font-bold mb-3 md:w-96 text-center">
                   🏆 You are the winner! 🏆
                 </li>
@@ -233,12 +233,13 @@ function Index() {
                 </div>
               ) : (
                 <li className="relative w-32 h-28 flex justify-center  items-center rounded-lg overflow-hidden bg-white drop-shadow-lg md:w-40 md:h-40 lg:w-56 lg:h-56">
-                  {taboo && scores !== "win" && (
+                  {taboo && scores !== 'win' && (
                     <Image
                       src={urlFor(
-                        taboo?.[nextCard]?.mainImage?.asset?._ref
+                        taboo?.[nextCard]?.mainImage?.asset?._ref,
                       ).url()}
                       layout="fill"
+                      sizes="(max-width: 768px) 100vw"
                       className="object-cover"
                       quality={15}
                       alt={`taboo of ${taboo?.[nextCard]?.vocabulary}`}
@@ -246,12 +247,13 @@ function Index() {
                       onLoadingComplete={handleImageLoad}
                     />
                   )}
-                  {scores === "win" && (
+                  {scores === 'win' && (
                     <Image
                       src="/Taboo/you-win-sign-pop-art-style_175838-498.webp"
                       layout="fill"
                       className="object-cover"
                       quality={15}
+                      sizes="(max-width: 768px) 100vw"
                       alt={`taboo of ${taboo?.[nextCard]?.vocabulary}`}
                     />
                   )}
@@ -267,7 +269,7 @@ function Index() {
                   )}
                 </li>
               )}
-              {scores === "win" ? (
+              {scores === 'win' ? (
                 <div></div>
               ) : (
                 <div className="text-center flex items-center justify-center flex-col">
@@ -299,7 +301,7 @@ function Index() {
                   emoji1="😨"
                   emoji2="😢"
                   className={`w-full ${
-                    scores === "win" && "hidden"
+                    scores === 'win' && 'hidden'
                   } h-10 after:content-[attr(emoji1)] after:ml-2 py-2 after:hover:content-[attr(emoji2)] 
                     active:ring-4 active:ring-black hover:text-white text-center font-sans border-0 flex 
                     items-center justify-center  bg-gray-300 rounded-md font-semibold cursor-pointer hover:bg-black`}
@@ -314,7 +316,7 @@ function Index() {
                   className="w-full after:content-[attr(emoji1)] text-white after:ml-2 py-2 after:hover:content-[attr(emoji2)] active:ring-4 active:ring-black hover:text-white text-center font-sans border-0 flex items-center justify-center  bg-red-800 rounded-md font-semibold cursor-pointer hover:bg-orange-500"
                   onClick={NextTaboo}
                 >
-                  {scores === "win" ? "Start again" : "Move on"}
+                  {scores === 'win' ? 'Start again' : 'Move on'}
                 </button>
               </li>
             </ul>
@@ -326,7 +328,7 @@ function Index() {
                   <button
                     className="w-full text-white py-2 px-3 after:hover:content-[attr(emoji2)] active:ring-4 active:ring-black
                      hover:text-white text-center font-sans border-0 flex items-center justify-center  bg-blue-800 rounded-md font-semibold cursor-pointer hover:bg-orange-500"
-                    onClick={() => handleTabooCatergory("animal")}
+                    onClick={() => handleTabooCatergory('animal')}
                   >
                     หมวดสัตว์
                   </button>
@@ -335,7 +337,7 @@ function Index() {
                   <button
                     className="w-full text-white py-2 px-3 after:hover:content-[attr(emoji2)] active:ring-4 active:ring-black
                      hover:text-white text-center font-sans border-0 flex items-center justify-center  bg-blue-800 rounded-md font-semibold cursor-pointer hover:bg-orange-500"
-                    onClick={() => handleTabooCatergory("job")}
+                    onClick={() => handleTabooCatergory('job')}
                   >
                     หมวดอาชีพ
                   </button>
@@ -344,7 +346,7 @@ function Index() {
                   <button
                     className="w-full relative text-white py-2 px-3 after:hover:content-[attr(emoji2)] active:ring-4 active:ring-black
                      hover:text-white text-center font-sans border-0 flex items-center justify-center  bg-blue-800 rounded-md font-semibold cursor-pointer hover:bg-orange-500"
-                    onClick={() => handleTabooCatergory("country")}
+                    onClick={() => handleTabooCatergory('country')}
                   >
                     <span>หมวดประเทศ</span>
                   </button>
@@ -353,7 +355,7 @@ function Index() {
                   <button
                     className="w-full relative text-white py-2 px-3 after:hover:content-[attr(emoji2)] active:ring-4 active:ring-black
                      hover:text-white text-center font-sans border-0 flex items-center justify-center  bg-blue-800 rounded-md font-semibold cursor-pointer hover:bg-orange-500"
-                    onClick={() => handleTabooCatergory("sport")}
+                    onClick={() => handleTabooCatergory('sport')}
                   >
                     <span>หมวดกีฬา</span>
                   </button>

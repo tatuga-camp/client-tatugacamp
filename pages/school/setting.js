@@ -1,47 +1,47 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import React, { useEffect, useMemo, useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
 
 import {
   GetUser,
   GetUserCookie,
   UpdateUserData,
   UploadProfilePicture,
-} from "../../service/user";
-import Swal from "sweetalert2";
-import Image from "next/image";
-import Loading from "../../components/loading/loading";
-import { useRouter } from "next/router";
-import Unauthorized from "../../components/error/unauthorized";
-import { parseCookies } from "nookies";
-import { HiLanguage } from "react-icons/hi2";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+} from '../../service/user';
+import Swal from 'sweetalert2';
+import Image from 'next/image';
+import Loading from '../../components/loading/loading';
+import { useRouter } from 'next/router';
+import Unauthorized from '../../components/error/unauthorized';
+import { parseCookies } from 'nookies';
+import { HiLanguage } from 'react-icons/hi2';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
-import Head from "next/head";
-import { MdSubscriptions } from "react-icons/md";
-import { ProtalSession } from "../../service/stripe-api/portal-session";
+import Head from 'next/head';
+import { MdSubscriptions } from 'react-icons/md';
+import { ProtalSession } from '../../service/stripe-api/portal-session';
 import {
   sideMenusEnglish,
   sideMenusThai,
-} from "../../data/school/menubarsHomepage";
-import Layout from "../../layouts/tatugaSchoolLayOut";
+} from '../../data/school/menubarsHomepage';
+import Layout from '../../layouts/tatugaSchoolLayOut';
 
-const options = ["Thai", "English"];
+const options = ['Thai', 'English'];
 
 function Setting({ userServerSide, error }) {
   const [languageValue, setLanguageValue] = React.useState(options[0]);
   const [sideMenus, setSideMenus] = useState();
-  const [inputLanguageValue, setInputLanguageValue] = React.useState("");
+  const [inputLanguageValue, setInputLanguageValue] = React.useState('');
   const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    school: "",
-    picture: "",
-    email: "",
+    firstName: '',
+    lastName: '',
+    phone: '',
+    school: '',
+    picture: '',
+    email: '',
     language: options[0],
   });
-  const user = useQuery(["user"], () => GetUser());
+  const user = useQuery(['user'], () => GetUser());
   const [triggersidebar, setTriggerSidebar] = useState(false);
   const router = useRouter();
   const [file, setFile] = useState();
@@ -67,9 +67,9 @@ function Setting({ userServerSide, error }) {
       picture: user?.data?.data?.picture,
     }));
     setLanguageValue(() => user?.data?.data?.language);
-    if (user?.data?.data?.language === "Thai") {
+    if (user?.data?.data?.language === 'Thai') {
       setSideMenus(() => sideMenusThai);
-    } else if (user?.data?.data?.language === "English") {
+    } else if (user?.data?.data?.language === 'English') {
       setSideMenus(() => sideMenusEnglish);
     }
   }, [user.isSuccess, user.isRefetching]);
@@ -79,20 +79,20 @@ function Setting({ userServerSide, error }) {
       e.preventDefault();
       if (!file) {
         return Swal.fire(
-          "No file chosen❗",
-          "please select one image to be your avatar",
-          "error"
+          'No file chosen❗',
+          'please select one image to be your avatar',
+          'error',
         );
       }
 
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
       setLoading((prev) => (prev = true));
       const updateProfile = await UploadProfilePicture({ formData });
 
       if (updateProfile?.status === 200) {
         setLoading((prev) => (prev = false));
-        Swal.fire("success", "upload image is successful", "success");
+        Swal.fire('success', 'upload image is successful', 'success');
         setTimeout(() => {
           user.refetch();
         }, 2000);
@@ -102,12 +102,12 @@ function Setting({ userServerSide, error }) {
       console.log(err);
       if (err.props.response.data.statusCode === 413) {
         Swal.fire(
-          "error",
-          "Your file is too large. We only allow image files with a maximum size of 1024x1024 pixels.",
-          "error"
+          'error',
+          'Your file is too large. We only allow image files with a maximum size of 1024x1024 pixels.',
+          'error',
         );
       } else {
-        Swal.fire("error", err?.props?.response?.data?.message, "error");
+        Swal.fire('error', err?.props?.response?.data?.message, 'error');
       }
     }
   };
@@ -137,10 +137,10 @@ function Setting({ userServerSide, error }) {
       if (userUpdate.status === 200) {
         user.refetch();
 
-        Swal.fire("success", "update your profile successfully😃", "success");
+        Swal.fire('success', 'update your profile successfully😃', 'success');
       }
     } catch (err) {
-      Swal.fire("error", err.props.response.data.message.toString(), "error");
+      Swal.fire('error', err.props.response.data.message.toString(), 'error');
     }
   };
   if (error?.statusCode === 401) {
@@ -178,6 +178,7 @@ function Setting({ userServerSide, error }) {
                       <Image
                         src={user.data.data.picture}
                         layout="fill"
+                        sizes="(max-width: 768px) 100vw"
                         className="object-cover"
                         alt={`profile picture of ${user.data.data.firstName}`}
                       />
@@ -207,9 +208,9 @@ function Setting({ userServerSide, error }) {
                     className="flex md:w-max w-full  flex-col  gap-2 justify-start items-start "
                   >
                     <label className="w-3/4 flex flex-col gap-1 ">
-                      {user?.data?.data?.language === "Thai" && "เลือกรูปภาพ"}
-                      {user?.data?.data?.language === "English" &&
-                        "pick your image"}
+                      {user?.data?.data?.language === 'Thai' && 'เลือกรูปภาพ'}
+                      {user?.data?.data?.language === 'English' &&
+                        'pick your image'}
                       <input
                         aria-label="upload profile picture"
                         onChange={handleFileInputChange}
@@ -361,22 +362,22 @@ function Setting({ userServerSide, error }) {
               <div className="mt flex flex-col items-start mb-10 mt-5">
                 <div className="flex gap-2 items-center">
                   <span className="font-Kanit text-xl">
-                    {user?.data?.data?.language === "Thai"
-                      ? "จัดการระบบสมาชิก"
+                    {user?.data?.data?.language === 'Thai'
+                      ? 'จัดการระบบสมาชิก'
                       : user?.data?.data?.language &&
-                        "manage your subscription"}
+                        'manage your subscription'}
                   </span>
                   <MdSubscriptions />
                 </div>
 
-                {user?.data?.data?.plan === "FREE" ? (
+                {user?.data?.data?.plan === 'FREE' ? (
                   <div
                     type="button"
                     className="w-max h-max p-2 bg-gray-200 px-5 text-black rounded-3xl font-Kanit font-medium mt-2 "
                   >
-                    {user?.data?.data?.language === "Thai"
-                      ? "คุณยังไม่เป็นสมาชิก"
-                      : user?.data?.data?.language && "you are not member yet"}
+                    {user?.data?.data?.language === 'Thai'
+                      ? 'คุณยังไม่เป็นสมาชิก'
+                      : user?.data?.data?.language && 'you are not member yet'}
                   </div>
                 ) : (
                   <button
@@ -384,9 +385,9 @@ function Setting({ userServerSide, error }) {
                     type="button"
                     className="w-20 h-max p-2 bg-orange-400 text-black rounded-3xl font-Kanit font-medium mt-2 hover:scale-125 transition duration-100 drop-shadow-md"
                   >
-                    {user?.data?.data?.language === "Thai"
-                      ? "จัดการ"
-                      : user?.data?.data?.language && "manage"}
+                    {user?.data?.data?.language === 'Thai'
+                      ? 'จัดการ'
+                      : user?.data?.data?.language && 'manage'}
                   </button>
                 )}
               </div>
@@ -418,7 +419,7 @@ export async function getServerSideProps(context) {
       props: {
         error: {
           statusCode: 401,
-          message: "unauthorized",
+          message: 'unauthorized',
         },
       },
     };
@@ -439,7 +440,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };
@@ -460,7 +461,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };

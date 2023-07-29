@@ -1,18 +1,18 @@
-import { Button } from "@mui/material";
-import Image from "next/image";
-import React from "react";
-import Call from "../svg/Call";
-import Swal from "sweetalert2";
+import { Button } from '@mui/material';
+import Image from 'next/image';
+import React from 'react';
+import Call from '../svg/Call';
+import Swal from 'sweetalert2';
 function Footer(props) {
   const dataFooter =
-    "TaTuga camp is the place where you can enjoy learning English outside classrooms with a lot of activities and games. We DO believe that learning through playing is the best way to learn, especially English! Enjoy with us TaTuga camp";
+    'TaTuga camp is the place where you can enjoy learning English outside classrooms with a lot of activities and games. We DO believe that learning through playing is the best way to learn, especially English! Enjoy with us TaTuga camp';
   props.descriptionMeta(dataFooter);
   const date = new Date().toJSON().slice(0, 10);
 
-  const telePhone = "0610277960";
+  const telePhone = '0610277960';
   const handleClipbord = async () => {
     await navigator.clipboard.writeText(telePhone);
-    Swal.fire("Copy เบอร์โทร 061-027-7960 เรียบร้อย");
+    Swal.fire('Copy เบอร์โทร 061-027-7960 เรียบร้อย');
   };
   return (
     <div className="bg-[url('/blob-scene-haikei.svg')] bg-cover bg-bottom h-max pt-10 ">
@@ -22,6 +22,7 @@ function Footer(props) {
             className="object-center rounded-full "
             width={200}
             height={200}
+            sizes="(max-width: 768px) 100vw"
             alt="tatuga logo"
             src="https://storage.googleapis.com/tatugacamp.com/logo%20/tatugacamp%20facebook.jpg"
             priority

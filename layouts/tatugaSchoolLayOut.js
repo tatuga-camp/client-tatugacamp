@@ -27,33 +27,6 @@ function Layout({
   const pathname = router.pathname; // e.g. "/classroom/setting"
   const lastRoute = pathname.split('/').pop();
   const [isClick, setIsClick] = useState();
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentDate(() => {
-        const date = new Date();
-        const formattedCreateDateTime = date.toLocaleString('th-TH', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-        });
-        return formattedCreateDateTime;
-      });
-      setCurrentTime(() => {
-        const date = new Date();
-        const formattedCreateDateTime = date.toLocaleString('th-TH', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-        });
-        return formattedCreateDateTime;
-      });
-    }, 1000);
-
-    // Clear the interval when the component is unmounted
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
 
   return (
     <main className="font-Kanit">
@@ -105,7 +78,7 @@ function Layout({
           lastRoute === 'setting' ? 'hidden' : 'flex'
         }  w-full justify-center mb-5`}
       >
-        <div className="w-11/12 h-28 grid grid-cols-8  gap-5 ">
+        <div className="w-11/12 h-28 grid grid-cols-6  gap-5 ">
           <button
             onClick={() => {
               router.push({
@@ -190,50 +163,7 @@ function Layout({
               </span>
             </div>
           </button>
-          <button
-            onClick={() => {
-              router.push({
-                pathname: '/school/teachers',
-              });
-            }}
-            className={` ring-2 ring-black row-span-1 col-span-2 
-            ${lastRoute === 'teachers' ? 'bg-orange-400' : 'bg-white'}
-            transition duration-150 hover:bg-orange-400 group  rounded-lg
-           flex justify-center gap-10 items-center relative`}
-          >
-            <div
-              className={`flex justify-center items-center text-3xl 
-              ${
-                lastRoute === 'teachers'
-                  ? 'text-black bg-white'
-                  : 'text-orange-600'
-              }
-            w-16 h-16 rounded-full  group-hover:text-black
-             group-hover:bg-white transition bg-orange-100 `}
-            >
-              <IoPeopleCircleOutline />
-            </div>
-            <div className="flex flex-col  items-start">
-              <div
-                className={`
-                flex items-center gap-2 
-               ${lastRoute === 'teachers' ? 'text-white' : 'text-black'}
-              font-semibold text-2xl text-black font-Kanit group-hover:text-white`}
-              >
-                <NumberAnimated n={teachersNumber} />{' '}
-                <span className="text-sm font-normal">บัญชี</span>
-              </div>
-              <span
-                className={`
-                ${
-                  lastRoute === 'teachers' ? 'text-slate-100' : 'text-slate-500'
-                }
-              font-normal  font-Kanit text-base group-hover:text-slate-100`}
-              >
-                ตรวจสอบบัญชี
-              </span>
-            </div>
-          </button>
+
           <button
             onClick={() => {
               router.push({

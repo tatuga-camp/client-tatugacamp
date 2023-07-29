@@ -1,44 +1,44 @@
-import Layout from "../../../components/layout";
-import { Fragment, useEffect, useState } from "react";
-import { Combobox, Transition } from "@headlessui/react";
-import { BsCheck2 } from "react-icons/bs";
-import { HiChevronUpDown } from "react-icons/hi2";
-import { JoinClassroom } from "../../../service/student/classroom";
-import { useQuery } from "react-query";
-import { useRouter } from "next/router";
-import { BiError } from "react-icons/bi";
-import Image from "next/image";
-import Link from "next/link";
-import { Skeleton } from "@mui/material";
-import Head from "next/head";
+import Layout from '../../../components/layout';
+import { Fragment, useEffect, useState } from 'react';
+import { Combobox, Transition } from '@headlessui/react';
+import { BsCheck2 } from 'react-icons/bs';
+import { HiChevronUpDown } from 'react-icons/hi2';
+import { JoinClassroom } from '../../../service/student/classroom';
+import { useQuery } from 'react-query';
+import { useRouter } from 'next/router';
+import { BiError } from 'react-icons/bi';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Skeleton } from '@mui/material';
+import Head from 'next/head';
 
 function Index() {
   const [people, setPeople] = useState();
   const [selected, setSelected] = useState(people?.[0]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const rounter = useRouter();
   const [loading, setLoading] = useState(false);
   const classroom = useQuery(
-    ["classroom-student"],
+    ['classroom-student'],
     () =>
       JoinClassroom({ classroomCode: rounter.query.classroomCode }).then(
         (res) => {
-          localStorage.setItem("teacher", JSON.stringify(res.data.teacher));
+          localStorage.setItem('teacher', JSON.stringify(res.data.teacher));
           localStorage.setItem(
-            "classroom-student",
-            JSON.stringify(res.data.classroom)
+            'classroom-student',
+            JSON.stringify(res.data.classroom),
           );
           return res;
-        }
+        },
       ),
     {
       enabled: false,
-    }
+    },
   );
   // set people
   useEffect(() => {
     if (classroom.isError) {
-      setPeople("");
+      setPeople('');
     }
     setPeople(classroom?.data?.data?.students);
   }, [classroom.data]);
@@ -48,13 +48,13 @@ function Index() {
     classroom.refetch();
   }, [rounter.isReady, rounter.query.classroomCode]);
   const filteredPeople =
-    query === ""
+    query === ''
       ? people
       : people?.filter((person) =>
           person.firstName
             .toLowerCase()
-            .replace(/\s+/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""))
+            .replace(/\s+/g, '')
+            .includes(query.toLowerCase().replace(/\s+/g, '')),
         );
 
   return (
@@ -62,7 +62,7 @@ function Index() {
       <Head>
         <title>{`${
           classroom.isError
-            ? "โปรดกรอกรหัสใหม่"
+            ? 'โปรดกรอกรหัสใหม่'
             : `ข้อตอนรับสู่ห้องเรียน คุณครู${classroom?.data?.data?.teacher?.firstName}`
         }`}</title>
         <meta
@@ -87,7 +87,7 @@ function Index() {
                   <Skeleton
                     variant="text"
                     width={200}
-                    sx={{ fontSize: "1rem" }}
+                    sx={{ fontSize: '1rem' }}
                   />
                   <div className="mt-10 flex flex-col gap-4 justify-center items-center">
                     <Skeleton variant="rounded" width={300} height={60} />
@@ -122,6 +122,7 @@ function Index() {
                         <Image
                           src={classroom?.data?.data?.teacher?.picture}
                           layout="fill"
+                          sizes="(max-width: 768px) 100vw"
                           className="object-cover"
                         />
                       </div>
@@ -192,10 +193,10 @@ function Index() {
                         leave="transition ease-in duration-100"
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
-                        afterLeave={() => setQuery("")}
+                        afterLeave={() => setQuery('')}
                       >
                         <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md list-none pl-0 bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                          {filteredPeople?.length === 0 && query !== "" ? (
+                          {filteredPeople?.length === 0 && query !== '' ? (
                             <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                               Nothing found.
                             </div>
@@ -206,8 +207,8 @@ function Index() {
                                 className={({ active }) =>
                                   `relative cursor-default select-none py-2 pl-10 pr-4 ${
                                     active
-                                      ? "bg-[#EDBA02] text-white"
-                                      : "text-gray-900"
+                                      ? 'bg-[#EDBA02] text-white'
+                                      : 'text-gray-900'
                                   }`
                                 }
                                 value={person}
@@ -216,7 +217,7 @@ function Index() {
                                   <>
                                     <span
                                       className={`block truncate ${
-                                        selected ? "font-medium" : "font-normal"
+                                        selected ? 'font-medium' : 'font-normal'
                                       }`}
                                     >
                                       {person.firstName} {person?.lastName}
@@ -225,8 +226,8 @@ function Index() {
                                       <span
                                         className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
                                           active
-                                            ? "text-white"
-                                            : "text-teal-600"
+                                            ? 'text-white'
+                                            : 'text-teal-600'
                                         }`}
                                       >
                                         <BsCheck2
@@ -250,11 +251,11 @@ function Index() {
                         onClick={() => {
                           setLoading(true);
                           const serializedClassroomCode = JSON.stringify(
-                            rounter.query.classroomCode
+                            rounter.query.classroomCode,
                           );
                           localStorage.setItem(
-                            "classroomCode",
-                            serializedClassroomCode
+                            'classroomCode',
+                            serializedClassroomCode,
                           );
                           rounter.push({
                             pathname: `/classroom/student/${selected?.id}`,

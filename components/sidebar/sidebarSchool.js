@@ -1,18 +1,18 @@
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 function SidebarSchool({ user, sideMenus, triggersidebar, close }) {
   const router = useRouter();
   const pathname = router.pathname; // e.g. "/classroom/setting"
 
-  const lastRoute = pathname.split("/").pop();
+  const lastRoute = pathname.split('/').pop();
   const [isClick, setIsClick] = useState();
   useEffect(() => {
-    if (lastRoute === "setting") {
+    if (lastRoute === 'setting') {
       setIsClick(1);
-    } else if (lastRoute === "school") {
+    } else if (lastRoute === 'school') {
       setIsClick(0);
     }
   }, []);
@@ -28,13 +28,14 @@ function SidebarSchool({ user, sideMenus, triggersidebar, close }) {
             <div className="flex flex-col items-center justify-center ">
               <div
                 className={`w-20 h-20 ${
-                  user?.picture ? "bg-transparent" : "bg-gray-500"
+                  user?.picture ? 'bg-transparent' : 'bg-gray-500'
                 } rounded-full relative flex justify-center items-center overflow-hidden ring-4 ring-blue-400 `}
               >
                 {user?.picture ? (
                   <Image
                     src={user?.picture}
                     layout="fill"
+                    sizes="(max-width: 768px) 100vw"
                     className="object-cover"
                     alt={`profile of ${user?.firstName}`}
                   />
@@ -44,13 +45,13 @@ function SidebarSchool({ user, sideMenus, triggersidebar, close }) {
                   </span>
                 )}
               </div>
-              {user.role === "SCHOOL" && (
+              {user.role === 'SCHOOL' && (
                 <div
                   className="w-max h-8 px-2 mt-3 rounded-xl text-white
                  bg-blue-500 font-Kanit font-normal  justify-start items-center flex"
                 >
-                  {user.language === "Thai" && <span>โรงเรียน</span>}
-                  {user.language === "English" && <span>SCHOOL</span>}
+                  {user.language === 'Thai' && <span>โรงเรียน</span>}
+                  {user.language === 'English' && <span>SCHOOL</span>}
                 </div>
               )}
 
@@ -71,7 +72,7 @@ function SidebarSchool({ user, sideMenus, triggersidebar, close }) {
                   <Link href={list?.url} key={index}>
                     <li
                       className={`${
-                        index === array.length - 1 && " bottom-5 absolute"
+                        index === array.length - 1 && ' bottom-5 absolute'
                       }`}
                     >
                       <button
@@ -87,8 +88,8 @@ function SidebarSchool({ user, sideMenus, triggersidebar, close }) {
                    font-Kanit text-lg w-40 py-1 rounded-md font-semibold 
                    active:bg-[#2C7CD1] active:text-white focus:bg-[#EDBA02] ${
                      isClick === index
-                       ? "bg-[#EDBA02] text-white"
-                       : "bg-white text-black"
+                       ? 'bg-[#EDBA02] text-white'
+                       : 'bg-white text-black'
                    } `}
                         >
                           {list.title}

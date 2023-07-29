@@ -1,8 +1,8 @@
-import { Button } from "@mui/material";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useState } from "react";
-import Listmenu from "../svg/Listmenu";
+import { Button } from '@mui/material';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import Listmenu from '../svg/Listmenu';
 
 function Layout({ children, triggerMenu }) {
   const [isShow, setIsShow] = useState(false);
@@ -43,6 +43,7 @@ function Layout({ children, triggerMenu }) {
                 <Image
                   src="/logo/TaTuga camp.png"
                   width={35}
+                  sizes="(max-width: 768px) 100vw"
                   height={35}
                   alt="TaTuga camp logo"
                 />

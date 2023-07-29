@@ -1,35 +1,35 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import { Editor } from "@tinymce/tinymce-react";
-import { IoCaretBackOutline, IoDocumentText } from "react-icons/io5";
-import { Box, Skeleton, TextField } from "@mui/material";
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { Editor } from '@tinymce/tinymce-react';
+import { IoCaretBackOutline, IoDocumentText } from 'react-icons/io5';
+import { Box, Skeleton, TextField } from '@mui/material';
 import {
   GetAssignment,
   GetMyWork,
   SummitWork,
-} from "../../../../../../service/student/assignment";
-import { SlideshowLightbox, initLightboxJS } from "lightbox.js-react";
-import Image from "next/image";
-import "lightbox.js-react/dist/index.css";
-import { CiFaceFrown } from "react-icons/ci";
-import Swal from "sweetalert2";
-import SendIcon from "@mui/icons-material/Send";
+} from '../../../../../../service/student/assignment';
+import { SlideshowLightbox, initLightboxJS } from 'lightbox.js-react';
+import Image from 'next/image';
+import 'lightbox.js-react/dist/index.css';
+import { CiFaceFrown } from 'react-icons/ci';
+import Swal from 'sweetalert2';
+import SendIcon from '@mui/icons-material/Send';
 import {
   GetComments,
   PostComment,
-} from "../../../../../../service/student/comment";
-import Head from "next/head";
-import { GetStudent } from "../../../../../../service/student/student";
-import Loading from "../../../../../../components/loading/loading";
-import { BsFillChatDotsFill, BsImageFill } from "react-icons/bs";
-import { FcVideoFile } from "react-icons/fc";
-import { FaFileAudio, FaRegFilePdf } from "react-icons/fa";
-import { RiArrowGoBackFill } from "react-icons/ri";
-import { MdOutlineInventory2 } from "react-icons/md";
-import { AiOutlineCloudUpload, AiOutlinePlus } from "react-icons/ai";
-import { useSpring, animated } from "@react-spring/web";
-import { FiRefreshCw } from "react-icons/fi";
+} from '../../../../../../service/student/comment';
+import Head from 'next/head';
+import { GetStudent } from '../../../../../../service/student/student';
+import Loading from '../../../../../../components/loading/loading';
+import { BsFillChatDotsFill, BsImageFill } from 'react-icons/bs';
+import { FcVideoFile } from 'react-icons/fc';
+import { FaFileAudio, FaRegFilePdf } from 'react-icons/fa';
+import { RiArrowGoBackFill } from 'react-icons/ri';
+import { MdOutlineInventory2 } from 'react-icons/md';
+import { AiOutlineCloudUpload, AiOutlinePlus } from 'react-icons/ai';
+import { useSpring, animated } from '@react-spring/web';
+import { FiRefreshCw } from 'react-icons/fi';
 
 function Index() {
   const router = useRouter();
@@ -37,9 +37,9 @@ function Index() {
     from: { y: 400 },
   }));
   const menus = [
-    { title: "ส่งงาน", translate: "translate-x-1" },
-    { title: "งานของคุณ", translate: "translate-x-28" },
-    { title: "คอมเมนต์", translate: "translate-x-52" },
+    { title: 'ส่งงาน', translate: 'translate-x-1' },
+    { title: 'งานของคุณ', translate: 'translate-x-28' },
+    { title: 'คอมเมนต์', translate: 'translate-x-52' },
   ];
   const [teacher, setTeacher] = useState();
   const [loading, setLoading] = useState(false);
@@ -52,19 +52,19 @@ function Index() {
   const currentTime = new Date();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [studentSummit, setStudentSummit] = useState({
-    body: "",
+    body: '',
   });
   const [triggerMenu, setTriggerMenu] = useState(false);
   const assignment = useQuery(
-    ["assignment"],
+    ['assignment'],
     () => GetAssignment({ assignmentId: router.query.assignmentId }),
     {
       enabled: false,
-    }
+    },
   );
 
   const comments = useQuery(
-    ["comments"],
+    ['comments'],
     () =>
       GetComments({
         assignmentId: assignment.data.id,
@@ -72,7 +72,7 @@ function Index() {
       }),
     {
       enabled: assignment.isSuccess,
-    }
+    },
   );
 
   useEffect(() => {
@@ -88,23 +88,23 @@ function Index() {
     setDeadline(() => {
       const date = new Date(assignment?.data?.deadline);
 
-      const formattedDate = date.toLocaleDateString("th-TH", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
+      const formattedDate = date.toLocaleDateString('th-TH', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
       });
       return formattedDate;
     });
   }, [assignment.data]);
   const student = useQuery(
-    ["student"],
+    ['student'],
     () => GetStudent({ studentId: router.query.studentId }),
     {
       enabled: false,
-    }
+    },
   );
 
-  const fetchStudentWork = useQuery(["student-work"], () =>
+  const fetchStudentWork = useQuery(['student-work'], () =>
     GetMyWork({
       studentId: router.query.studentId,
       assignmentId: assignment.data.id,
@@ -112,20 +112,20 @@ function Index() {
       setStudnetWork(() => {
         let pictures = [];
         let files = [];
-        if (res.data.status === "have-work") {
+        if (res.data.status === 'have-work') {
           if (res.data.picture) {
-            const arrayPictures = res.data.picture.split(", ");
+            const arrayPictures = res.data.picture.split(', ');
             for (const arrayPicture of arrayPictures) {
               const fileType = get_url_extension(arrayPicture);
               if (
-                fileType === "jpg" ||
-                fileType === "jpeg" ||
-                fileType === "png" ||
-                fileType === "HEIC" ||
-                fileType === "JPEG" ||
-                fileType === "PNG" ||
-                fileType === "JPG" ||
-                fileType === "heic"
+                fileType === 'jpg' ||
+                fileType === 'jpeg' ||
+                fileType === 'png' ||
+                fileType === 'HEIC' ||
+                fileType === 'JPEG' ||
+                fileType === 'PNG' ||
+                fileType === 'JPG' ||
+                fileType === 'heic'
               ) {
                 pictures.push({ src: arrayPicture, alt: "student's work" });
               } else {
@@ -136,34 +136,34 @@ function Index() {
           } else if (!res.data.picture) {
             return res.data;
           }
-        } else if (res.data.status === "no-work") {
+        } else if (res.data.status === 'no-work') {
           return res.data;
         }
       });
       return res;
-    })
+    }),
   );
 
   const handleSummitWork = async (e) => {
     e.preventDefault();
     if (selectedFiles.length === 0) {
       Swal.fire({
-        title: "ยืนยันการส่งงาน",
-        text: "คุณยังไม่ได้แนบไฟล์งาน แน่ใจใช่ไหมว่าจะส่ง?",
-        icon: "warning",
+        title: 'ยืนยันการส่งงาน',
+        text: 'คุณยังไม่ได้แนบไฟล์งาน แน่ใจใช่ไหมว่าจะส่ง?',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
             const formFiles = new FormData();
             selectedFiles.forEach((file) => {
-              formFiles.append("files", file);
+              formFiles.append('files', file);
             });
-            formFiles.append("body", studentSummit.body);
-            formFiles.getAll("body");
+            formFiles.append('body', studentSummit.body);
+            formFiles.getAll('body');
             const summitWork = await SummitWork({
               formFiles,
               studentId: router.query.studentId,
@@ -171,19 +171,19 @@ function Index() {
             });
 
             fetchStudentWork.refetch();
-            Swal.fire("success", "ส่งงานแล้ว", "success");
+            Swal.fire('success', 'ส่งงานแล้ว', 'success');
           } catch (err) {
             if (
               err?.props?.response?.data?.message ===
               "student's already summit their work"
             ) {
               Swal.fire(
-                "error",
-                "นักเรียนได้ส่งงานแล้ว ถ้าจะส่งใหม่ให้ติดต่อครูผู้สอนเพื่อลบงานเดิม",
-                "error"
+                'error',
+                'นักเรียนได้ส่งงานแล้ว ถ้าจะส่งใหม่ให้ติดต่อครูผู้สอนเพื่อลบงานเดิม',
+                'error',
               );
             } else {
-              Swal.fire("error", err?.props?.response?.message, "error");
+              Swal.fire('error', err?.props?.response?.message, 'error');
             }
             console.log(err);
           }
@@ -191,23 +191,23 @@ function Index() {
       });
     } else if (selectedFiles.length > 0) {
       Swal.fire({
-        title: "ยืนยันการส่งงาน",
-        text: "นักเรียนแน่ใจหรือไม่ว่าจะส่งงาน? เนื่องจากส่งงานแล้วจะไม่สามารถลบงานได้ต้องติดต่อครูผู้สอน",
-        icon: "question",
+        title: 'ยืนยันการส่งงาน',
+        text: 'นักเรียนแน่ใจหรือไม่ว่าจะส่งงาน? เนื่องจากส่งงานแล้วจะไม่สามารถลบงานได้ต้องติดต่อครูผู้สอน',
+        icon: 'question',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
             setLoading(() => true);
             const formFiles = new FormData();
             selectedFiles.forEach((file) => {
-              formFiles.append("files", file);
+              formFiles.append('files', file);
             });
-            formFiles.append("body", studentSummit.body);
-            formFiles.getAll("body");
+            formFiles.append('body', studentSummit.body);
+            formFiles.getAll('body');
             const summitWork = await SummitWork({
               formFiles,
               studentId: router.query.studentId,
@@ -215,7 +215,7 @@ function Index() {
             });
             setLoading(() => false);
             fetchStudentWork.refetch();
-            Swal.fire("success", "ส่งงานแล้ว", "success");
+            Swal.fire('success', 'ส่งงานแล้ว', 'success');
           } catch (err) {
             setLoading(() => false);
             if (
@@ -223,12 +223,12 @@ function Index() {
               "student's already summit their work"
             ) {
               Swal.fire(
-                "error",
-                "นักเรียนได้ส่งงานแล้ว ถ้าจะส่งใหม่ให้ติดต่อครูผู้สอนเพื่อลบงานเดิม",
-                "error"
+                'error',
+                'นักเรียนได้ส่งงานแล้ว ถ้าจะส่งใหม่ให้ติดต่อครูผู้สอนเพื่อลบงานเดิม',
+                'error',
               );
             } else {
-              Swal.fire("error", err?.props?.response?.data?.message, "error");
+              Swal.fire('error', err?.props?.response?.data?.message, 'error');
             }
             console.log(err);
           }
@@ -264,15 +264,15 @@ function Index() {
 
   useEffect(() => {
     setTeacher(() => {
-      const teacher = localStorage.getItem("teacher");
+      const teacher = localStorage.getItem('teacher');
       return JSON.parse(teacher);
     });
     setClassroom(() => {
-      const classroom = localStorage.getItem("classroom-student");
+      const classroom = localStorage.getItem('classroom-student');
       const classroomConverted = JSON.parse(classroom);
       return classroomConverted;
     });
-    initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, "individual");
+    initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, 'individual');
 
     setTimeout(() => {
       fetchStudentWork.refetch();
@@ -290,18 +290,18 @@ function Index() {
       setStudentSummit((prev) => {
         return {
           ...prev,
-          body: "",
+          body: '',
         };
       });
       comments.refetch();
     } catch (err) {
-      Swal.fire("error", err?.props?.response?.data?.message, "error");
+      Swal.fire('error', err?.props?.response?.data?.message, 'error');
     }
   };
 
   // check file type
   function get_url_extension(url) {
-    return url.split(/[#?]/)[0].split(".").pop().trim();
+    return url.split(/[#?]/)[0].split('.').pop().trim();
   }
 
   const handleOpenTrigerMenu = () => {
@@ -317,7 +317,7 @@ function Index() {
   };
 
   const handleCloseTrigerMenu = () => {
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = 'auto';
     setTriggerMenu(() => false);
     setActiveMenu(() => 4);
     api.start({
@@ -393,6 +393,7 @@ function Index() {
             {student?.data?.data?.picture ? (
               <div className="w-28   h-28 ring-4 ring-white rounded-full overflow-hidden relative bg-orange-400">
                 <Image
+                  sizes="(max-width: 768px) 100vw"
                   src={student?.data?.data?.picture}
                   layout="fill"
                   objectFit="cover"
@@ -406,7 +407,7 @@ function Index() {
               </div>
             )}
             <span className="font-Kanit font-medium text-lg mt-1">
-              เลขที่ {student?.data?.data?.number}{" "}
+              เลขที่ {student?.data?.data?.number}{' '}
               {student?.data?.data?.firstName} {student?.data?.data?.lastName}
             </span>
           </div>
@@ -447,7 +448,7 @@ function Index() {
               <tr>
                 <td className="w-20 text-center">สถานะ</td>
                 <td>
-                  {studentWork?.status === "no-work" && isDue && (
+                  {studentWork?.status === 'no-work' && isDue && (
                     <div
                       className="w-max px-2 h-4 bg-red-500 py-1 rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
@@ -459,7 +460,7 @@ function Index() {
                       </span>
                     </div>
                   )}
-                  {studentWork?.status === "no-work" && !isDue && (
+                  {studentWork?.status === 'no-work' && !isDue && (
                     <div
                       className="w-max px-2 h-4 bg-orange-500 py-1 rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
@@ -471,7 +472,7 @@ function Index() {
                       </span>
                     </div>
                   )}
-                  {studentWork?.status === "have-work" &&
+                  {studentWork?.status === 'have-work' &&
                     studentWork.isSummited === false && (
                       <div
                         className="w-max px-2 h-4 bg-yellow-500 py-1 rounded-lg border-2 border-solid border-white
@@ -484,7 +485,7 @@ function Index() {
                         </span>
                       </div>
                     )}
-                  {studentWork?.status === "have-work" &&
+                  {studentWork?.status === 'have-work' &&
                     studentWork.isSummited === true && (
                       <div
                         className="w-max px-2 h-4 bg-green-500 py-1 rounded-lg border-2 border-solid border-white
@@ -514,7 +515,7 @@ function Index() {
       <animated.div
         style={{ ...springs }}
         className={`w-full z-20  ${
-          triggerMenu ? "h-screen" : "h-min"
+          triggerMenu ? 'h-screen' : 'h-min'
         }    fixed bottom-0 flex   items-end`}
       >
         <div className="bg-white w-full h-[30rem] flex-col flex justify-start items-center relative">
@@ -643,9 +644,9 @@ application/pdf,
                   <div className="grid grid-cols-2 place-items-center gap-5 relative h-32  overflow-y-auto ring-2 p-3 rounded-xl">
                     {selectedFiles.map((file) => {
                       if (
-                        file.type === "image/jpeg" ||
-                        file.type === "" ||
-                        file.type === "image/png"
+                        file.type === 'image/jpeg' ||
+                        file.type === '' ||
+                        file.type === 'image/png'
                       )
                         return (
                           <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
@@ -656,8 +657,8 @@ application/pdf,
                           </div>
                         );
                       if (
-                        file.type === "video/mp4" ||
-                        file.type === "video/quicktime"
+                        file.type === 'video/mp4' ||
+                        file.type === 'video/quicktime'
                       )
                         return (
                           <div className="w-full  px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
@@ -668,8 +669,8 @@ application/pdf,
                           </div>
                         );
                       if (
-                        file.type === "audio/mpeg" ||
-                        file.type === "audio/mp3"
+                        file.type === 'audio/mpeg' ||
+                        file.type === 'audio/mp3'
                       )
                         return (
                           <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
@@ -679,7 +680,7 @@ application/pdf,
                             <span className="w-20 truncate">{file.name}</span>
                           </div>
                         );
-                      if (file.type === "application/pdf")
+                      if (file.type === 'application/pdf')
                         return (
                           <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
                             <div className="flex items-center justify-center text-gray-700">
@@ -690,7 +691,7 @@ application/pdf,
                         );
                       if (
                         file.type ===
-                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                       )
                         return (
                           <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
@@ -740,7 +741,7 @@ application/pdf,
 
           {activeMenu === 1 && (
             <div className="w-11/12 max-w-3xl  flex flex-col gap-2 items-center justify-top">
-              {studentWork.status === "no-work" ? (
+              {studentWork.status === 'no-work' ? (
                 <div className="font-Kanit text-2xl text-red-400 font-light h-20 flex items-center justify-center gap-2">
                   <span>คุณยังไม่ส่งงาน</span>
                   <div className="flex items-center justify-center ">
@@ -760,13 +761,14 @@ application/pdf,
                       className={`container grid w-full  h-max items-center place-items-center
                        ${
                          studentWork?.picture.length === 1
-                           ? "grid-cols-1"
-                           : "grid-cols-2 md:grid-cols-3 "
+                           ? 'grid-cols-1'
+                           : 'grid-cols-2 md:grid-cols-3 '
                        }  gap-2  `}
                     >
                       {studentWork?.picture?.map((image, index) => {
                         return (
                           <Image
+                            sizes="(max-width: 768px) 100vw"
                             key={index}
                             src={image.src}
                             alt={image.alt}
@@ -785,7 +787,7 @@ application/pdf,
                   <div className="flex flex-col gap-5 justify-start items-center">
                     {studentWork?.files?.length > 0 &&
                       studentWork?.files.map((file, index) => {
-                        if (file.fileType === "pdf") {
+                        if (file.fileType === 'pdf') {
                           return (
                             <div
                               key={index}
@@ -802,7 +804,7 @@ application/pdf,
                             </div>
                           );
                         }
-                        if (file.fileType === "docx") {
+                        if (file.fileType === 'docx') {
                           return (
                             <div
                               key={index}
@@ -817,9 +819,9 @@ application/pdf,
                           );
                         }
                         if (
-                          file.fileType === "mp4" ||
-                          file.fileType === "mov" ||
-                          file.fileType === "MOV"
+                          file.fileType === 'mp4' ||
+                          file.fileType === 'mov' ||
+                          file.fileType === 'MOV'
                         ) {
                           return (
                             <div
@@ -834,8 +836,8 @@ application/pdf,
                           );
                         }
                         if (
-                          file.fileType === "mp3" ||
-                          file.fileType === "aac"
+                          file.fileType === 'mp3' ||
+                          file.fileType === 'aac'
                         ) {
                           return (
                             <div
@@ -868,9 +870,9 @@ application/pdf,
                       <span className="font-semibold">นักเรียน:</span>
                       <div
                         style={{
-                          wordWrap: "break-word",
-                          maxHeight: "200px",
-                          overflowY: "auto",
+                          wordWrap: 'break-word',
+                          maxHeight: '200px',
+                          overflowY: 'auto',
                         }}
                         className="h-max w-full  overflow-hidden ml-2"
                         dangerouslySetInnerHTML={{
@@ -890,6 +892,7 @@ application/pdf,
                               <Image
                                 src={comment.user.picture}
                                 alt="profile"
+                                sizes="(max-width: 768px) 100vw"
                                 layout="fill"
                                 className="object-cover"
                               />
@@ -909,9 +912,9 @@ application/pdf,
                             <div
                               className="pl-4 "
                               style={{
-                                wordWrap: "break-word",
-                                maxHeight: "200px",
-                                overflowY: "auto",
+                                wordWrap: 'break-word',
+                                maxHeight: '200px',
+                                overflowY: 'auto',
                               }}
                               dangerouslySetInnerHTML={{
                                 __html: comment.body,
@@ -928,6 +931,7 @@ application/pdf,
                           {comment.student.picture ? (
                             <div className="w-12 h-12 rounded-full overflow-hidden relative">
                               <Image
+                                sizes="(max-width: 768px) 100vw"
                                 src={comment.student.picture}
                                 alt="profile"
                                 layout="fill"
@@ -952,8 +956,8 @@ application/pdf,
                             <div
                               className="pl-4 "
                               style={{
-                                wordWrap: "break-word",
-                                overflowY: "auto",
+                                wordWrap: 'break-word',
+                                overflowY: 'auto',
                               }}
                               dangerouslySetInnerHTML={{
                                 __html: comment.body,
@@ -975,30 +979,31 @@ application/pdf,
                     textareaName="body"
                     init={{
                       link_context_toolbar: true,
-                      height: "100%",
-                      width: "100%",
+                      height: '100%',
+                      width: '100%',
                       menubar: false,
+                      paste_data_images: false,
                       plugins: [
-                        "advlist",
-                        "autolink",
-                        "lists",
-                        "link",
-                        "charmap",
-                        "preview",
-                        "anchor",
-                        "searchreplace",
-                        "visualblocks",
-                        "code",
-                        "fullscreen",
-                        "insertdatetime",
-                        "media",
-                        "table",
-                        "help",
-                        "wordcount",
+                        'advlist',
+                        'autolink',
+                        'lists',
+                        'link',
+                        'charmap',
+                        'preview',
+                        'anchor',
+                        'searchreplace',
+                        'visualblocks',
+                        'code',
+                        'fullscreen',
+                        'insertdatetime',
+                        'media',
+                        'table',
+                        'help',
+                        'wordcount',
                       ],
-                      toolbar: "",
+                      toolbar: '',
                       content_style:
-                        "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }",
+                        'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
                     }}
                     initialValue=""
                     value={studentSummit.body}

@@ -1,14 +1,14 @@
-import React, { useState, Fragment, useEffect } from "react";
-import { FaUser } from "react-icons/fa";
-import { BiLogOutCircle, BiUser, BiWrench } from "react-icons/bi";
-import Image from "next/image";
-import { Menu, Transition } from "@headlessui/react";
-import Loading from "../loading/loading";
-import { useRouter } from "next/router";
-import { useQuery, useQueryClient } from "react-query";
-import { BsChevronCompactDown, BsChevronDoubleDown } from "react-icons/bs";
-import { GetUser } from "../../service/user";
-import { setCookie, destroyCookie } from "nookies";
+import React, { useState, Fragment, useEffect } from 'react';
+import { FaUser } from 'react-icons/fa';
+import { BiLogOutCircle, BiUser, BiWrench } from 'react-icons/bi';
+import Image from 'next/image';
+import { Menu, Transition } from '@headlessui/react';
+import Loading from '../loading/loading';
+import { useRouter } from 'next/router';
+import { useQuery, useQueryClient } from 'react-query';
+import { BsChevronCompactDown, BsChevronDoubleDown } from 'react-icons/bs';
+import { GetUser } from '../../service/user';
+import { setCookie, destroyCookie } from 'nookies';
 
 function AuthButton() {
   const [dropDown, setDropDown] = useState(false);
@@ -16,19 +16,19 @@ function AuthButton() {
   const queryClient = useQueryClient();
 
   const { isLoading, data, refetch, isFetching, isError } = useQuery(
-    ["user"],
+    ['user'],
     () => GetUser(),
     {
       enabled: false,
-    }
+    },
   );
 
   //set accestoken to localstore
   useEffect(() => {
     if (router.query.access_token) {
-      setCookie(null, "access_token", router.query.access_token, {
+      setCookie(null, 'access_token', router.query.access_token, {
         maxAge: 30 * 24 * 60 * 60, // Cookie expiration time in seconds (e.g., 30 days)
-        path: "/", // Cookie path (can be adjusted based on your needs)
+        path: '/', // Cookie path (can be adjusted based on your needs)
       });
       refetch();
     }
@@ -38,11 +38,11 @@ function AuthButton() {
     return <Loading />;
   }
 
-  if (!data?.data || data === "Unauthorized" || isError) {
+  if (!data?.data || data === 'Unauthorized' || isError) {
     return (
       <div>
         <button
-          onClick={() => router.push("/auth/signIn")}
+          onClick={() => router.push('/auth/signIn')}
           className="flex gap-x-2 justify-center items-center focus:outline-none text-base font-Inter font-normal border-0 w-max h-auto bg-white  text-black hover:ring-2  transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
         >
           <span>Login</span>
@@ -59,11 +59,11 @@ function AuthButton() {
   };
 
   const signOut = () => {
-    destroyCookie(null, "access_token", { path: "/" });
-    queryClient.removeQueries("user");
+    destroyCookie(null, 'access_token', { path: '/' });
+    queryClient.removeQueries('user');
     refetch();
     router.push({
-      pathname: "/",
+      pathname: '/',
     });
   };
 
@@ -81,6 +81,7 @@ function AuthButton() {
               alt={data?.data?.firstName}
               layout="fill"
               className=" object-cover "
+              sizes="(max-width: 768px) 100vw"
             />
           </div>
         ) : (
@@ -121,13 +122,13 @@ function AuthButton() {
               >
                 <li
                   onClick={() => {
-                    if (data?.data?.role === "SCHOOL") {
+                    if (data?.data?.role === 'SCHOOL') {
                       router.push({
-                        pathname: "/school/setting",
+                        pathname: '/school/setting',
                       });
-                    } else if (data?.data?.role === "TEACHER") {
+                    } else if (data?.data?.role === 'TEACHER') {
                       router.push({
-                        pathname: "/classroom/setting",
+                        pathname: '/classroom/setting',
                       });
                     }
                   }}

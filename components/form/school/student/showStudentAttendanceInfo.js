@@ -34,6 +34,7 @@ function ShowStudentAttendanceInfo({
             <Image
               src={student.picture}
               layout="fill"
+              sizes="(max-width: 768px) 100vw"
               className="object-cover"
             />
           </div>

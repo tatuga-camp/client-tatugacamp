@@ -1,17 +1,17 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { Editor } from "@tinymce/tinymce-react";
-import Image from "next/image";
-import Loading from "../loading/loading";
-import { MdError, MdOutlineCancel } from "react-icons/md";
-import { AiOutlineCheckCircle } from "react-icons/ai";
-import { GrRevert, GrScorecard } from "react-icons/gr";
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { Editor } from '@tinymce/tinymce-react';
+import Image from 'next/image';
+import Loading from '../loading/loading';
+import { MdError, MdOutlineCancel } from 'react-icons/md';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { GrRevert, GrScorecard } from 'react-icons/gr';
 import {
   AssignWorkToSTudent,
   UpdateAssignmentApi,
-} from "../../service/assignment";
-import Swal from "sweetalert2";
-import { Box, TextField } from "@mui/material";
+} from '../../service/assignment';
+import Swal from 'sweetalert2';
+import { Box, TextField } from '@mui/material';
 
 function UpdateAssignment({
   assignment,
@@ -29,12 +29,12 @@ function UpdateAssignment({
   const [activeTab, setActivetab] = useState(0);
   const [tabs, setTabs] = useState([
     {
-      titleEnglish: "assignment",
-      titleThai: "งาน",
+      titleEnglish: 'assignment',
+      titleThai: 'งาน',
     },
     {
-      titleEnglish: "students",
-      titleThai: "นักเรียน",
+      titleEnglish: 'students',
+      titleThai: 'นักเรียน',
     },
   ]);
 
@@ -68,7 +68,7 @@ function UpdateAssignment({
           ...student,
           [student.id]: false,
         };
-      })
+      }),
     );
   }, [studentOnAssignments.data]);
 
@@ -90,13 +90,13 @@ function UpdateAssignment({
 
   //convert the string date to format that input date required
   const date = new Date(assignmentData.deadline);
-  const formattedDate = date.toISOString().split("T")[0];
+  const formattedDate = date.toISOString().split('T')[0];
 
   //handle click to sclect all student
   const onClickIsCheck = () => {
     setIsChecked((prevState) => {
       return prevState.map((student) => {
-        if (student.status === "no-assign") {
+        if (student.status === 'no-assign') {
           return {
             ...student,
             [student.id]: !student[student.id],
@@ -135,15 +135,15 @@ function UpdateAssignment({
         maxScore: assignmentData.maxScore,
         deadline: assignmentData.deadline,
       });
-      Swal.fire("success", "assignment has been updated", "success");
+      Swal.fire('success', 'assignment has been updated', 'success');
       setTriggerUpdateAssignment(false);
       assignment.refetch();
     } catch (err) {
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -170,12 +170,12 @@ function UpdateAssignment({
                 onClick={() => handleActiveTab(index)}
                 className={`w-28 px-4 flex items-center justify-center cursor-pointer h-full rounded-xl ${
                   activeTab === index
-                    ? "text-white bg-orange-600"
-                    : "text-black bg-transparent"
+                    ? 'text-white bg-orange-600'
+                    : 'text-black bg-transparent'
                 }`}
               >
-                {language === "Thai" && tab.titleThai}
-                {language === "English" && tab.titleEnglish}
+                {language === 'Thai' && tab.titleThai}
+                {language === 'English' && tab.titleEnglish}
               </div>
             );
           })}
@@ -201,39 +201,39 @@ function UpdateAssignment({
               textareaName="description"
               initialValue={assignmentData?.description}
               init={{
-                selector: "textarea",
+                selector: 'textarea',
                 link_context_toolbar: true,
-                height: "100%",
-                width: "100%",
+                height: '100%',
+                width: '100%',
                 menubar: true,
                 paste_data_images: false,
                 automatic_uploads: true,
                 plugins: [
-                  "advlist",
-                  "autolink",
-                  "lists",
-                  "link",
+                  'advlist',
+                  'autolink',
+                  'lists',
+                  'link',
 
-                  "charmap",
-                  "preview",
-                  "anchor",
-                  "searchreplace",
-                  "visualblocks",
-                  "code",
-                  "fullscreen",
-                  "insertdatetime",
-                  "media",
-                  "table",
-                  "help",
-                  "wordcount",
+                  'charmap',
+                  'preview',
+                  'anchor',
+                  'searchreplace',
+                  'visualblocks',
+                  'code',
+                  'fullscreen',
+                  'insertdatetime',
+                  'media',
+                  'table',
+                  'help',
+                  'wordcount',
                 ],
                 toolbar:
-                  "undo redo | formatselect | " +
-                  "bold italic backcolor | alignleft aligncenter " +
-                  "alignright alignjustify | bullist numlist outdent indent | " +
-                  "removeformat | help | link |",
+                  'undo redo | formatselect | ' +
+                  'bold italic backcolor | alignleft aligncenter ' +
+                  'alignright alignjustify | bullist numlist outdent indent | ' +
+                  'removeformat | help | link |',
                 content_style:
-                  "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                  'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
               }}
               onEditorChange={(newText) =>
                 setAssignmentData((prev) => {
@@ -252,8 +252,8 @@ function UpdateAssignment({
            active:border-solid  focus:border-2 hover:bg-red-500 transition duration-150
           focus:border-solid"
             >
-              {language === "Thai" && "อัพเดท"}
-              {language === "English" && "update"}
+              {language === 'Thai' && 'อัพเดท'}
+              {language === 'English' && 'update'}
             </button>
           </div>
           <div
@@ -262,8 +262,8 @@ function UpdateAssignment({
           >
             <div className=" flex flex-col">
               <label>
-                {language === "Thai" && "กำหนดส่ง"}
-                {language === "English" && "due by"}
+                {language === 'Thai' && 'กำหนดส่ง'}
+                {language === 'English' && 'due by'}
               </label>
               <input
                 value={formattedDate}
@@ -278,8 +278,8 @@ function UpdateAssignment({
             </div>
             <div className="flex flex-col w-max relative  h-max ">
               <label>
-                {language === "Thai" && "คะแนนของงาน"}
-                {language === "English" && "score"}
+                {language === 'Thai' && 'คะแนนของงาน'}
+                {language === 'English' && 'score'}
               </label>
               <input
                 min="1"
@@ -298,6 +298,7 @@ function UpdateAssignment({
             </div>
             <div className="relative w-60 h-80">
               <Image
+                sizes="(max-width: 768px) 100vw"
                 src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/IMG_3053.PNG"
                 layout="fill"
                 className="object-contain"
@@ -308,8 +309,8 @@ function UpdateAssignment({
       ) : (
         <form className="w-full h-full flex items-center justify-center flex-col gap-1">
           <div className="text-2xl font-Kanit font-semibold">
-            {language === "Thai" && "เลือกผู้เรียนเพื่อมอบหมายงาน"}
-            {language === "English" && "Choose students to assign work"}
+            {language === 'Thai' && 'เลือกผู้เรียนเพื่อมอบหมายงาน'}
+            {language === 'English' && 'Choose students to assign work'}
           </div>
 
           <div
@@ -327,7 +328,7 @@ function UpdateAssignment({
                   <div
                     key={student.id}
                     className={`grid grid-cols-4  w-full relative items-center justify-center ${
-                      oddNumber === 0 ? "bg-white" : "bg-orange-100"
+                      oddNumber === 0 ? 'bg-white' : 'bg-orange-100'
                     } py-2 
               text-lg font-Kanit `}
                   >
@@ -350,7 +351,7 @@ function UpdateAssignment({
                     <div className="flex items-center justify-center">
                       {student?.lastName}
                     </div>
-                    {student.status === "no-assign" ? (
+                    {student.status === 'no-assign' ? (
                       <div className="flex items-center justify-center ">
                         <input
                           checked={student?.[student.id]}
@@ -368,8 +369,8 @@ function UpdateAssignment({
                         className="w-full text-sm bg-green-500 py-1  rounded-lg text-white
                       flex items-center justify-center"
                       >
-                        {language === "Thai" && "มอบหมายแล้ว"}
-                        {language === "English" && "Already assigned"}
+                        {language === 'Thai' && 'มอบหมายแล้ว'}
+                        {language === 'English' && 'Already assigned'}
                       </div>
                     )}
                   </div>
@@ -383,16 +384,16 @@ function UpdateAssignment({
               onClick={onClickIsCheck}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-              {language === "Thai" && "เลือกผู้เรียนทั้งหมด"}
-              {language === "English" && "Pick all students"}
+              {language === 'Thai' && 'เลือกผู้เรียนทั้งหมด'}
+              {language === 'English' && 'Pick all students'}
             </button>
             <button
               type="button"
               onClick={onClickAssignWork}
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
-              {language === "Thai" && "มอบหมายงาน"}
-              {language === "English" && "Assign"}
+              {language === 'Thai' && 'มอบหมายงาน'}
+              {language === 'English' && 'Assign'}
             </button>
           </div>
         </form>

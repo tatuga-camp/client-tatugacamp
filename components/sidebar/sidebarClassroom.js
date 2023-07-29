@@ -1,30 +1,30 @@
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
   const router = useRouter();
   const pathname = router.pathname; // e.g. "/classroom/setting"
 
-  const lastRoute = pathname.split("/").pop();
+  const lastRoute = pathname.split('/').pop();
   const [isClick, setIsClick] = useState();
   useEffect(() => {
-    if (lastRoute === "setting") {
+    if (lastRoute === 'setting') {
       setIsClick(2);
-    } else if (lastRoute === "subscriptions") {
+    } else if (lastRoute === 'subscriptions') {
       setIsClick(1);
-    } else if (lastRoute === "classroom") {
+    } else if (lastRoute === 'classroom') {
       setIsClick(0);
-    } else if (lastRoute === "[classroomId]") {
+    } else if (lastRoute === '[classroomId]') {
       setIsClick(1);
-    } else if (lastRoute === "assignment") {
+    } else if (lastRoute === 'assignment') {
       setIsClick(2);
-    } else if (lastRoute === "timer") {
+    } else if (lastRoute === 'timer') {
       setIsClick(2);
-    } else if (lastRoute === "attendance") {
+    } else if (lastRoute === 'attendance') {
       setIsClick(3);
-    } else if (lastRoute === "scores") {
+    } else if (lastRoute === 'scores') {
       setIsClick(4);
     }
   }, []);
@@ -40,13 +40,14 @@ function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
             <div className="flex flex-col items-center justify-center ">
               <div
                 className={`w-20 h-20 ${
-                  user?.picture ? "bg-transparent" : "bg-gray-500"
+                  user?.picture ? 'bg-transparent' : 'bg-gray-500'
                 } rounded-full relative flex justify-center items-center overflow-hidden ring-4 ring-blue-400 `}
               >
                 {user?.picture ? (
                   <Image
                     src={user?.picture}
                     layout="fill"
+                    sizes="(max-width: 768px) 100vw"
                     className="object-cover"
                     alt={`profile of ${user?.firstName}`}
                   />
@@ -56,35 +57,35 @@ function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
                   </span>
                 )}
               </div>
-              {user.plan === "FREE" && (
+              {user.plan === 'FREE' && (
                 <div
                   className="w-max h-8 px-2 mt-3 rounded-xl text-white
                  bg-slate-500 font-Kanit font-normal  justify-start items-center flex"
                 >
-                  {user.language === "Thai" && <span>สมาชิกฟรี</span>}
-                  {user.language === "English" && <span>Free plan</span>}
+                  {user.language === 'Thai' && <span>สมาชิกฟรี</span>}
+                  {user.language === 'English' && <span>Free plan</span>}
                 </div>
               )}
-              {user.plan === "TATUGA-STARTER" &&
-                user.subscriptions === "active" && (
+              {user.plan === 'TATUGA-STARTER' &&
+                user.subscriptions === 'active' && (
                   <div
                     className="w-max h-8 px-2 mt-3 rounded-xl text-white
                  bg-blue-500 font-Kanit font-normal  justify-start items-center flex"
                   >
-                    {user.language === "Thai" && <span>สมาชิกเริ่มต้น</span>}
-                    {user.language === "English" && (
+                    {user.language === 'Thai' && <span>สมาชิกเริ่มต้น</span>}
+                    {user.language === 'English' && (
                       <span className="uppercase">Tatuga starter</span>
                     )}
                   </div>
                 )}
-              {user.plan === "TATUGA-PREMIUM" &&
-                user.subscriptions === "active" && (
+              {user.plan === 'TATUGA-PREMIUM' &&
+                user.subscriptions === 'active' && (
                   <div
                     className="w-max h-8 px-2 mt-3 rounded-xl text-black bg-[#ffd700]
                     font-Kanit font-normal justify-start items-center flex"
                   >
-                    {user.language === "Thai" && <span>สมาชิกพรีเมี่ยม</span>}
-                    {user.language === "English" && (
+                    {user.language === 'Thai' && <span>สมาชิกพรีเมี่ยม</span>}
+                    {user.language === 'English' && (
                       <span className="uppercase">Tatuga PREMIUM</span>
                     )}
                   </div>
@@ -106,7 +107,7 @@ function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
                   <Link href={list?.url} key={index}>
                     <li
                       className={`${
-                        index === array.length - 1 && " bottom-5 absolute"
+                        index === array.length - 1 && ' bottom-5 absolute'
                       }`}
                     >
                       <button
@@ -122,8 +123,8 @@ function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
                    font-Kanit text-lg w-40 py-1 rounded-md font-semibold 
                    active:bg-[#2C7CD1] active:text-white focus:bg-[#EDBA02] ${
                      isClick === index
-                       ? "bg-[#EDBA02] text-white"
-                       : "bg-white text-black"
+                       ? 'bg-[#EDBA02] text-white'
+                       : 'bg-white text-black'
                    } `}
                         >
                           {list.title}
