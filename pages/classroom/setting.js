@@ -153,7 +153,11 @@ function Setting({ userServerSide, error }) {
         <meta charSet="UTF-8" />
         <title>setting - account</title>
       </Head>
-      <Layout sideMenus={sideMenus} user={userData} trigger={chooseMessage} />
+      <Layout
+        sideMenus={sideMenus}
+        user={userServerSide}
+        trigger={chooseMessage}
+      />
       <div
         className={`w-full h-full py-10  mt-10 md:mt-0  flex flex-col items-center md:justify-center
          bg-[url('/blob-scene-haikei.svg')] bg-no-repeat bg-fixed bg-cover `}

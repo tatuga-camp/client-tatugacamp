@@ -50,15 +50,13 @@ function SidebarSchool({ user, sideMenus, triggersidebar, close }) {
                   className="w-max h-8 px-2 mt-3 rounded-xl text-white
                  bg-blue-500 font-Kanit font-normal  justify-start items-center flex"
                 >
-                  {user.language === 'Thai' && <span>โรงเรียน</span>}
+                  {user.language === 'Thai' && <span>หน่วยงาน</span>}
                   {user.language === 'English' && <span>SCHOOL</span>}
                 </div>
               )}
 
               <div className="mt-2 flex flex-col items-center justify-center font-Kanit font-semibold text-2xl text-blue-500">
-                <span>
-                  {user?.firstName} {user?.lastName}
-                </span>
+                <span>{user?.school}</span>
                 <span className=" font-light text-gray-500 text-sm">
                   {user?.email}
                 </span>

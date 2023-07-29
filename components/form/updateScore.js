@@ -26,8 +26,10 @@ import { avartars } from '../../data/students';
 import { useRouter } from 'next/router';
 import Loading from '../loading/loading';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
+import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { nationalities } from '../../data/student/nationality';
 function UpdateScore({
-  close,
+  setTriggerUpdateStudent,
   student,
   scores,
   students,
@@ -60,6 +62,7 @@ function UpdateScore({
     firstName: '',
     lastName: '',
     number: '',
+    nationality: '',
   });
   //prepare sound
   useEffect(() => {
@@ -69,6 +72,7 @@ function UpdateScore({
       lastName: student?.lastName,
       number: student?.number,
       picture: student?.picture,
+      nationality: student?.nationality,
     }));
     setClassroomId(() => router.query.classroomId);
     setSoundNagative(new Audio(fileSoundNagative));
@@ -110,7 +114,7 @@ function UpdateScore({
       [name]: value,
     }));
   };
-
+  console.log(studentData);
   //handle delete student
   const handleDelteStudent = async (data) => {
     try {
@@ -141,6 +145,7 @@ function UpdateScore({
       formData.append('firstName', studentData.firstName);
       formData.append('lastName', studentData?.lastName);
       formData.append('number', studentData.number);
+      formData.append('nationality', studentData.nationality);
       formData.append('picture', studentData.picture);
       await UpdateStudent({
         formData,
@@ -477,6 +482,32 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                         <FcViewDetails />
                       </div>
                     </div>
+                    <div className="flex flex-col  relative mt-2 mb-2">
+                      <Box sx={{ minWidth: 120 }}>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">
+                            {language === 'Thai' && 'สัญชาติ'}
+                            {language === 'English' && 'nationality'}
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            name="nationality"
+                            value={studentData.nationality}
+                            label="nationality"
+                            onChange={handleOnChange}
+                          >
+                            {nationalities.map((nationality, index) => {
+                              return (
+                                <MenuItem key={index} value={nationality}>
+                                  {nationality}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </div>
                     {error && (
                       <div className=" bottom-12 w-max text-red-600">
                         {error}
@@ -697,7 +728,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
       <div
         onClick={() => {
           document.body.style.overflow = 'auto';
-          close();
+          setTriggerUpdateStudent(() => false);
         }}
         className="w-full h-full fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/20 "
       ></div>

@@ -103,6 +103,9 @@ function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
           <li>
             <ul className="list-none pl-5 flex flex-col gap-y-3 mt-10 ">
               {sideMenus.map((list, index, array) => {
+                if (user.isSchoolAccount && index === 1) {
+                  return null;
+                }
                 return (
                   <Link href={list?.url} key={index}>
                     <li

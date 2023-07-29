@@ -135,8 +135,8 @@ function Layout({ children, sideMenus, language, groups }) {
                 <div className="flex md:block  items-center justify-center w-full md:w-60  lg:w-72   flex-col">
                   <span className="mr-2 md:block hidden">Welcome to</span>
                   <div className="mr-2 md:hidden block">Welcome to</div>
-                  <div className="w-60 hover:w-max truncate">
-                    <span className="md:text-xl  lg:text-4xl break-words flex justify-center md:justify-start	 font-semibold text-center md:text-left uppercase">
+                  <div className="w-full hover:w-max  break-words">
+                    <span className="md:text-xl  lg:text-2xl flex justify-center md:justify-start	 font-semibold text-center md:text-left uppercase">
                       {classroom?.data?.data?.title}
                     </span>
                   </div>

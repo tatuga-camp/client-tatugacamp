@@ -33,7 +33,45 @@ import { Pagination, Skeleton } from '@mui/material';
 import ShowStudentInfo from '../../components/form/school/student/showStudentInfo';
 import { useRouter } from 'next/router';
 import { GetAllClassroomNumber } from '../../service/school/classroom';
-import { GetAllStudentsNumber } from '../../service/school/student';
+import {
+  GetAllStudentsByNationlity,
+  GetAllStudentsNumber,
+} from '../../service/school/student';
+import ShowTeacherOverviewInfo from '../../components/form/school/teacher/showTeacherOverviewInfo';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar, Doughnut } from 'react-chartjs-2';
+import { formattedColorCodesArray } from '../../data/chart/color';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
+
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: 'แผนภูมิแสดงสถิติภาพรวม',
+    },
+  },
+};
+const labels = ['จำนวนทั้งหมด'];
 
 const loadingElements = [1, 2, 3, 4, 5];
 
@@ -42,16 +80,61 @@ function Index({
   error,
   teachersNumber,
   classroomNumber,
+  studentNationality,
   studentNumber,
 }) {
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'จำนวนนักเรียน',
+        data: labels.map(() => studentNumber),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+      {
+        label: 'จำนวนห้องเรียน',
+        data: labels.map(() => classroomNumber),
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+      {
+        label: 'จำนวนบัญชี',
+        data: labels.map(() => teachersNumber),
+        backgroundColor: 'rgba(0, 128, 0, 0.5)',
+      },
+    ],
+  };
+
   const [page, setPage] = useState(1);
   const router = useRouter();
+  const [dataNationality, setDataNationality] = useState(() => {
+    let value = [];
+    let nationalities = [];
+    for (const key in studentNationality) {
+      // Access the property key and value
+      const number = studentNationality[key];
+      value.push(number);
+      nationalities.push(key);
+    }
+
+    return {
+      labels: nationalities,
+      datasets: [
+        {
+          label: 'จำนวน',
+          data: value,
+          backgroundColor: formattedColorCodesArray,
+          borderColor: formattedColorCodesArray,
+          borderWidth: 1,
+        },
+      ],
+    };
+  });
   const [currentDate, setCurrentDate] = useState();
   const [currentTime, setCurrentTime] = useState();
   const [triggerStudentInfo, setTriggerStudentInfo] = useState(false);
   const [currentStudentInfo, setCurrentStudentInfo] = useState();
-  const [triggerAccountManagement, setTriggerAccountManagement] =
-    useState(false);
+  const [selectTeacher, setSelectTeacher] = useState();
+  const [triggerShowTeacherInfo, setTriggerShowTeacherInfo] = useState(false);
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === 'Thai') {
       return sideMenusThai;
@@ -122,396 +205,457 @@ function Index({
   }
 
   return (
-    <Layout
-      sideMenus={sideMenus}
-      user={user}
-      teachersNumber={teachersNumber}
-      classroomNumber={classroomNumber}
-      router={router}
-    >
-      <Head>
-        <title>tatuga school</title>
-      </Head>
+    <div className="bg-gradient-to-t from-blue-400 to-blue-50">
+      {triggerShowTeacherInfo && (
+        <ShowTeacherOverviewInfo
+          setTriggerShowTeacherInfo={setTriggerShowTeacherInfo}
+          selectTeacher={selectTeacher}
+        />
+      )}
+      <Layout
+        sideMenus={sideMenus}
+        user={user}
+        teachersNumber={teachersNumber}
+        classroomNumber={classroomNumber}
+        router={router}
+      >
+        <Head>
+          <title>{user.school ? user.school : user.firstName}</title>
+        </Head>
 
-      <main className="w-full py-10 gap-10  h-max flex flex-col justify-center items-center font-Poppins  ">
-        <div className="w-11/12 h-[35rem] pb-3 items-center rounded-lg flex flex-col ring-2 overflow-hidden ring-black">
-          <div className="w-full bg-white h-28 flex justify-between">
-            <div className="p-5 gap-2 flex flex-col">
-              <span className="font-Poppins text-4xl font-semibold">
-                Overview
-              </span>
-              <div className="flex gap-2 items-center justify-center">
-                <span className="font-semibold">{currentDate} </span>
-                <span>{currentTime} </span>
-              </div>
+        <main className="w-full py-10 gap-10  h-max flex flex-col justify-center items-center font-Poppins  ">
+          <div className="w-11/12 items-center flex flex-col gap-2 justify-center">
+            <span className="text-blue-600 font-semibold text-4xl font-Kanit">
+              ยินดีต้อนรับ😃
+            </span>
+            <div className="text-blue-600 font-semibold text-7xl font-Kanit">
+              {user.school ? user.school : user.firstName}
             </div>
-            <div className="p-5 gap-2 flex ">
-              <div className="flex gap-2 items-center flex-col justify-center">
-                <span className="font-semibold text-5xl">
-                  <NumberAnimated n={teachersNumber} />{' '}
+            <div
+              className={`w-24 h-24 ${
+                user?.picture ? 'bg-transparent' : 'bg-gray-500'
+              } rounded-full relative flex justify-center items-center overflow-hidden ring-4 ring-blue-400 `}
+            >
+              {user?.picture ? (
+                <Image
+                  src={user?.picture}
+                  layout="fill"
+                  sizes="(max-width: 768px) 100vw"
+                  className="object-cover"
+                  alt={`profile of ${user?.firstName}`}
+                />
+              ) : (
+                <span className="text-3xl font-Kanit font-semibold text-white">
+                  {user?.firstName?.charAt(0)}
                 </span>
-                <span className="text-slate-500 font-medium font-Kanit">
-                  บัญชีทั้งหมด
-                </span>
-              </div>
-              <div className="h-full w-[1px] bg-slate-700 mx-5"></div>
-              <div className="flex gap-2 items-center flex-col justify-center">
-                <span className="font-semibold text-5xl">
-                  <NumberAnimated n={studentNumber} />{' '}
-                </span>
-                <span className="text-slate-500 font-medium font-Kanit">
-                  นักเรียนทั้งหมด
-                </span>
-              </div>
+              )}
             </div>
           </div>
-          <table
-            className="w-11/12 h-[33rem]  flex flex-col 
-            justify-start items-center gap-5 overflow-y-auto overflow-x-auto  relative "
-          >
-            <thead className="w-full sticky top-0 z-20">
-              <tr
-                className="flex self-start border-y-2 border-slate-500	
-                   justify-start px-5 py-3   gap-5 items-center w-full 
+          <div className="w-11/12 h-[35rem] bg-white pb-3 items-center rounded-lg flex flex-col ring-2 overflow-hidden ring-black">
+            <div className="w-full bg-white h-28 flex justify-between">
+              <div className="p-5 gap-2 flex flex-col">
+                <span className="font-Poppins text-4xl font-semibold">
+                  Overview
+                </span>
+                <div className="flex gap-2 items-center justify-center">
+                  <span className="font-semibold">{currentDate} </span>
+                  <span>{currentTime} </span>
+                </div>
+              </div>
+              <div className="p-5 gap-2 flex ">
+                <div className="flex gap-2 items-center flex-col justify-center">
+                  <span className="font-semibold text-5xl">
+                    <NumberAnimated n={teachersNumber} />{' '}
+                  </span>
+                  <span className="text-slate-500 font-medium font-Kanit">
+                    บัญชีทั้งหมด
+                  </span>
+                </div>
+                <div className="h-full w-[1px] bg-slate-700 mx-5"></div>
+                <div className="flex gap-2 items-center flex-col justify-center">
+                  <span className="font-semibold text-5xl">
+                    <NumberAnimated n={studentNumber} />{' '}
+                  </span>
+                  <span className="text-slate-500 font-medium font-Kanit">
+                    นักเรียนทั้งหมด
+                  </span>
+                </div>
+              </div>
+            </div>
+            <table
+              className="w-11/12 h-[33rem]  flex flex-col 
+            justify-start items-start gap-5 bg-white overflow-y-auto overflow-x-auto  relative "
+            >
+              <thead className="w-max sticky top-0 z-20">
+                <tr
+                  className="flex  border-y-2 border-slate-500	
+                    px-5 py-3  gap-5  w-max 
                     bg-white "
-              >
-                <th className="w-60 flex font-semibold font-Kanit text-slate-500 justify-start">
-                  ชื่อ - นามสกุล
-                </th>
-                <th className="w-20 flex font-semibold font-Kanit text-slate-500 justify-center">
-                  รูป
-                </th>
-                <th className="w-60 flex font-semibold font-Kanit text-slate-500 justify-start">
-                  อีเมล
-                </th>
+                >
+                  <th className="w-60 flex font-semibold font-Kanit text-slate-500 justify-start">
+                    ชื่อ - นามสกุล
+                  </th>
+                  <th className="w-20 flex font-semibold font-Kanit text-slate-500 justify-center">
+                    รูป
+                  </th>
+                  <th className="w-60 flex font-semibold font-Kanit text-slate-500 justify-start">
+                    อีเมล
+                  </th>
 
-                <th className="w-60 flex font-semibold font-Kanit text-slate-500 justify-start">
-                  โรงเรียน
-                </th>
-                <th className="w-32 flex font-semibold font-Kanit text-slate-500 justify-center">
-                  สถานนะ
-                </th>
-                <th className="w-32 flex font-semibold font-Kanit text-slate-500 justify-center">
-                  สร้างเมื่อ
-                </th>
-              </tr>
-            </thead>
-            <tbody className="flex w-full flex-col gap-5 ">
-              {teachers.isLoading ? (
-                <tr className="flex flex-col gap-5 ">
-                  {loadingElements.map((list, index) => {
-                    return (
-                      <th
-                        key={index}
-                        className="flex justify-around gap-10 w-full"
-                      >
-                        <Skeleton
-                          variant="rectangular"
-                          width={150}
-                          height={30}
-                        />
-                        <Skeleton
-                          variant="rectangular"
-                          width={100}
-                          height={30}
-                        />
-                        <Skeleton
-                          variant="rectangular"
-                          width={300}
-                          height={30}
-                        />
-                      </th>
-                    );
-                  })}
+                  <th className="w-60 flex font-semibold font-Kanit text-slate-500 justify-start">
+                    โรงเรียน
+                  </th>
+                  <th className="w-32 flex font-semibold font-Kanit text-slate-500 justify-center">
+                    สถานนะ
+                  </th>
+                  <th className="w-32 flex font-semibold font-Kanit text-slate-500 justify-center">
+                    สร้างเมื่อ
+                  </th>
+                  <th className="w-32 flex font-semibold font-Kanit text-slate-500 justify-center">
+                    จำนวนนักเรียน
+                  </th>
+                  <th className="w-32 flex font-semibold font-Kanit text-slate-500 justify-center">
+                    จำนวนห้องเรียน
+                  </th>
                 </tr>
-              ) : (
-                teachers?.data?.users?.map((teacher) => {
-                  const date = new Date(teacher.createAt);
-                  const formattedDate = date.toLocaleDateString(
-                    `${
-                      user.language === 'Thai'
-                        ? 'th-TH'
-                        : user.language === 'English' && 'en-US'
-                    }`,
-                    {
-                      day: '2-digit',
-                      month: 'short',
-                      year: 'numeric',
-                    },
-                  );
-                  return (
-                    <tr
-                      key={teacher.id}
-                      onClick={() => {
-                        setSelectTeacher(() => teacher);
-                        setTriggerCreateUser(() => false);
-                      }}
-                      className="flex justify-start px-5 py-2 cursor-pointer 
-                            gap-5 i w-full rounded-md  hover:bg-slate-100 items-center"
-                    >
-                      <td className="w-60 text-sm  flex justify-start truncate">
-                        <div className="truncate">
-                          {teacher.firstName} {teacher?.lastName}
-                        </div>
-                      </td>
-                      <td className="w-20 flex justify-center">
-                        <div
-                          className="w-10 h-10 bg-blue-300 text-white rounded-md 
-                            relative flex justify-center items-center overflow-hidden"
+              </thead>
+              <tbody className="flex w-max flex-col gap-5 ">
+                {teachers.isLoading ? (
+                  <tr className="flex flex-col gap-5 ">
+                    {loadingElements.map((list, index) => {
+                      return (
+                        <th
+                          key={index}
+                          className="flex justify-around gap-10 w-full"
                         >
-                          {teacher.picture ? (
-                            <Image
-                              src={teacher.picture}
-                              layout="fill"
-                              sizes="(max-width: 768px) 100vw"
-                              className="object-cover"
-                            />
-                          ) : (
-                            <span className="font-bold text-2xl uppercase">
-                              {teacher.firstName.charAt(0)}
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="w-60 text-sm flex justify-start truncate">
-                        {teacher.email}
-                      </td>
-
-                      <td className="w-60 flex text-sm justify-start truncate">
-                        <div className="truncate">{teacher?.school}</div>
-                      </td>
-
-                      <td className="w-32 flex justify-center">
-                        {teacher.isDisabled ? (
+                          <Skeleton
+                            variant="rectangular"
+                            width={150}
+                            height={30}
+                          />
+                          <Skeleton
+                            variant="rectangular"
+                            width={100}
+                            height={30}
+                          />
+                          <Skeleton
+                            variant="rectangular"
+                            width={300}
+                            height={30}
+                          />
+                        </th>
+                      );
+                    })}
+                  </tr>
+                ) : (
+                  teachers?.data?.users?.map((teacher) => {
+                    const date = new Date(teacher.createAt);
+                    const formattedDate = date.toLocaleDateString(
+                      `${
+                        user.language === 'Thai'
+                          ? 'th-TH'
+                          : user.language === 'English' && 'en-US'
+                      }`,
+                      {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                      },
+                    );
+                    return (
+                      <tr
+                        key={teacher.id}
+                        onClick={() => {
+                          setSelectTeacher(() => teacher);
+                          setTriggerShowTeacherInfo(() => true);
+                          document.body.style.overflow = 'hidden';
+                        }}
+                        className="flex justify-start px-5 py-2 cursor-pointer 
+                            gap-5 i w-full rounded-md  hover:bg-slate-100 items-center"
+                      >
+                        <td className="w-60 text-sm  flex justify-start truncate">
+                          <div className="truncate">
+                            {teacher.firstName} {teacher?.lastName}
+                          </div>
+                        </td>
+                        <td className="w-20 flex justify-center">
                           <div
-                            className="w-full flex justify-center items-center rounded-3xl
+                            className="w-10 h-10 bg-blue-300 text-white rounded-md 
+                            relative flex justify-center items-center overflow-hidden"
+                          >
+                            {teacher.picture ? (
+                              <Image
+                                src={teacher.picture}
+                                layout="fill"
+                                sizes="(max-width: 768px) 100vw"
+                                className="object-cover"
+                              />
+                            ) : (
+                              <span className="font-bold text-2xl uppercase">
+                                {teacher.firstName.charAt(0)}
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="w-60 text-sm flex justify-start truncate">
+                          {teacher.email}
+                        </td>
+
+                        <td className="w-60 flex text-sm justify-start truncate">
+                          <div className="truncate">{teacher?.school}</div>
+                        </td>
+
+                        <td className="w-32 flex justify-center">
+                          {teacher.isDisabled ? (
+                            <div
+                              className="w-full flex justify-center items-center rounded-3xl
                         bg-slate-200 text-slate-700 gap-2 text-center p-2"
-                          >
-                            <div className="flex justify-center items-center">
-                              <BsPersonFillX />
+                            >
+                              <div className="flex justify-center items-center">
+                                <BsPersonFillX />
+                              </div>
+                              disable
                             </div>
-                            disable
-                          </div>
-                        ) : (
-                          <div
-                            className="w-full flex justify-center items-center rounded-3xl
+                          ) : (
+                            <div
+                              className="w-full flex justify-center items-center rounded-3xl
                            bg-green-200 text-green-700 gap-2 text-center p-2"
-                          >
-                            <div className="flex justify-center items-center">
-                              <BsPersonFillCheck />
+                            >
+                              <div className="flex justify-center items-center">
+                                <BsPersonFillCheck />
+                              </div>
+                              active
                             </div>
-                            active
+                          )}
+                        </td>
+                        <td className="w-32 flex justify-center">
+                          {formattedDate}
+                        </td>
+                        <td className="w-32  flex justify-center">
+                          <div className="font-Poppins font-semibold text-blue-600">
+                            {teacher.student.length.toLocaleString()}
                           </div>
-                        )}
-                      </td>
-                      <td className="w-32 flex justify-center">
-                        {formattedDate}
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-          <footer className="w-full mt-2 flex items-center justify-center">
-            <Pagination
-              count={teachers?.data?.totalPages}
-              onChange={(e, page) => setPage(page)}
+                        </td>
+                        <td className="w-32  flex justify-center">
+                          <div className="font-Poppins font-semibold text-blue-600">
+                            {teacher.classroom.length.toLocaleString()}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+            <footer className="w-full mt-2 flex items-center justify-center">
+              <Pagination
+                count={teachers?.data?.totalPages}
+                onChange={(e, page) => setPage(page)}
+              />
+            </footer>
+          </div>
+          <div className="w-11/12 grid gap-10 grid-cols-3">
+            <div className=" col-span-2 h-96 p-5 flex justify-center items-center bg-white rounded-xl">
+              <Bar options={options} data={data} />
+            </div>
+            <div className=" col-span-1 h-96 p-5 bg-white rounded-xl flex justify-center items-center">
+              <Doughnut data={dataNationality} />
+            </div>
+          </div>
+
+          {triggerStudentInfo && (
+            <ShowStudentInfo
+              setTriggerStudentInfo={setTriggerStudentInfo}
+              currentStudentInfo={currentStudentInfo}
             />
-          </footer>
-        </div>
-        {triggerStudentInfo && (
-          <ShowStudentInfo
-            setTriggerStudentInfo={setTriggerStudentInfo}
-            currentStudentInfo={currentStudentInfo}
-          />
-        )}
-        <div className=" flex w-11/12 gap-5 justify-center ">
-          <div
-            className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
+          )}
+          <div className=" flex w-11/12 gap-5 justify-center ">
+            <div
+              className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
            flex flex-col justify-start items-center"
-          >
-            <h3 className="font-Kanit font-normal text-red-600 mb-3">
-              ขาดเรียน 10 อันดับแรก{' '}
-            </h3>
-            <ul className="w-max h-max  grid list-none pl-0">
-              {topTenAbsent.isLoading ? (
-                <div className="flex flex-col gap-3">
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                </div>
-              ) : (
-                topTenAbsent.data?.map((list, index) => {
-                  return (
-                    <li
-                      onClick={() =>
-                        handleTriggerStudentInfo({ student: list })
-                      }
-                      className="w-full transition p-2 duration-0  cursor-pointer
+            >
+              <h3 className="font-Kanit font-normal text-red-600 mb-3">
+                ขาดเรียน 10 อันดับแรก{' '}
+              </h3>
+              <ul className="w-max h-max  grid list-none pl-0">
+                {topTenAbsent.isLoading ? (
+                  <div className="flex flex-col gap-3">
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                  </div>
+                ) : (
+                  topTenAbsent.data?.map((list, index) => {
+                    return (
+                      <li
+                        onClick={() =>
+                          handleTriggerStudentInfo({ student: list })
+                        }
+                        className="w-full transition p-2 duration-0  cursor-pointer
                        hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
-                      key={index}
-                    >
-                      <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
-                        <Image
-                          src={list.student.picture}
-                          layout="fill"
-                          sizes="(max-width: 768px) 100vw"
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-0  items-start justify-center">
-                        <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
-                          <span className="truncate">
-                            {list.student.firstName}
-                          </span>
-                          <span className="truncate ">
-                            {list.student?.lastName}
-                          </span>
+                        key={index}
+                      >
+                        <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
+                          <Image
+                            src={list.student.picture}
+                            layout="fill"
+                            sizes="(max-width: 768px) 100vw"
+                            className="object-cover"
+                          />
                         </div>
-                        <div className="flex gap-5">
-                          <span className="text-gray-600 text-sm font-normal">
-                            เลขที่ {list.student.number}
-                          </span>
-                          <span className="text-red-600 text-sm font-bold">
-                            ขาดเรียน {list.numberAbsent} ครั้ง
-                          </span>
+                        <div className="flex flex-col gap-0  items-start justify-center">
+                          <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
+                            <span className="truncate">
+                              {list.student.firstName}
+                            </span>
+                            <span className="truncate ">
+                              {list.student?.lastName}
+                            </span>
+                          </div>
+                          <div className="flex gap-5">
+                            <span className="text-gray-600 text-sm font-normal">
+                              เลขที่ {list.student.number}
+                            </span>
+                            <span className="text-red-600 text-sm font-bold">
+                              ขาดเรียน {list.numberAbsent} ครั้ง
+                            </span>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="w-full h-[1px] rounded-full bg-slate-200 absolute bottom-0 left-0"></div>
-                    </li>
-                  );
-                })
-              )}
-            </ul>
-          </div>
+                        <div className="w-full h-[1px] rounded-full bg-slate-200 absolute bottom-0 left-0"></div>
+                      </li>
+                    );
+                  })
+                )}
+              </ul>
+            </div>
 
-          <div
-            className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
+            <div
+              className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
            flex flex-col justify-start items-center"
-          >
-            <h3 className="font-Kanit font-normal text-blue-600 mb-3">
-              สถิติป่วย 10 อันดับแรก{' '}
-            </h3>
-            <ul className="w-max h-max  grid list-none pl-0">
-              {topTenSick.isLoading ? (
-                <div className="flex flex-col gap-3">
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                </div>
-              ) : (
-                topTenSick.data?.map((list, index) => {
-                  return (
-                    <li
-                      onClick={() =>
-                        handleTriggerStudentInfo({ student: list })
-                      }
-                      className="w-full transition p-2 duration-0  cursor-pointer hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
-                      key={index}
-                    >
-                      <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
-                        <Image
-                          src={list.student.picture}
-                          layout="fill"
-                          sizes="(max-width: 768px) 100vw"
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-0  items-start justify-center">
-                        <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
-                          <span className="truncate">
-                            {list.student.firstName}
-                          </span>
-                          <span className="truncate ">
-                            {list.student?.lastName}
-                          </span>
+            >
+              <h3 className="font-Kanit font-normal text-blue-600 mb-3">
+                สถิติป่วย 10 อันดับแรก{' '}
+              </h3>
+              <ul className="w-max h-max  grid list-none pl-0">
+                {topTenSick.isLoading ? (
+                  <div className="flex flex-col gap-3">
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                  </div>
+                ) : (
+                  topTenSick.data?.map((list, index) => {
+                    return (
+                      <li
+                        onClick={() =>
+                          handleTriggerStudentInfo({ student: list })
+                        }
+                        className="w-full transition p-2 duration-0  cursor-pointer hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
+                        key={index}
+                      >
+                        <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
+                          <Image
+                            src={list.student.picture}
+                            layout="fill"
+                            sizes="(max-width: 768px) 100vw"
+                            className="object-cover"
+                          />
                         </div>
-                        <div className="flex gap-5">
-                          <span className="text-gray-600 text-sm font-normal">
-                            เลขที่ {list.student.number}
-                          </span>
-                          <span className="text-blue-600 text-sm font-bold">
-                            ป่วย {list.numberSick} ครั้ง
-                          </span>
+                        <div className="flex flex-col gap-0  items-start justify-center">
+                          <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
+                            <span className="truncate">
+                              {list.student.firstName}
+                            </span>
+                            <span className="truncate ">
+                              {list.student?.lastName}
+                            </span>
+                          </div>
+                          <div className="flex gap-5">
+                            <span className="text-gray-600 text-sm font-normal">
+                              เลขที่ {list.student.number}
+                            </span>
+                            <span className="text-blue-600 text-sm font-bold">
+                              ป่วย {list.numberSick} ครั้ง
+                            </span>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="w-full h-[1px] rounded-full bg-slate-200 absolute bottom-0 left-0"></div>
-                    </li>
-                  );
-                })
-              )}
-            </ul>
-          </div>
+                        <div className="w-full h-[1px] rounded-full bg-slate-200 absolute bottom-0 left-0"></div>
+                      </li>
+                    );
+                  })
+                )}
+              </ul>
+            </div>
 
-          <div
-            className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
+            <div
+              className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
            flex flex-col justify-start items-center"
-          >
-            <h3 className="font-Kanit font-normal text-orange-600 mb-3">
-              สถิติลา 10 อันดับแรก{' '}
-            </h3>
-            <ul className="w-max h-max  grid list-none pl-0">
-              {topTenHoliday.isLoading ? (
-                <div className="flex flex-col gap-3">
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                  <Skeleton variant="rectangular" width="100%" height={20} />
-                </div>
-              ) : (
-                topTenHoliday.data?.map((list, index) => {
-                  return (
-                    <li
-                      onClick={() =>
-                        handleTriggerStudentInfo({ student: list })
-                      }
-                      className="w-full transition p-2 duration-0  cursor-pointer hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
-                      key={index}
-                    >
-                      <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
-                        <Image
-                          src={list.student.picture}
-                          layout="fill"
-                          sizes="(max-width: 768px) 100vw"
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-0  items-start justify-center">
-                        <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
-                          <span className="truncate">
-                            {list.student.firstName}
-                          </span>
-                          <span className="truncate ">
-                            {list.student?.lastName}
-                          </span>
+            >
+              <h3 className="font-Kanit font-normal text-orange-600 mb-3">
+                สถิติลา 10 อันดับแรก{' '}
+              </h3>
+              <ul className="w-max h-max  grid list-none pl-0">
+                {topTenHoliday.isLoading ? (
+                  <div className="flex flex-col gap-3">
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                    <Skeleton variant="rectangular" width="100%" height={20} />
+                  </div>
+                ) : (
+                  topTenHoliday.data?.map((list, index) => {
+                    return (
+                      <li
+                        onClick={() =>
+                          handleTriggerStudentInfo({ student: list })
+                        }
+                        className="w-full transition p-2 duration-0  cursor-pointer hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
+                        key={index}
+                      >
+                        <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
+                          <Image
+                            src={list.student.picture}
+                            layout="fill"
+                            sizes="(max-width: 768px) 100vw"
+                            className="object-cover"
+                          />
                         </div>
-                        <div className="flex gap-5">
-                          <span className="text-gray-600 text-sm font-normal">
-                            เลขที่ {list.student.number}
-                          </span>
-                          <span className="text-orange-600 text-sm font-bold">
-                            ลา {list.numberHoliday} ครั้ง
-                          </span>
+                        <div className="flex flex-col gap-0  items-start justify-center">
+                          <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
+                            <span className="truncate">
+                              {list.student.firstName}
+                            </span>
+                            <span className="truncate ">
+                              {list.student?.lastName}
+                            </span>
+                          </div>
+                          <div className="flex gap-5">
+                            <span className="text-gray-600 text-sm font-normal">
+                              เลขที่ {list.student.number}
+                            </span>
+                            <span className="text-orange-600 text-sm font-bold">
+                              ลา {list.numberHoliday} ครั้ง
+                            </span>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="w-full h-[1px] rounded-full bg-slate-200 absolute bottom-0 left-0"></div>
-                    </li>
-                  );
-                })
-              )}
-            </ul>
+                        <div className="w-full h-[1px] rounded-full bg-slate-200 absolute bottom-0 left-0"></div>
+                      </li>
+                    );
+                  })
+                )}
+              </ul>
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
 
-      <footer></footer>
-    </Layout>
+        <footer></footer>
+      </Layout>
+    </div>
   );
 }
 
@@ -557,12 +701,16 @@ export async function getServerSideProps(context) {
         const studentNumber = await GetAllStudentsNumber({
           access_token: accessToken,
         });
+        const studentNationality = await GetAllStudentsByNationlity({
+          access_token: accessToken,
+        });
         return {
           props: {
             user,
             teachersNumber,
             classroomNumber,
             studentNumber,
+            studentNationality,
           },
         };
       }
@@ -602,11 +750,16 @@ export async function getServerSideProps(context) {
         const studentNumber = await GetAllStudentsNumber({
           access_token: accessToken,
         });
+        const studentNationality = await GetAllStudentsByNationlity({
+          access_token: accessToken,
+        });
+
         return {
           props: {
             classroomNumber,
             teachersNumber,
             studentNumber,
+            studentNationality,
             user,
           },
         };
