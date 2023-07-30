@@ -11,13 +11,13 @@ const nextConfig = {
       exclude: config.exclude,
       use: [
         {
-          loader: require.resolve("url-loader"),
+          loader: require.resolve('url-loader'),
           options: {
             limit: config.inlineImageLimit,
-            fallback: require.resolve("file-loader"),
+            fallback: require.resolve('file-loader'),
             publicPath: `${config.assetPrefix}/_next/static/images/`,
-            outputPath: `${isServer ? "../" : ""}static/images/`,
-            name: "[name]-[hash].[ext]",
+            outputPath: `${isServer ? '../' : ''}static/images/`,
+            name: '[name]-[hash].[ext]',
             esModule: config.esModule || false,
           },
         },
@@ -29,14 +29,15 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: [
-      "source.unsplash.com",
-      "scontent.fnak3-1.fna.fbcdn.net",
-      "cdn.sanity.io",
-      "rickandmortyapi.com",
-      "images.unsplash.com",
-      "n14jpqkv.api.sanity.io",
-      "lh3.googleusercontent.com",
-      "storage.googleapis.com",
+      'source.unsplash.com',
+      'scontent.fnak3-1.fna.fbcdn.net',
+      'cdn.sanity.io',
+      'rickandmortyapi.com',
+      'images.unsplash.com',
+      'n14jpqkv.api.sanity.io',
+      'lh3.googleusercontent.com',
+      'storage.googleapis.com',
+      'sp-ao.shortpixel.ai',
     ],
   },
 };

@@ -1,20 +1,20 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import {
   FcBusinessContact,
   FcLineChart,
   FcViewDetails,
   FcUndo,
-} from "react-icons/fc";
-import { SiMicrosoftexcel } from "react-icons/si";
-import { useQuery } from "react-query";
-import { CreateStudentApi, GetAllStudents } from "../../service/students";
-import Lottie from "lottie-react";
-import * as SuccesfulAnimation from "../../components/79952-successful.json";
-import Loading from "../loading/loading";
-import ExcelTable from "./createManyStudent";
-import { MdError } from "react-icons/md";
-import { AiOutlineCheckCircle } from "react-icons/ai";
+} from 'react-icons/fc';
+import { SiMicrosoftexcel } from 'react-icons/si';
+import { useQuery } from 'react-query';
+import { CreateStudentApi, GetAllStudents } from '../../service/students';
+import Lottie from 'lottie-react';
+import * as SuccesfulAnimation from '../../components/79952-successful.json';
+import Loading from '../loading/loading';
+import ExcelTable from './createManyStudent';
+import { MdError } from 'react-icons/md';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
 
 function CreateStudent({ close, language }) {
   const router = useRouter();
@@ -26,8 +26,8 @@ function CreateStudent({ close, language }) {
   // students' data from excel
   const [tabelData, setTabledata] = useState();
   const [sortedStudents, setSortedStudents] = useState(students?.data?.data);
-  const students = useQuery(["students"], () =>
-    GetAllStudents({ classroomId: router.query.classroomId })
+  const students = useQuery(['students'], () =>
+    GetAllStudents({ classroomId: router.query.classroomId }),
   );
 
   //get excelData
@@ -47,7 +47,7 @@ function CreateStudent({ close, language }) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const inputObject = Object.fromEntries(formData);
-    setError("");
+    setError('');
     setLoading(true);
     try {
       const createStudent = await CreateStudentApi({
@@ -61,7 +61,7 @@ function CreateStudent({ close, language }) {
         setSuccesful(true);
       }
       await students.refetch();
-      document.getElementById("form-create-students").reset();
+      document.getElementById('form-create-students').reset();
 
       setTimeout(() => {
         setSuccesful(false);
@@ -79,45 +79,45 @@ function CreateStudent({ close, language }) {
       <div className="w-max p-3 h-max fixed right-0 left-0 top-0 bottom-0 m-auto z-40  ">
         <div className="flex items-center justify-center gap-x-5  bg-transparent h-[0.05rem] w-max">
           <div
-            className="lg:w-[40rem] md:w-80 lg:max-w-[40rem] h-[30rem] bg-white border-2 border-solid  flex-col justify-start items-center 
+            className="lg:w-[40rem] md:w-80 lg:max-w-[45rem] h-[30rem] bg-white border-2 border-solid  flex-col justify-start items-center 
           rounded-xl font-Kanit md:flex hidden"
           >
             <div className=" font-Kanit font-bold text-xl mt-2">
               <span className="text-black">
-                {isExcelData && language === "Thai" && "รายชื่อนักเรียนในห้อง"}
+                {isExcelData && language === 'Thai' && 'รายชื่อนักเรียนในห้อง'}
                 {!isExcelData &&
-                  language === "Thai" &&
-                  "รายชื่อนักเรียนที่จะถูกสร้าง"}
+                  language === 'Thai' &&
+                  'รายชื่อนักเรียนที่จะถูกสร้าง'}
                 {isExcelData &&
-                  language === "English" &&
-                  "list of current students"}
+                  language === 'English' &&
+                  'list of current students'}
                 {!isExcelData &&
-                  language === "English" &&
-                  "list of students whom will be created"}
+                  language === 'English' &&
+                  'list of students whom will be created'}
               </span>
             </div>
             <div className="w-full  flex flex-col items-center justify-start mt-5">
               <ul
                 className={`grid ${
-                  isExcelData === false ? "grid-cols-5" : "grid-cols-3"
+                  isExcelData === false ? 'grid-cols-6' : 'grid-cols-3'
                 } pl-0 list-none w-full`}
               >
-                <li className="flex justify-center items-cente">
-                  {language === "Thai" && "เลขที่"}
-                  {language === "English" && "number"}
+                <li className="flex col-span-2 justify-center items-cente">
+                  {language === 'Thai' && 'เลขที่'}
+                  {language === 'English' && 'number'}
                 </li>
                 <li className="flex justify-center items-cente">
-                  {language === "Thai" && "ชื่อจริง"}
-                  {language === "English" && "first name"}
+                  {language === 'Thai' && 'ชื่อจริง'}
+                  {language === 'English' && 'first name'}
                 </li>
                 <li className="flex justify-center items-cente">
-                  {language === "Thai" && "นามสกุล"}
-                  {language === "English" && "last name"}
+                  {language === 'Thai' && 'นามสกุล'}
+                  {language === 'English' && 'last name'}
                 </li>
                 {isExcelData === false && (
                   <li className="flex justify-center items-cente col-span-2">
-                    {language === "Thai" && "สถานะ"}
-                    {language === "English" && "status"}
+                    {language === 'Thai' && 'สถานะ'}
+                    {language === 'English' && 'status'}
                   </li>
                 )}
               </ul>
@@ -129,11 +129,11 @@ function CreateStudent({ close, language }) {
                   ? tabelData?.map((list) => {
                       return (
                         <li key={list.id} className="w-full">
-                          <div className={`grid  grid-cols-5 w-full`}>
-                            <div className="flex justify-center items-center  ">
+                          <div className={`grid  grid-cols-6 w-full`}>
+                            <div className="flex col-span-2  justify-center items-center  ">
                               <span
-                                className="w-8 h-8 bg-[#2C7CD1] flex items-center justify-center 
-                          rounded-xl font-bold text-white"
+                                className="w-full flex items-center justify-center 
+                          rounded-xl font-bold text-black"
                               >
                                 {list.number}
                               </span>
@@ -209,8 +209,8 @@ function CreateStudent({ close, language }) {
               >
                 <SiMicrosoftexcel />
                 <span className="text-xs text-center">
-                  {language === "Thai" && "นำเข้าข้อมูลจาก Excel"}
-                  {language === "English" && "import students from Excel"}
+                  {language === 'Thai' && 'นำเข้าข้อมูลจาก Excel'}
+                  {language === 'English' && 'import students from Excel'}
                 </span>
               </div>
             ) : (
@@ -223,8 +223,8 @@ function CreateStudent({ close, language }) {
               >
                 <FcUndo />
                 <span className="text-xs text-center">
-                  {language === "Thai" && "กลับ"}
-                  {language === "English" && "return"}
+                  {language === 'Thai' && 'กลับ'}
+                  {language === 'English' && 'return'}
                 </span>
               </div>
             )}
@@ -235,13 +235,13 @@ function CreateStudent({ close, language }) {
                 onSubmit={handleSubmit}
               >
                 <span className="text-xl font-semibold text-[#2C7CD1]">
-                  {language === "Thai" && "ลงทะเบียนนักเรียน"}
-                  {language === "English" && "create student"}
+                  {language === 'Thai' && 'ลงทะเบียนนักเรียน'}
+                  {language === 'English' && 'create student'}
                 </span>
                 <div className="flex flex-col relative">
                   <label className="font-sans font-normal">
-                    {language === "Thai" && "ชื่อจริง"}
-                    {language === "English" && "first name"}
+                    {language === 'Thai' && 'ชื่อจริง'}
+                    {language === 'English' && 'first name'}
                   </label>
                   <input
                     className="w-60 h-7 rounded-md ring-2   pl-10 
@@ -261,8 +261,8 @@ function CreateStudent({ close, language }) {
 
                 <div className="flex flex-col relative mt-2">
                   <label className="font-sans font-normal">
-                    {language === "Thai" && "นามสกุล (optional)"}
-                    {language === "English" && "last name (optional)"}
+                    {language === 'Thai' && 'นามสกุล (optional)'}
+                    {language === 'English' && 'last name (optional)'}
                   </label>
                   <input
                     className="w-60 h-7 rounded-md ring-2  pl-10 
@@ -281,8 +281,8 @@ function CreateStudent({ close, language }) {
                 </div>
                 <div className="flex flex-col relative mt-2">
                   <label className="font-sans font-normal">
-                    {language === "Thai" && "เลขที่"}
-                    {language === "English" && "number"}
+                    {language === 'Thai' && 'เลขที่'}
+                    {language === 'English' && 'number'}
                   </label>
                   <input
                     className="w-60 h-7 rounded-md ring-2   pl-10 
@@ -314,8 +314,8 @@ function CreateStudent({ close, language }) {
                   {loading && <Loading />}
                   {!loading && !succesful && (
                     <span>
-                      {language === "Thai" && "สร้าง"}
-                      {language === "English" && "create"}
+                      {language === 'Thai' && 'สร้าง'}
+                      {language === 'English' && 'create'}
                     </span>
                   )}
                 </button>

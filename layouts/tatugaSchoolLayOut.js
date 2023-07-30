@@ -3,13 +3,18 @@ import AuthButton from '../components/auth/button';
 import { Popover, Transition } from '@headlessui/react';
 import { FiSidebar } from 'react-icons/fi';
 import SidebarSchool from '../components/sidebar/sidebarSchool';
-import { AiFillHome, AiOutlineUserAdd } from 'react-icons/ai';
+import {
+  AiFillHome,
+  AiOutlineCloudUpload,
+  AiOutlineUserAdd,
+} from 'react-icons/ai';
 import NumberAnimated from '../components/overview/numberAnimated';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { FaUserCheck } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { IoPeopleCircleOutline } from 'react-icons/io5';
+import Image from 'next/image';
 
 function Layout({
   children,
@@ -22,19 +27,51 @@ function Layout({
 }) {
   const router = useRouter();
   const [triggersidebar, setTriggerSidebar] = useState(true);
-  const [currentDate, setCurrentDate] = useState();
-  const [currentTime, setCurrentTime] = useState();
+
   const pathname = router.pathname; // e.g. "/classroom/setting"
   const lastRoute = pathname.split('/').pop();
   const [isClick, setIsClick] = useState();
 
   return (
-    <main className="font-Kanit">
-      <nav className="flex flex-row-reverse justify-between py-5  ">
-        <div className="mr-5 flex gap-5">
-          <div className="flex  items-center justify-center">
-            {currentDate} {currentTime}
+    <main className="font-Kanit relative">
+      {/* <div className="bg-yellow-400  w-full h-80 relative ">
+          <Image
+            layout="fill"
+            className="object-cover"
+            src="https://storage.googleapis.com/tatugacamp_development/image%204.png"
+          />
+          <div>
+            <label htmlFor="dropzone-file" className="w-max">
+              <div
+                className="w-28 h-10 hover:scale-105 transition duration-150
+                    bg-white drop-shadow-xl ring-2 text-black text-3xl flex justify-center items-center rounded-2xl"
+              >
+                <AiOutlineCloudUpload />
+              </div>
+
+              <input
+                id="dropzone-file"
+                name="files"
+                aria-label="upload image"
+                type="file"
+                multiple="multiple"
+                accept="/jpeg,image/png"
+                className="text-sm text-grey-500 hidden  ring-2
+              file:mr-5 md:file:w-40 file:w-40 w-max file:py-2
+              file:rounded-full file:border-0
+              file:text-sm file:font-Kanit file:font-normal file:text-white
+              bg-white rounded-full
+              file:bg-blue-400 file:drop-shadow-lg
+              hover:file:cursor-pointer hover:file:bg-amber-50
+              hover:file:text-amber-700
+            "
+              />
+            </label>
           </div>
+        </div> */}
+      <nav className="flex flex-row-reverse absolute top-0 w-full justify-between py-5  ">
+        <div className="mr-5 flex gap-5 ">
+          <div className="flex  items-center justify-center"></div>
           <AuthButton />
         </div>
 
@@ -75,7 +112,7 @@ function Layout({
       <div
         className={`${
           lastRoute === 'setting' ? 'hidden' : 'flex'
-        }  w-full justify-center mb-5`}
+        }  w-full justify-center pt-20 mb-5`}
       >
         <div className="w-11/12 h-28 grid grid-cols-6  gap-5 ">
           <button
