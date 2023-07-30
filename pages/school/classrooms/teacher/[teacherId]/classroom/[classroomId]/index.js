@@ -25,10 +25,13 @@ import { MdSchool } from 'react-icons/md';
 import ShowStudentAttendanceInfo from '../../../../../../../components/form/school/student/showStudentAttendanceInfo';
 import { SiMicrosoftexcel } from 'react-icons/si';
 import DowloadExcelAttendacne from '../../../../../../../components/form/dowloadExcelAttendacne';
+import ShowNoteAttendance from '../../../../../../../components/form/showNoteAttendance';
 
 function Index({ user, error, teachersNumber, classroomNumber }) {
   const router = useRouter();
   const [triggerAttendanceInfo, setTriggerAttendanceInfo] = useState(false);
+  const [triggerShowNote, setTriggerShowNote] = useState(false);
+  const [selectNote, setSelectNote] = useState();
   const [selectAttendacne, setSelectAttendance] = useState({
     student: '',
     attendanceData: '',
@@ -83,6 +86,13 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
             student={selectAttendacne.student}
             attendanceData={selectAttendacne.attendanceData}
             user={user}
+          />
+        )}
+
+        {triggerShowNote && (
+          <ShowNoteAttendance
+            setTriggerShowNote={setTriggerShowNote}
+            selectNote={selectNote}
           />
         )}
         <div className="w-full flex justify-center pb-10">
@@ -186,7 +196,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
           >
             <thead className="w-max sticky top-0 bg-white h-max py-3 z-10">
               <tr className="flex ">
-                <th className="flex w-10 md:w-24  items-center justify-center sticky left-0 bg-white">
+                <th className="flex w-10 md:w-28  items-center justify-center sticky left-0 bg-white">
                   {user.language === 'Thai' && 'เลขที่'}
                   {user.language === 'English' && 'number'}
                 </th>
@@ -213,9 +223,26 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                   );
                   return (
                     <th
+                      onClick={() => {
+                        if (status.headData?.note) {
+                          setSelectNote(() => status.headData?.note);
+                          setTriggerShowNote(() => true);
+                        }
+                      }}
                       key={status.groupId}
-                      className="w-28 font-normal  flex items-center justify-center rounded-lg  h-8   "
+                      className={`w-32 font-normal ${
+                        status.headData?.note &&
+                        'hover:bg-slate-100 cursor-pointer  '
+                      } flex items-end relative justify-center  h-14   `}
                     >
+                      {status.headData?.note && (
+                        <div
+                          className="absolute text-xs p-1 -top-3 bottom-0  m-auto w-5 h-5 right-0 left-0 ring-2
+                         ring-black bg-white rounded-full flex items-center justify-center"
+                        >
+                          <BiNotepad />
+                        </div>
+                      )}
                       <span className="block ">{formattedDate}</span>
                     </th>
                   );
@@ -266,7 +293,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                       key={index}
                       className="flex hover:ring-2 hover:bg-slate-200 group "
                     >
-                      <td className=" w-10 md:w-24 flex items-center justify-center sticky left-0 bg-white group-hover:bg-slate-200">
+                      <td className=" w-10 md:w-28 flex items-center justify-center sticky left-0 bg-white group-hover:bg-slate-200">
                         {item.student.number}
                       </td>
                       <td
@@ -302,7 +329,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                                 </div>
                               )}
                               <div
-                                className={`w-28 flex items-center justify-center `}
+                                className={`w-32 flex items-center justify-center `}
                               >
                                 {status.present && (
                                   <div className="bg-green-600 w-full items-center justify-center py-1  text-white">

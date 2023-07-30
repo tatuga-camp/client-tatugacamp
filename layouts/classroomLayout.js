@@ -30,6 +30,7 @@ import CreateGroup from '../components/form/createGroup';
 function Layout({ children, sideMenus, language, groups }) {
   const router = useRouter();
   const [triggerRandomStudent, setTriggerRandomStudent] = useState(false);
+  const [triggerAttendance, setTriggerAttendance] = useState(false);
   const user = useQuery(['user'], () => GetUser());
   const classroom = useQuery(
     ['classroom'],
@@ -109,7 +110,6 @@ function Layout({ children, sideMenus, language, groups }) {
           </>
         )}
       </Popover>
-
       {!user.isError && user?.data?.status === 200 && (
         <div className="h-96    w-full  relative">
           <div className="w-full h-80  bg-gradient-to-r from-blue-400 to-orange-300  overflow-hidden">
@@ -315,39 +315,33 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
           </div>
         </div>
       )}
-      <Popover className="block md:hidden">
-        {({ open }) => (
-          <div>
-            <Popover.Button>
-              <div
-                onClick={() => {
-                  document.body.style.overflow = 'hidden';
-                }}
-                role="button"
-                className="font-Kanit flex items-center my-5 justify-center gap-2 text-white
+
+      <button
+        onClick={() => {
+          setTriggerAttendance(() => true);
+          document.body.style.overflow = 'hidden';
+        }}
+        role="button"
+        className="font-Kanit  md:hidden flex items-center my-5 justify-center gap-2 text-white
            bg-green-700 w-max p-3 rounded-2xl hover:scale-110 transition duration-150 cursor-pointer"
-              >
-                <div>
-                  <MdEmojiPeople />
-                </div>
-                <span className="font-Kanit font-semibold text-lg">
-                  {language === 'Thai' && 'เช็คชื่อ'}
-                  {language === 'English' && 'Attendance check'}
-                </span>
-              </div>
-            </Popover.Button>
-            <Popover.Panel>
-              {({ close }) => (
-                <AttendanceChecker
-                  language={language}
-                  close={close}
-                  students={students}
-                />
-              )}
-            </Popover.Panel>
-          </div>
-        )}
-      </Popover>
+      >
+        <div>
+          <MdEmojiPeople />
+        </div>
+        <span className="font-Kanit font-semibold text-lg">
+          {language === 'Thai' && 'เช็คชื่อ'}
+          {language === 'English' && 'Attendance check'}
+        </span>
+      </button>
+
+      {triggerAttendance && (
+        <AttendanceChecker
+          language={language}
+          setTriggerAttendance={setTriggerAttendance}
+          students={students}
+        />
+      )}
+
       <div className="w-10/12 md:hidden text-center  font-Kanit bg-red-500 text-white p-4 rounded-xl">
         <div className="text-2xl">
           <IoWarningOutline />
@@ -413,39 +407,25 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                 {language === 'English' && 'Timer'}
               </span>
             </div>
-            <Popover>
-              {({ open }) => (
-                <div>
-                  <Popover.Button>
-                    <div
-                      onClick={() => {
-                        document.body.style.overflow = 'hidden';
-                      }}
-                      role="button"
-                      className="font-Kanit flex items-center justify-center gap-2 text-white
+
+            <button
+              onClick={() => {
+                setTriggerAttendance(() => true);
+                document.body.style.overflow = 'hidden';
+              }}
+              role="button"
+              className="font-Kanit flex items-center justify-center gap-2 text-white
            bg-green-700 w-max p-3 rounded-2xl hover:scale-110 transition duration-150 cursor-pointer"
-                    >
-                      <div>
-                        <MdEmojiPeople />
-                      </div>
-                      <span className="font-Kanit font-semibold text-lg">
-                        {language === 'Thai' && 'เช็คชื่อ'}
-                        {language === 'English' && 'Attendance check'}
-                      </span>
-                    </div>
-                  </Popover.Button>
-                  <Popover.Panel>
-                    {({ close }) => (
-                      <AttendanceChecker
-                        language={language}
-                        close={close}
-                        students={students}
-                      />
-                    )}
-                  </Popover.Panel>
-                </div>
-              )}
-            </Popover>
+            >
+              <div>
+                <MdEmojiPeople />
+              </div>
+              <span className="font-Kanit font-semibold text-lg">
+                {language === 'Thai' && 'เช็คชื่อ'}
+                {language === 'English' && 'Attendance check'}
+              </span>
+            </button>
+
             <div>
               <button
                 onClick={() => {

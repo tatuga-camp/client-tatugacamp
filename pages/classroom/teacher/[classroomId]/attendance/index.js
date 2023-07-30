@@ -25,11 +25,14 @@ import {
   sideMenusThai,
 } from '../../../../../data/menuBarsAttendance';
 import DowloadExcelAttendacne from '../../../../../components/form/dowloadExcelAttendacne';
+import ShowNoteAttendance from '../../../../../components/form/showNoteAttendance';
 
 function Index({ error, user }) {
   const router = useRouter();
   const [selectAttendance, setSelectAttendance] = useState();
   const [triggerUpdateAttendance, setTriggerUpdateAttendance] = useState(false);
+  const [triggerShowNote, setTriggerShowNote] = useState(false);
+  const [selectNote, setSelectNote] = useState();
   const [sideMenus, setSideMenus] = useState();
   const attendances = useQuery(
     ['attendance'],
@@ -71,7 +74,6 @@ function Index({ error, user }) {
       }
     });
   };
-  console.log(selectAttendance);
 
   if (error?.statusCode === 401) {
     return <Unauthorized />;
@@ -119,6 +121,14 @@ function Index({ error, user }) {
               attendanceData={selectAttendance?.attendanceData}
             />
           )}
+
+          {triggerShowNote && (
+            <ShowNoteAttendance
+              setTriggerShowNote={setTriggerShowNote}
+              selectNote={selectNote}
+            />
+          )}
+
           {attendances.isLoading ? (
             <div className="flex flex-col gap-5 mt-5">
               <Skeleton variant="rectangular" width={700} height={40} />
@@ -132,7 +142,7 @@ function Index({ error, user }) {
             >
               <thead className="w-max sticky top-0 bg-white h-max py-3 z-10">
                 <tr className="flex ">
-                  <th className="flex w-10 md:w-24  items-center justify-center sticky left-0 bg-white">
+                  <th className="flex w-10 md:w-28  items-center justify-center sticky left-0 bg-white">
                     {user.language === 'Thai' && 'เลขที่'}
                     {user.language === 'English' && 'number'}
                   </th>
@@ -160,18 +170,41 @@ function Index({ error, user }) {
                       );
                       return (
                         <th
-                          onClick={() =>
-                            handleDeleteAttendance({
-                              groupId: status.groupId,
-                            })
-                          }
                           key={status.groupId}
-                          className="w-28 font-normal  flex items-center justify-center rounded-lg  h-8  group cursor-pointer "
+                          className="w-28 font-normal  flex items-center justify-around  bg-white 
+                           relative  h-10  group cursor-pointer "
                         >
+                          {status.headData?.note && (
+                            <div
+                              className="absolute text-[0.8rem] p-1  group-hover:hidden -top-8 bottom-0 m-auto w-5 h-5 right-1 ring-2
+                           ring-black bg-white rounded-full flex items-center justify-center"
+                            >
+                              <BiNotepad />
+                            </div>
+                          )}
                           <span className="block group-hover:hidden">
                             {formattedDate}
                           </span>
+                          {status.headData?.note && (
+                            <div
+                              onClick={() => {
+                                setSelectNote(() => status.headData?.note);
+                                setTriggerShowNote(() => true);
+                              }}
+                              className="group-hover:visible invisible h-0 w-0 flex items-center
+                             text-black group-hover:text-green-500 
+                                justify-center group-hover:w-5 group-hover:h-5 bg-green-100 rounded-full group-hover:scale-150 transition
+                                 duration-150"
+                            >
+                              <BiNotepad />
+                            </div>
+                          )}
                           <div
+                            onClick={() =>
+                              handleDeleteAttendance({
+                                groupId: status.groupId,
+                              })
+                            }
                             className="group-hover:visible invisible h-0 w-0 flex items-center text-black group-hover:text-red-500 
                                 justify-center group-hover:w-5 group-hover:scale-150 transition duration-150"
                           >
@@ -227,7 +260,7 @@ function Index({ error, user }) {
                         key={index}
                         className="flex hover:ring-2 hover:bg-slate-200 group "
                       >
-                        <td className=" w-10 md:w-24 flex items-center justify-center sticky left-0 bg-white group-hover:bg-slate-200">
+                        <td className=" w-10 md:w-28 flex items-center justify-center sticky left-0 bg-white group-hover:bg-slate-200">
                           {item.student.number}
                         </td>
                         <td
