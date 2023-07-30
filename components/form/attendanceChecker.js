@@ -1,17 +1,23 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { MdEmojiPeople } from 'react-icons/md';
+import { MdEmojiPeople, MdOutlineEventNote } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import { CreateAttendance, GetAllAttendance } from '../../service/attendance';
 import Loading from '../loading/loading';
 import { useQuery } from 'react-query';
+import { Editor } from '@tinymce/tinymce-react';
+import { IoCaretBackCircleSharp } from 'react-icons/io5';
 
-function AttendanceChecker({ close, students, language }) {
+function AttendanceChecker({ setTriggerAttendance, students, language }) {
   const router = useRouter();
   const [isCheckStudent, setIsCheckStudent] = useState();
   const currentDate = new Date().toISOString().slice(0, 10); // get current date in "yyyy-mm-dd" format
   const [attendanceDate, setAttendanceDate] = useState(currentDate);
+  const [note, setNote] = useState({
+    body: '',
+  });
   const [loading, setLoading] = useState(false);
+  const [triggerAddNote, setTriggerAddNote] = useState(false);
   const attendances = useQuery(
     ['attendance'],
     () => GetAllAttendance({ classroomId: router.query.classroomId }),
@@ -35,6 +41,15 @@ function AttendanceChecker({ close, students, language }) {
       }),
     );
   }, []);
+  const handleEditorChange = (content, editor) => {
+    setNote((prev) => {
+      return {
+        ...prev,
+        body: content,
+      };
+    });
+  };
+
   const handleIsCheckStudent = ({ studentId, event }) => {
     const { name } = event.target;
     setIsCheckStudent((prevState) => {
@@ -204,8 +219,15 @@ function AttendanceChecker({ close, students, language }) {
   const handleSummitForm = async () => {
     try {
       setLoading(true);
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(note.body, 'text/html');
+      const imageElements = doc.getElementsByTagName('img');
+      const imageUrls = Array.from(imageElements).map((img) => img.src);
+
       const createAttendace = await CreateAttendance({
         isChecks: isCheckStudent,
+        note: note.body,
+        imagesBase64: imageUrls,
         attendanceDate: attendanceDate,
         classroomId: router.query.classroomId,
       });
@@ -213,6 +235,7 @@ function AttendanceChecker({ close, students, language }) {
       Swal.fire('success', 'check attendacne completed', 'success');
       document.body.style.overflow = 'auto';
       attendances.refetch();
+      setTriggerAttendance(() => false);
     } catch (err) {
       setLoading(false);
       console.log(err);
@@ -243,7 +266,27 @@ function AttendanceChecker({ close, students, language }) {
               </div>
             </div>
             <div className="flex gap-10 items-end justify-center">
-              <div className="mt-2 flex flex-col text-black font-Kanit">
+              <button
+                onClick={() => setTriggerAddNote((prev) => !prev)}
+                className="flex gap-2 items-center justify-center bg-green-200 px-5 py-2 rounded-lg
+              text-green-700 font-semibold font-Kanit transition duration-150 hover:text-green-200 hover:bg-green-600
+              active:ring-2 ring-green-800"
+              >
+                {triggerAddNote ? (
+                  <div className="flex gap-2 items-center">
+                    <IoCaretBackCircleSharp />
+                    {language === 'Thai' && 'กลับ'}
+                    {language === 'English' && 'back'}
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <MdOutlineEventNote />
+                    {language === 'Thai' && 'เพิ่มโน๊ต'}
+                    {language === 'English' && 'add note'}
+                  </div>
+                )}
+              </button>
+              <div className="mt-2 flex flex-col text-black items-center font-Kanit">
                 <label>
                   {language === 'Thai' && 'เลือกวันที่'}
                   {language === 'English' && 'pick date'}
@@ -257,7 +300,7 @@ function AttendanceChecker({ close, students, language }) {
                   }
                   defaultValue={currentDate}
                   name="deadline"
-                  className="w-20  md:w-40 appearance-none outline-none border-none ring-2 rounded-md px-5 
+                  className="w-20  md:w-max appearance-none outline-none border-none ring-2 rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black "
                   type="date"
                   placeholder="Please select a date"
@@ -283,7 +326,88 @@ function AttendanceChecker({ close, students, language }) {
               )}
             </div>
           </div>
-          <table className="">
+
+          <div
+            className={`${
+              triggerAddNote ? 'w-full h-full' : 'w-0 h-0 opacity-0'
+            }`}
+          >
+            <Editor
+              apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+              textareaName="note"
+              value={note.body}
+              init={{
+                selector: 'textarea',
+                link_context_toolbar: true,
+                height: '100%',
+                width: '100%',
+                menubar: true,
+                image_title: true,
+                automatic_uploads: true,
+                file_picker_types: 'image',
+                file_picker_types: 'image',
+                file_picker_callback: (cb, value, meta) => {
+                  const input = document.createElement('input');
+                  input.setAttribute('type', 'file');
+                  input.setAttribute('accept', 'image/*');
+
+                  input.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+
+                    const reader = new FileReader();
+                    reader.addEventListener('load', () => {
+                      /*
+                          Note: Now we need to register the blob in TinyMCEs image blob
+                          registry. In the next release this part hopefully won't be
+                          necessary, as we are looking to handle it internally.
+                        */
+                      const id = 'blobid' + new Date().getTime();
+                      const blobCache =
+                        tinymce.activeEditor.editorUpload.blobCache;
+                      const base64 = reader.result.split(',')[1];
+                      const blobInfo = blobCache.create(id, file, base64);
+                      blobCache.add(blobInfo);
+
+                      /* call the callback and populate the Title field with the file name */
+                      cb(blobInfo.blobUri(), { title: file.name });
+                    });
+                    reader.readAsDataURL(file);
+                  });
+
+                  input.click();
+                },
+                plugins: [
+                  'advlist',
+                  'autolink',
+                  'lists',
+                  'link',
+                  'image',
+                  'charmap',
+                  'preview',
+                  'anchor',
+                  'searchreplace',
+                  'visualblocks',
+                  'code',
+                  'fullscreen',
+                  'insertdatetime',
+                  'media',
+                  'table',
+                  'help',
+                  'wordcount',
+                ],
+                toolbar:
+                  'undo redo | formatselect | blocks | ' +
+                  'bold italic backcolor | alignleft aligncenter ' +
+                  'alignright alignjustify | bullist numlist outdent indent | ' +
+                  'link | image',
+                content_style:
+                  'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+              }}
+              onEditorChange={handleEditorChange}
+            />
+          </div>
+
+          <table className={`${triggerAddNote ? ' w-0 h-0 hidden' : 'block'}`}>
             <thead className="">
               <tr className=" w-full  text-black font-Kanit flex gap-2 md:gap-3 lg:gap-5 ">
                 <th className="w-9 text-xs md:text-base md:w-28">
@@ -514,7 +638,7 @@ function AttendanceChecker({ close, students, language }) {
       <div
         onClick={() => {
           document.body.style.overflow = 'auto';
-          close();
+          setTriggerAttendance(false);
         }}
         className="w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/30 "
       ></div>
