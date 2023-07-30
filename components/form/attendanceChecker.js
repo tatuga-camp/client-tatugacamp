@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { MdEmojiPeople } from "react-icons/md";
-import Swal from "sweetalert2";
-import { CreateAttendance, GetAllAttendance } from "../../service/attendance";
-import Loading from "../loading/loading";
-import { useQuery } from "react-query";
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { MdEmojiPeople } from 'react-icons/md';
+import Swal from 'sweetalert2';
+import { CreateAttendance, GetAllAttendance } from '../../service/attendance';
+import Loading from '../loading/loading';
+import { useQuery } from 'react-query';
 
 function AttendanceChecker({ close, students, language }) {
   const router = useRouter();
@@ -13,11 +13,11 @@ function AttendanceChecker({ close, students, language }) {
   const [attendanceDate, setAttendanceDate] = useState(currentDate);
   const [loading, setLoading] = useState(false);
   const attendances = useQuery(
-    ["attendance"],
+    ['attendance'],
     () => GetAllAttendance({ classroomId: router.query.classroomId }),
     {
       enabled: false,
-    }
+    },
   );
   useEffect(() => {
     setIsCheckStudent(() =>
@@ -32,7 +32,7 @@ function AttendanceChecker({ close, students, language }) {
             late: false,
           },
         };
-      })
+      }),
     );
   }, []);
   const handleIsCheckStudent = ({ studentId, event }) => {
@@ -210,18 +210,18 @@ function AttendanceChecker({ close, students, language }) {
         classroomId: router.query.classroomId,
       });
       setLoading(false);
-      Swal.fire("success", "check attendacne completed", "success");
-      document.body.style.overflow = "auto";
+      Swal.fire('success', 'check attendacne completed', 'success');
+      document.body.style.overflow = 'auto';
       attendances.refetch();
     } catch (err) {
       setLoading(false);
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
     }
   };
   return (
@@ -235,8 +235,8 @@ function AttendanceChecker({ close, students, language }) {
           <div className="w-full flex-col  md:flex-row flex items-center justify-between md:justify-around ">
             <div className="flex">
               <span className="font-Kanit text-xl font-semibold text-black">
-                {language === "Thai" && "เช็คชื่อผู้เรียน"}
-                {language === "English" && "attendance check"}
+                {language === 'Thai' && 'เช็คชื่อผู้เรียน'}
+                {language === 'English' && 'attendance check'}
               </span>
               <div className="text-3xl text-blue-600">
                 <MdEmojiPeople />
@@ -245,8 +245,8 @@ function AttendanceChecker({ close, students, language }) {
             <div className="flex gap-10 items-end justify-center">
               <div className="mt-2 flex flex-col text-black font-Kanit">
                 <label>
-                  {language === "Thai" && "เลือกวันที่"}
-                  {language === "English" && "pick date"}
+                  {language === 'Thai' && 'เลือกวันที่'}
+                  {language === 'English' && 'pick date'}
                 </label>
                 <input
                   onChange={(e) =>
@@ -286,13 +286,13 @@ function AttendanceChecker({ close, students, language }) {
           <table className="">
             <thead className="">
               <tr className=" w-full  text-black font-Kanit flex gap-2 md:gap-3 lg:gap-5 ">
-                <th className="w-9 text-xs md:text-base md:w-20">
-                  {language === "Thai" && "เลขที่"}
-                  {language === "English" && "number"}
+                <th className="w-9 text-xs md:text-base md:w-28">
+                  {language === 'Thai' && 'เลขที่'}
+                  {language === 'English' && 'number'}
                 </th>
                 <th className="w-16 text-xs md:text-base md:w-40 lg:w-60">
-                  {language === "Thai" && "รายชื่อ"}
-                  {language === "English" && "name"}
+                  {language === 'Thai' && 'รายชื่อ'}
+                  {language === 'English' && 'name'}
                 </th>
                 <th className="w-10 text-xs md:text-base md:w-20">
                   <button
@@ -304,12 +304,12 @@ function AttendanceChecker({ close, students, language }) {
                   hover:scale-110 transition duration-150 truncate cursor-pointer group"
                   >
                     <span className="block group-hover:hidden">
-                      {language === "Thai" && "เข้าเรียน"}
-                      {language === "English" && "present"}
+                      {language === 'Thai' && 'เข้าเรียน'}
+                      {language === 'English' && 'present'}
                     </span>
                     <span className="hidden group-hover:block text-sm">
-                      {language === "Thai" && "เลือกทั้งหมด"}
-                      {language === "English" && "pick all"}
+                      {language === 'Thai' && 'เลือกทั้งหมด'}
+                      {language === 'English' && 'pick all'}
                     </span>
                   </button>
                 </th>
@@ -323,12 +323,12 @@ function AttendanceChecker({ close, students, language }) {
                   hover:scale-110 transition duration-150 cursor-pointer group"
                   >
                     <span className="block group-hover:hidden text-md">
-                      {language === "Thai" && "ลา"}
-                      {language === "English" && "take a leave"}
+                      {language === 'Thai' && 'ลา'}
+                      {language === 'English' && 'take a leave'}
                     </span>
                     <span className="hidden group-hover:block text-sm">
-                      {language === "Thai" && "เลือกทั้งหมด"}
-                      {language === "English" && "pick all"}
+                      {language === 'Thai' && 'เลือกทั้งหมด'}
+                      {language === 'English' && 'pick all'}
                     </span>
                   </button>
                 </th>
@@ -342,12 +342,12 @@ function AttendanceChecker({ close, students, language }) {
                   hover:scale-110 transition duration-150 cursor-pointer group"
                   >
                     <span className="block group-hover:hidden">
-                      {language === "Thai" && "ป่วย"}
-                      {language === "English" && "sick"}
+                      {language === 'Thai' && 'ป่วย'}
+                      {language === 'English' && 'sick'}
                     </span>
                     <span className="hidden group-hover:block  text-sm">
-                      {language === "Thai" && "เลือกทั้งหมด"}
-                      {language === "English" && "pick all"}
+                      {language === 'Thai' && 'เลือกทั้งหมด'}
+                      {language === 'English' && 'pick all'}
                     </span>
                   </button>
                 </th>
@@ -361,12 +361,12 @@ function AttendanceChecker({ close, students, language }) {
                   hover:scale-110 transition duration-150 cursor-pointer group"
                   >
                     <span className="block group-hover:hidden">
-                      {language === "Thai" && "ขาด"}
-                      {language === "English" && "absent"}
+                      {language === 'Thai' && 'ขาด'}
+                      {language === 'English' && 'absent'}
                     </span>
                     <span className="hidden group-hover:block text-sm">
-                      {language === "Thai" && "เลือกทั้งหมด"}
-                      {language === "English" && "pick all"}
+                      {language === 'Thai' && 'เลือกทั้งหมด'}
+                      {language === 'English' && 'pick all'}
                     </span>
                   </button>
                 </th>
@@ -380,12 +380,12 @@ function AttendanceChecker({ close, students, language }) {
                   hover:scale-110 transition duration-150 cursor-pointer group"
                   >
                     <span className="block group-hover:hidden">
-                      {language === "Thai" && "สาย"}
-                      {language === "English" && "late"}
+                      {language === 'Thai' && 'สาย'}
+                      {language === 'English' && 'late'}
                     </span>
                     <span className="hidden group-hover:block text-sm">
-                      {language === "Thai" && "เลือกทั้งหมด"}
-                      {language === "English" && "pick all"}
+                      {language === 'Thai' && 'เลือกทั้งหมด'}
+                      {language === 'English' && 'pick all'}
                     </span>
                   </button>
                 </th>
@@ -399,9 +399,10 @@ function AttendanceChecker({ close, students, language }) {
                 return (
                   <tr
                     key={student.id}
-                    className="w-full text-black hover:bg-slate-200 transition duration-150 ease-in-out  font-Kanit flex gap-2 md:gap-3 lg:gap-5 "
+                    className="w-full text-black hover:bg-slate-200 transition duration-150 ease-in-out 
+                     font-Kanit flex gap-2 md:gap-3 lg:gap-5 "
                   >
-                    <td className="w-9 text-xs  md:text-base md:w-20 text-center">
+                    <td className="w-9 text-xs  md:text-base md:w-28 text-center">
                       {student.number}
                     </td>
                     <td className="w-16 text-xs md:text-base md:w-40 lg:w-60 truncate hover:overflow-visible hover:relative hover:z-30">
@@ -512,7 +513,7 @@ function AttendanceChecker({ close, students, language }) {
 
       <div
         onClick={() => {
-          document.body.style.overflow = "auto";
+          document.body.style.overflow = 'auto';
           close();
         }}
         className="w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/30 "

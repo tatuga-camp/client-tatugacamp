@@ -16,6 +16,7 @@ import {
   BsFillPeopleFill,
   BsPersonFillCheck,
   BsPersonFillX,
+  BsTable,
 } from 'react-icons/bs';
 import { FaUserCheck } from 'react-icons/fa';
 import {
@@ -68,6 +69,13 @@ const options = {
     title: {
       display: true,
       text: 'แผนภูมิแสดงสถิติภาพรวม',
+    },
+  },
+};
+const optionsPie = {
+  plugins: {
+    legend: {
+      display: false,
     },
   },
 };
@@ -131,9 +139,20 @@ function Index({
   });
   const [currentDate, setCurrentDate] = useState();
   const [currentTime, setCurrentTime] = useState();
+  const [dataNationalityTabel, setDataNationalityTabel] = useState(() => {
+    let value = [];
+    let nationalities = [];
+    for (const key in studentNationality) {
+      // Access the property key and value
+      const number = studentNationality[key];
+      nationalities.push({ nationality: key, number });
+    }
+    return nationalities;
+  });
   const [triggerStudentInfo, setTriggerStudentInfo] = useState(false);
   const [currentStudentInfo, setCurrentStudentInfo] = useState();
   const [selectTeacher, setSelectTeacher] = useState();
+  const [triggerTableNationality, setTriggerTableNationality] = useState(false);
   const [triggerShowTeacherInfo, setTriggerShowTeacherInfo] = useState(false);
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === 'Thai') {
@@ -142,6 +161,7 @@ function Index({
       return sideMenusEnglish;
     }
   });
+
   const topTenAbsent = useQuery(['top-ten-absent'], () => GetTopTenAbsent(), {
     enabled: false,
   });
@@ -454,12 +474,47 @@ function Index({
               />
             </footer>
           </div>
-          <div className="w-11/12 grid gap-10 grid-cols-3">
-            <div className=" col-span-2 h-96 p-5 flex justify-center items-center bg-white rounded-xl">
+          <div className="w-11/12 flex gap-5 justify-center items-center ">
+            <div className=" w-6/12 h-96 p-5  bg-white rounded-xl">
               <Bar options={options} data={data} />
             </div>
-            <div className=" col-span-1 h-96 p-5 bg-white rounded-xl flex justify-center items-center">
-              <Doughnut data={dataNationality} />
+            <div
+              className=" w-[30rem] h-[30rem] p-5 gap-5 relative
+              bg-white rounded-xl flex-col flex justify-center items-center"
+            >
+              <button
+                onClick={() => setTriggerTableNationality((prev) => !prev)}
+                className="w-max absolute top-2 right-2 hover:bg-green-500 hover:text-green-200
+               px-5 py-2 rounded-md bg-green-200 text-green-600 font-Kanit font-semibold flex items-center gap-2"
+              >
+                ตาราง
+                <div>
+                  <BsTable />
+                </div>
+              </button>
+              <span className="font-Kanit text-xl font-semibold">
+                สรุปข้อมูลสัญชาติทั้งหมด
+              </span>
+              {triggerTableNationality ? (
+                <ul className="grid grid-cols-2 overflow-auto h-96 w-full gap-x-10  place-items-start">
+                  {dataNationalityTabel?.map((nationality, index) => {
+                    return (
+                      <li
+                        key={index}
+                        className="flex gap-2 items-start justify-between w-full 
+                      col-span-1 font-Kanit font-medium text-left text-base p-2"
+                      >
+                        <div>{nationality.nationality}</div>
+                        <div>{nationality.number}</div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <div className="w-96 h-96">
+                  <Doughnut data={dataNationality} options={optionsPie} />
+                </div>
+              )}
             </div>
           </div>
 

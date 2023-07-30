@@ -38,6 +38,7 @@ function UpdateScore({
   language,
   groupScore,
   groupId,
+  close,
   group,
   miniGroupId,
 }) {
@@ -264,7 +265,11 @@ function UpdateScore({
         setRunAnimation(false);
         setRunScoreTitle(false);
         setLoadingPoint(false);
-        close();
+        if (classroomScore === true) {
+          close();
+        } else {
+          setTriggerUpdateStudent(() => false);
+        }
       }, 1500);
       document.body.style.overflow = 'auto';
       students?.refetch();
@@ -293,7 +298,11 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
         <div className="w-full block md:hidden">
           <button
             onClick={() => {
-              close();
+              if (classroomScore === true) {
+                close();
+              } else {
+                setTriggerUpdateStudent(() => false);
+              }
               document.body.style.overflow = 'auto';
             }}
             className="ml-3 text-2xl flex justify-center items-center"
@@ -728,7 +737,15 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
       <div
         onClick={() => {
           document.body.style.overflow = 'auto';
-          setTriggerUpdateStudent(() => false);
+          if (classroomScore === true) {
+            if (classroomScore === true) {
+              close();
+            } else {
+              setTriggerUpdateStudent(() => false);
+            }
+          } else {
+            setTriggerUpdateStudent(() => false);
+          }
         }}
         className="w-full h-full fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/20 "
       ></div>

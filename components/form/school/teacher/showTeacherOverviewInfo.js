@@ -3,20 +3,32 @@ import { Pagination, Skeleton } from '@mui/material';
 import { useQuery } from 'react-query';
 import { GetAllAttendanceTeacher } from '../../../../service/school/attendance';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
-import { BsExclamationCircleFill } from 'react-icons/bs';
+import { Pie, Doughnut } from 'react-chartjs-2';
+import { BsExclamationCircleFill, BsTable } from 'react-icons/bs';
 import Image from 'next/image';
 import { AiFillPhone } from 'react-icons/ai';
 import { FaSchool } from 'react-icons/fa';
 import { GetAllClassroomInTeacher } from '../../../../service/school/classroom';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { useRouter } from 'next/router';
-ChartJS.register(ArcElement, Tooltip, Legend);
+import { GetAllStudentsInTeacherByNationlity } from '../../../../service/school/student';
+import { formattedColorCodesArray } from '../../../../data/chart/color';
 
+ChartJS.register(ArcElement, Tooltip, Legend);
+const options = {
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+};
 function ShowTeacherOverviewInfo({ setTriggerShowTeacherInfo, selectTeacher }) {
   const [page, setPage] = useState(1);
   const router = useRouter();
   const [attendacneData, setAttendanceData] = useState();
+  const [dataNationality, setDataNationality] = useState();
+  const [triggerTableNationality, setTriggerTableNationality] = useState(false);
+  const [dataNationalityTabel, setDataNationalityTabel] = useState();
   const classrooms = useQuery(
     ['classrooms-teacher', page],
     () => GetAllClassroomInTeacher({ page: page, teacherId: selectTeacher.id }),
@@ -29,9 +41,17 @@ function ShowTeacherOverviewInfo({ setTriggerShowTeacherInfo, selectTeacher }) {
       enabled: false,
     },
   );
+  const students = useQuery(
+    ['students-teacher'],
+    () => GetAllStudentsInTeacherByNationlity({ teacherId: selectTeacher.id }),
+    {
+      enabled: false,
+    },
+  );
   useEffect(() => {
     classrooms.refetch();
     attendances.refetch();
+    students.refetch();
   }, []);
   useEffect(() => {
     if (attendances.data) {
@@ -68,88 +88,153 @@ function ShowTeacherOverviewInfo({ setTriggerShowTeacherInfo, selectTeacher }) {
         };
       });
     }
-  }, [attendances.data]);
+    if (students.data) {
+      setDataNationality(() => {
+        let value = [];
+        let nationalities = [];
+        for (const key in students.data) {
+          // Access the property key and value
+          const number = students.data[key];
+          value.push(number);
+          nationalities.push(key);
+        }
+
+        return {
+          labels: nationalities,
+          datasets: [
+            {
+              label: 'จำนวน',
+              data: value,
+              backgroundColor: formattedColorCodesArray,
+              borderColor: formattedColorCodesArray,
+              borderWidth: 1,
+            },
+          ],
+        };
+      });
+      setDataNationalityTabel(() => {
+        let nationalities = [];
+        for (const key in students.data) {
+          // Access the property key and value
+          const number = students.data[key];
+          nationalities.push({ nationality: key, number });
+        }
+        return nationalities;
+      });
+    }
+  }, [attendances.data, students.data]);
   return (
     <div
       className="z-30 
 top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-center"
     >
-      <div
-        className="w-7/12  gap-8 max-w-5xl h-max py-5 font-Kanit flex  justify-around bg-white rounded-lg
+      <div className="flex flex-col gap-5">
+        <div
+          className="w-max  gap-8 h-max py-10 font-Kanit flex  justify-around bg-white rounded-lg
    drop-shadow-xl p-5 "
-      >
-        <div className="flex flex-col  justify-center items-center font-Kanit">
-          <div
-            className="w-20 h-20 bg-blue-300 mb-1 text-white rounded-md 
+        >
+          <div className="flex flex-col  justify-center items-center font-Kanit">
+            <div
+              className="w-20 h-20 bg-blue-300 mb-1 text-white rounded-md 
                             relative flex justify-center items-center overflow-hidden"
-          >
-            {selectTeacher.picture ? (
-              <Image
-                src={selectTeacher.picture}
-                layout="fill"
-                sizes="(max-width: 768px) 100vw"
-                className="object-cover"
-              />
-            ) : (
-              <span className="font-bold text-2xl uppercase">
-                {selectTeacher.firstName.charAt(0)}
-              </span>
-            )}
-          </div>
-          <div className="flex gap-2 font-bold text-lg">
-            <span>{selectTeacher.firstName}</span>
-            <span>{selectTeacher.firstName}</span>
-          </div>
-          <div className="flex gap-2 text-slate-400">
-            <span>{selectTeacher.email}</span>
-          </div>
-          <div className="flex gap-3 items-center mt-5">
-            <div className="flex gap-3 items-center">
-              <div className="w-8 h-8 text-lg bg-blue-200 text-blue-600 rounded-full flex items-center justify-center">
-                <AiFillPhone />
-              </div>
-              {selectTeacher.phone}
+            >
+              {selectTeacher.picture ? (
+                <Image
+                  src={selectTeacher.picture}
+                  layout="fill"
+                  sizes="(max-width: 768px) 100vw"
+                  className="object-cover"
+                />
+              ) : (
+                <span className="font-bold text-2xl uppercase">
+                  {selectTeacher.firstName.charAt(0)}
+                </span>
+              )}
             </div>
-            <div className="flex gap-3 items-center">
-              <div className="w-8 h-8 text-lg bg-blue-200 text-blue-600 rounded-full flex items-center justify-center">
-                <FaSchool />
+            <div className="flex gap-2 font-bold text-lg">
+              <span>{selectTeacher.firstName}</span>
+              <span>{selectTeacher.firstName}</span>
+            </div>
+            <div className="flex gap-2 text-slate-400">
+              <span>{selectTeacher.email}</span>
+            </div>
+            <div className="flex gap-3 items-center mt-5">
+              <div className="flex gap-3 items-center">
+                <div className="w-8 h-8 text-lg bg-blue-200 text-blue-600 rounded-full flex items-center justify-center">
+                  <AiFillPhone />
+                </div>
+                {selectTeacher.phone}
               </div>
-              {selectTeacher.school}
+              <div className="flex gap-3 items-center">
+                <div className="w-8 h-8 text-lg bg-blue-200 text-blue-600 rounded-full flex items-center justify-center">
+                  <FaSchool />
+                </div>
+                {selectTeacher.school}
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <div className="flex flex-col items-center justify-center">
+              <span className="font-semibold text-xl">
+                สรุปภาพรวมการเข้าเรียน
+              </span>
+              <div className="w-60 h-60">
+                {attendacneData ? (
+                  <Pie data={attendacneData} />
+                ) : (
+                  <div>
+                    <div>
+                      <BsExclamationCircleFill />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center">
-          <span className="font-semibold text-xl">สรุปภาพรวมการเข้าเรียน</span>
-          <div>
-            {attendacneData ? (
-              <Pie data={attendacneData} />
-            ) : (
-              <div>
+        <div className="flex flex-col p-3 gap-2 w-full h-80 bg-white rounded-lg relative items-center justify-center">
+          <button
+            onClick={() => setTriggerTableNationality((prev) => !prev)}
+            className="w-max text-sm absolute top-2 right-2 hover:bg-green-500 hover:text-green-200
+               px-5 py-2 rounded-md bg-green-200 text-green-600 font-Kanit font-semibold flex items-center gap-2"
+          >
+            ตาราง
+            <div>
+              <BsTable />
+            </div>
+          </button>
+          <span className="font-semibold text-xl">สรุปข้อมูลสัญชาติ</span>
+          {triggerTableNationality ? (
+            <ul className="grid grid-cols-2 overflow-auto h-80 w-full gap-x-10  place-items-start">
+              {dataNationalityTabel?.map((nationality, index) => {
+                return (
+                  <li
+                    key={index}
+                    className="flex gap-2 items-start justify-between w-full 
+                      col-span-1 font-Kanit font-medium text-left text-base p-2"
+                  >
+                    <div>{nationality.nationality}</div>
+                    <div>{nationality.number}</div>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="lg:w-40 lg:h-40 2xl:w-60 2xl:h-60">
+              {dataNationality ? (
+                <Doughnut data={dataNationality} options={options} />
+              ) : (
                 <div>
-                  <BsExclamationCircleFill />
+                  <div>
+                    <BsExclamationCircleFill />
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-          <div className=" gap-2 place-items-center grid grid-cols-3">
-            <span className="text-red-500">
-              ขาดเรียน {attendances?.data?.absent} ครั้ง
-            </span>
-            <span className="text-green-500">
-              มาเรียน {attendances?.data?.present} ครั้ง
-            </span>
-            <span className="text-yellow-500">
-              ลา {attendances?.data?.holiday} ครั้ง
-            </span>
-            <span className="text-orange-500">
-              สาย {attendances?.data?.late} ครั้ง
-            </span>
-            <span className="text-blue-500">
-              ป่วย {attendances?.data?.sick} ครั้ง
-            </span>
-          </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
+
       <div className="w-96 h-[30rem] bg-white p-5 flex flex-col justify-between items-center rounded-md">
         <span className="font-semibold font-Kanit text-lg">
           ห้องเรียนทั้งหมด
