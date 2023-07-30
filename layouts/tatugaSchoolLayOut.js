@@ -15,6 +15,9 @@ import { FaUserCheck } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { IoPeopleCircleOutline } from 'react-icons/io5';
 import Image from 'next/image';
+import { UpdateSchoolImageCover } from '../service/school/school';
+import Swal from 'sweetalert2';
+import Loading from '../components/loading/loading';
 
 function Layout({
   children,
@@ -27,36 +30,79 @@ function Layout({
 }) {
   const router = useRouter();
   const [triggersidebar, setTriggerSidebar] = useState(true);
-
+  const [loading, setLoading] = useState();
+  const [file, setFile] = useState();
   const pathname = router.pathname; // e.g. "/classroom/setting"
   const lastRoute = pathname.split('/').pop();
   const [isClick, setIsClick] = useState();
+  const handleFileInputChange = (event) => {
+    setFile(event.target.files[0]);
+  };
 
+  const handleSummitImageCover = async () => {
+    try {
+      setLoading(() => true);
+      const formData = new FormData();
+      formData.append('file', file);
+      await UpdateSchoolImageCover({
+        formData,
+      });
+      Swal.fire('success', 'success', 'success');
+      setLoading(() => false);
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+      setLoading(() => false);
+      Swal.fire(
+        'error',
+        err?.props?.response?.data?.message.toString(),
+        'error',
+      );
+    }
+  };
   return (
     <main className="font-Kanit relative">
-      {/* <div className="bg-yellow-400  w-full h-80 relative ">
-          <Image
-            layout="fill"
-            className="object-cover"
-            src="https://storage.googleapis.com/tatugacamp_development/image%204.png"
-          />
-          <div>
-            <label htmlFor="dropzone-file" className="w-max">
-              <div
-                className="w-28 h-10 hover:scale-105 transition duration-150
+      <div className="bg-yellow-400  w-full h-80 relative flex items-center justify-center ">
+        {user.imageCover ? (
+          <Image layout="fill" className="object-cover" src={user.imageCover} />
+        ) : (
+          <h1 className="font-Poppins text-center text-4xl font-semibold">
+            BACKGROUND COVER
+            <div>
+              <span className="text-xl">1600px * 300px</span>
+            </div>
+          </h1>
+        )}
+        <div className="absolute flex gap-2 bottom-2 right-2">
+          {loading ? (
+            <div className="flex items-center justify-center w-10">
+              <Loading />
+            </div>
+          ) : (
+            <button
+              onClick={handleSummitImageCover}
+              className="bg-white px-4 py-2 rounded-lg ring-2 ring-black hover:scale-110 transition duration-150
+          active:ring-4"
+            >
+              upload
+            </button>
+          )}
+          <label htmlFor="dropzone-file" className="w-max">
+            <div
+              className="w-28 h-10 hover:scale-105 transition duration-150 cursor-pointer
                     bg-white drop-shadow-xl ring-2 text-black text-3xl flex justify-center items-center rounded-2xl"
-              >
-                <AiOutlineCloudUpload />
-              </div>
+            >
+              <AiOutlineCloudUpload />
+            </div>
 
-              <input
-                id="dropzone-file"
-                name="files"
-                aria-label="upload image"
-                type="file"
-                multiple="multiple"
-                accept="/jpeg,image/png"
-                className="text-sm text-grey-500 hidden  ring-2
+            <input
+              id="dropzone-file"
+              name="files"
+              aria-label="upload image"
+              type="file"
+              onChange={handleFileInputChange}
+              accept="/jpeg,image/png"
+              className="text-sm text-grey-500 hidden  ring-2
               file:mr-5 md:file:w-40 file:w-40 w-max file:py-2
               file:rounded-full file:border-0
               file:text-sm file:font-Kanit file:font-normal file:text-white
@@ -65,10 +111,10 @@ function Layout({
               hover:file:cursor-pointer hover:file:bg-amber-50
               hover:file:text-amber-700
             "
-              />
-            </label>
-          </div>
-        </div> */}
+            />
+          </label>
+        </div>
+      </div>
       <nav className="flex flex-row-reverse absolute top-0 w-full justify-between py-5  ">
         <div className="mr-5 flex gap-5 ">
           <div className="flex  items-center justify-center"></div>
