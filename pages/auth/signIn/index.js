@@ -215,9 +215,9 @@ function Index() {
               </button>
             )}
           </form>
-          <div className="w-80">
+          <div className="w-80 flex flex-col">
             {brower !== 'scoial media browser' ? (
-              <a
+              <button
                 onClick={GetAccesTokenGoogle}
                 className="w-full  h-9 mt-2 rounded-full bg-white border-black text-black font-sans font-bold
               text-md cursor-pointer border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
@@ -229,9 +229,9 @@ function Index() {
                   <FcGoogle />
                 </div>
                 <span>continue with Google</span>
-              </a>
+              </button>
             ) : (
-              <a
+              <div
                 className="w-full  h-9 mt-2 rounded-full bg-gray-200 text-black font-sans font-bold
             text-md cursor-pointer border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
               active:border-2 active:text-black active:border-gray-300
@@ -244,7 +244,7 @@ function Index() {
                 <span className="font-Kanit font-normal text-center text-sm text-black">
                   โปรดเปิดเบราว์เซอร์เพื่อ login ด้วย google
                 </span>
-              </a>
+              </div>
             )}
 
             <button
