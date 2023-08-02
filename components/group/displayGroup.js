@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from "react";
-import Loading from "../loading/loading";
-import Image from "next/image";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import { BsFullscreen, BsFullscreenExit } from "react-icons/bs";
-import { MdDelete } from "react-icons/md";
+import React, { useEffect, useState } from 'react';
+import Loading from '../loading/loading';
+import Image from 'next/image';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import { BsFullscreen, BsFullscreenExit } from 'react-icons/bs';
+import { MdDelete } from 'react-icons/md';
 import {
   AddStudentToGroupApi,
   DeleteGroup,
   GetUnGroupStudent,
   RandomGroup,
   RemoveStudent,
-} from "../../service/group";
-import Swal from "sweetalert2";
-import { Popover, Switch } from "@headlessui/react";
-import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
-import { useRouter } from "next/router";
-import UpdateScore from "../form/updateScore";
-import { AiOutlineSetting } from "react-icons/ai";
-import { FaUserMinus, FaUserPlus } from "react-icons/fa";
-import { FcCancel } from "react-icons/fc";
+} from '../../service/group';
+import Swal from 'sweetalert2';
+import { Popover, Switch } from '@headlessui/react';
+import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi';
+import { useRouter } from 'next/router';
+import UpdateScore from '../form/updateScore';
+import { AiOutlineSetting } from 'react-icons/ai';
+import { FaUserMinus, FaUserPlus } from 'react-icons/fa';
+import { FcCancel } from 'react-icons/fc';
 
 function DisplayGroup({
   user,
@@ -36,11 +36,11 @@ function DisplayGroup({
   const [isAddGroup, setIsAddGroup] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [studentToAdd, setStudentToAdd] = useState({
-    id: "",
-    firstName: "",
-    lastName: "",
-    number: "",
-    picture: "",
+    id: '',
+    firstName: '',
+    lastName: '',
+    number: '',
+    picture: '',
   });
   const [unGroupStudents, setUnGroupStudents] = useState();
   useEffect(() => {
@@ -79,14 +79,14 @@ function DisplayGroup({
       });
       setUnGroupStudents(() => unGroupStudents);
       setLoadingDelete(() => false);
-      Swal.fire("Deleted!", "", "success");
+      Swal.fire('Deleted!', '', 'success');
     } catch (err) {
       setLoadingDelete(() => false);
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message?.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -94,28 +94,28 @@ function DisplayGroup({
   const handleDeleteGroup = async () => {
     try {
       Swal.fire({
-        title: "Are you sure?",
+        title: 'Are you sure?',
         text: "You won't be able to revert this!",
-        icon: "warning",
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
       }).then(async (result) => {
         if (result.isConfirmed) {
           const deleteGroup = await DeleteGroup({
             groupId: group?.data.group.id,
           });
           groups.refetch();
-          setClassroomGroupActive(() => "default");
-          groupId.current = "";
-          Swal.fire("Deleted!", deleteGroup?.data, "success");
+          setClassroomGroupActive(() => 'default');
+          groupId.current = '';
+          Swal.fire('Deleted!', deleteGroup?.data, 'success');
         }
       });
     } catch (err) {
       Swal.fire({
-        title: "error",
-        icon: "error",
+        title: 'error',
+        icon: 'error',
       });
       console.log(err);
     }
@@ -156,9 +156,9 @@ function DisplayGroup({
       setIsAddGroup(() => false);
       setStudentToAdd(() => null);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message?.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -180,8 +180,8 @@ function DisplayGroup({
     } catch (err) {
       setLoading(() => false);
       Swal.fire({
-        title: "error",
-        icon: "error",
+        title: 'error',
+        icon: 'error',
       });
       console.log(err);
     }
@@ -195,9 +195,9 @@ function DisplayGroup({
         >
           <MdDelete />
           <span className="text-base">
-            {user.language === "Thai"
-              ? "ลบกลุ่ม"
-              : user.language === "English" && "delete group"}
+            {user.language === 'Thai'
+              ? 'ลบกลุ่ม'
+              : user.language === 'English' && 'delete group'}
           </span>
         </button>
         {loading ? (
@@ -209,9 +209,9 @@ function DisplayGroup({
           >
             <GiPerspectiveDiceSixFacesRandom />
             <span className="text-base">
-              {user.language === "Thai"
-                ? "สุ่มนักเรียนใหม่"
-                : user.language === "English" && "shuffle students"}
+              {user.language === 'Thai'
+                ? 'สุ่มนักเรียนใหม่'
+                : user.language === 'English' && 'shuffle students'}
             </span>
           </button>
         )}
@@ -219,26 +219,26 @@ function DisplayGroup({
           <Switch
             checked={isSetting}
             onChange={setIsSetting}
-            className={`${isSetting ? "bg-blue-400" : "bg-teal-700"}
+            className={`${isSetting ? 'bg-blue-400' : 'bg-teal-700'}
           relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
           >
             <span
               aria-hidden="true"
-              className={`${isSetting ? "translate-x-9" : "translate-x-0"}
+              className={`${isSetting ? 'translate-x-9' : 'translate-x-0'}
             pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
             />
           </Switch>
           {isSetting ? (
             <span className="text-base">
-              {user.language === "Thai"
-                ? "ปิดตั้งค่าจัดกลุ่ม"
-                : user.language === "English" && "Close setting"}
+              {user.language === 'Thai'
+                ? 'ปิดตั้งค่าจัดกลุ่ม'
+                : user.language === 'English' && 'Close setting'}
             </span>
           ) : (
             <span className="text-base">
-              {user.language === "Thai"
-                ? "เปิดตั้งค่าจัดกลุ่ม"
-                : user.language === "English" && "Open setting"}
+              {user.language === 'Thai'
+                ? 'เปิดตั้งค่าจัดกลุ่ม'
+                : user.language === 'English' && 'Open setting'}
             </span>
           )}
         </div>
@@ -252,11 +252,11 @@ function DisplayGroup({
                   className="flex hover:bg-blue-100 px-2 justify-between gap-2 just truncate"
                   key={student.id}
                 >
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 ">
                     <span>
-                      {user.language === "Thai"
-                        ? "เลขที่"
-                        : user.language === "English" && "number"}
+                      {user.language === 'Thai'
+                        ? 'เลขที่'
+                        : user.language === 'English' && 'number'}
                       {` `}
                       {student.number}
                     </span>
@@ -289,11 +289,11 @@ function DisplayGroup({
             <span className="text-lg">ยกเลิก</span>
           </button>
           <div className="flex gap-2 bg-blue-200 text-black ring-2 ring-orange-400 rounded-lg p-2">
-            <div className="flex gap-1">
+            <div className="flex gap-1 ">
               <span>
-                {user.language === "Thai"
-                  ? "เลขที่"
-                  : user.language === "English" && "number"}
+                {user.language === 'Thai'
+                  ? 'เลขที่'
+                  : user.language === 'English' && 'number'}
               </span>
               <span>{studentToAdd.number}</span>
             </div>
@@ -307,7 +307,7 @@ function DisplayGroup({
       <FullScreen
         handle={handle}
         className={`w-full h-full pb-40  flex gap-5 overflow-auto  relative flex-col ${
-          handle.active ? "bg-blue-300" : "bg-transparent"
+          handle.active ? 'bg-blue-300' : 'bg-transparent'
         } `}
       >
         {!isSetting && (
@@ -342,11 +342,11 @@ function DisplayGroup({
           className={`grid  py-5  mt-5 ${
             handle.active
               ? group?.data?.miniGroups.length > 2
-                ? "md:grid-cols-2 lg:grid-cols-3 gap-5"
-                : "grid-cols-2 gap-5"
+                ? 'md:grid-cols-2 lg:grid-cols-3 gap-5'
+                : 'grid-cols-2 gap-5'
               : group?.data?.miniGroups.length > 2
-              ? "md:grid-cols-2 lg:grid-cols-3 gap-10"
-              : "grid-cols-2 gap-5"
+              ? 'md:grid-cols-2 lg:grid-cols-3 gap-10'
+              : 'grid-cols-2 gap-5'
           } place-items-center  items-start  `}
         >
           {group?.data?.miniGroups?.map((miniGroup, index) => {
@@ -359,8 +359,8 @@ function DisplayGroup({
                         <div
                           className={` ${
                             group?.data?.miniGroups.length > 2
-                              ? "md:w-80 lg:w-80 "
-                              : "w-max max-w-3xl"
+                              ? 'md:w-80 lg:w-80 '
+                              : 'w-max max-w-3xl'
                           }   h-max p-2 ring-2 flex justify-start
                  bg-white flex-col  items-center hover:scale-110 transition duration-150
                   hover:drop-shadow-md cursor-pointer hover:ring-orange-400 relative  rounded-lg ring-orange-400"
@@ -379,21 +379,21 @@ function DisplayGroup({
                           <ul
                             className={`w-full pl-0 h-max grid gap-2 ${
                               group?.data?.miniGroups.length > 2
-                                ? " grid-cols-1"
-                                : "grid-cols-1"
+                                ? ' grid-cols-1'
+                                : 'grid-cols-1'
                             }`}
                           >
                             {miniGroup.students.map((student, index) => {
                               return (
                                 <li
                                   key={index}
-                                  className="flex gap-2 justify-between   font-Kanit text-base"
+                                  className="flex gap-2 justify-between relative  font-Kanit text-base"
                                 >
-                                  <span>
-                                    {user.language === "Thai"
-                                      ? "เลขที่"
-                                      : user.language === "English" &&
-                                        "number"}{" "}
+                                  <span className="">
+                                    {user.language === 'Thai'
+                                      ? 'เลขที่'
+                                      : user.language === 'English' &&
+                                        'number'}{' '}
                                     {student.number}
                                   </span>
                                   <div className="flex gap-2">
@@ -403,6 +403,7 @@ function DisplayGroup({
                                   <span className="w-max h-5 flex items-center justify-center bg-orange-400 text-center p-1 px-2 rounded-md text-white">
                                     {student?.score?.totalPoints}
                                   </span>
+                                  <div className="w-full h-[1px] bg-slate-300 absolute bottom-0 right-0 left-0 m-auto"></div>
                                 </li>
                               );
                             })}
@@ -434,8 +435,8 @@ function DisplayGroup({
                   key={index}
                   className={` ${
                     group?.data?.miniGroups.length > 2
-                      ? "md:w-80 lg:w-80 "
-                      : "w-max max-w-3xl"
+                      ? 'md:w-80 lg:w-80 '
+                      : 'w-max max-w-3xl'
                   }   h-max p-2 ring-2 flex justify-start
     flex-col  items-center transition duration-150  
       hover:drop-shadow-md bg-sky-100  hover:ring-orange-400 relative overflow-hidden   rounded-lg ring-orange-400"
@@ -452,11 +453,11 @@ function DisplayGroup({
                     >
                       {loading ? (
                         <Loading />
-                      ) : user.language === "Thai" ? (
-                        "คลิกเพื่อเลือกกลุ่ม"
+                      ) : user.language === 'Thai' ? (
+                        'คลิกเพื่อเลือกกลุ่ม'
                       ) : (
-                        user.language === "English" &&
-                        "Click here to add student"
+                        user.language === 'English' &&
+                        'Click here to add student'
                       )}
                     </button>
                   )}
@@ -473,8 +474,8 @@ function DisplayGroup({
                   <ul
                     className={`w-full pl-0 h-max grid gap-2 ${
                       group?.data?.miniGroups.length > 2
-                        ? " grid-cols-1"
-                        : "grid-cols-1"
+                        ? ' grid-cols-1'
+                        : 'grid-cols-1'
                     }`}
                   >
                     {miniGroup.students.map((student, index) => {
@@ -484,9 +485,9 @@ function DisplayGroup({
                           className="flex gap-2 justify-between   font-Kanit text-base"
                         >
                           <span>
-                            {user.language === "Thai"
-                              ? "เลขที่"
-                              : user.language === "English" && "number"}{" "}
+                            {user.language === 'Thai'
+                              ? 'เลขที่'
+                              : user.language === 'English' && 'number'}{' '}
                             {student.number}
                           </span>
                           <div className="flex gap-2">

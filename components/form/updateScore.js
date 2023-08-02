@@ -49,7 +49,7 @@ function UpdateScore({
   const [clickScoreTitle, setClickScoreTitle] = useState();
   const [runScoreTitle, setRunScoreTitle] = useState(false);
   const [runAnimation, setRunAnimation] = useState(false);
-  const [pointsValue, setpointsValue] = useState(1);
+  const [pointsValue, setpointsValue] = useState(0);
   const [data, setData] = useState(animationData);
   const [error, setError] = useState();
   const [loadingDeleteStudent, setLoadingDeleteStudent] = useState(false);
@@ -115,7 +115,7 @@ function UpdateScore({
       [name]: value,
     }));
   };
-  console.log(studentData);
+
   //handle delete student
   const handleDelteStudent = async (data) => {
     try {
@@ -172,8 +172,15 @@ function UpdateScore({
       setClickScoreTitle(() => {
         let points = 1;
 
-        if (!pointsValue) {
-          points = 1;
+        if (pointsValue === 0) {
+          if (!data.score) {
+            points = 1;
+          } else {
+            if (data.score < 0) {
+              checkNagativePoint = true;
+            }
+            points = data.score;
+          }
         } else if (pointsValue) {
           if (pointsValue < 0) {
             checkNagativePoint = true;
@@ -204,6 +211,7 @@ function UpdateScore({
           scoreId: data.scoreId,
           miniGroupId,
           groupId,
+          score: data.score,
         });
         await group.refetch();
         async function waitForFalse() {
@@ -628,19 +636,34 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                     return (
                       <div
                         key={score.id}
-                        className="md:w-full w-10/12 h-full flex items-center justify-center flex-col gap-2"
+                        className="md:w-full w-10/12 h-full flex items-center relative justify-center flex-col gap-2"
                       >
+                        {score.score > 0 && (
+                          <div
+                            className="w-max h-max px-2 bg-blue-500 rounded-full absolute
+                          z-40 ring-2 text-xs font-medium left-2  top-2"
+                          >
+                            {score.score}
+                          </div>
+                        )}
+                        {score.score <= 0 && score.score !== null && (
+                          <div
+                            className="w-max h-max px-2 bg-red-500 rounded-full absolute
+                          z-40 ring-2 text-xs font-medium left-2  top-2 ring-red-200"
+                          >
+                            {score.score}
+                          </div>
+                        )}
                         {loadingPoint ? (
-                          <button
-                            aria-label={`buuton ${score.title} `}
-                            role="button"
-                            className="w-full h-full px-0  md:px-2 bg-gray-300 flex flex-col font-Kanit text-lg items-center justify-center rounded-lg cursor-pointer
-               border-2 border-solid hover:scale-110
+                          <div
+                            className="w-full h-full px-0  md:px-2 bg-gray-300 flex flex-col font-Kanit
+                             text-lg items-center justify-center rounded-lg cursor-pointer
+               border-2 border-solid hover:scale-110 border-black
              hover:bg-yellow-200 transition duration-150 ease-in-out"
                           >
                             <div className="mt-2">{score.picture}</div>
                             <div>{score.title}</div>
-                          </button>
+                          </div>
                         ) : (
                           <div
                             key={score.id}
@@ -653,6 +676,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                                   studentId: student?.id,
                                   scoreTitle: score?.title,
                                   scoreEmoji: score?.picture,
+                                  score: score.score,
                                   pointsValue,
                                 })
                               }
@@ -685,6 +709,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                       setTriggerCreateNewScore={setTriggerCreateNewScore}
                       classroomId={classroomId}
                       language={language}
+                      score={pointsValue}
                     />
                   </div>
                 )}

@@ -1,6 +1,6 @@
-import axios from "axios";
-import Error from "next/error";
-import { parseCookies } from "nookies";
+import axios from 'axios';
+import Error from 'next/error';
+import { parseCookies } from 'nookies';
 export async function GetAllScoresClassroom({ classroomId }) {
   try {
     const cookies = parseCookies();
@@ -15,7 +15,7 @@ export async function GetAllScoresClassroom({ classroomId }) {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return allScore;
   } catch (err) {
@@ -24,14 +24,18 @@ export async function GetAllScoresClassroom({ classroomId }) {
 }
 
 export async function UpdateScoreOnStudent(
-  { scoreId, studentId },
-  inputValues
+  { scoreId, studentId, score },
+  inputValues,
 ) {
   try {
     let points = 1;
 
-    if (!inputValues) {
-      points = 1;
+    if (inputValues === 0) {
+      if (!score) {
+        points = 1;
+      } else {
+        points = score;
+      }
     } else if (inputValues) {
       points = Number(inputValues);
     }
@@ -51,7 +55,7 @@ export async function UpdateScoreOnStudent(
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     return updateScore;
@@ -61,14 +65,19 @@ export async function UpdateScoreOnStudent(
 }
 
 export async function UpdateScoreOnWholeClass(
-  { scoreId },
+  { scoreId, score },
   inputValues,
-  classroomId
+  classroomId,
 ) {
   try {
     let points = 1;
-    if (!inputValues) {
-      points = 1;
+
+    if (inputValues === 0) {
+      if (!score) {
+        points = 1;
+      } else {
+        points = score;
+      }
     } else if (inputValues) {
       points = Number(inputValues);
     }
@@ -88,7 +97,7 @@ export async function UpdateScoreOnWholeClass(
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return updateScore;
   } catch (err) {
@@ -101,14 +110,21 @@ export async function UpdateScoreOnWholeGroup({
   pointsValue,
   miniGroupId,
   groupId,
+  score,
 }) {
   try {
     let points = 1;
-    if (!pointsValue) {
-      points = 1;
+
+    if (pointsValue === 0) {
+      if (!score) {
+        points = 1;
+      } else {
+        points = score;
+      }
     } else if (pointsValue) {
       points = Number(pointsValue);
     }
+
     const cookies = parseCookies();
     const access_token = cookies.access_token;
 
@@ -124,7 +140,7 @@ export async function UpdateScoreOnWholeGroup({
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return updateScore;
   } catch (err) {
@@ -132,16 +148,17 @@ export async function UpdateScoreOnWholeGroup({
   }
 }
 
-export async function CreateScoreOnClass({ title, emoji, classroomId }) {
+export async function CreateScoreOnClass({ title, emoji, classroomId, score }) {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
 
-    const score = await axios.post(
+    const createScore = await axios.post(
       `${process.env.Server_Url}/user/score/create`,
       {
         title: title,
         picture: emoji,
+        score,
       },
       {
         params: {
@@ -150,9 +167,9 @@ export async function CreateScoreOnClass({ title, emoji, classroomId }) {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
-    return score;
+    return createScore;
   } catch (err) {
     console.log(err);
     throw new Error(err);
@@ -174,7 +191,7 @@ export async function HideScore({ scoreId }) {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return score;
   } catch (err) {
