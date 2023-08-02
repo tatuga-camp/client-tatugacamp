@@ -907,7 +907,6 @@ function Index({ error, user }) {
                                   data-lightboxjs="lightbox1"
                                   quality={60}
                                   placeholder="blur"
-                                  sizes="(max-width: 768px) 100vw"
                                   blurDataURL="/logo/TaTuga camp.png"
                                 />
                               </div>
