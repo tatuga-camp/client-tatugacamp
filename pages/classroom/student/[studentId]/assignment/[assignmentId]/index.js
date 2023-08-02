@@ -363,7 +363,7 @@ function Index() {
           </div>
         </button>
         <div
-          className="w-40 md:w-60 bg-white h-14 md:h-20 border-b-2 border-t-2 border-r-0
+          className="w-40 md:w-60 bg-white h-max md:h-20 border-b-2 border-t-2 border-r-0
          border-blue-500 rounded-l-2xl flex flex-col py-2 pl-2 md:pl-10 gap-0 truncate font-Kanit  border-l-2 border-solid"
         >
           <span className="font-semibold text-blue-500 md:text-2xl truncate">
@@ -406,12 +406,16 @@ function Index() {
                 </div>
               </div>
             )}
-            <span className="font-Kanit font-medium text-lg mt-1">
-              เลขที่ {student?.data?.data?.number}{' '}
-              {student?.data?.data?.firstName} {student?.data?.data?.lastName}
-            </span>
           </div>
-          <table className="mt-28">
+          <div className="mt-20 w-full text-center">
+            <div className="font-Kanit font-medium text-lg mt-1">
+              เลขที่ {student?.data?.data?.number}
+            </div>
+            <div className="font-Kanit font-medium text-lg mt-1">
+              {student?.data?.data?.firstName} {student?.data?.data?.lastName}
+            </div>
+          </div>
+          <table className="">
             <tbody>
               <tr>
                 <td className="w-40 text-center">มอบหมายโดย</td>
@@ -741,7 +745,7 @@ application/pdf,
 
           {activeMenu === 1 && (
             <div className="w-11/12 max-w-3xl  flex flex-col gap-2 items-center justify-top">
-              {studentWork.status === 'no-work' ? (
+              {studentWork?.status === 'no-work' ? (
                 <div className="font-Kanit text-2xl text-red-400 font-light h-20 flex items-center justify-center gap-2">
                   <span>คุณยังไม่ส่งงาน</span>
                   <div className="flex items-center justify-center ">
@@ -750,7 +754,7 @@ application/pdf,
                 </div>
               ) : (
                 <div className="w-full h-80 overflow-auto ring-2 rounded-2xl  flex flex-col   gap-5 mt-5">
-                  {studentWork.picture && (
+                  {studentWork?.picture && (
                     <SlideshowLightbox
                       downloadImages={true}
                       lightboxIdentifier="lightbox1"
@@ -768,7 +772,6 @@ application/pdf,
                       {studentWork?.picture?.map((image, index) => {
                         return (
                           <Image
-                            sizes="(max-width: 768px) 100vw"
                             key={index}
                             src={image.src}
                             alt={image.alt}
