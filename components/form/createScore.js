@@ -1,19 +1,20 @@
-import React, { useState } from "react";
-import Swal from "sweetalert2";
-import { CreateScoreOnClass } from "../../service/scores";
+import React, { useState } from 'react';
+import Swal from 'sweetalert2';
+import { CreateScoreOnClass } from '../../service/scores';
 
 function CreateScore({
   setTriggerCreateNewScore,
   classroomId,
   refetchScores,
   language,
+  score,
 }) {
   const [activeEmoji, setActiveEmoji] = useState();
   const [scoreForm, setScoreForm] = useState({
-    title: "",
-    emoji: "",
+    title: '',
+    emoji: '',
   });
-  const emojis = ["😀", "🤣", "😍", "🤨", "😎", "❤️", "☹️", "😱"];
+  const emojis = ['😀', '🤣', '😍', '🤨', '😎', '❤️', '☹️', '😱'];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,15 +33,16 @@ function CreateScore({
         title: scoreForm.title,
         emoji: scoreForm.emoji,
         classroomId: classroomId,
+        score: score,
       });
       setTriggerCreateNewScore(() => false);
       refetchScores();
     } catch (err) {
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -65,7 +67,7 @@ function CreateScore({
                 });
               }}
               className={`hover:bg-slate-200 cursor-pointer p-2 rounded-lg border-2 border-solid transition duration-150 ${
-                activeEmoji === index ? "border-black" : "border-white"
+                activeEmoji === index ? 'border-black' : 'border-white'
               }`}
             >
               {emoji}
@@ -95,8 +97,8 @@ function CreateScore({
        active:border-solid  focus:border-2 
       focus:border-solid"
         >
-          {language === "Thai" && "สร้าง"}
-          {language === "English" && "save"}
+          {language === 'Thai' && 'สร้าง'}
+          {language === 'English' && 'save'}
         </button>
         <button
           type="button"
@@ -106,8 +108,8 @@ function CreateScore({
        active:border-solid  focus:border-2 
       focus:border-solid"
         >
-          {language === "Thai" && "ยกเลิก"}
-          {language === "English" && "cancel"}
+          {language === 'Thai' && 'ยกเลิก'}
+          {language === 'English' && 'cancel'}
         </button>
       </div>
     </form>
