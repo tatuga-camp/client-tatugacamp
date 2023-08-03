@@ -231,6 +231,7 @@ export default function Home({ post, blurData }) {
 export async function getStaticProps(ctx) {
   const quary = `*[_type == "post"]{
     _id,
+    _createdAt,
     slug,
     title,
    mainImage,
@@ -244,6 +245,9 @@ export async function getStaticProps(ctx) {
   const quaryImages = `*[_type == "heroImages"]`;
   const post = await sanityClient.fetch(quary);
   const mainImages = await sanityClient.fetch(quaryImages);
+  const sortPost = post.sort(
+    (a, b) => new Date(b._createdAt) - new Date(a._createdAt),
+  );
 
   const blurData = await Promise.all(
     mainImages.map(async (item) => {
@@ -258,7 +262,7 @@ export async function getStaticProps(ctx) {
   );
   return {
     props: {
-      post,
+      post: sortPost,
       blurData,
     },
   };

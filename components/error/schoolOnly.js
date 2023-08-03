@@ -1,8 +1,8 @@
-import React from "react";
-import Layout from "../../layouts/tatugaSchoolLayOut";
-import Head from "next/head";
-import { IoWarning } from "react-icons/io5";
-import { useRouter } from "next/router";
+import React from 'react';
+import Layout from '../../layouts/tatugaSchoolLayOut';
+import Head from 'next/head';
+import { IoWarning } from 'react-icons/io5';
+import { useRouter } from 'next/router';
 
 function SchoolOnly({ user }) {
   const router = useRouter();
@@ -19,31 +19,31 @@ bg-[url('/blob-scene-haikei.svg')] bg-no-repeat bg-fixed bg-cover flex-col `}
           <IoWarning />
         </div>
         <div className="text-xl md:text-3xl font-Kanit">
-          {user.language === "Thai"
-            ? "สำหรับบัญญชี โรงเรียน เท่านั้นถึงสามารถเข้าถึงได้"
-            : user.language === "English" && "Only for tatuga school user!"}
+          {user.language === 'Thai'
+            ? 'สำหรับบัญชี โรงเรียน เท่านั้นถึงสามารถเข้าถึงได้'
+            : user.language === 'English' && 'Only for tatuga school user!'}
         </div>
         <div>
           <span>
-            {user.email}{" "}
-            {user.language === "Thai"
-              ? "ไม่มีสิทธิเข้าถึง"
-              : user.language === "English" && "Don't have any right to access"}
+            {user.email}{' '}
+            {user.language === 'Thai'
+              ? 'ไม่มีสิทธิเข้าถึง'
+              : user.language === 'English' && "Don't have any right to access"}
           </span>
         </div>
 
         <button
           onClick={() =>
             router.push({
-              pathname: "/classroom",
+              pathname: '/classroom',
             })
           }
           className="w-max mt-5 bg-green-600 font-semibold text-lg px-5 py-2 rounded-lg text-white drop-shadow-lg
         hover:scale-110 transition duration-150 ease-in-out"
         >
-          {user.language === "Thai"
-            ? "ย้อนกลับ"
-            : user.language === "English" && "BACK"}
+          {user.language === 'Thai'
+            ? 'ย้อนกลับ'
+            : user.language === 'English' && 'BACK'}
         </button>
       </div>
     </div>
