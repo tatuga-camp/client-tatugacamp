@@ -252,7 +252,7 @@ function UpdateAssignment({
            active:border-solid  focus:border-2 hover:bg-red-500 transition duration-150
           focus:border-solid"
             >
-              {language === 'Thai' && 'อัพเดท'}
+              {language === 'Thai' && 'อัปเดต'}
               {language === 'English' && 'update'}
             </button>
           </div>
