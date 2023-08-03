@@ -250,7 +250,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language }) {
   return (
     <div className="fixed top-0 right-0 left-0 bottom-0 m-auto righ z-40">
       <div
-        className="w-screen  md:w-11/12 lg:w-3/4 h-5/6 max-h-[35rem]  fixed z-40 top-0 bottom-0 right-0
+        className="w-screen  md:w-11/12  lg:w-3/4 h-5/6 max-h-[35rem]  fixed z-40 top-0 bottom-0 right-0
        left-0 m-auto flex  items-center justify-center gap-5 py-5  bg-white p-0 md:p-5 rounded-none md:rounded-lg  "
       >
         <div className="w-full md:w-full   md:h-full  flex flex-col items-center justify-start gap-5 ">
@@ -516,7 +516,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language }) {
               </tr>
             </thead>
             <tbody
-              className="w-full   h-full items-center justify-start max-h-96 mt-2 
+              className="w-full   h-80 items-center justify-start  mt-2 
             overflow-auto  fade-mask-short flex flex-col "
             >
               {isCheckStudent?.map((student) => {
