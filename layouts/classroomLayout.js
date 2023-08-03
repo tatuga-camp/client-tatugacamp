@@ -329,7 +329,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
           <MdEmojiPeople />
         </div>
         <span className="font-Kanit font-semibold text-lg">
-          {language === 'Thai' && 'เช็คชื่อ'}
+          {language === 'Thai' && 'เช็กชื่อ'}
           {language === 'English' && 'Attendance check'}
         </span>
       </button>
@@ -421,7 +421,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                 <MdEmojiPeople />
               </div>
               <span className="font-Kanit font-semibold text-lg">
-                {language === 'Thai' && 'เช็คชื่อ'}
+                {language === 'Thai' && 'เช็กชื่อ'}
                 {language === 'English' && 'Attendance check'}
               </span>
             </button>
