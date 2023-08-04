@@ -52,7 +52,6 @@ function CreateClass({ close, refetch, language }) {
                   ? 'เช่น วิชาภาษาไทย'
                   : language === 'English' && 'Ex. mathematics'
               }
-              pattern="[A-Za-z0-9/]+"
               maxLength="30"
             />
             <div
