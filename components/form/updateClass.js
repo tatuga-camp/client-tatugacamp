@@ -60,7 +60,6 @@ function UpdateClass({ close, classroom, refetch, language }) {
                 placeholder:italic placeholder:font-light"
               type="text"
               name="title"
-              pattern="[A-Za-z0-9/]+"
               placeholder={
                 language === 'Thai'
                   ? 'เช่น วิชาภาษาไทย'
@@ -114,7 +113,6 @@ function UpdateClass({ close, classroom, refetch, language }) {
               onChange={handleChange}
               type="text"
               name="description"
-              pattern="[A-Za-z0-9/]+"
               placeholder={
                 language === 'Thai'
                   ? 'เช่น ท55435'
