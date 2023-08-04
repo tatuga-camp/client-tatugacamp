@@ -265,6 +265,7 @@ function Setting({ userServerSide, error }) {
                  focus:outline-none e"
                   id="grid-first-name"
                   type="text"
+                  maxLength="50"
                   placeholder="Update your first name here"
                 />
               </div>
@@ -284,6 +285,7 @@ function Setting({ userServerSide, error }) {
                  rounded py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                   id="grid-last-name"
                   type="text"
+                  maxLength="50"
                   placeholder="update your last name here"
                 />
               </div>
@@ -304,6 +306,8 @@ function Setting({ userServerSide, error }) {
                  rounded py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                   id="grid-last-name"
                   type="text"
+                  maxLength="50"
+                  pattern="(\+)?[0-9]+"
                   placeholder="update your phone number here"
                 />
               </div>
@@ -323,6 +327,7 @@ function Setting({ userServerSide, error }) {
                 rounded py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                   id="grid-last-name"
                   type="text"
+                  maxLength="50"
                   placeholder="update your school name here"
                 />
               </div>

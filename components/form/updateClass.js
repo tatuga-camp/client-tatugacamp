@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { UpdateClassroom } from "../../service/classroom";
-import { FcBusinessContact, FcLineChart, FcViewDetails } from "react-icons/fc";
-import Swal from "sweetalert2";
+import { UpdateClassroom } from '../../service/classroom';
+import { FcBusinessContact, FcLineChart, FcViewDetails } from 'react-icons/fc';
+import Swal from 'sweetalert2';
 
 function UpdateClass({ close, classroom, refetch, language }) {
   const [classroomState, setClassroomState] = useState(classroom);
@@ -14,16 +14,16 @@ function UpdateClass({ close, classroom, refetch, language }) {
         classroomState,
       });
 
-      Swal.fire("success", classroom.data.message, "success");
-      document.body.style.overflow = "auto";
+      Swal.fire('success', classroom.data.message, 'success');
+      document.body.style.overflow = 'auto';
       refetch();
     } catch (err) {
-      console.log("err", err);
-      document.body.style.overflow = "auto";
+      console.log('err', err);
+      document.body.style.overflow = 'auto';
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -46,13 +46,13 @@ function UpdateClass({ close, classroom, refetch, language }) {
           onSubmit={handleSubmit}
         >
           <span className="text-xl font-semibold text-[#2C7CD1]">
-            {language === "Thai" && "แก้ไขห้องเรียนของคุณ"}
-            {language === "English" && "Classroom setting"}
+            {language === 'Thai' && 'แก้ไขห้องเรียนของคุณ'}
+            {language === 'English' && 'Classroom setting'}
           </span>
           <div className="flex flex-col relative">
             <label className="font-sans font-normal">
-              {language === "Thai" && "รายชื่อวิชา"}
-              {language === "English" && "title"}
+              {language === 'Thai' && 'รายชื่อวิชา'}
+              {language === 'English' && 'title'}
             </label>
             <input
               onChange={handleChange}
@@ -60,10 +60,11 @@ function UpdateClass({ close, classroom, refetch, language }) {
                 placeholder:italic placeholder:font-light"
               type="text"
               name="title"
+              pattern="[A-Za-z0-9/]+"
               placeholder={
-                language === "Thai"
-                  ? "เช่น วิชาภาษาไทย"
-                  : language === "English" && "Ex. mathematics"
+                language === 'Thai'
+                  ? 'เช่น วิชาภาษาไทย'
+                  : language === 'English' && 'Ex. mathematics'
               }
               maxLength="30"
               value={classroomState.title}
@@ -78,8 +79,8 @@ function UpdateClass({ close, classroom, refetch, language }) {
 
           <div className="flex flex-col relative mt-2">
             <label className="font-sans font-normal">
-              {language === "Thai" && "ระดับชั้น"}
-              {language === "English" && "level"}
+              {language === 'Thai' && 'ระดับชั้น'}
+              {language === 'English' && 'level'}
             </label>
             <input
               className="w-60 h-7 rounded-md ring-2 pl-10 
@@ -88,9 +89,9 @@ function UpdateClass({ close, classroom, refetch, language }) {
               onChange={handleChange}
               name="level"
               placeholder={
-                language === "Thai"
-                  ? "เช่น ม.6/5"
-                  : language === "English" && "grade 6 / 4"
+                language === 'Thai'
+                  ? 'เช่น ม.6/5'
+                  : language === 'English' && 'grade 6 / 4'
               }
               maxLength="20"
               value={classroomState.level}
@@ -104,8 +105,8 @@ function UpdateClass({ close, classroom, refetch, language }) {
           </div>
           <div className="flex flex-col relative mt-2">
             <label className="font-sans font-normal">
-              {language === "Thai" && "คำอธิบาย (optional) "}
-              {language === "English" && "description (optional)"}
+              {language === 'Thai' && 'คำอธิบาย (optional) '}
+              {language === 'English' && 'description (optional)'}
             </label>
             <input
               className="w-60 h-7 rounded-md ring-2  pl-10 
@@ -113,10 +114,11 @@ function UpdateClass({ close, classroom, refetch, language }) {
               onChange={handleChange}
               type="text"
               name="description"
+              pattern="[A-Za-z0-9/]+"
               placeholder={
-                language === "Thai"
-                  ? "เช่น ท55435"
-                  : language === "English" && "Ex. MATH445"
+                language === 'Thai'
+                  ? 'เช่น ท55435'
+                  : language === 'English' && 'Ex. MATH445'
               }
               maxLength="20"
               value={classroomState.description}
@@ -135,15 +137,15 @@ function UpdateClass({ close, classroom, refetch, language }) {
                active:border-solid  focus:border-2 
               focus:border-solid"
           >
-            {language === "Thai" && "แก้ไข"}
-            {language === "English" && "enter"}
+            {language === 'Thai' && 'แก้ไข'}
+            {language === 'English' && 'enter'}
           </button>
         </form>
       </div>
       <div
         onClick={() => {
           close();
-          document.body.style.overflow = "auto";
+          document.body.style.overflow = 'auto';
         }}
         className="w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-20 bg-black/30 "
       ></div>
