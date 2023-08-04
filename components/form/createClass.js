@@ -1,7 +1,7 @@
-import React from "react";
-import { CreateClassroom } from "../../service/classroom";
-import { FcBusinessContact, FcLineChart, FcViewDetails } from "react-icons/fc";
-import Swal from "sweetalert2";
+import React from 'react';
+import { CreateClassroom } from '../../service/classroom';
+import { FcBusinessContact, FcLineChart, FcViewDetails } from 'react-icons/fc';
+import Swal from 'sweetalert2';
 
 function CreateClass({ close, refetch, language }) {
   const handleSubmit = async (e) => {
@@ -12,13 +12,13 @@ function CreateClass({ close, refetch, language }) {
       const classroom = await CreateClassroom(inputObject);
       refetch();
       close();
-      Swal.fire("success", "create classroom success", "success");
+      Swal.fire('success', 'create classroom success', 'success');
     } catch (err) {
-      console.log("err", err);
+      console.log('err', err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -34,13 +34,13 @@ function CreateClass({ close, refetch, language }) {
           onSubmit={handleSubmit}
         >
           <span className="text-xl font-semibold text-[#2C7CD1]">
-            {language === "Thai" && "สร้างห้องเรียน"}
-            {language === "English" && "Create a classroom"}
+            {language === 'Thai' && 'สร้างห้องเรียน'}
+            {language === 'English' && 'Create a classroom'}
           </span>
           <div className="flex flex-col relative">
             <label className="font-sans font-normal">
-              {language === "Thai" && "รายชื่อวิชา"}
-              {language === "English" && "Title"}
+              {language === 'Thai' && 'รายชื่อวิชา'}
+              {language === 'English' && 'Title'}
             </label>
             <input
               className="w-60 h-7  ring-2  rounded-md   pl-10 
@@ -48,10 +48,11 @@ function CreateClass({ close, refetch, language }) {
               type="text"
               name="title"
               placeholder={
-                language === "Thai"
-                  ? "เช่น วิชาภาษาไทย"
-                  : language === "English" && "Ex. mathematics"
+                language === 'Thai'
+                  ? 'เช่น วิชาภาษาไทย'
+                  : language === 'English' && 'Ex. mathematics'
               }
+              pattern="[A-Za-z0-9/]+"
               maxLength="30"
             />
             <div
@@ -64,8 +65,8 @@ function CreateClass({ close, refetch, language }) {
 
           <div className="flex flex-col relative mt-2">
             <label className="font-sans font-normal">
-              {language === "Thai" && "ระดับชั้น"}
-              {language === "English" && "level"}
+              {language === 'Thai' && 'ระดับชั้น'}
+              {language === 'English' && 'level'}
             </label>
             <input
               className="w-60 h-7 ring-2 rounded-md   pl-10 
@@ -73,9 +74,9 @@ function CreateClass({ close, refetch, language }) {
               type="text"
               name="level"
               placeholder={
-                language === "Thai"
-                  ? "เช่น ม.6/5"
-                  : language === "English" && "Ex. grade 10 / 5"
+                language === 'Thai'
+                  ? 'เช่น ม.6/5'
+                  : language === 'English' && 'Ex. grade 10 / 5'
               }
               maxLength="20"
             />
@@ -88,8 +89,8 @@ function CreateClass({ close, refetch, language }) {
           </div>
           <div className="flex flex-col relative mt-2">
             <label className="font-sans font-normal">
-              {language === "Thai" && "คำอธิบาย (optional) "}
-              {language === "English" && "description (optional)"}
+              {language === 'Thai' && 'คำอธิบาย (optional) '}
+              {language === 'English' && 'description (optional)'}
             </label>
             <input
               className="w-60 h-7  ring-2  rounded-md   pl-10 
@@ -97,9 +98,9 @@ function CreateClass({ close, refetch, language }) {
               type="text"
               name="description"
               placeholder={
-                language === "Thai"
-                  ? "เช่น ท55435"
-                  : language === "English" && "Ex. MATH445"
+                language === 'Thai'
+                  ? 'เช่น ท55435'
+                  : language === 'English' && 'Ex. MATH445'
               }
               maxLength="20"
             />
@@ -118,8 +119,8 @@ function CreateClass({ close, refetch, language }) {
                active:border-solid  focus:border-2 
               focus:border-solid"
           >
-            {language === "Thai" && "สร้าง"}
-            {language === "English" && "create"}
+            {language === 'Thai' && 'สร้าง'}
+            {language === 'English' && 'create'}
           </button>
         </form>
       </div>

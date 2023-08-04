@@ -82,7 +82,14 @@ function UpdateScore({
   //handle chnage on input score
   const handleChangeScore = (e) => {
     const { id, value } = e.target;
-    setpointsValue(value);
+    if (value > 100) {
+      setpointsValue(() => 100);
+    } else if (value < -100) {
+      setpointsValue(() => -100);
+    } else {
+      setpointsValue(() => value);
+    }
+
     // set point value as diffrent value as differnt id
     // setpointsValue((prev) => ({ ...prev, [id]: value }));
   };
@@ -740,6 +747,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                   onChange={handleChangeScore}
                   className="w-20 text-lg  font-sans font-semibold rounded-md border-0 ring-blue-500 ring-2 active:border-0 focus:border-0 text-center placeholder:text-black"
                   value={pointsValue}
+                  min="-100"
+                  max="100"
                   type="number"
                   name="points"
                 />
