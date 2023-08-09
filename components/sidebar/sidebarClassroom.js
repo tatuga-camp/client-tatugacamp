@@ -91,7 +91,7 @@ function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
                   </div>
                 )}
               <div className="mt-2 flex flex-col items-center justify-center font-Kanit font-semibold text-2xl text-blue-500">
-                <span className=" w-60 truncate">
+                <span className=" w-60 truncate text-center">
                   {user?.firstName} {user?.lastName}
                 </span>
                 <span className=" font-light text-gray-500 text-sm">
