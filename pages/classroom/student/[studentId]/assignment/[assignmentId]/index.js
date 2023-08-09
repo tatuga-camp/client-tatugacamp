@@ -41,6 +41,7 @@ function Index() {
     { title: 'งานของคุณ', translate: 'translate-x-28' },
     { title: 'คอมเมนต์', translate: 'translate-x-52' },
   ];
+  const [loadingTiny, setLoadingTiny] = useState(true);
   const [teacher, setTeacher] = useState();
   const [loading, setLoading] = useState(false);
   const [activeMenu, setActiveMenu] = useState(0);
@@ -506,14 +507,35 @@ function Index() {
               </tr>
             </tbody>
           </table>
-          <div className="h-max max-h-96  w-full  lg:text-lg rounded-md max-w-4xl overflow-auto">
-            <div
-              className=" p-5  text-black font-Kanit"
-              dangerouslySetInnerHTML={{
-                __html: assignment?.data?.description,
+          <div
+            className={` ${
+              loadingTiny
+                ? 'w-0 h-0 opacity-0'
+                : 'h-96 max-h-96  w-full opacity-100 '
+            }  lg:text-lg rounded-md max-w-4xl overflow-auto`}
+          >
+            <Editor
+              disabled={true}
+              apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+              init={{
+                setup: function (editor) {
+                  editor.on('init', function () {
+                    setLoadingTiny(() => false);
+                  });
+                },
+                height: '100%',
+                width: '100%',
+                menubar: false,
+                toolbar: false,
+                selector: 'textarea', // change this value according to your HTML
               }}
+              initialValue={assignment?.data?.description}
+              value={assignment?.data?.description}
             />
           </div>
+          {loadingTiny && (
+            <Skeleton variant="rectangular" width="100%" height={400} />
+          )}
         </div>
       </main>
       <animated.div

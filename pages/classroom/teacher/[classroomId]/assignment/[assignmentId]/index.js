@@ -31,6 +31,7 @@ import {
 import SendIcon from '@mui/icons-material/Send';
 import { parseCookies } from 'nookies';
 import ReactPlayer from 'react-player';
+import { Editor } from '@tinymce/tinymce-react';
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -41,6 +42,7 @@ const validateScore = (value) => {
 
 function Index({ error, user }) {
   const router = useRouter();
+  const [loadingTiny, setLoadingTiny] = useState(true);
   const [triggerUpdateAssignment, setTriggerUpdateAssignment] = useState(false);
   const [comment, setComment] = useState();
   const [files, setFiles] = useState([]);
@@ -530,27 +532,45 @@ function Index({ error, user }) {
                   </div>
 
                   <div className="w-full h-[2px] bg-blue-900 rounded-full"></div>
-                  <div className="mt-5 font-Kanit text-xl w-full max-w-screen-2xl mb-28 max-h-full overflow-y-hidden  overflow-x-auto">
-                    {assignment.isLoading || assignment.isFetching ? (
+                  <div
+                    className="mt-5 font-Kanit text-xl w-full max-w-screen-2xl 
+                  mb-28 max-h-full overflow-y-hidden  overflow-x-auto flex items-center justify-center"
+                  >
+                    {(assignment.isLoading ||
+                      assignment.isFetching ||
+                      loadingTiny) && (
                       <div>
-                        <Skeleton variant="text" width="50%" />
-                        <Skeleton variant="text" width="50%" />
-                        <Skeleton variant="text" width="55%" />
-                        <Skeleton variant="text" width="55%" />
-                        <Skeleton variant="text" width="55%" />
-                        <Skeleton variant="text" width="50%" />
-                        <Skeleton variant="text" width="50%" />
-                        <Skeleton variant="text" width="55%" />
-                        <Skeleton variant="text" width="55%" />
-                        <Skeleton variant="text" width="55%" />
+                        <Skeleton variant="text" width={300} height={400} />
                       </div>
-                    ) : (
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: assignment?.data?.data?.description,
-                        }}
-                      />
                     )}
+                    <div
+                      className={` ${
+                        assignment.isLoading ||
+                        assignment.isFetching ||
+                        loadingTiny
+                          ? 'w-0 h-0 opacity-0'
+                          : 'w-10/12 h-96 opacity-100'
+                      }`}
+                    >
+                      <Editor
+                        disabled={true}
+                        apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                        init={{
+                          setup: function (editor) {
+                            editor.on('init', function () {
+                              setLoadingTiny(() => false);
+                            });
+                          },
+                          height: '100%',
+                          width: '100%',
+                          menubar: false,
+                          toolbar: false,
+                          selector: 'textarea', // change this value according to your HTML
+                        }}
+                        initialValue={assignment?.data?.data?.description}
+                        value={assignment?.data?.data?.description}
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="w-full  gap-2 mt-8 bg-blue-500 fixed bottom-0 ">
