@@ -53,12 +53,6 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
   };
   const handleClickToAssign = async () => {
     try {
-      setLoading(() => true);
-      Swal.fire(
-        'success',
-        'assign to another classroom successfully',
-        'success',
-      );
       const classroomOnlySelectd = classroomState.filter(
         (classroom) => classroom.isSelect === true,
       );
@@ -69,6 +63,12 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
         classrooms,
         assignmentId: router.query.assignmentId,
       });
+      setLoading(() => true);
+      Swal.fire(
+        'success',
+        'assign to another classroom successfully',
+        'success',
+      );
       setLoading(() => false);
       setTriggerAssignMultipleClassroom(() => false);
     } catch (err) {
@@ -89,8 +89,13 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
             ? 'มอบหมายงานหลายห้อง'
             : 'assign to another classroom'}
         </h3>
+        <span className="w-7/12 text-center">
+          {user.language === 'Thai'
+            ? 'เมื่อคุณครูกดสร้างชื้นงานให้ห้องอื่นๆ แล้ว จำเป็นต้องเข้าไปในห้องเรียนนั้นๆ เพื่อทำการเลือกว่างานชัิ้นนี้ จะมอบหมายให้แก่นักเรียนคนไหนบ้าง โดยกดเข้าไปที่ปุ่มตั้งค่า ด้านขวาล่างของหน้าชิ้นงาน'
+            : 'after summiting assign work to another classroom, you must assign this work to the students in each classroom as well by clicking the setting button on the bottom right of the assignment screen '}
+        </span>
       </header>
-      <main className="mt-10 h-60 mb-2 overflow-auto">
+      <main className="mt-5 h-60  overflow-auto">
         <table className="">
           <thead className=" bg-orange-600 sticky top-0 drop-shadow-md text-white font-semibold ">
             <tr className="">
