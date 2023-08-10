@@ -53,6 +53,7 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
   };
   const handleClickToAssign = async () => {
     try {
+      setLoading(() => true);
       const classroomOnlySelectd = classroomState.filter(
         (classroom) => classroom.isSelect === true,
       );
@@ -63,7 +64,7 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
         classrooms,
         assignmentId: router.query.assignmentId,
       });
-      setLoading(() => true);
+
       Swal.fire(
         'success',
         'assign to another classroom successfully',
