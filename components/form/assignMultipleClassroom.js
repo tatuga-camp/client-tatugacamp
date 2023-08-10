@@ -1,0 +1,149 @@
+import React, { useEffect, useState } from 'react';
+import { MdOutlineAssignmentReturn } from 'react-icons/md';
+import { useQuery } from 'react-query';
+import { GetAllClassrooms } from '../../service/classroom';
+import { Pagination } from '@mui/material';
+import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
+import Loading from '../loading/loading';
+import { CreateAssignmentToAnotherClassroom } from '../../service/assignment';
+
+function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [classroomState, setClassroomState] = useState();
+  const classrooms = useQuery(
+    ['classrooms', page],
+    () => GetAllClassrooms({ page: page }),
+    { keepPreviousData: true },
+  );
+
+  useEffect(() => {
+    if (router.isReady) {
+      const filteredArray = classrooms?.data?.classrooms.filter(
+        (classroom) => classroom.id !== router.query.classroomId,
+      );
+      setClassroomState(() =>
+        filteredArray?.map((classroom) => {
+          return {
+            ...classroom,
+            isSelect: false,
+          };
+        }),
+      );
+    }
+  }, [classrooms.isFetching, router.isReady]);
+
+  const handleChangeCheckbox = ({ classroomId }) => {
+    setClassroomState((prev) =>
+      prev.map((classroom) => {
+        if (classroomId === classroom.id) {
+          return {
+            ...classroom,
+            isSelect: !classroom.isSelect,
+          };
+        } else {
+          return {
+            ...classroom,
+          };
+        }
+      }),
+    );
+  };
+  const handleClickToAssign = async () => {
+    try {
+      setLoading(() => true);
+      Swal.fire(
+        'success',
+        'assign to another classroom successfully',
+        'success',
+      );
+      const classroomOnlySelectd = classroomState.filter(
+        (classroom) => classroom.isSelect === true,
+      );
+      const classrooms = classroomOnlySelectd.map((classroom) => {
+        return { classroomId: classroom.id };
+      });
+      const response = await CreateAssignmentToAnotherClassroom({
+        classrooms,
+        assignmentId: router.query.assignmentId,
+      });
+      setLoading(() => false);
+      setTriggerAssignMultipleClassroom(() => false);
+    } catch (err) {
+      setLoading(() => false);
+      console.log(err);
+      Swal.fire('error', err?.response?.data?.message.toString(), 'error');
+    }
+  };
+
+  return (
+    <div className="font-Kanit flex flex-col justify-start items-center">
+      <header className="w-full flex flex-col gap-2 justify-center items-center">
+        <div className="flex justify-center items-center p-3 bg-blue-600 text-white text-3xl rounded-full">
+          <MdOutlineAssignmentReturn />
+        </div>
+        <h3 className="text-blue-600 font-semibold text-3xl">
+          {user.language === 'Thai'
+            ? 'มอบหมายงานหลายห้อง'
+            : 'assign to another classroom'}
+        </h3>
+      </header>
+      <main className="mt-10 h-60 mb-2 overflow-auto">
+        <table className="">
+          <thead className=" bg-orange-600 sticky top-0 drop-shadow-md text-white font-semibold ">
+            <tr className="">
+              <td className="w-60 py-4 pl-4">ชื่อห้อง</td>
+              <td className="w-40">ระดับ</td>
+              <td className="w-60">คำอธิบาย</td>
+              <td className="w-40">เลือก</td>
+            </tr>
+          </thead>
+          <tbody>
+            {classroomState?.map((classroom) => {
+              return (
+                <tr key={classroom?.id} className="border-b border-black">
+                  <td className="w-60 py-4 pl-4">{classroom?.title}</td>
+                  <td className="w-40">{classroom?.level}</td>
+                  <td className="w-60">{classroom?.description}</td>
+                  <td className="w-40">
+                    <input
+                      checked={classroom?.isSelect}
+                      onChange={() =>
+                        handleChangeCheckbox({ classroomId: classroom?.id })
+                      }
+                      type="checkbox"
+                      className="w-6 h-6 ring-2  text-blue-600 bg-gray-100 border-gray-300 rounded
+                     focus:ring-blue-500 dark:focus:ring-blue-600
+                     dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </main>
+      <footer className="flex flex-col justify-center items-center gap-2">
+        {loading ? (
+          <Loading />
+        ) : (
+          <button
+            onClick={handleClickToAssign}
+            className="px-4 py-2 rounded-md bg-blue-500 text-white hover:scale-110 transition duration-100 
+        drop-shadow-md hover:bg-blue-700 active:ring-2 ring-blue-200"
+          >
+            {user.language === 'Thai' ? 'มอบหมาย' : 'assign'}
+          </button>
+        )}
+        <Pagination
+          count={classrooms?.data?.totalPages}
+          onChange={(e, page) => setPage(page)}
+        />
+      </footer>
+    </div>
+  );
+}
+
+export default AssignMultipleClassroom;

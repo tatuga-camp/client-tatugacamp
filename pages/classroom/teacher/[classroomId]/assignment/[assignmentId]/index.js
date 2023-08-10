@@ -9,7 +9,7 @@ import {
 } from '../../../../../../service/assignment.js';
 import { FiSettings } from 'react-icons/fi';
 import { Box, Skeleton, TextField } from '@mui/material';
-import { MdDelete } from 'react-icons/md';
+import { MdDelete, MdOutlineAssignmentReturn } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import Image from 'next/image';
 import 'lightbox.js-react/dist/index.css';
@@ -32,6 +32,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { parseCookies } from 'nookies';
 import ReactPlayer from 'react-player';
 import { Editor } from '@tinymce/tinymce-react';
+import AssignMultipleClassroom from '../../../../../../components/form/assignMultipleClassroom.js';
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -44,6 +45,8 @@ function Index({ error, user }) {
   const router = useRouter();
   const [loadingTiny, setLoadingTiny] = useState(true);
   const [triggerUpdateAssignment, setTriggerUpdateAssignment] = useState(false);
+  const [triggerAssignMultipleClassroom, setTriggerAssignMultipleClassroom] =
+    useState(false);
   const [comment, setComment] = useState();
   const [files, setFiles] = useState([]);
   const [studentSummitDate, setStudentSummitDate] = useState({
@@ -60,9 +63,15 @@ function Index({ error, user }) {
       enabled: false,
     },
   );
-  const students = useQuery(['students'], () => {
-    GetAllStudents({ classroomId: router.query.classroomId });
-  });
+  const students = useQuery(
+    ['students'],
+    () => {
+      GetAllStudents({ classroomId: router.query.classroomId });
+    },
+    {
+      enabled: false,
+    },
+  );
 
   const studentOnAssignments = useQuery(
     ['studentOnAssignments'],
@@ -80,7 +89,6 @@ function Index({ error, user }) {
     comment: '',
     score: '',
   });
-  console.log(teacherReview);
   const [currentStudentWork, setCurrentStudentWork] = useState();
   const [images, setImages] = useState([]);
   const menus = [
@@ -100,8 +108,10 @@ function Index({ error, user }) {
 
   // refetch studentOnAssinment when  there is new assignment?.data?.data?
   useEffect(() => {
-    students.refetch();
-    assignment.refetch();
+    if (router.isReady) {
+      students.refetch();
+      assignment.refetch();
+    }
   }, [router.isReady]);
 
   // convert date format
@@ -119,8 +129,14 @@ function Index({ error, user }) {
     },
   );
 
+  //handle to assign current assignment to another classroom
+  const handleClickAssignMultipleClassroom = () => {
+    setTriggerAssignMultipleClassroom((prev) => !prev);
+  };
+
   //handle show update assignmnet compponent
   const handleClickUpdateAssignment = () => {
+    setTriggerAssignMultipleClassroom(() => false);
     setTriggerUpdateAssignment(true);
   };
   const handleDelteStudentWork = async () => {
@@ -504,75 +520,84 @@ function Index({ error, user }) {
             {/* assignment detail */}
             {activeMenu === 0 && (
               <div className="w-full flex flex-col mt-5 items-center justify-start h-full  ">
-                <div className="w-11/12   max-h-full">
-                  <div className="flex justify-between ">
-                    <span className="lg:text-4xl">
-                      {assignment.isLoading || assignment.isFetching ? (
-                        <Skeleton variant="text" width={200} />
-                      ) : (
-                        assignment?.data?.data?.title
-                      )}
-                    </span>
-                    <div className="flex items-center justify-center flex-col">
-                      <div
-                        className="w-max px-2 h-10 rounded-xl flex items-center justify-center
-              bg-orange-400 font-Poppins font-bold text-xl text-white"
-                      >
+                {triggerAssignMultipleClassroom ? (
+                  <AssignMultipleClassroom
+                    user={user}
+                    setTriggerAssignMultipleClassroom={
+                      setTriggerAssignMultipleClassroom
+                    }
+                  />
+                ) : (
+                  <div className="w-11/12   max-h-full">
+                    <div className="flex justify-between ">
+                      <span className="lg:text-4xl">
                         {assignment.isLoading || assignment.isFetching ? (
-                          <Skeleton variant="text" />
+                          <Skeleton variant="text" width={200} />
                         ) : (
-                          assignment?.data?.data?.maxScore.toLocaleString()
+                          assignment?.data?.data?.title
                         )}
-                      </div>
-                      <span>
-                        {user.language === 'Thai' && 'คะแนนเต็ม'}
-                        {user.language === 'English' && 'score'}
                       </span>
-                    </div>
-                  </div>
-
-                  <div className="w-full h-[2px] bg-blue-900 rounded-full"></div>
-                  <div
-                    className="mt-5 font-Kanit text-xl w-full max-w-screen-2xl 
-                  mb-28 max-h-full overflow-y-hidden  overflow-x-auto flex items-center justify-center"
-                  >
-                    {(assignment.isLoading ||
-                      assignment.isFetching ||
-                      loadingTiny) && (
-                      <div>
-                        <Skeleton variant="text" width={300} height={400} />
+                      <div className="flex items-center justify-center flex-col">
+                        <div
+                          className="w-max px-2 h-10 rounded-xl flex items-center justify-center
+              bg-orange-400 font-Poppins font-bold text-xl text-white"
+                        >
+                          {assignment.isLoading || assignment.isFetching ? (
+                            <Skeleton variant="text" />
+                          ) : (
+                            assignment?.data?.data?.maxScore.toLocaleString()
+                          )}
+                        </div>
+                        <span>
+                          {user.language === 'Thai' && 'คะแนนเต็ม'}
+                          {user.language === 'English' && 'score'}
+                        </span>
                       </div>
-                    )}
+                    </div>
+
+                    <div className="w-full h-[2px] bg-blue-900 rounded-full"></div>
                     <div
-                      className={` ${
-                        assignment.isLoading ||
-                        assignment.isFetching ||
-                        loadingTiny
-                          ? 'w-0 h-0 opacity-0'
-                          : 'w-10/12 h-96 opacity-100'
-                      }`}
+                      className="mt-5 font-Kanit text-xl w-full max-w-screen-2xl 
+                  mb-28 max-h-full overflow-y-hidden  overflow-x-auto flex items-center justify-center"
                     >
-                      <Editor
-                        disabled={true}
-                        apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
-                        init={{
-                          setup: function (editor) {
-                            editor.on('init', function () {
-                              setLoadingTiny(() => false);
-                            });
-                          },
-                          height: '100%',
-                          width: '100%',
-                          menubar: false,
-                          toolbar: false,
-                          selector: 'textarea', // change this value according to your HTML
-                        }}
-                        initialValue={assignment?.data?.data?.description}
-                        value={assignment?.data?.data?.description}
-                      />
+                      {(assignment.isLoading ||
+                        assignment.isFetching ||
+                        loadingTiny) && (
+                        <div>
+                          <Skeleton variant="text" width={300} height={400} />
+                        </div>
+                      )}
+                      <div
+                        className={` ${
+                          assignment.isLoading ||
+                          assignment.isFetching ||
+                          loadingTiny
+                            ? 'w-0 h-0 opacity-0'
+                            : 'w-10/12 h-96 opacity-100'
+                        }`}
+                      >
+                        <Editor
+                          disabled={true}
+                          apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                          init={{
+                            setup: function (editor) {
+                              editor.on('init', function () {
+                                setLoadingTiny(() => false);
+                              });
+                            },
+                            height: '100%',
+                            width: '100%',
+                            menubar: false,
+                            toolbar: false,
+                            selector: 'textarea', // change this value according to your HTML
+                          }}
+                          initialValue={assignment?.data?.data?.description}
+                          value={assignment?.data?.data?.description}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
                 <div className="w-full  gap-2 mt-8 bg-blue-500 fixed bottom-0 ">
                   <div className="p-6 flex  items-end justify-between text-white">
                     <div>
@@ -605,6 +630,22 @@ function Index({ error, user }) {
                         <span className="text-sm">
                           {user.language === 'Thai' && 'แก้ไข'}
                           {user.language === 'English' && 'setting'}
+                        </span>
+                      </div>
+                      <div
+                        onClick={handleClickAssignMultipleClassroom}
+                        className={`text-xl flex flex-col items-center ${
+                          triggerAssignMultipleClassroom
+                            ? 'ring-white'
+                            : 'ring-transparent'
+                        } ring-2  p-2 rounded-md 
+                        justify-center active:ring-4 hover:scale-110 transition duration-150 cursor-pointer`}
+                      >
+                        <MdOutlineAssignmentReturn />
+                        <span className="text-sm">
+                          {user.language === 'Thai' && 'มอบหมายหลายห้อง'}
+                          {user.language === 'English' &&
+                            'Assign to another classroom'}
                         </span>
                       </div>
                     </div>
