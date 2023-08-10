@@ -2,6 +2,33 @@ import axios from 'axios';
 import Error from 'next/error';
 import { parseCookies } from 'nookies';
 
+export async function CreateAssignmentToAnotherClassroom({
+  classrooms,
+  assignmentId,
+}) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const assign = await axios.post(
+      `${process.env.Server_Url}/user/assignment/assign-assignment-to-multiple-classroom`,
+      {
+        classrooms,
+        assignmentId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return assign;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
 export async function CreateAssignmentApi({
   classroomId,
   title,
