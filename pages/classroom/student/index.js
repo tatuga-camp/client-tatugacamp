@@ -45,7 +45,9 @@ function Index() {
 
   // fetch classroom when router is ready
   useEffect(() => {
-    classroom.refetch();
+    if (rounter.isReady) {
+      classroom.refetch();
+    }
   }, [rounter.isReady, rounter.query.classroomCode]);
   const filteredPeople =
     query === ''
@@ -80,22 +82,20 @@ function Index() {
         )}
         <div className="h-[40rem] w-full  flex items-center   pt-28 md:pt-0 font-Kanit">
           <main className="w-full flex justify-center ">
-            {classroom.isLoading ||
-              (loading === true && (
-                <div className="flex items-center justify-center flex-col  w-full">
-                  <Skeleton variant="circular" width={120} height={120} />
-                  <Skeleton
-                    variant="text"
-                    width={200}
-                    sx={{ fontSize: '1rem' }}
-                  />
-                  <div className="mt-10 flex flex-col gap-4 justify-center items-center">
-                    <Skeleton variant="rounded" width={300} height={60} />
-                    <Skeleton variant="rounded" width={210} height={60} />
-                  </div>
+            {classroom.isLoading || loading === true || !rounter.isReady ? (
+              <div className="flex items-center justify-center flex-col  w-full">
+                <Skeleton variant="circular" width={120} height={120} />
+                <Skeleton
+                  variant="text"
+                  width={200}
+                  sx={{ fontSize: '1rem' }}
+                />
+                <div className="mt-10 flex flex-col gap-4 justify-center items-center">
+                  <Skeleton variant="rounded" width={300} height={60} />
+                  <Skeleton variant="rounded" width={210} height={60} />
                 </div>
-              ))}
-            {classroom.isError && (
+              </div>
+            ) : classroom.isError && rounter.isReady ? (
               <div className="flex flex-col h-full  ">
                 <div className=" flex items-center justify-center gap-2">
                   <span className="font-Kanit text-3xl font-semibold text-red-500">
@@ -108,12 +108,10 @@ function Index() {
 
                 <span className="text-red-400">โปรดกรอกรหัสใหม่</span>
               </div>
-            )}
-
-            {classroom.data && !classroom.isError && loading === false && (
+            ) : (
               <div
                 className="flex flex-col md:flex-row gap-2 max-w-xl w-5/6 md:w-full md:max-w-4xl
-               z-30 justify-center md:justify-center  items-center "
+             z-30 justify-center md:justify-center  items-center "
               >
                 <div className="w-full flex flex-col justify-center  md:w-80 ">
                   <div className="w-full flex gap-2 flex-col items-center justify-center mb-5">
@@ -165,14 +163,14 @@ function Index() {
                     <div className="relative ">
                       <div
                         className="relative w-full cursor-default overflow-hidden rounded-lg ring-2 ring-blue-500
-                      text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white
-                       focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
+                    text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white
+                     focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
                       >
                         <Combobox.Input
                           autoComplete="off"
                           className="w-full border-none  py-2 pl-3 pr-10 text-sm leading-5 
-                         text-gray-900 focus:ring-0 focus:border-none outline-none
-                        active:border-none"
+                       text-gray-900 focus:ring-0 focus:border-none outline-none
+                      active:border-none"
                           displayValue={(person) =>
                             `${person.firstName}  ${person?.lastName}`
                           }
@@ -266,15 +264,15 @@ function Index() {
                         }}
                         type="button"
                         className=" text-white bg-blue-500 mt-6
-                         hover:bg-[#EDBA02] hover:scale-110 transition duration-150
-               py-2 px-4 w-2/4 font-Poppins rounded-md  font-semibold "
+                       hover:bg-[#EDBA02] hover:scale-110 transition duration-150
+             py-2 px-4 w-2/4 font-Poppins rounded-md  font-semibold "
                       >
                         Join
                       </button>
                     ) : (
                       <div
                         className=" text-white flex items-center justify-center bg-gray-600 mt-6 
-           py-2 px-4 w-max font-Poppins rounded-md ring-2 font-semibold ring-white border-white"
+         py-2 px-4 w-max font-Poppins rounded-md ring-2 font-semibold ring-white border-white"
                       >
                         โปรดเลือกก่อน
                       </div>

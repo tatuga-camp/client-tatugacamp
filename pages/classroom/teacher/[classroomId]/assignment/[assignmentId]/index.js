@@ -186,6 +186,9 @@ function Index({ error, user }) {
 
   //handle trigger menu
   const handleMenuTrigger = (index) => {
+    if (index === 0) {
+      setTriggerAssignMultipleClassroom(() => false);
+    }
     if (index === 1) {
       studentOnAssignments.refetch();
     }
