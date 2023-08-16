@@ -30,6 +30,7 @@ import { MdOutlineInventory2 } from 'react-icons/md';
 import { AiOutlineCloudUpload, AiOutlinePlus } from 'react-icons/ai';
 import { useSpring, animated } from '@react-spring/web';
 import { FiRefreshCw } from 'react-icons/fi';
+import ReactPlayer from 'react-player';
 
 function Index() {
   const router = useRouter();
@@ -668,14 +669,17 @@ application/pdf,
                   </div>
 
                   <div className="grid grid-cols-2 place-items-center gap-5 relative h-32  overflow-y-auto ring-2 p-3 rounded-xl">
-                    {selectedFiles.map((file) => {
+                    {selectedFiles.map((file, index) => {
                       if (
                         file.type === 'image/jpeg' ||
                         file.type === '' ||
                         file.type === 'image/png'
                       )
                         return (
-                          <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
+                          <div
+                            key={index}
+                            className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl"
+                          >
                             <div className="flex items-center justify-center text-green-700">
                               <BsImageFill />
                             </div>
@@ -853,10 +857,13 @@ application/pdf,
                               key={index}
                               className="w-full flex  justify-center"
                             >
-                              <video controls width="80%">
-                                <source src={file.url} type="video/mp4" />
-                                Sorry, your browser doesn't support videos.
-                              </video>
+                              <ReactPlayer
+                                playsinline
+                                controls
+                                width="100%"
+                                height="100%"
+                                url={file.url}
+                              />
                             </div>
                           );
                         }
@@ -907,10 +914,13 @@ application/pdf,
                     </div>
                   </div>
                 )}
-                {comments?.data?.data?.map((comment) => {
+                {comments?.data?.data?.map((comment, index) => {
                   if (comment.user) {
                     return (
-                      <div className=" w-full h-max mt-5 flex items-start justify-start relative ">
+                      <div
+                        key={index}
+                        className=" w-full h-max mt-5 flex items-start justify-start relative "
+                      >
                         <div className="flex gap-2 ml-2">
                           {comment.user.picture ? (
                             <div className="w-12 h-12 rounded-full overflow-hidden relative">

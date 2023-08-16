@@ -33,6 +33,8 @@ import { parseCookies } from 'nookies';
 import ReactPlayer from 'react-player';
 import { Editor } from '@tinymce/tinymce-react';
 import AssignMultipleClassroom from '../../../../../../components/form/assignMultipleClassroom.js';
+import { AiOutlineComment } from 'react-icons/ai';
+import { HiPaperClip } from 'react-icons/hi2';
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -45,6 +47,9 @@ function Index({ error, user }) {
   const router = useRouter();
   const [loadingTiny, setLoadingTiny] = useState(true);
   const [triggerUpdateAssignment, setTriggerUpdateAssignment] = useState(false);
+  const [triggerShowFiles, setTriggerShowFiles] = useState(true);
+  const [triggerShowComment, setTriggerShowComment] = useState(false);
+
   const [triggerAssignMultipleClassroom, setTriggerAssignMultipleClassroom] =
     useState(false);
   const [comment, setComment] = useState();
@@ -659,8 +664,8 @@ function Index({ error, user }) {
 
             {/* student's assignment */}
             {activeMenu === 1 && (
-              <div className="flex items-start justify-start w-full h-full  gap-5   mt-5  ">
-                <div className="lg:w-full md:w-2/4  top-10 sticky flex flex-col h-full items-center justify-center ">
+              <div className="flex items-start  gap-5 justify-center w-full h-full    mt-5  ">
+                <div className="lg:w-max lg:max-w-xl md:w-2/4  top-10 sticky flex flex-col h-full items-center justify-center ">
                   <div className="text-xl font-Kanit font-semibold flex justify-center items-center gap-2">
                     <span>
                       {user.language === 'Thai' && 'สถานะการส่งงานของผู้เรียน'}
@@ -759,7 +764,7 @@ function Index({ error, user }) {
                                 key={index}
                                 className="flex gap-5 mb-2 justify-center "
                               >
-                                <th className="flex justify-center w-10 ">
+                                <th className="flex justify-end hover:w-max items-center text-right w-10 truncate text-sm font-normal  ">
                                   {student.number}
                                 </th>
                                 <td className="flex items-center justify-start gap-4 lg:w-40 md:w-28  truncate xl:w-60">
@@ -837,8 +842,11 @@ function Index({ error, user }) {
                 </div>
 
                 {/* review student work section */}
-                <div className="flex flex-col lg:w-full md:w-2/4 sticky top-20 items-center justify-between h-full ">
-                  <div className="flex w-full  lg:justify-between  mt-10">
+                <div
+                  className="flex flex-col    lg:w-2/4 md:w-2/4 sticky
+                 top-20 items-center justify-between h-full "
+                >
+                  <div className="flex  w-full  lg:justify-between  mt-10">
                     <div className="flex items-center md:w-5/12 lg:w-max justify-center relative ">
                       <div className="lg:text-3xl md:text-xl w-max font-Kanit flex">
                         <span>
@@ -892,7 +900,7 @@ function Index({ error, user }) {
                       </form>
                     )}
                   </div>
-                  <div className="flex flex-col justify-start w-full">
+                  <div className="flex  flex-col justify-start w-full">
                     <div className="w-full flex justify-start items-center gap-2 ">
                       <span>
                         {user.language === 'Thai' && 'เลขที่'}
@@ -940,177 +948,177 @@ function Index({ error, user }) {
                       </div>
                     )}
                   </div>
-                  <div className="h-96  overflow-auto md:w-full scrollbar-hide">
-                    <div className=" flex flex-col w-full gap-10 ">
-                      {currentStudentWork && images && images !== null ? (
-                        <SlideshowLightbox
-                          downloadImages={true}
-                          lightboxIdentifier="lightbox1"
-                          showThumbnails={true}
-                          framework="next"
-                          images={images}
-                          theme="day"
-                          className={`container grid ${
-                            images.length === 1
-                              ? 'grid-cols-1'
-                              : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '
-                          } lg:w-full md:w-60 mx-auto h-full  place-items-center
-                         `}
-                        >
-                          {images.map((image, index) => {
-                            return (
-                              <div
-                                key={index}
-                                className="lg:w-60 lg:h-60 md:w-40 md:h-40 relative bg-blue-200 "
-                              >
-                                <Image
-                                  src={image.src}
-                                  alt="student's work"
-                                  layout="fill"
-                                  className="object-cover hover:scale-125 transition duration-150"
-                                  data-lightboxjs="lightbox1"
-                                  quality={60}
-                                  placeholder="blur"
-                                  blurDataURL="/logo/TaTuga camp.png"
-                                />
-                              </div>
-                            );
-                          })}
-                        </SlideshowLightbox>
-                      ) : (
-                        <div
-                          className="w-full   h-72 text-center flex items-center justify-center font-Kanit
-                      font-bold text-2xl text-gray-300"
-                        >
-                          {currentStudentWork?.status === 'no-work' &&
-                            user.language === 'Thai' &&
-                            'ผู้เรียนยังไม่ส่งงาน'}
-                          {currentStudentWork?.status === 'have-work' &&
-                            user.language === 'Thai' &&
-                            'ตรวจงานโดยผู้เรียนไม่ส่งงาน'}
-                          {!currentStudentWork &&
-                            user.language === 'Thai' &&
-                            'โปรดเลือกงาน'}
-                          {currentStudentWork?.status === 'no-work' &&
-                            user.language === 'English' &&
-                            "NO student's work"}
-                          {currentStudentWork?.status === 'have-work' &&
-                            user.language === 'English' &&
-                            "Finish checking without student's work"}
-                          {!currentStudentWork &&
-                            user.language === 'English' &&
-                            'Please select some student'}
-                        </div>
-                      )}
-                      <div className="flex flex-col gap-5 justify-start items-center">
-                        {files.map((file, index) => {
-                          if (file.fileType === 'pdf') {
-                            return (
-                              <div
-                                key={index}
-                                className="w-full flex justify-center"
-                              >
-                                <embed
-                                  src={file.url}
-                                  type="application/pdf"
-                                  frameBorder="0"
-                                  scrolling="auto"
-                                  height="500px"
-                                  width="80%"
-                                ></embed>
-                              </div>
-                            );
-                          }
-                          if (file.fileType === 'docx') {
-                            return (
-                              <div
-                                key={index}
-                                className="w-full flex  justify-center"
-                              >
-                                <iframe
-                                  width="80%"
-                                  height="500px"
-                                  src={`https://docs.google.com/gview?url=${file.url}&embedded=true`}
-                                ></iframe>
-                              </div>
-                            );
-                          }
-                          if (
-                            file.fileType === 'mp4' ||
-                            file.fileType === 'mov' ||
-                            file.fileType === 'MOV'
-                          ) {
-                            return (
-                              <div
-                                key={index}
-                                className="w-full flex  justify-center"
-                              >
-                                <ReactPlayer
-                                  playsinline
-                                  controls
-                                  width="100%"
-                                  height="100%"
-                                  url={file.url}
-                                />
-                              </div>
-                            );
-                          }
-                          if (
-                            file.fileType === 'mp3' ||
-                            file.fileType === 'aac'
-                          ) {
-                            return (
-                              <div
-                                key={index}
-                                className="w-full flex  justify-center"
-                              >
-                                <audio
-                                  src={file.url}
-                                  controls={true}
-                                  autoPlay={false}
-                                />
-                              </div>
-                            );
-                          }
-                        })}
-                      </div>
+                  <div className="h-80 ring-2  ring-black  p-0 m-2 relative rounded-md overflow-auto md:w-full ">
+                    <div
+                      className="w-full h-max py-2 border-b-2 bg-white border-slate-200 sticky z-20 flex justify-center items-center gap-5
+                     top-0"
+                    >
+                      <button
+                        onClick={() => {
+                          setTriggerShowFiles(() => true);
+                          setTriggerShowComment(() => false);
+                        }}
+                        aria-label="button to trigger show student's assignment"
+                        className={`text-xl p-3 hover:scale-110 transition duration-150 ${
+                          triggerShowFiles
+                            ? '  text-green-200 bg-green-600'
+                            : 'text-green-700 bg-green-200'
+                        }
+                       hover:text-green-200 hover:bg-green-600 rounded-full  `}
+                      >
+                        <HiPaperClip />
+                      </button>
+                      <button
+                        onClick={() => {
+                          setTriggerShowFiles(() => false);
+                          setTriggerShowComment(() => true);
+                        }}
+                        aria-label="button to trigger show student's comment"
+                        className={`text-xl p-3 hover:scale-110 transition duration-150 ${
+                          triggerShowComment
+                            ? '  text-green-200 bg-green-600'
+                            : 'text-green-700 bg-green-200'
+                        }
+                         hover:text-green-200 hover:bg-green-600 rounded-full `}
+                      >
+                        <AiOutlineComment />
+                      </button>
                     </div>
-                    {currentStudentWork?.studentWork?.body && (
-                      <div className=" w-full h-max mt-5 flex items-start justify-start relative ">
-                        <div className="flex gap-2 md:ml-2 lg:ml-20">
-                          {currentStudentWork?.picture ? (
-                            <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                              <Image
-                                src={currentStudentWork?.picture}
-                                alt="profile"
-                                sizes="(max-width: 768px) 100vw"
-                                layout="fill"
-                                className="object-cover"
-                              />
-                            </div>
-                          ) : (
-                            <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
-                              <span className="uppercase font-sans font-black text-3xl text-white">
-                                {currentStudentWork?.firstName.charAt(0)}
-                              </span>
-                            </div>
-                          )}
-                          <div className="w-max max-w-[10rem] lg:max-w-xl pr-10  bg-blue-100 rounded-3xl h-full relative  p-2">
-                            <div className="text-md ml-4 font-bold first-letter:uppercase">
-                              {currentStudentWork?.firstName}
-                              {currentStudentWork?.lastName}
-                            </div>
-
-                            <div
-                              className="pl-4 break-words "
-                              dangerouslySetInnerHTML={{
-                                __html: currentStudentWork?.studentWork?.body,
-                              }}
-                            />
+                    {triggerShowFiles && (
+                      <div className=" flex flex-col w-full gap-10 ">
+                        {currentStudentWork && images && images !== null ? (
+                          <SlideshowLightbox
+                            downloadImages={true}
+                            lightboxIdentifier="lightbox1"
+                            showThumbnails={true}
+                            framework="next"
+                            images={images}
+                            theme="day"
+                            className={`container grid ${
+                              images.length === 1
+                                ? 'grid-cols-1'
+                                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '
+                            } lg:w-full md:w-60 mx-auto h-full  place-items-center
+                         `}
+                          >
+                            {images.map((image, index) => {
+                              return (
+                                <div
+                                  key={index}
+                                  className="lg:w-60 lg:h-60 md:w-40 md:h-40 relative bg-blue-200 "
+                                >
+                                  <Image
+                                    src={image.src}
+                                    alt="student's work"
+                                    layout="fill"
+                                    className="object-cover hover:scale-125 transition duration-150"
+                                    data-lightboxjs="lightbox1"
+                                    quality={60}
+                                    placeholder="blur"
+                                    blurDataURL="/logo/TaTuga camp.png"
+                                  />
+                                </div>
+                              );
+                            })}
+                          </SlideshowLightbox>
+                        ) : (
+                          <div
+                            className="w-full   h-80 text-center flex items-center justify-center font-Kanit
+                      font-bold text-2xl "
+                          >
+                            {currentStudentWork?.status === 'no-work' &&
+                              user.language === 'Thai' &&
+                              'ผู้เรียนยังไม่ส่งงาน'}
+                            {currentStudentWork?.status === 'have-work' &&
+                              user.language === 'Thai' &&
+                              'ตรวจงานโดยผู้เรียนไม่ส่งงาน'}
+                            {!currentStudentWork &&
+                              user.language === 'Thai' &&
+                              'โปรดเลือกงาน'}
+                            {currentStudentWork?.status === 'no-work' &&
+                              user.language === 'English' &&
+                              "NO student's work"}
+                            {currentStudentWork?.status === 'have-work' &&
+                              user.language === 'English' &&
+                              "Finish checking without student's work"}
+                            {!currentStudentWork &&
+                              user.language === 'English' &&
+                              'Please select some student'}
                           </div>
+                        )}
+                        <div className="flex flex-col gap-5 justify-start items-center">
+                          {files.map((file, index) => {
+                            if (file.fileType === 'pdf') {
+                              return (
+                                <div
+                                  key={index}
+                                  className="w-full flex justify-center"
+                                >
+                                  <embed
+                                    src={file.url}
+                                    type="application/pdf"
+                                    frameBorder="0"
+                                    scrolling="auto"
+                                    height="500px"
+                                    width="80%"
+                                  ></embed>
+                                </div>
+                              );
+                            }
+                            if (file.fileType === 'docx') {
+                              return (
+                                <div
+                                  key={index}
+                                  className="w-full flex  justify-center"
+                                >
+                                  <iframe
+                                    width="80%"
+                                    height="500px"
+                                    src={`https://docs.google.com/gview?url=${file.url}&embedded=true`}
+                                  ></iframe>
+                                </div>
+                              );
+                            }
+                            if (
+                              file.fileType === 'mp4' ||
+                              file.fileType === 'mov' ||
+                              file.fileType === 'MOV'
+                            ) {
+                              return (
+                                <div
+                                  key={index}
+                                  className="w-full flex  justify-center"
+                                >
+                                  <ReactPlayer
+                                    playsinline
+                                    controls
+                                    url={file.url}
+                                  />
+                                </div>
+                              );
+                            }
+                            if (
+                              file.fileType === 'mp3' ||
+                              file.fileType === 'aac'
+                            ) {
+                              return (
+                                <div
+                                  key={index}
+                                  className="w-full flex  justify-center"
+                                >
+                                  <audio
+                                    src={file.url}
+                                    controls={true}
+                                    autoPlay={false}
+                                  />
+                                </div>
+                              );
+                            }
+                          })}
                         </div>
                       </div>
                     )}
+
                     {currentStudentWork?.studentWork?.comment && (
                       <div className=" w-full h-max mt-5 flex items-start justify-start relative ">
                         <div className="flex gap-2 md:ml-2 lg:ml-20 w-full ">
@@ -1147,152 +1155,157 @@ function Index({ error, user }) {
                         </div>
                       </div>
                     )}
-                    {comment?.map((comment, index) => {
-                      if (comment.user) {
-                        return (
-                          <div
-                            key={index}
-                            className=" w-full h-max mt-5 flex items-start justify-start relative "
-                          >
-                            <div className="flex gap-2 md:ml-2 lg:ml-20 w-full ">
-                              {comment.user.picture ? (
-                                <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                                  <Image
-                                    src={comment.user.picture}
-                                    alt="profile"
-                                    layout="fill"
-                                    sizes="(max-width: 768px) 100vw"
-                                    className="object-cover"
+                    {triggerShowComment &&
+                      comment?.map((comment, index) => {
+                        if (comment.user) {
+                          return (
+                            <div
+                              key={index}
+                              className=" w-full h-max mt-5 flex items-start justify-start relative "
+                            >
+                              <div className="flex gap-2 md:ml-2 lg:ml-20 w-full ">
+                                {comment.user.picture ? (
+                                  <div className="w-12 h-12 rounded-full overflow-hidden relative">
+                                    <Image
+                                      src={comment.user.picture}
+                                      alt="profile"
+                                      layout="fill"
+                                      sizes="(max-width: 768px) 100vw"
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
+                                    <span className="uppercase font-sans font-black text-3xl text-white">
+                                      {comment.user.firstName.charAt(0)}
+                                    </span>
+                                  </div>
+                                )}
+                                <div className="w-max md:max-w-[15rem] lg:max-w-xl  pr-10  bg-green-100 rounded-3xl h-full relative  p-2">
+                                  <div className="text-md ml-4 font-bold first-letter:uppercase">
+                                    {comment.user.firstName}
+                                    {comment.user?.lastName}
+                                  </div>
+                                  <div
+                                    className="pl-4 break-words "
+                                    dangerouslySetInnerHTML={{
+                                      __html: comment.body,
+                                    }}
                                   />
-                                </div>
-                              ) : (
-                                <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
-                                  <span className="uppercase font-sans font-black text-3xl text-white">
-                                    {comment.user.firstName.charAt(0)}
-                                  </span>
-                                </div>
-                              )}
-                              <div className="w-max md:max-w-[15rem] lg:max-w-xl  pr-10  bg-green-100 rounded-3xl h-full relative  p-2">
-                                <div className="text-md ml-4 font-bold first-letter:uppercase">
-                                  {comment.user.firstName}
-                                  {comment.user?.lastName}
-                                </div>
-                                <div
-                                  className="pl-4 break-words "
-                                  dangerouslySetInnerHTML={{
-                                    __html: comment.body,
-                                  }}
-                                />
-                                <div className="w-full min-w-[8rem] mt-2 flex justify-end text-red-400">
-                                  {!comment.selected && (
-                                    <button
-                                      onClick={() => handleConfirmDelete(index)}
-                                      className="underline"
-                                    >
-                                      ลบ
-                                    </button>
-                                  )}
-                                  {comment.selected && (
-                                    <div className="flex gap-2">
+                                  <div className="w-full min-w-[8rem] mt-2 flex justify-end text-red-400">
+                                    {!comment.selected && (
                                       <button
                                         onClick={() =>
-                                          handleDeleteTeacherComment({
-                                            teacherCommentId: comment.id,
-                                            studentId: currentStudentWork.id,
-                                          })
+                                          handleConfirmDelete(index)
                                         }
+                                        className="underline"
                                       >
-                                        YES
+                                        ลบ
                                       </button>
-                                      <button
-                                        onClick={() =>
-                                          handleUnConfirmDelete(index)
-                                        }
-                                      >
-                                        NO
-                                      </button>
-                                    </div>
-                                  )}
+                                    )}
+                                    {comment.selected && (
+                                      <div className="flex gap-2">
+                                        <button
+                                          onClick={() =>
+                                            handleDeleteTeacherComment({
+                                              teacherCommentId: comment.id,
+                                              studentId: currentStudentWork.id,
+                                            })
+                                          }
+                                        >
+                                          YES
+                                        </button>
+                                        <button
+                                          onClick={() =>
+                                            handleUnConfirmDelete(index)
+                                          }
+                                        >
+                                          NO
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        );
-                      } else if (comment.student) {
-                        return (
-                          <div
-                            key={index}
-                            className=" w-full h-max mt-5 flex items-start justify-start relative "
-                          >
-                            <div className="flex gap-2 md:ml-2 lg:ml-20">
-                              {comment.student.picture ? (
-                                <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                                  <Image
-                                    src={comment.student.picture}
-                                    alt="profile"
-                                    layout="fill"
-                                    sizes="(max-width: 768px) 100vw"
-                                    className="object-cover"
+                          );
+                        } else if (comment.student) {
+                          return (
+                            <div
+                              key={index}
+                              className=" w-full h-max mt-5 flex items-start justify-start relative "
+                            >
+                              <div className="flex gap-2 md:ml-2 lg:ml-20">
+                                {comment.student.picture ? (
+                                  <div className="w-12 h-12 rounded-full overflow-hidden relative">
+                                    <Image
+                                      src={comment.student.picture}
+                                      alt="profile"
+                                      layout="fill"
+                                      sizes="(max-width: 768px) 100vw"
+                                      className="object-cover"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
+                                    <span className="uppercase font-sans font-black text-3xl text-white">
+                                      {comment.student.firstName.charAt(0)}
+                                    </span>
+                                  </div>
+                                )}
+                                <div className="w-max max-w-[10rem] lg:max-w-xl px-5 pr-8  bg-blue-100 rounded-3xl h-full relative  p-2">
+                                  <div className="text-md ml-4 font-bold first-letter:uppercase">
+                                    {comment.student.firstName}
+                                    {comment.student?.lastName}
+                                  </div>
+                                  <div
+                                    className="pl-4 break-words "
+                                    dangerouslySetInnerHTML={{
+                                      __html: comment.body,
+                                    }}
                                   />
-                                </div>
-                              ) : (
-                                <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
-                                  <span className="uppercase font-sans font-black text-3xl text-white">
-                                    {comment.student.firstName.charAt(0)}
-                                  </span>
-                                </div>
-                              )}
-                              <div className="w-max max-w-[10rem] lg:max-w-xl px-5 pr-8  bg-blue-100 rounded-3xl h-full relative  p-2">
-                                <div className="text-md ml-4 font-bold first-letter:uppercase">
-                                  {comment.student.firstName}
-                                  {comment.student?.lastName}
-                                </div>
-                                <div
-                                  className="pl-4 break-words "
-                                  dangerouslySetInnerHTML={{
-                                    __html: comment.body,
-                                  }}
-                                />
-                                <div className="w-full min-w-[8rem] mt-2 flex justify-end text-red-400">
-                                  {!comment.selected && (
-                                    <button
-                                      onClick={() => handleConfirmDelete(index)}
-                                      className="underline"
-                                    >
-                                      ลบ
-                                    </button>
-                                  )}
-                                  {comment.selected && (
-                                    <div className="flex gap-2">
+                                  <div className="w-full min-w-[8rem] mt-2 flex justify-end text-red-400">
+                                    {!comment.selected && (
                                       <button
                                         onClick={() =>
-                                          handleDeleteStudentComment({
-                                            studentCommentId: comment.id,
-                                            studentId: currentStudentWork.id,
-                                          })
+                                          handleConfirmDelete(index)
                                         }
+                                        className="underline"
                                       >
-                                        YES
+                                        ลบ
                                       </button>
-                                      <button
-                                        onClick={() =>
-                                          handleUnConfirmDelete(index)
-                                        }
-                                      >
-                                        NO
-                                      </button>
-                                    </div>
-                                  )}
+                                    )}
+                                    {comment.selected && (
+                                      <div className="flex gap-2">
+                                        <button
+                                          onClick={() =>
+                                            handleDeleteStudentComment({
+                                              studentCommentId: comment.id,
+                                              studentId: currentStudentWork.id,
+                                            })
+                                          }
+                                        >
+                                          YES
+                                        </button>
+                                        <button
+                                          onClick={() =>
+                                            handleUnConfirmDelete(index)
+                                          }
+                                        >
+                                          NO
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        );
-                      }
-                    })}
+                          );
+                        }
+                      })}
                   </div>
 
-                  {currentStudentWork && (
+                  {triggerShowComment && (
                     <form
                       onSubmit={handlePostComment}
                       className="w-full flex items-center justify-center mt-2 gap-5 "
