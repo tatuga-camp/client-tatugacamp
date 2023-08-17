@@ -764,7 +764,7 @@ function Index({ error, user }) {
                                 key={index}
                                 className="flex gap-5 mb-2 justify-center "
                               >
-                                <th className="flex justify-end hover:w-max items-center text-right w-10 truncate text-sm font-normal  ">
+                                <th className="flex justify-end hover:w-max items-center text-right hover:max-w-md max-w-[2.5rem] w-max truncate text-sm font-normal  ">
                                   {student.number}
                                 </th>
                                 <td className="flex items-center justify-start gap-4 lg:w-40 md:w-28  truncate xl:w-60">

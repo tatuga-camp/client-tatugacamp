@@ -31,18 +31,18 @@ import { AiOutlineCloudUpload, AiOutlinePlus } from 'react-icons/ai';
 import { useSpring, animated } from '@react-spring/web';
 import { FiRefreshCw } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
+import { HiOutlineNewspaper } from 'react-icons/hi2';
+import CreateStudentWork from '../../../../../../components/form/createStudentWork';
 
 function Index() {
   const router = useRouter();
   const [springs, api] = useSpring(() => ({
     from: { y: 400 },
   }));
-  const menus = [
-    { title: 'ส่งงาน', translate: 'translate-x-1' },
-    { title: 'งานของคุณ', translate: 'translate-x-28' },
-    { title: 'คอมเมนต์', translate: 'translate-x-52' },
-  ];
+
   const [loadingTiny, setLoadingTiny] = useState(true);
+  const [triggerCreateStudentWork, setTriggerCreateStudentWork] =
+    useState(false);
   const [teacher, setTeacher] = useState();
   const [loading, setLoading] = useState(false);
   const [activeMenu, setActiveMenu] = useState(0);
@@ -345,6 +345,12 @@ function Index() {
         />
         <meta charSet="UTF-8" />
       </Head>
+      {/* {triggerCreateStudentWork && (
+        <CreateStudentWork
+          body={assignment?.data?.description}
+          setTriggerCreateStudentWork={setTriggerCreateStudentWork}
+        />
+      )} */}
       <nav className="w-full fixed z-10 top-5 flex justify-between items-center ">
         <button
           aria-label="button go back to classroom"
@@ -603,33 +609,41 @@ function Index() {
               onSubmit={handleSummitWork}
               className="w-11/12 max-w-3xl h-full  flex flex-col gap-2 items-center justify-top"
             >
-              <span className="text-sm text-red-500 w-8/12 text-center">
-                สามารส่งไฟล์ mp4, mp3, docx, pdf,jpge, png ได้แล้ว ขนาดไม่เกิน
-                100 MB
-              </span>
-              {fetchStudentWork.isLoading ? (
-                <Skeleton variant="rounded" width="100%" height={300} />
-              ) : loading ? (
-                <div>
-                  <Loading />
-                </div>
-              ) : (
-                <label htmlFor="dropzone-file" className="w-max">
-                  <div
-                    className="w-28 h-10 hover:scale-105 transition duration-150
-                   bg-white drop-shadow-xl ring-2 text-black text-3xl flex justify-center items-center rounded-2xl"
-                  >
-                    <AiOutlineCloudUpload />
-                  </div>
+              <div
+                className="w-11/12  max-w-3xl h-max border-b-2 pb-5 border-slate-500
+                flex flex-col gap-2 items-center justify-top"
+              >
+                <span className="text-sm text-red-500 w-8/12 text-center">
+                  สามารส่งไฟล์ mp4, mp3, docx, pdf,jpge, png ได้แล้ว ขนาดไม่เกิน
+                  100 MB
+                </span>
+                <div className="flex justify-center gap-5 w-full">
+                  {fetchStudentWork.isLoading ? (
+                    <Skeleton variant="rounded" width={200} height={50} />
+                  ) : loading ? (
+                    <div>
+                      <Loading />
+                    </div>
+                  ) : (
+                    <label
+                      htmlFor="dropzone-file"
+                      className="w-max flex flex-col h-max gap-1 justify-center items-center"
+                    >
+                      <div
+                        className="w-20 h-8 hover:scale-105 transition duration-150
+                   bg-white drop-shadow-xl ring-2 ring-black text-black text-2xl flex justify-center items-center rounded-2xl"
+                      >
+                        <AiOutlineCloudUpload />
+                      </div>
 
-                  <input
-                    id="dropzone-file"
-                    onChange={handleFileEvent}
-                    name="files"
-                    aria-label="upload image"
-                    type="file"
-                    multiple="multiple"
-                    accept="
+                      <input
+                        id="dropzone-file"
+                        onChange={handleFileEvent}
+                        name="files"
+                        aria-label="upload image"
+                        type="file"
+                        multiple="multiple"
+                        accept="
 application/pdf,
     image/jpeg,
     image/png,
@@ -638,7 +652,7 @@ application/pdf,
     application/vnd.openxmlformats-officedocument.wordprocessingml.document,
     video/mp4,
     audio/mpeg"
-                    className="text-sm text-grey-500 hidden  ring-2
+                        className="text-sm text-grey-500 hidden  ring-2
             file:mr-5 md:file:w-40 file:w-40 w-max file:py-2
             file:rounded-full file:border-0
             file:text-sm file:font-Kanit file:font-normal file:text-white
@@ -647,125 +661,141 @@ application/pdf,
             hover:file:cursor-pointer hover:file:bg-amber-50
             hover:file:text-amber-700
           "
-                  />
-                </label>
-              )}
-              <div className="flex gap-2">
-                <span>ไฟล์ที่คุณเลือกมีขนาด</span>
-                <span>{fileSize}MB</span>
-              </div>
-              {selectedFiles.length > 0 && (
-                <div className="relative">
-                  <div
-                    onClick={() => {
-                      setFilesSize(() => 0);
-                      setSelectedFiles(() => []);
-                    }}
-                    className=" absolute -top-2 z-20 -right-2 "
-                  >
-                    <div className="flex justify-center items-center w-8 h-8 text-xl text-white bg-blue-500 rounded-full p-2">
-                      <FiRefreshCw />
+                      />
+                      <span>อัพโหลดไฟล์</span>
+                    </label>
+                  )}
+                  {/* <div className="flex flex-col justify-center gap-1 items-center">
+                    <button
+                      onClick={() => {
+                        setTriggerCreateStudentWork(() => true);
+                      }}
+                      type="button"
+                      className="w-20 h-8 rounded-xl ring-2 ring-black text-2xl flex 
+                  flex-col items-center justify-center"
+                    >
+                      <HiOutlineNewspaper />
+                    </button>
+                    <span>ใบงาน</span>
+                  </div> */}
+                </div>
+                <div className="flex gap-2">
+                  <span>ไฟล์ที่คุณเลือกมีขนาด</span>
+                  <span>{fileSize}MB</span>
+                </div>
+                {selectedFiles.length > 0 && (
+                  <div className="relative">
+                    <div
+                      onClick={() => {
+                        setFilesSize(() => 0);
+                        setSelectedFiles(() => []);
+                      }}
+                      className=" absolute -top-2 z-20 -right-2 "
+                    >
+                      <div className="flex justify-center items-center w-8 h-8 text-xl text-white bg-blue-500 rounded-full p-2">
+                        <FiRefreshCw />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 place-items-center gap-5 relative h-32  overflow-y-auto ring-2 p-3 rounded-xl">
+                      {selectedFiles.map((file, index) => {
+                        if (
+                          file.type === 'image/jpeg' ||
+                          file.type === '' ||
+                          file.type === 'image/png'
+                        )
+                          return (
+                            <div
+                              key={index}
+                              className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl"
+                            >
+                              <div className="flex items-center justify-center text-green-700">
+                                <BsImageFill />
+                              </div>
+                              <span className="w-20 truncate">{file.name}</span>
+                            </div>
+                          );
+                        if (
+                          file.type === 'video/mp4' ||
+                          file.type === 'video/quicktime'
+                        )
+                          return (
+                            <div className="w-full  px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
+                              <div className="flex items-center justify-center text-green-700">
+                                <FcVideoFile />
+                              </div>
+                              <span className="w-20 truncate">{file.name}</span>
+                            </div>
+                          );
+                        if (
+                          file.type === 'audio/mpeg' ||
+                          file.type === 'audio/mp3'
+                        )
+                          return (
+                            <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
+                              <div className="flex items-center justify-center text-red-700">
+                                <FaFileAudio />
+                              </div>
+                              <span className="w-20 truncate">{file.name}</span>
+                            </div>
+                          );
+                        if (file.type === 'application/pdf')
+                          return (
+                            <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
+                              <div className="flex items-center justify-center text-gray-700">
+                                <FaRegFilePdf />
+                              </div>
+                              <span className="w-20 truncate">{file.name}</span>
+                            </div>
+                          );
+                        if (
+                          file.type ===
+                          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                        )
+                          return (
+                            <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
+                              <div className="flex items-center justify-center text-blue-700">
+                                <IoDocumentText />
+                              </div>
+                              <span className="w-20 truncate">{file.name}</span>
+                            </div>
+                          );
+                      })}
                     </div>
                   </div>
-
-                  <div className="grid grid-cols-2 place-items-center gap-5 relative h-32  overflow-y-auto ring-2 p-3 rounded-xl">
-                    {selectedFiles.map((file, index) => {
-                      if (
-                        file.type === 'image/jpeg' ||
-                        file.type === '' ||
-                        file.type === 'image/png'
-                      )
-                        return (
-                          <div
-                            key={index}
-                            className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl"
-                          >
-                            <div className="flex items-center justify-center text-green-700">
-                              <BsImageFill />
-                            </div>
-                            <span className="w-20 truncate">{file.name}</span>
-                          </div>
-                        );
-                      if (
-                        file.type === 'video/mp4' ||
-                        file.type === 'video/quicktime'
-                      )
-                        return (
-                          <div className="w-full  px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
-                            <div className="flex items-center justify-center text-green-700">
-                              <FcVideoFile />
-                            </div>
-                            <span className="w-20 truncate">{file.name}</span>
-                          </div>
-                        );
-                      if (
-                        file.type === 'audio/mpeg' ||
-                        file.type === 'audio/mp3'
-                      )
-                        return (
-                          <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
-                            <div className="flex items-center justify-center text-red-700">
-                              <FaFileAudio />
-                            </div>
-                            <span className="w-20 truncate">{file.name}</span>
-                          </div>
-                        );
-                      if (file.type === 'application/pdf')
-                        return (
-                          <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
-                            <div className="flex items-center justify-center text-gray-700">
-                              <FaRegFilePdf />
-                            </div>
-                            <span className="w-20 truncate">{file.name}</span>
-                          </div>
-                        );
-                      if (
-                        file.type ===
-                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                      )
-                        return (
-                          <div className="w-full px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
-                            <div className="flex items-center justify-center text-blue-700">
-                              <IoDocumentText />
-                            </div>
-                            <span className="w-20 truncate">{file.name}</span>
-                          </div>
-                        );
-                    })}
+                )}
+                {loading ? (
+                  <div
+                    className="w-40 h-10 mt-5   bg-gray-500 drop-shadow-md text-white rounded-xl
+           flex items-center justify-center"
+                  >
+                    โปรดรอสักครู่
                   </div>
-                </div>
-              )}
-              {loading ? (
-                <div
-                  className="w-40 h-10 mt-5   bg-gray-500 drop-shadow-md text-white rounded-xl
+                ) : fileSize > 100 ? (
+                  <div
+                    className="w-40 h-10 mt-5  bg-red-500 drop-shadow-md text-white rounded-xl
            flex items-center justify-center"
-                >
-                  โปรดรอสักครู่
-                </div>
-              ) : fileSize > 100 ? (
-                <div
-                  className="w-40 h-10 mt-5  bg-red-500 drop-shadow-md text-white rounded-xl
-           flex items-center justify-center"
-                >
-                  ขนาดไฟล์เกิน
-                </div>
-              ) : selectedFiles.length > 0 ? (
-                <button
-                  type="submit"
-                  className="w-40 h-10 mt-5  bg-green-500 drop-shadow-md text-white rounded-xl
+                  >
+                    ขนาดไฟล์เกิน
+                  </div>
+                ) : selectedFiles.length > 0 ? (
+                  <button
+                    type="submit"
+                    className="w-40 h-10 mt-5  bg-green-500 drop-shadow-md text-white rounded-xl
        flex items-center justify-center"
-                >
-                  ส่งงาน
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="w-40 h-10 mt-5  bg-red-500 drop-shadow-md text-white rounded-xl
+                  >
+                    ส่งงาน
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="w-40 h-10 mt-5  bg-red-500 drop-shadow-md text-white rounded-xl
    flex items-center justify-center"
-                >
-                  ส่งงานโดยไม่แนบไฟล์
-                </button>
-              )}
+                  >
+                    ส่งงานโดยไม่แนบไฟล์
+                  </button>
+                )}
+              </div>
             </form>
           )}
 
@@ -896,24 +926,6 @@ application/pdf,
               className="w-11/12 max-w-3xl h-full mt-1 flex flex-col gap-2"
             >
               <div className="w-full h-44 overflow-auto">
-                {studentWork?.body && (
-                  <div className="w-11/12 flex justify-start">
-                    <div className="w-full max-w-5xl pr-6 h-max p-2 rounded-lg bg-blue-50 flex">
-                      <span className="font-semibold">นักเรียน:</span>
-                      <div
-                        style={{
-                          wordWrap: 'break-word',
-                          maxHeight: '200px',
-                          overflowY: 'auto',
-                        }}
-                        className="h-max w-full  overflow-hidden ml-2"
-                        dangerouslySetInnerHTML={{
-                          __html: studentWork?.body,
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
                 {comments?.data?.data?.map((comment, index) => {
                   if (comment.user) {
                     return (
