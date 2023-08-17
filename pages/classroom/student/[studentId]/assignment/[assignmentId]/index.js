@@ -345,12 +345,12 @@ function Index() {
         />
         <meta charSet="UTF-8" />
       </Head>
-      {/* {triggerCreateStudentWork && (
+      {triggerCreateStudentWork && (
         <CreateStudentWork
           body={assignment?.data?.description}
           setTriggerCreateStudentWork={setTriggerCreateStudentWork}
         />
-      )} */}
+      )}
       <nav className="w-full fixed z-10 top-5 flex justify-between items-center ">
         <button
           aria-label="button go back to classroom"
@@ -665,7 +665,7 @@ application/pdf,
                       <span>อัพโหลดไฟล์</span>
                     </label>
                   )}
-                  {/* <div className="flex flex-col justify-center gap-1 items-center">
+                  <div className="flex flex-col justify-center gap-1 items-center">
                     <button
                       onClick={() => {
                         setTriggerCreateStudentWork(() => true);
@@ -677,7 +677,7 @@ application/pdf,
                       <HiOutlineNewspaper />
                     </button>
                     <span>ใบงาน</span>
-                  </div> */}
+                  </div>
                 </div>
                 <div className="flex gap-2">
                   <span>ไฟล์ที่คุณเลือกมีขนาด</span>
