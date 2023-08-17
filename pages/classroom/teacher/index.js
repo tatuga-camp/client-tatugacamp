@@ -15,7 +15,13 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { GetUserCookie } from '../../../service/user';
 import Unauthorized from '../../../components/error/unauthorized';
-import { Pagination, Skeleton, listClasses } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  Pagination,
+  Skeleton,
+  listClasses,
+} from '@mui/material';
 import Layout from '../../../layouts/schoolLayout';
 import { parseCookies } from 'nookies';
 import Swal from 'sweetalert2';
@@ -263,7 +269,13 @@ function Index({ error, user, whatsNews }) {
   }
 
   return (
-    <div className="w-full bg-gradient-to-t from-blue-400 to-blue-50  lg:w-full pb-40  lg:h-full md:h-full  font-Kanit">
+    <div className="w-full bg-gradient-to-t relative from-blue-400 to-blue-50  lg:w-full pb-40  lg:h-full md:h-full  font-Kanit">
+      <div className="md:w-60 lg:w-5/12 absolute z-20 top-0 right-0 left-0 m-auto">
+        <Alert className="bg-red-500 text-white font-medium" severity="warning">
+          <AlertTitle>Warning</AlertTitle>
+          ประกาศปิดปรับปรุง server เวลา 23.00 - 24.00 น. วันที่ 17/8/2566
+        </Alert>
+      </div>
       <Head>
         <meta property="og:title" content={`TaTuga class`} />
         <meta
@@ -515,13 +527,13 @@ function Index({ error, user, whatsNews }) {
               </div>
             </header>
 
-            <ul className="w-full bg-white h-20 my-5 mb-20 flex justify-center gap-x-20 shadow-md">
+            <ul className="w-full bg-white h-20 my-5 mb-20 flex justify-center gap-2 md:gap-x-20 shadow-md">
               {classroomMenus.map((list, index) => {
                 return (
                   <li
                     onClick={() => setActiveMenu(() => index)}
                     key={index}
-                    className={`w-max px-2 cursor-pointer ${
+                    className={`w-40 md:w-max px-2 cursor-pointer ${
                       activeMenu === index ? list.bgColorMain : 'bg-white'
                     }
 h-20 group ${
@@ -529,12 +541,12 @@ h-20 group ${
                     } flex flex-col justify-center items-center`}
                   >
                     <div
-                      className={`w-12 h-12 text-3xl rounded-full flex items-center justify-center ${list.bgColorSecond} ${list.textColorMain}`}
+                      className={` w-8 h-8 md:w-12 md:h-12 text-lg  md:text-3xl rounded-full flex items-center justify-center ${list.bgColorSecond} ${list.textColorMain}`}
                     >
                       {list.icon}
                     </div>
                     <span
-                      className={`text-base   group-hover:text-white
+                      className={`text-center text-sm md:text-base  group-hover:text-white
                     ${activeMenu === index ? 'text-white' : 'text-black'}
                     
                     `}
