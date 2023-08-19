@@ -140,13 +140,13 @@ function Index({ error, user }) {
               className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem]
               lg:w-[80rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
             >
-              <thead className="w-max sticky top-0 bg-white h-max py-3 z-10">
+              <thead className="w-max sticky top-0 bg-white h-max py-3 z-30">
                 <tr className="flex ">
-                  <th className="flex w-10 md:w-28  items-center justify-center sticky left-0 bg-white">
+                  <th className="flex w-10 md:w-28  items-center justify-center sticky left-0 z-20 bg-white">
                     {user.language === 'Thai' && 'เลขที่'}
                     {user.language === 'English' && 'number'}
                   </th>
-                  <th className="w-20 md:w-60 flex items-center justify-center sticky left-10 md:left-20 bg-white">
+                  <th className="w-20 md:w-60 flex items-center justify-center sticky z-20 left-10 md:left-28 bg-white">
                     <span className="text-center">
                       {user.language === 'Thai' && 'รายชื่อ'}
                       {user.language === 'English' && "student's name"}
@@ -260,12 +260,12 @@ function Index({ error, user }) {
                         key={index}
                         className="flex hover:ring-2 hover:bg-slate-200 group "
                       >
-                        <td className=" w-10 md:w-28 flex items-center justify-center sticky left-0 bg-white group-hover:bg-slate-200">
+                        <td className=" w-10 md:w-28 flex items-center justify-center sticky left-0 z-20 bg-white group-hover:bg-slate-200">
                           {item.student.number}
                         </td>
                         <td
                           className="w-20 text-xs md:text-base  md:w-60  text-left 
-                        flex justify-start items-center sticky left-10 md:left-20 bg-white group-hover:bg-slate-200"
+                        flex justify-start items-center sticky left-10 md:left-28 z-20 bg-white group-hover:bg-slate-200"
                         >
                           <span className="text-left text-xs md:text-base truncate hover:overflow-visible">
                             {item.student.firstName} {item.student?.lastName}
