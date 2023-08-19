@@ -347,6 +347,7 @@ function Index() {
       </Head>
       {triggerCreateStudentWork && (
         <CreateStudentWork
+          fetchStudentWork={fetchStudentWork}
           body={assignment?.data?.description}
           setTriggerCreateStudentWork={setTriggerCreateStudentWork}
         />
@@ -394,7 +395,7 @@ function Index() {
           </div>
         </div>
         <div
-          className="w-10/12 relative max-w-2xl mt-10 grid gap-2 p-4 rounded-lg ring-2 ring-blue-500 
+          className="w-11/12 relative max-w-2xl mt-10 grid gap-2 p-4 rounded-lg ring-2 ring-blue-500 
           bg-white  "
         >
           <div className="absolute w-full  flex flex-col -top-6 items-center justify-center">
@@ -525,6 +526,9 @@ function Index() {
               disabled={true}
               apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
               init={{
+                mobile: {
+                  theme: 'mobile',
+                },
                 setup: function (editor) {
                   editor.on('init', function () {
                     setLoadingTiny(() => false);
