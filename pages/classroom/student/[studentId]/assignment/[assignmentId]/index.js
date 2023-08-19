@@ -526,9 +526,6 @@ function Index() {
               disabled={true}
               apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
               init={{
-                mobile: {
-                  theme: 'mobile',
-                },
                 setup: function (editor) {
                   editor.on('init', function () {
                     setLoadingTiny(() => false);
