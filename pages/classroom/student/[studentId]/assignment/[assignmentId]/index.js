@@ -345,12 +345,13 @@ function Index() {
         />
         <meta charSet="UTF-8" />
       </Head>
-      {/* {triggerCreateStudentWork && (
+      {triggerCreateStudentWork && (
         <CreateStudentWork
+          fetchStudentWork={fetchStudentWork}
           body={assignment?.data?.description}
           setTriggerCreateStudentWork={setTriggerCreateStudentWork}
         />
-      )} */}
+      )}
       <nav className="w-full fixed z-10 top-5 flex justify-between items-center ">
         <button
           aria-label="button go back to classroom"
@@ -394,7 +395,7 @@ function Index() {
           </div>
         </div>
         <div
-          className="w-10/12 relative max-w-2xl mt-10 grid gap-2 p-4 rounded-lg ring-2 ring-blue-500 
+          className="w-11/12 relative max-w-2xl mt-10 grid gap-2 p-4 rounded-lg ring-2 ring-blue-500 
           bg-white  "
         >
           <div className="absolute w-full  flex flex-col -top-6 items-center justify-center">
@@ -525,6 +526,9 @@ function Index() {
               disabled={true}
               apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
               init={{
+                mobile: {
+                  theme: 'mobile',
+                },
                 setup: function (editor) {
                   editor.on('init', function () {
                     setLoadingTiny(() => false);
@@ -665,7 +669,7 @@ application/pdf,
                       <span>อัพโหลดไฟล์</span>
                     </label>
                   )}
-                  {/* <div className="flex flex-col justify-center gap-1 items-center">
+                  <div className="flex flex-col justify-center gap-1 items-center">
                     <button
                       onClick={() => {
                         setTriggerCreateStudentWork(() => true);
@@ -677,7 +681,7 @@ application/pdf,
                       <HiOutlineNewspaper />
                     </button>
                     <span>ใบงาน</span>
-                  </div> */}
+                  </div>
                 </div>
                 <div className="flex gap-2">
                   <span>ไฟล์ที่คุณเลือกมีขนาด</span>

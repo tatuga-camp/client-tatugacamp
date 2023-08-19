@@ -139,3 +139,29 @@ export async function SummitWork({ formFiles, assignmentId, studentId }) {
     throw new Error(err);
   }
 }
+
+export async function SummitWorkWithWorkSheet({
+  assignmentId,
+  studentId,
+  body,
+}) {
+  try {
+    const createWork = await axios.post(
+      `${process.env.Server_Url}/student/student-assignment/create-work-after-signURL`,
+      { body },
+      {
+        params: {
+          assignmentId: assignmentId,
+          studentId: studentId,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return createWork;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
