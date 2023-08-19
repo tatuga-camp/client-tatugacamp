@@ -270,6 +270,7 @@ function Index({ error, user, whatsNews }) {
 
   return (
     <div className="w-full bg-gradient-to-t relative from-blue-400 to-blue-50  lg:w-full pb-40  lg:h-full md:h-full  font-Kanit">
+      <div className="md:w-60 lg:w-5/12 absolute z-20 top-0 right-0 left-0 m-auto"></div>
       <Head>
         <meta property="og:title" content={`TaTuga class`} />
         <meta

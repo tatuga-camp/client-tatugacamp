@@ -34,7 +34,7 @@ import ReactPlayer from 'react-player';
 import { Editor } from '@tinymce/tinymce-react';
 import AssignMultipleClassroom from '../../../../../../components/form/assignMultipleClassroom.js';
 import { AiOutlineComment } from 'react-icons/ai';
-import { HiPaperClip } from 'react-icons/hi2';
+import { HiOutlineNewspaper, HiPaperClip } from 'react-icons/hi2';
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -49,7 +49,7 @@ function Index({ error, user }) {
   const [triggerUpdateAssignment, setTriggerUpdateAssignment] = useState(false);
   const [triggerShowFiles, setTriggerShowFiles] = useState(true);
   const [triggerShowComment, setTriggerShowComment] = useState(false);
-
+  const [triggerShowWorksheet, setTiggerShowWorksheet] = useState(false);
   const [triggerAssignMultipleClassroom, setTriggerAssignMultipleClassroom] =
     useState(false);
   const [comment, setComment] = useState();
@@ -106,7 +106,7 @@ function Index({ error, user }) {
       titleEnglish: 'check assignment',
     },
   ];
-
+  console.log(currentStudentWork);
   useEffect(() => {
     initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, 'individual');
   }, []);
@@ -957,9 +957,10 @@ function Index({ error, user }) {
                         onClick={() => {
                           setTriggerShowFiles(() => true);
                           setTriggerShowComment(() => false);
+                          setTiggerShowWorksheet(() => false);
                         }}
                         aria-label="button to trigger show student's assignment"
-                        className={`text-xl p-3 hover:scale-110 transition duration-150 ${
+                        className={`text-xl flex gap-2 justify-center items-center p-3 hover:scale-110 transition duration-150 ${
                           triggerShowFiles
                             ? '  text-green-200 bg-green-600'
                             : 'text-green-700 bg-green-200'
@@ -967,22 +968,50 @@ function Index({ error, user }) {
                        hover:text-green-200 hover:bg-green-600 rounded-full  `}
                       >
                         <HiPaperClip />
+                        {triggerShowFiles && (
+                          <span className="text-xs">ไฟล์งาน</span>
+                        )}
                       </button>
                       <button
                         onClick={() => {
                           setTriggerShowFiles(() => false);
                           setTriggerShowComment(() => true);
+                          setTiggerShowWorksheet(() => false);
                         }}
                         aria-label="button to trigger show student's comment"
-                        className={`text-xl p-3 hover:scale-110 transition duration-150 ${
+                        className={`text-xl flex gap-2 justify-center items-center p-3 hover:scale-110 transition duration-150 ${
                           triggerShowComment
                             ? '  text-green-200 bg-green-600'
                             : 'text-green-700 bg-green-200'
                         }
-                         hover:text-green-200 hover:bg-green-600 rounded-full `}
+                       hover:text-green-200 hover:bg-green-600 rounded-full  `}
                       >
                         <AiOutlineComment />
+                        {triggerShowComment && (
+                          <span className="text-xs">คอมเมนต์</span>
+                        )}
                       </button>
+                      {currentStudentWork?.studentWork?.body && (
+                        <button
+                          onClick={() => {
+                            setTriggerShowFiles(() => false);
+                            setTriggerShowComment(() => false);
+                            setTiggerShowWorksheet(() => true);
+                          }}
+                          aria-label="button to trigger show student's comment"
+                          className={`text-xl flex gap-2 justify-center items-center p-3 hover:scale-110 transition duration-150 ${
+                            triggerShowWorksheet
+                              ? '  text-green-200 bg-green-600'
+                              : 'text-green-700 bg-green-200'
+                          }
+                       hover:text-green-200 hover:bg-green-600 rounded-full  `}
+                        >
+                          <HiOutlineNewspaper />
+                          {triggerShowWorksheet && (
+                            <span className="text-xs">ใบงาน</span>
+                          )}
+                        </button>
+                      )}
                     </div>
                     {triggerShowFiles && (
                       <div className=" flex flex-col w-full gap-10 ">
@@ -1119,42 +1148,6 @@ function Index({ error, user }) {
                       </div>
                     )}
 
-                    {currentStudentWork?.studentWork?.comment && (
-                      <div className=" w-full h-max mt-5 flex items-start justify-start relative ">
-                        <div className="flex gap-2 md:ml-2 lg:ml-20 w-full ">
-                          {user.picture ? (
-                            <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                              <Image
-                                src={user.picture}
-                                alt="profile"
-                                sizes="(max-width: 768px) 100vw"
-                                layout="fill"
-                                className="object-cover"
-                              />
-                            </div>
-                          ) : (
-                            <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
-                              <span className="uppercase font-sans font-black text-3xl text-white">
-                                {user.firstName.charAt(0)}
-                              </span>
-                            </div>
-                          )}
-                          <div className="w-max md:max-w-[15rem] lg:max-w-xl  pr-10  bg-green-100 rounded-3xl h-full relative  p-2">
-                            <div className="text-md ml-4 font-bold first-letter:uppercase">
-                              {user.firstName}
-                              {user?.lastName}
-                            </div>
-                            <div
-                              className="pl-4 break-words "
-                              dangerouslySetInnerHTML={{
-                                __html:
-                                  currentStudentWork?.studentWork?.comment,
-                              }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
                     {triggerShowComment &&
                       comment?.map((comment, index) => {
                         if (comment.user) {
@@ -1303,6 +1296,30 @@ function Index({ error, user }) {
                           );
                         }
                       })}
+
+                    {triggerShowWorksheet &&
+                      currentStudentWork?.studentWork?.body && (
+                        <div className="w-full h-full">
+                          <Editor
+                            disabled={true}
+                            apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                            init={{
+                              setup: function (editor) {
+                                editor.on('init', function () {
+                                  setLoadingTiny(() => false);
+                                });
+                              },
+                              height: '100%',
+                              width: '100%',
+                              menubar: false,
+                              toolbar: false,
+                              selector: 'textarea', // change this value according to your HTML
+                            }}
+                            initialValue={currentStudentWork.studentWork.body}
+                            value={currentStudentWork.studentWork.body}
+                          />
+                        </div>
+                      )}
                   </div>
 
                   {triggerShowComment && (
