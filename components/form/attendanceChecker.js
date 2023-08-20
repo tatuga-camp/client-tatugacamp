@@ -4,7 +4,7 @@ import { MdEmojiPeople, MdOutlineEventNote } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import { CreateAttendance, GetAllAttendance } from '../../service/attendance';
 import Loading from '../loading/loading';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Editor } from '@tinymce/tinymce-react';
 import { IoCaretBackCircleSharp } from 'react-icons/io5';
 

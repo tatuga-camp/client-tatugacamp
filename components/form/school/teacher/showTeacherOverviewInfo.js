@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Pagination, Skeleton } from '@mui/material';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { GetAllAttendanceTeacher } from '../../../../service/school/attendance';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie, Doughnut } from 'react-chartjs-2';

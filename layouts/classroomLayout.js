@@ -19,7 +19,7 @@ import AttendanceChecker from '../components/form/attendanceChecker';
 import { GetOneClassroom } from '../service/classroom';
 import { GetUser } from '../service/user';
 import { GetAllStudents } from '../service/students';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import RandomStudents from '../components/form/randomStudents';
 import { IoPersonAdd, IoWarningOutline } from 'react-icons/io5';
 import RandomIcon from '../components/svg/RandomIcon';

@@ -7,7 +7,7 @@ import {
   FcUndo,
 } from 'react-icons/fc';
 import { SiMicrosoftexcel } from 'react-icons/si';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { CreateStudentApi, GetAllStudents } from '../../service/students';
 import Lottie from 'lottie-react';
 import * as SuccesfulAnimation from '../../components/79952-successful.json';

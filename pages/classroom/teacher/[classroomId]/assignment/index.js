@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { GetUser, GetUserCookie } from '../../../../../service/user';
 import { useRouter } from 'next/router';
 import Unauthorized from '../../../../../components/error/unauthorized';
@@ -17,6 +17,7 @@ import {
   sideMenusEnglish,
   sideMenusThai,
 } from '../../../../../data/menubarsAssignments';
+import Link from 'next/link';
 function Assignment({ error, user }) {
   const router = useRouter();
   const [sideMenus, setSideMenus] = useState(() => {
@@ -159,14 +160,10 @@ text-black transition duration-150 cursor-pointer"
                 );
 
                 return (
-                  <div
-                    onClick={() => {
-                      router.push({
-                        pathname: `/classroom/teacher/${router.query.classroomId}/assignment/${assignment.id}`,
-                      });
-                    }}
+                  <Link
+                    href={`/classroom/teacher/${router.query.classroomId}/assignment/${assignment.id}`}
                     key={index}
-                    className={`w-11/12 md:w-max px-2 md:max-w-lg lg:max-w-2xl group  h-36  md:px-10 md:py-5 drop-shadow-lg 
+                    className={`w-11/12 no-underline md:w-max px-2 md:max-w-lg lg:max-w-2xl group  h-36  md:px-10 md:py-5 drop-shadow-lg 
                      bg-white  hover:scale-105 cursor-pointer overflow-hidden
                  duration-150 transition relative
                rounded-lg flex flex-col justify-center `}
@@ -229,7 +226,7 @@ text-black transition duration-150 cursor-pointer"
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 );
               })
             )}

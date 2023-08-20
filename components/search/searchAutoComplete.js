@@ -1,7 +1,7 @@
-import React, { useState, Fragment, useEffect } from "react";
-import { Combobox, Transition } from "@headlessui/react";
-import { BsCheckLg, BsCaretDownFill } from "react-icons/bs";
-import { CiSearch } from "react-icons/ci";
+import React, { useState, Fragment, useEffect } from 'react';
+import { Combobox, Transition } from '@headlessui/react';
+import { BsCheckLg, BsCaretDownFill } from 'react-icons/bs';
+import { CiSearch } from 'react-icons/ci';
 function SearchAutoComplete({
   activityPosts,
   handleSelectedActivity,
@@ -10,25 +10,25 @@ function SearchAutoComplete({
   const [activites, setActivities] = useState(activityPosts);
   const [firstRender, setFirstRender] = useState(true);
   const [selected, setSelected] = useState(activites[0]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
 
   const filteredActivities =
-    query === ""
+    query === ''
       ? activites
       : activites.filter((activity) =>
           activity.title
             .toLowerCase()
-            .replace(/\s+/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""))
+            .replace(/\s+/g, '')
+            .includes(query.toLowerCase().replace(/\s+/g, '')),
         );
 
   // send data seach to parent
-  function handleSelectedActivity(activity) {
+  function handleSendSelectedActivity(activity) {
     handleSelectedActivity(activity);
   }
   useEffect(() => {
     if (firstRender === false) {
-      handleSelectedActivity(selected);
+      handleSendSelectedActivity(selected);
     } else null;
     setFirstRender(false);
   }, [selected.title]);
@@ -63,13 +63,13 @@ function SearchAutoComplete({
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            afterLeave={() => setQuery("")}
+            afterLeave={() => setQuery('')}
           >
             <Combobox.Options
               as="ul"
               className="absolute pl-0 mt-1   max-h-60 w-[19.5rem] overflow-auto scrollbar rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
             >
-              {filteredActivities.length === 0 && query !== "" ? (
+              {filteredActivities.length === 0 && query !== '' ? (
                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                   Nothing found.
                 </div>
@@ -80,7 +80,7 @@ function SearchAutoComplete({
                     key={activity._id}
                     className={({ active }) =>
                       `relative cursor-default select-none list-none  py-2 ${
-                        active ? "bg-teal-200  " : "text-gray-900"
+                        active ? 'bg-teal-200  ' : 'text-gray-900'
                       }`
                     }
                     value={activity}
@@ -94,9 +94,9 @@ function SearchAutoComplete({
                         )}
                         <span
                           className={`block truncate font-sans   pl-2     ${
-                            selected && "font-semibold text-black"
+                            selected && 'font-semibold text-black'
                           } 
-                            ${active ? "font-bold " : "text-black"}`}
+                            ${active ? 'font-bold ' : 'text-black'}`}
                         >
                           {activity.title}
                         </span>

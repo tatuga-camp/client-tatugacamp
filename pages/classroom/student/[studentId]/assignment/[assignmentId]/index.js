@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Editor } from '@tinymce/tinymce-react';
 import { IoCaretBackOutline, IoDocumentText } from 'react-icons/io5';
 import { Box, Skeleton, TextField } from '@mui/material';
@@ -1035,7 +1035,10 @@ application/pdf,
                     );
                   } else if (comment.student) {
                     return (
-                      <div className=" w-full h-max mt-5 flex items-start justify-start relative ">
+                      <div
+                        key={index}
+                        className=" w-full h-max mt-5 flex items-start justify-start relative "
+                      >
                         <div className="flex gap-2 ml-2">
                           {comment.student.picture ? (
                             <div className="w-12 h-12 rounded-full overflow-hidden relative">

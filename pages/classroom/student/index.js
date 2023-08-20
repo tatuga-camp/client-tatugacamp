@@ -4,7 +4,7 @@ import { Combobox, Transition } from '@headlessui/react';
 import { BsCheck2 } from 'react-icons/bs';
 import { HiChevronUpDown } from 'react-icons/hi2';
 import { JoinClassroom } from '../../../service/student/classroom';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { BiError } from 'react-icons/bi';
 import Image from 'next/image';

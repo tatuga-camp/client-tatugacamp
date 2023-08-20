@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MdOutlineAssignmentReturn } from 'react-icons/md';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { GetAllClassrooms } from '../../service/classroom';
 import { Pagination } from '@mui/material';
 import { useRouter } from 'next/router';

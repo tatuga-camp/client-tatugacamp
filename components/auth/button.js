@@ -5,10 +5,11 @@ import Image from 'next/image';
 import { Menu, Transition } from '@headlessui/react';
 import Loading from '../loading/loading';
 import { useRouter } from 'next/router';
-import { useQuery, useQueryClient } from 'react-query';
+
 import { BsChevronCompactDown, BsChevronDoubleDown } from 'react-icons/bs';
 import { GetUser } from '../../service/user';
 import { setCookie, destroyCookie } from 'nookies';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 function AuthButton() {
   const [dropDown, setDropDown] = useState(false);

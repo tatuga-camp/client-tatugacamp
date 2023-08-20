@@ -24,7 +24,7 @@ import {
   GetAllTeachersNumber,
 } from '../../service/school/teacher';
 import NumberAnimated from '../../components/overview/numberAnimated';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   GetTopTenAbsent,
   GetTopTenHoliday,

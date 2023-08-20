@@ -3,7 +3,6 @@ import { MdSchool } from 'react-icons/md';
 import { FcCancel } from 'react-icons/fc';
 import CreateClass from '../../../components/form/createClass';
 import { Popover } from '@headlessui/react';
-import { useQuery } from 'react-query';
 import {
   AchieveClassroom,
   DuplicateClassroom,
@@ -39,6 +38,7 @@ import { AiOutlineBgColors, AiOutlineOrderedList } from 'react-icons/ai';
 import { SiGoogleclassroom } from 'react-icons/si';
 import AchieveClassroomComponent from '../../../components/classroom/achieveClassroom';
 import UpdateOrderClassroom from '../../../components/form/updateOrderClassroom';
+import { useQuery } from '@tanstack/react-query';
 
 const classroomMenus = [
   {
@@ -760,27 +760,30 @@ h-20 group ${
                               </div>
                             </div>
                             <div className="flex justify-center h-max items-center gap-2  w-full  ">
-                              <button
+                              <Link
+                                className="w-full"
                                 onClick={() => {
                                   localStorage.setItem(
                                     'classroomId',
                                     classroom.id,
                                   );
-                                  router.push({
-                                    pathname: `/classroom/teacher/${classroom.id}`,
-                                  });
                                 }}
-                                className="w-3/4  md:mb-0 md:relative   h-9  rounded-lg bg-[#2C7CD1] text-white font-sans font-bold
+                                href={`/classroom/teacher/${classroom.id}`}
+                              >
+                                <button
+                                  className="w-full md:mb-0 md:relative   h-9  rounded-lg bg-[#2C7CD1] text-white font-sans font-bold
                 text-md cursor-pointer hover:bg-[#FFC800] active:border-2 active:text-black active:border-gray-300
                  active:border-solid  focus:border-2 
                 focus:border-solid"
-                              >
-                                <span>
-                                  {user.language === 'Thai' &&
-                                    '🚪เข้าชั้นเรียน'}
-                                  {user.language === 'English' && 'Join'}
-                                </span>
-                              </button>
+                                >
+                                  <span>
+                                    {user.language === 'Thai' &&
+                                      '🚪เข้าชั้นเรียน'}
+                                    {user.language === 'English' && 'Join'}
+                                  </span>
+                                </button>
+                              </Link>
+
                               {loading ? (
                                 <div className="w-10 h-10 p-2">
                                   <Loading />

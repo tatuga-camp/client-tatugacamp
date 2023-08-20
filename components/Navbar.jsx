@@ -1,29 +1,29 @@
-import * as React from "react";
-import Link from "next/link";
-import Logo from "./svg/Logo";
-import { Button } from "@mui/material";
-import Listmenu from "./svg/Listmenu";
-import Script from "next/script";
-import TaTugaLogo from "../public/logo/TaTuga camp.png";
-import Image from "next/image";
-import { useState } from "react";
-import { useEffect } from "react";
-import useScrollDirection from "../hooks/useScrollDirection";
-import { currentBrowser } from "../utils/platforms";
-import AuthButton from "./auth/button";
-import { useRouter } from "next/router";
+import * as React from 'react';
+import Link from 'next/link';
+import Logo from './svg/Logo';
+import { Button } from '@mui/material';
+import Listmenu from './svg/Listmenu';
+import Script from 'next/script';
+import TaTugaLogo from '../public/logo/TaTuga camp.png';
+import Image from 'next/image';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import useScrollDirection from '../hooks/useScrollDirection';
+import { currentBrowser } from '../utils/platforms';
+import AuthButton from './auth/button';
+import { useRouter } from 'next/router';
 
 function Navbar() {
   const [brower, setBrower] = useState();
   const router = useRouter();
   const scrollDirection = useScrollDirection();
-  const [classroomCode, setClassroomCode] = useState("");
+  const [classroomCode, setClassroomCode] = useState('');
   const [trigger, setTrigger] = useState(false);
   const onClick = () => {
     setTrigger((preTrigger) => !preTrigger);
   };
 
-  const isBrowser = () => typeof window !== "undefined";
+  const isBrowser = () => typeof window !== 'undefined';
   isBrowser();
   useEffect(() => {
     setBrower(currentBrowser(window));
@@ -52,7 +52,7 @@ function Navbar() {
           </Button>
           <div className="lg:w-[25rem] md:hiden flex   gap-2 items-center justify-center  ">
             <input
-              value={classroomCode || ""}
+              value={classroomCode || ''}
               onChange={(e) => setClassroomCode(e.target.value)}
               className="bg-blue-200 ring-2  appearance-none border-none border-gray-200 rounded w-full py-2 px-4  
               leading-tight focus:outline-none focus:bg-blue-400 focus:border-2 focus:right-4 placeholder:text-md placeholder:font-Kanit
@@ -69,7 +69,7 @@ function Navbar() {
                   return null;
                 } else if (classroomCode) {
                   router.push({
-                    pathname: "/classroom/student",
+                    pathname: '/classroom/student',
                     query: {
                       classroomCode: classroomCode,
                     },
@@ -97,7 +97,7 @@ function Navbar() {
             <li>
               <AuthButton />
             </li>
-            <Link href="/">
+            <Link className="no-underline" href="/">
               <li
                 onClick={onClick}
                 className="w-max bg-white rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
@@ -105,7 +105,7 @@ function Navbar() {
                 Home page
               </li>
             </Link>
-            <Link href="/classroom">
+            <Link className="no-underline" href="/classroom">
               <li
                 onClick={onClick}
                 className="w-max bg-white rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
@@ -127,9 +127,9 @@ function Navbar() {
                   <a
                     className="no-underline text-white"
                     href={`${
-                      brower === "Safari"
-                        ? "fb://page/?id=107002408742438"
-                        : "fb://page/107002408742438"
+                      brower === 'Safari'
+                        ? 'fb://page/?id=107002408742438'
+                        : 'fb://page/107002408742438'
                     }`}
                   >
                     <ion-icon name="logo-facebook"></ion-icon>
@@ -156,7 +156,7 @@ function Navbar() {
           bg-white gap-x-8  py-5 font-normal items-center text-black transition-all duration-500 `}
         >
           <li className="mr-auto ml-5">
-            <Link href="/">
+            <Link className="no-underline" href="/">
               <Button className="flex items-center pt-4 pr-4 ">
                 <div className="w-max">
                   <span className="MoreSugar normal-case text-4xl">
@@ -168,21 +168,21 @@ function Navbar() {
           </li>
 
           <li className="">
-            <Link href="/about-us">
+            <Link className="no-underline" href="/about-us">
               <button className="focus:outline-none text-base font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>About us</span>
               </button>
             </Link>
           </li>
           <li className="">
-            <Link href="/school">
+            <Link className="no-underline" href="/school">
               <button className="focus:outline-none text-base font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga school 🏫</span>
               </button>
             </Link>
           </li>
           <li className="">
-            <Link href="/classroom">
+            <Link className="no-underline" href="/classroom">
               <button className="focus:outline-none text-base font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga class 👩‍🏫</span>
               </button>
