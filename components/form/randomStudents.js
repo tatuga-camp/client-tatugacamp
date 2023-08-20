@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useSprings, animated, to as interpolate } from "@react-spring/web";
-import { useDrag } from "react-use-gesture";
-import Image from "next/image";
-import Swal from "sweetalert2";
-import { MdRestartAlt } from "react-icons/md";
-import { RiShuffleLine } from "react-icons/ri";
-import { useWindowSize } from "react-use";
-import Confetti from "react-confetti";
+import React, { useEffect, useState } from 'react';
+import { useSprings, animated, to as interpolate } from '@react-spring/web';
+import { useDrag } from '@use-gesture/react';
+import Image from 'next/image';
+import Swal from 'sweetalert2';
+import { MdRestartAlt } from 'react-icons/md';
+import { RiShuffleLine } from 'react-icons/ri';
+import { useWindowSize } from 'react-use';
+import Confetti from 'react-confetti';
 
 const to = (i) => ({
   x: 0,
@@ -32,7 +32,7 @@ function RandomStudents({
   const newStudents = [...students];
   const [activeShowCard, setActiveShowCard] = useState({
     active: false,
-    index: "",
+    index: '',
   });
   const [firstRender, setFirstRender] = useState(false);
   const [isReadyCards, setIsReadyCard] = useState(false);
@@ -47,9 +47,9 @@ function RandomStudents({
   const [audioShuffle, setAudioShuffle] = useState(null);
 
   const sound = {
-    cards: "https://storage.googleapis.com/tatugacamp.com/sound/card.mp3",
-    sheer: "https://storage.googleapis.com/tatugacamp.com/sound/sheer.mp3",
-    shuffle: "https://storage.googleapis.com/tatugacamp.com/sound/shuffle.aac",
+    cards: 'https://storage.googleapis.com/tatugacamp.com/sound/card.mp3',
+    sheer: 'https://storage.googleapis.com/tatugacamp.com/sound/sheer.mp3',
+    shuffle: 'https://storage.googleapis.com/tatugacamp.com/sound/shuffle.aac',
   };
   // const [soundResorce, setSoundResorce] = useState(sound.sheer);
   // const [audio, state, controls, ref] = useAudio({
@@ -73,7 +73,7 @@ function RandomStudents({
 
     setShuffledArray(() => {
       const shuffledArrayObject = localStorage.getItem(
-        `${classroomId}:shuffledArray`
+        `${classroomId}:shuffledArray`,
       );
       const parsedArrayObject = JSON.parse(shuffledArrayObject);
       if (parsedArrayObject?.length === 0 || !parsedArrayObject) {
@@ -118,12 +118,12 @@ function RandomStudents({
         audioSheer.play();
         Swal.fire({
           title: `เลขที่ ${shuffledArray[index].number} ${shuffledArray[index].firstName} ${shuffledArray[index]?.lastName}`,
-          text: "ยินดีด้วยย คุณคือผู้ถูกเลือก",
+          text: 'ยินดีด้วยย คุณคือผู้ถูกเลือก',
           showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          width: "max-content",
-          confirmButtonText: "remove",
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          width: 'max-content',
+          confirmButtonText: 'remove',
         }).then((result) => {
           if (result.isConfirmed) {
             audioSheer.currentTime = 0;
@@ -168,7 +168,7 @@ function RandomStudents({
           config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 },
         };
       });
-    }
+    },
   );
 
   const restart = () => {
@@ -187,7 +187,7 @@ function RandomStudents({
   const shuffle = () => {
     const result = newStudents.filter(
       (objFirst) =>
-        !outCard.some((objSecond) => objSecond.number === objFirst.number)
+        !outCard.some((objSecond) => objSecond.number === objFirst.number),
     );
     setShuffledArray(() => shuffleArray(result));
     audioShuffle.play();
@@ -207,7 +207,7 @@ function RandomStudents({
     if (firstRender) {
       const result = newStudents.filter(
         (objFirst) =>
-          !outCard.some((objSecond) => objSecond.number === objFirst.number)
+          !outCard.some((objSecond) => objSecond.number === objFirst.number),
       );
       setShuffledArray(() => shuffleArray(result));
 
@@ -219,7 +219,7 @@ function RandomStudents({
     if (firstRender) {
       localStorage.setItem(
         `${classroomId}:shuffledArray`,
-        JSON.stringify(shuffledArray)
+        JSON.stringify(shuffledArray),
       );
     }
   }, [shuffledArray]);
@@ -256,7 +256,7 @@ function RandomStudents({
                       if (isReadyCards) {
                         audioCard.pause();
                         audioCard.currentTime = 0;
-                        setActiveCard("");
+                        setActiveCard('');
                       }
                     }}
                     style={{
@@ -298,15 +298,15 @@ function RandomStudents({
                       <span>
                         {activeCard === i
                           ? ` เลขที่ ${shuffledArray[i].number}`
-                          : "****"}
+                          : '****'}
                       </span>
                       <span>
                         {activeCard === i
                           ? shuffledArray[i].firstName
-                          : "******"}
+                          : '******'}
                       </span>
                       <span>
-                        {activeCard === i ? shuffledArray[i]?.lastName : "***"}
+                        {activeCard === i ? shuffledArray[i]?.lastName : '***'}
                       </span>
                     </animated.ul>
                   </animated.div>
@@ -325,8 +325,8 @@ function RandomStudents({
                   <MdRestartAlt />
                 </div>
                 <span className="group-hover:text-white transition duration-100">
-                  {language === "Thai" && "เริ่มใหม่"}
-                  {language === "English" && "restart"}
+                  {language === 'Thai' && 'เริ่มใหม่'}
+                  {language === 'English' && 'restart'}
                 </span>
               </li>
               <li
@@ -338,8 +338,8 @@ function RandomStudents({
                   <RiShuffleLine />
                 </div>
                 <span className="group-hover:text-white transition duration-100">
-                  {language === "Thai" && "สับการ์ดใหม่"}
-                  {language === "English" && "shuffle"}
+                  {language === 'Thai' && 'สับการ์ดใหม่'}
+                  {language === 'English' && 'shuffle'}
                 </span>
               </li>
             </ul>
@@ -349,8 +349,8 @@ function RandomStudents({
         <section className="w-96 h-screen bg-white overflow-auto">
           <h2 className="w-full text-center pt-10">
             <span className="text-black">
-              {language === "Thai" && "รายชื่อที่ถูกเลือก"}
-              {language === "English" && "Result"}
+              {language === 'Thai' && 'รายชื่อที่ถูกเลือก'}
+              {language === 'English' && 'Result'}
             </span>
           </h2>
           <ul className="p-10">
@@ -368,7 +368,7 @@ function RandomStudents({
       </div>
       <div
         onClick={() => {
-          document.body.style.overflow = "auto";
+          document.body.style.overflow = 'auto';
           setTriggerRandomStudent(false);
         }}
         className="w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/30 "
