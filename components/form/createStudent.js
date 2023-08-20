@@ -25,10 +25,10 @@ function CreateStudent({ close, language }) {
   const [error, setError] = useState();
   // students' data from excel
   const [tabelData, setTabledata] = useState();
-  const [sortedStudents, setSortedStudents] = useState(students?.data?.data);
   const students = useQuery(['students'], () =>
     GetAllStudents({ classroomId: router.query.classroomId }),
   );
+  const [sortedStudents, setSortedStudents] = useState(students?.data?.data);
 
   //get excelData
   const getExcelData = (data) => {
@@ -102,7 +102,11 @@ function CreateStudent({ close, language }) {
                   isExcelData === false ? 'grid-cols-6' : 'grid-cols-3'
                 } pl-0 list-none w-full`}
               >
-                <li className="flex col-span-2 justify-center items-cente">
+                <li
+                  className={`flex ${
+                    isExcelData === false ? 'col-span-2 ' : 'col-span-1'
+                  } justify-center items-cente`}
+                >
                   {language === 'Thai' && 'เลขที่'}
                   {language === 'English' && 'number'}
                 </li>
@@ -138,10 +142,10 @@ function CreateStudent({ close, language }) {
                                 {list.number}
                               </span>
                             </div>
-                            <span className="flex justify-center items-center text-black">
+                            <span className="flex text-sm justify-start items-center text-black">
                               {list.firstName}
                             </span>
-                            <span className="flex justify-center items-center text-black">
+                            <span className="flex  text-sm justify-start items-center text-black">
                               {list?.lastName}
                             </span>
 
@@ -174,18 +178,18 @@ function CreateStudent({ close, language }) {
                       return (
                         <li key={list.id} className="w-full">
                           <div className="grid  grid-cols-3  w-full">
-                            <div className="flex justify-center items-center  ">
+                            <div className="flex col-span-1  justify-center items-center  ">
                               <span
-                                className="w-8 h-8 bg-[#2C7CD1] flex items-center justify-center 
-                          rounded-xl font-bold text-white"
+                                className=" flex items-center justify-center 
+                           font-bold text-black"
                               >
                                 {list.number}
                               </span>
                             </div>
-                            <span className="flex justify-center items-center text-black">
+                            <span className="flex  col-span-1   justify-start items-center text-black">
                               {list.firstName}
                             </span>
-                            <span className="flex justify-center items-center text-black">
+                            <span className="flex col-span-1    justify-start items-center text-black">
                               {list?.lastName}
                             </span>
                           </div>
