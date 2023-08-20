@@ -1,6 +1,6 @@
-import axios from "axios";
-import Error from "next/error";
-import { parseCookies } from "nookies";
+import axios from 'axios';
+import Error from 'next/error';
+import { parseCookies } from 'nookies';
 
 export async function CreateClassroom(inputObject) {
   try {
@@ -15,13 +15,13 @@ export async function CreateClassroom(inputObject) {
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
   } catch (err) {
-    console.log("err from service", err);
+    console.log('err from service', err);
     throw new Error(err);
   }
 }
@@ -40,10 +40,10 @@ export async function DuplicateClassroom({ classroomId }) {
           classroomId: classroomId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return classroom;
   } catch (err) {
@@ -64,7 +64,7 @@ export async function DeleteClassroom(classroomId) {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     return deleteClassroom;
@@ -84,10 +84,10 @@ export async function GetAllClassrooms({ page }) {
           page: page,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return classrooms.data;
   } catch (err) {
@@ -106,10 +106,10 @@ export async function GetAllAchievedClassrooms({ page }) {
           page: page,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return classrooms.data;
   } catch (err) {
@@ -128,10 +128,10 @@ export async function GetOneClassroom({ params }) {
       `${process.env.Server_Url}/user/classroom/get-a-classroom/${params}`,
       {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + access_token,
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + access_token,
         },
-      }
+      },
     );
 
     return classroom;
@@ -152,10 +152,10 @@ export async function AchieveClassroom({ classroomId }) {
       },
       {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + access_token,
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + access_token,
         },
-      }
+      },
     );
 
     return classroom;
@@ -168,17 +168,17 @@ export async function UnAchieveClassroom({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.put(
-      `${process.env.Server_Url}/user/classroom/achieve-classroom`,
+      `${process.env.Server_Url}/user/classroom/unachieve-classroom`,
       {
-        isAchieve: false,
+        isUnachieve: false,
         classroomId,
       },
       {
         headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + access_token,
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + access_token,
         },
-      }
+      },
     );
 
     return classroom;
@@ -198,10 +198,34 @@ export async function UpdateClassroomColor({ classroomId, color }) {
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
+    );
+
+    return classroom;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+export async function UpdateClassroomOrder({ classroomId, order }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const classroom = await axios.put(
+      `${process.env.Server_Url}/user/classroom/update-order`,
+      {
+        order: order,
+        classroomId: classroomId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
     );
 
     return classroom;
@@ -226,10 +250,10 @@ export async function UpdateClassroom({ classroomState }) {
           classroomId: classroomState.id,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     return classroom;

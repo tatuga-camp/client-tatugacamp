@@ -35,9 +35,10 @@ import Link from 'next/link';
 import Loading from '../../../components/loading/loading';
 import TeacherOnly from '../../../components/error/teacherOnly';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { AiOutlineBgColors } from 'react-icons/ai';
+import { AiOutlineBgColors, AiOutlineOrderedList } from 'react-icons/ai';
 import { SiGoogleclassroom } from 'react-icons/si';
 import AchieveClassroomComponent from '../../../components/classroom/achieveClassroom';
+import UpdateOrderClassroom from '../../../components/form/updateOrderClassroom';
 
 const classroomMenus = [
   {
@@ -71,6 +72,10 @@ function Index({ error, user, whatsNews }) {
     index: 0,
     color: '',
   });
+  const [triggerUpdateOrderClassroom, setTiggerUpdateOrderClassroom] =
+    useState(false);
+  const [selectUpdateOrderClassroom, setSelectUpdateOrderClassroom] =
+    useState();
   const [classroomState, setClassroomState] = useState([]);
   const [page, setPage] = useState(1);
   const [activeMenu, setActiveMenu] = useState(0);
@@ -89,6 +94,11 @@ function Index({ error, user, whatsNews }) {
     { keepPreviousData: true },
   );
 
+  //refetch classrooms every time page change
+  useEffect(() => {
+    classrooms.refetch();
+  }, [page]);
+
   useEffect(() => {
     if (user) {
       const viewNews = localStorage.getItem('IsViewNews');
@@ -103,7 +113,7 @@ function Index({ error, user, whatsNews }) {
 
   useEffect(() => {
     setClassroomState(() => classrooms?.data?.classrooms);
-  }, [classrooms.isFetching, page]);
+  }, [classrooms.isFetching, page, classrooms.data]);
   const handleCheckPlan = () => {
     const classroomNumber = classrooms?.data?.classroomsTotal;
     if (user.plan === 'FREE' || user?.subscriptions !== 'active') {
@@ -294,7 +304,15 @@ function Index({ error, user, whatsNews }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{`Teacher class`}</title>
       </Head>
-
+      {triggerUpdateOrderClassroom && (
+        <UpdateOrderClassroom
+          setTiggerUpdateOrderClassroom={setTiggerUpdateOrderClassroom}
+          selectUpdateOrderClassroom={selectUpdateOrderClassroom}
+          language={user.language}
+          activeClassroomTotal={classrooms.data.activeClassroomTotal}
+          classrooms={classrooms}
+        />
+      )}
       <div
         className={`flex    ${
           classroomState?.[0] ? 'h-full pb-60 md:pb-80 lg:pb-40' : 'h-screen'
@@ -557,7 +575,8 @@ h-20 group ${
             {activeMenu === 0 && (
               <div className="flex  flex-col gap-10 justify-start items-center w-11/12 h-max">
                 <main
-                  className={`w-full  mx-10 h-max grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-8  gap-10
+                  className={`w-full   mx-10 h-max grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-8  
+                  gap-10
             ${classroomState?.[0] ? 'flex' : 'hidden'} `}
                 >
                   {classrooms.isLoading ? (
@@ -601,7 +620,7 @@ h-20 group ${
                             padding: '10px',
                           }}
                           key={index}
-                          className={` border-2   border-solid col-span-2 h-max min-h-[12rem]
+                          className={` border-2    border-solid col-span-2 h-max min-h-[12rem]
                       rounded-3xl p-3  overflow-hidden relative  bg-white `}
                         >
                           <div className="text-right w-full">
@@ -657,10 +676,30 @@ h-20 group ${
                                     : 'Achieve classroom'}
                                 </span>
                               </button>
+                              <button
+                                onClick={() => {
+                                  setTiggerUpdateOrderClassroom(() => true);
+                                  setSelectUpdateOrderClassroom(
+                                    () => classroom,
+                                  );
+                                  document.body.style.overflow = 'hidden';
+                                }}
+                                className="w-28 h-20
+                              hover:bg-pink-100 group hover:text-pink-600 transition duration-150
+                               text-4xl flex flex-col justify-center  items-center text-pink-100
+                             bg-pink-600 rounded-lg"
+                              >
+                                <AiOutlineOrderedList />
+                                <span className="text-xs group-hover:text-black transition duration-150 text-white font-normal">
+                                  {user.language === 'Thai'
+                                    ? 'เปลี่ยนตำแหน่ง'
+                                    : 'change position'}
+                                </span>
+                              </button>
                               <label
                                 htmlFor="dropzone-file"
                                 className="
-                              hover:bg-yellow-100 group hover:text-yellow-600 transition duration-150
+                              hover:bg-yellow-100 cursor-pointer group hover:text-yellow-600 transition duration-150
                               w-28 h-20 text-4xl flex flex-col justify-center  items-center text-yellow-200
                              bg-yellow-600 rounded-lg"
                               >
@@ -702,7 +741,7 @@ h-20 group ${
                           <div
                             className={`${
                               classroom.selected ? 'hidden' : 'block'
-                            } flex  flex-col h-full justify-between`}
+                            } flex  flex-col  h-40 justify-between`}
                           >
                             <div className="flex w-full justify-center gap-2 md:gap-10  items-center">
                               <div className="flex flex-col w-3/4 md:w-40 ">
@@ -720,7 +759,7 @@ h-20 group ${
                                 {classroom.studentNumber} คน
                               </div>
                             </div>
-                            <div className="flex justify-center items-center gap-2 pt-4 pb-3  w-full lg:mt-5 ">
+                            <div className="flex justify-center h-max items-center gap-2  w-full  ">
                               <button
                                 onClick={() => {
                                   localStorage.setItem(
@@ -731,7 +770,7 @@ h-20 group ${
                                     pathname: `/classroom/teacher/${classroom.id}`,
                                   });
                                 }}
-                                className="w-3/4 mb-3 md:mb-0 md:relative   h-9  rounded-lg bg-[#2C7CD1] text-white font-sans font-bold
+                                className="w-3/4  md:mb-0 md:relative   h-9  rounded-lg bg-[#2C7CD1] text-white font-sans font-bold
                 text-md cursor-pointer hover:bg-[#FFC800] active:border-2 active:text-black active:border-gray-300
                  active:border-solid  focus:border-2 
                 focus:border-solid"
@@ -769,7 +808,9 @@ h-20 group ${
                 </main>
                 <Pagination
                   count={classrooms?.data?.totalPages}
-                  onChange={(e, page) => setPage(page)}
+                  onChange={(e, page) => {
+                    setPage(page);
+                  }}
                 />
               </div>
             )}
