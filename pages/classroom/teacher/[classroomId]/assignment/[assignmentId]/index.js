@@ -1059,6 +1059,7 @@ function Index({ error, user }) {
                               user.language === 'Thai' &&
                               'ผู้เรียนยังไม่ส่งงาน'}
                             {currentStudentWork?.status === 'have-work' &&
+                              !currentStudentWork?.studentWork?.body &&
                               user.language === 'Thai' &&
                               'ตรวจงานโดยผู้เรียนไม่ส่งงาน'}
                             {!currentStudentWork &&
