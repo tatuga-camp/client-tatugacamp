@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   DeleteAssignment,
   DeleteStudentWork,
@@ -35,6 +35,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import AssignMultipleClassroom from '../../../../../../components/form/assignMultipleClassroom.js';
 import { AiOutlineComment } from 'react-icons/ai';
 import { HiOutlineNewspaper, HiPaperClip } from 'react-icons/hi2';
+import Link from 'next/link.js';
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -106,7 +107,7 @@ function Index({ error, user }) {
       titleEnglish: 'check assignment',
     },
   ];
-  console.log(currentStudentWork);
+
   useEffect(() => {
     initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, 'individual');
   }, []);
@@ -331,7 +332,7 @@ function Index({ error, user }) {
         });
         Swal.fire('success', 'ตรวจงานเรียบร้อย', 'success');
         studentOnAssignments.refetch();
-        const nextStudentNumber = parseInt(currentStudentWork.number) + 1;
+        let nextStudentNumber = parseInt(currentStudentWork.number) + 1;
         // Check if the current student is the last student
         if (nextStudentNumber > studentOnAssignments.data.data.length) {
           // Set nextStudentNumber to the first student's number
@@ -352,7 +353,7 @@ function Index({ error, user }) {
         Swal.fire('success', 'ตรวจงานเรียบร้อย', 'success');
         studentOnAssignments.refetch();
 
-        const nextStudentNumber = parseInt(currentStudentWork.number) + 1;
+        let nextStudentNumber = parseInt(currentStudentWork.number) + 1;
         // Check if the current student is the last student
         if (nextStudentNumber > studentOnAssignments.data.data.length) {
           // Set nextStudentNumber to the first student's number
@@ -491,18 +492,14 @@ function Index({ error, user }) {
           {/* menu bars */}
 
           <div className=" w-full h-20 drop-shadow-md bg-white z-10 flex sticky top-0  justify-center gap-9">
-            <button
-              onClick={() =>
-                router.push({
-                  pathname: `/classroom/teacher/${router.query.classroomId}/assignment/`,
-                })
-              }
+            <Link
+              href={`/classroom/teacher/${router.query.classroomId}/assignment/`}
               className="font-Poppins z-20 hover:scale-110 transition 
-              duration-150 absolute top-3 left-2 text-white bg-blue-500 px-5 py-3 rounded-xl "
+              duration-150 no-underline absolute top-3 left-2 text-white bg-blue-500 px-5 py-3 rounded-xl "
             >
               {user.language === 'Thai' && 'กลับ'}
               {user.language === 'English' && 'back'}
-            </button>
+            </Link>
             {menus.map((menu, index) => {
               return (
                 <div
@@ -1027,14 +1024,14 @@ function Index({ error, user }) {
                               images.length === 1
                                 ? 'grid-cols-1'
                                 : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '
-                            } lg:w-full md:w-60 mx-auto h-full  place-items-center
+                            } lg:w-full md:w-60 mx-auto h-full gap-2  place-items-center
                          `}
                           >
                             {images.map((image, index) => {
                               return (
                                 <div
                                   key={index}
-                                  className="lg:w-60 lg:h-60 md:w-40 md:h-40 relative bg-blue-200 "
+                                  className="lg:w-60 overflow-hidden  lg:h-60 md:w-40 md:h-40 relative bg-blue-200 "
                                 >
                                   <Image
                                     src={image.src}

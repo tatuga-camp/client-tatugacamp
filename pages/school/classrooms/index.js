@@ -14,7 +14,7 @@ import {
   GetAllClassroom,
   GetAllClassroomNumber,
 } from '../../../service/school/classroom';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 

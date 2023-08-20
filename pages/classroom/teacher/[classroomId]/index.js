@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { GetOneClassroom } from '../../../../service/classroom';
 import Head from 'next/head';
 import FullScreenLoading from '../../../../components/loading/FullScreenLoading';

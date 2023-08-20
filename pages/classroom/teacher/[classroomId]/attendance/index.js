@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../../../../layouts/classroomLayout';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { FiArrowLeftCircle } from 'react-icons/fi';
 import { GetAllStudents } from '../../../../../service/students';

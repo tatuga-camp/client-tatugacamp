@@ -5,7 +5,7 @@ import Lottie from 'lottie-react';
 import * as teacherAnimation from '../../components/98349-teacher-in-classroom.json';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { GetNumberStudent, GetNumberUsers } from '../../service/overview/users';
 import { useInView } from 'react-intersection-observer';
 import NumberAnimated from '../../components/overview/numberAnimated';

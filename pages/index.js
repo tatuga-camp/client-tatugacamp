@@ -7,7 +7,7 @@ import Hands from '../components/svg/Hands';
 import Image from 'next/image';
 import Script from 'next/script';
 import { sanityClient, urlFor } from '../sanity';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import SearchAutoComplete from '../components/search/searchAutoComplete';
 import Loading from '../components/loading/loading';

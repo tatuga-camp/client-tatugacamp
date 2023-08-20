@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import Layout from '../../../components/layout';
 import { urlFor } from '../../../sanity';
 import Confetti from 'react-confetti';

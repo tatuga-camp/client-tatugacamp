@@ -13,7 +13,7 @@ import {
   sideMenusEnglish,
   sideMenusThai,
 } from '../../../../../../../data/school/menubarsHomepage';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { GetAttendanceClassroom } from '../../../../../../../service/school/attendance';
 import { useRouter } from 'next/router';
 import { Skeleton } from '@mui/material';

@@ -1,38 +1,38 @@
-import React, { useEffect, useState } from "react";
-import Layout from "../../../../../layouts/classroomLayout";
-import Unauthorized from "../../../../../components/error/unauthorized";
-import { useRouter } from "next/router";
-import { GetUser, GetUserCookie } from "../../../../../service/user";
-import { useQuery } from "react-query";
-import { FiArrowLeftCircle } from "react-icons/fi";
-import { GetAllStudentScores } from "../../../../../service/students";
-import Head from "next/head";
-import { BiMessageAltError } from "react-icons/bi";
-import { Skeleton } from "@mui/material";
-import { SiMicrosoftexcel } from "react-icons/si";
-import { DownloadExcelScore } from "../../../../../service/dowloadFile";
-import Swal from "sweetalert2";
-import { parseCookies } from "nookies";
+import React, { useEffect, useState } from 'react';
+import Layout from '../../../../../layouts/classroomLayout';
+import Unauthorized from '../../../../../components/error/unauthorized';
+import { useRouter } from 'next/router';
+import { GetUser, GetUserCookie } from '../../../../../service/user';
+import { useQuery } from '@tanstack/react-query';
+import { FiArrowLeftCircle } from 'react-icons/fi';
+import { GetAllStudentScores } from '../../../../../service/students';
+import Head from 'next/head';
+import { BiMessageAltError } from 'react-icons/bi';
+import { Skeleton } from '@mui/material';
+import { SiMicrosoftexcel } from 'react-icons/si';
+import { DownloadExcelScore } from '../../../../../service/dowloadFile';
+import Swal from 'sweetalert2';
+import { parseCookies } from 'nookies';
 import {
   sideMenusEnglish,
   sideMenusThai,
-} from "../../../../../data/menubarsScores";
+} from '../../../../../data/menubarsScores';
 
 function Index({ user, error }) {
   const router = useRouter();
   const [sideMenus, setSideMenus] = useState(() => {
-    if (user?.language === "Thai") {
+    if (user?.language === 'Thai') {
       return sideMenusThai();
-    } else if (user?.language === "English") {
+    } else if (user?.language === 'English') {
       return sideMenusEnglish();
     }
   });
   const studentsScores = useQuery(
-    ["studentsScores"],
+    ['studentsScores'],
     () => GetAllStudentScores({ classroomId: router.query.classroomId }),
     {
       enabled: false,
-    }
+    },
   );
   //check whether there is authorrized acccess or not
   useEffect(() => {
@@ -43,15 +43,15 @@ function Index({ user, error }) {
     try {
       await DownloadExcelScore({ classroomId: router.query.classroomId });
       Swal.fire(
-        "ดาวโหลดสำเร็จ",
-        "ดาวโหลดไฟล์รายงานผลคะแนนเรียบร้อย",
-        "success"
+        'ดาวโหลดสำเร็จ',
+        'ดาวโหลดไฟล์รายงานผลคะแนนเรียบร้อย',
+        'success',
       );
     } catch (err) {
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
       console.log(err);
     }
@@ -89,9 +89,9 @@ function Index({ user, error }) {
         ) : studentsScores?.data?.data?.assignments.length === 0 ? (
           <div className="w-full  flex items-center justify-center h-full text-3xl mt-5">
             <span>
-              {user.language === "Thai" &&
-                "ไม่มีข้อมูลเนื่องจากไม่ได้มอบหมายงานให้ผู้เรียน"}
-              {user.language === "English" && "No data due to no assignments"}
+              {user.language === 'Thai' &&
+                'ไม่มีข้อมูลเนื่องจากไม่ได้มอบหมายงานให้ผู้เรียน'}
+              {user.language === 'English' && 'No data due to no assignments'}
             </span>
             <div className="text-red-400">
               <BiMessageAltError />
@@ -105,27 +105,27 @@ function Index({ user, error }) {
             <thead className="w-max sticky top-0 bg-white h-max py-3 z-10">
               <tr className="flex ">
                 <th className="flex w-10 md:w-24  items-center justify-center sticky left-0 bg-white">
-                  {user.language === "Thai" && "เลขที่"}
-                  {user.language === "English" && "number"}
+                  {user.language === 'Thai' && 'เลขที่'}
+                  {user.language === 'English' && 'number'}
                 </th>
                 <th className="w-40 md:w-44 lg:w-60 flex items-center justify-center sticky left-10 md:left-20 bg-white">
-                  {user.language === "Thai" && "รายชื่อ"}
-                  {user.language === "English" && "student's name"}
+                  {user.language === 'Thai' && 'รายชื่อ'}
+                  {user.language === 'English' && "student's name"}
                 </th>
 
                 {studentsScores?.data?.data?.assignments.map((assignment) => {
                   const date = new Date(assignment.createAt);
                   const formattedDate = date.toLocaleDateString(
                     `${
-                      user.language === "Thai"
-                        ? "th-TH"
-                        : user.language === "English" && "en-US"
+                      user.language === 'Thai'
+                        ? 'th-TH'
+                        : user.language === 'English' && 'en-US'
                     }`,
                     {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    }
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                    },
                   );
                   return (
                     <th key={assignment.id} className=" w-40 truncate ">
@@ -134,8 +134,8 @@ function Index({ user, error }) {
                           {assignment.title}
                         </span>
                         <span className="text-sm font-normal">
-                          {user.language === "Thai" && "คะแนนเต็ม"}
-                          {user.language === "English" && "scores"} {` `}
+                          {user.language === 'Thai' && 'คะแนนเต็ม'}
+                          {user.language === 'English' && 'scores'} {` `}
                           {assignment.maxScore}
                         </span>
                         <span className="font-normal italic">
@@ -146,16 +146,16 @@ function Index({ user, error }) {
                   );
                 })}
                 <th className=" w-40">
-                  {user.language === "Thai" && "คะแนนพิเศษ"}
-                  {user.language === "English" && "motivative scores"}
+                  {user.language === 'Thai' && 'คะแนนพิเศษ'}
+                  {user.language === 'English' && 'motivative scores'}
                 </th>
                 <th className=" w-40">
-                  {user.language === "Thai" && "รวม"}
-                  {user.language === "English" && "sum"}
+                  {user.language === 'Thai' && 'รวม'}
+                  {user.language === 'English' && 'sum'}
                 </th>
                 <th className=" w-40">
-                  {user.language === "Thai" && "เกรด"}
-                  {user.language === "English" && "grade"}
+                  {user.language === 'Thai' && 'เกรด'}
+                  {user.language === 'English' && 'grade'}
                 </th>
               </tr>
             </thead>
@@ -186,7 +186,7 @@ function Index({ user, error }) {
                           className="w-40 text-center  flex items-center justify-center"
                         >
                           {!studentWork.studentWork
-                            ? "0"
+                            ? '0'
                             : studentWork.studentWork.score}
                         </td>
                       );
@@ -222,7 +222,7 @@ export async function getServerSideProps(context) {
       props: {
         error: {
           statusCode: 401,
-          message: "unauthorized",
+          message: 'unauthorized',
         },
       },
     };
@@ -243,7 +243,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };
@@ -264,7 +264,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };

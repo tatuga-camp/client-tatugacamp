@@ -3,7 +3,7 @@ import { FiXCircle } from 'react-icons/fi';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { Box, Pagination, Skeleton, TextField } from '@mui/material';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { GetUserCookie } from '../../../service/user';
 import { parseCookies } from 'nookies';

@@ -67,7 +67,7 @@ function SidebarSchool({ user, sideMenus, triggersidebar, close }) {
             <ul className="list-none pl-5 flex flex-col gap-y-3 mt-10 ">
               {sideMenus?.map((list, index, array) => {
                 return (
-                  <Link href={list?.url} key={index}>
+                  <Link className="no-underline" href={list?.url} key={index}>
                     <li
                       className={`${
                         index === array.length - 1 && ' bottom-5 absolute'

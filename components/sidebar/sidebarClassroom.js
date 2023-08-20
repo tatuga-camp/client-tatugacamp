@@ -107,7 +107,7 @@ function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
                   return null;
                 }
                 return (
-                  <Link href={list?.url} key={index}>
+                  <Link className="no-underline" href={list?.url} key={index}>
                     <li
                       className={`${
                         index === array.length - 1 && ' bottom-5 absolute'

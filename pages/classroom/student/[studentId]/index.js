@@ -8,7 +8,7 @@ import {
 } from 'react-icons/md';
 import { IoHome } from 'react-icons/io5';
 import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { GetAllAssignment } from '../../../../service/student/assignment';
 import { Skeleton } from '@mui/material';
 import { GetAttendances } from '../../../../service/student/attendance';
@@ -18,6 +18,7 @@ import Head from 'next/head';
 import { BsImage, BsImageFill } from 'react-icons/bs';
 import { GetStudent, UpdateStudent } from '../../../../service/student/student';
 import Swal from 'sweetalert2';
+import Link from 'next/link';
 
 function Index() {
   const [classroomCode, setClassroomCode] = useState();
@@ -439,7 +440,10 @@ function Index() {
                     );
                   } else if (attendance.holiday) {
                     return (
-                      <li className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md">
+                      <li
+                        key={attendance.id}
+                        className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                      >
                         <div className="flex justify-start items-center ml-5 gap-2">
                           <div className="w-10 h-10  rounded-full bg-yellow-100 flex items-center justify-center">
                             <div className="flex items-center justify-center text-yellow-400 text-3xl">
@@ -457,7 +461,10 @@ function Index() {
                     );
                   } else if (attendance.sick) {
                     return (
-                      <li className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md">
+                      <li
+                        key={attendance.id}
+                        className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                      >
                         <div className="flex justify-start items-center ml-5 gap-2">
                           <div className="w-10 h-10  rounded-full bg-blue-100 flex items-center justify-center">
                             <div className="flex items-center justify-center text-blue-400 text-3xl">
@@ -475,7 +482,10 @@ function Index() {
                     );
                   } else if (attendance.absent) {
                     return (
-                      <li className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md">
+                      <li
+                        key={attendance.id}
+                        className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                      >
                         <div className="flex justify-start items-center ml-5 gap-2">
                           <div className="w-10 h-10  rounded-full bg-red-100 flex items-center justify-center">
                             <div className="flex items-center justify-center text-red-400 text-3xl">
@@ -493,7 +503,10 @@ function Index() {
                     );
                   } else if (attendance.late) {
                     return (
-                      <li className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md">
+                      <li
+                        key={attendance.id}
+                        className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                      >
                         <div className="flex justify-start items-center ml-5 gap-2">
                           <div className="w-10 h-10  rounded-full bg-orange-100 flex items-center justify-center">
                             <div className="flex items-center justify-center text-orange-400 text-3xl">
@@ -511,7 +524,10 @@ function Index() {
                     );
                   } else {
                     return (
-                      <li className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md">
+                      <li
+                        key={attendance.id}
+                        className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
+                      >
                         <div className="flex justify-start items-center ml-5 gap-2">
                           <div className="w-10 h-10  rounded-full bg-gray-100 flex items-center justify-center">
                             <div className="flex items-center justify-center text-gray-400 text-3xl">
@@ -571,18 +587,10 @@ function Index() {
                 },
               );
               return (
-                <button
-                  type="button"
+                <Link
+                  href={`/classroom/student/${student?.data?.data?.id}/assignment/${assignment?.assignment?.id}?classroomId=${router?.query?.classroomId}`}
                   key={assignment.assignment?.id}
-                  onClick={() => {
-                    router.push({
-                      pathname: `/classroom/student/${student?.data?.data?.id}/assignment/${assignment?.assignment?.id}`,
-                      query: {
-                        classroomId: router?.query?.classroomId,
-                      },
-                    });
-                  }}
-                  className="w-11/12 md:w-10/12 flex gap-5  justify-between bg-white ring-2 overflow-auto ring-blue-600 rounded-2xl p-3"
+                  className="w-11/12 md:w-10/12 no-underline hover:scale-110 transition duration-100 flex gap-5  justify-between bg-white ring-2 overflow-auto ring-blue-600 rounded-2xl p-3"
                 >
                   <div className="w-full h-28 flex flex-col justify-center  text-left   ">
                     <div className="w-48 md:w-72 text-left truncate scrollbar-hide">
@@ -632,7 +640,7 @@ function Index() {
                       สถานะ
                     </div>
                   </div>
-                </button>
+                </Link>
               );
             })}
         </div>
