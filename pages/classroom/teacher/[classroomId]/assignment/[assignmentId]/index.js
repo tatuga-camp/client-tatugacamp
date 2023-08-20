@@ -661,7 +661,7 @@ function Index({ error, user }) {
 
             {/* student's assignment */}
             {activeMenu === 1 && (
-              <div className="flex items-start  gap-5 justify-center w-full h-full    mt-5  ">
+              <div className="flex items-start md:-2  lg:gap-5 justify-center w-full h-full  mt-5  ">
                 <div className="lg:w-max lg:max-w-xl md:w-2/4  top-10 sticky flex flex-col h-full items-center justify-center ">
                   <div className="text-xl font-Kanit font-semibold flex justify-center items-center gap-2">
                     <span>
@@ -840,7 +840,7 @@ function Index({ error, user }) {
 
                 {/* review student work section */}
                 <div
-                  className="flex flex-col    lg:w-2/4 md:w-2/4 sticky
+                  className="flex flex-col    lg:w-2/4 md:w-80 sticky
                  top-20 items-center justify-between h-full "
                 >
                   <div className="flex  w-full  lg:justify-between  mt-10">
@@ -945,7 +945,7 @@ function Index({ error, user }) {
                       </div>
                     )}
                   </div>
-                  <div className="h-80 ring-2  ring-black  p-0 m-2 relative rounded-md overflow-auto md:w-full ">
+                  <div className="md:h-96 lg:h-80 ring-2  ring-black  p-0 m-2 relative rounded-md overflow-auto md:w-full ">
                     <div
                       className="w-full h-max py-2 border-b-2 bg-white border-slate-200 sticky z-20 flex justify-center items-center gap-5
                      top-0"
@@ -1024,7 +1024,7 @@ function Index({ error, user }) {
                               images.length === 1
                                 ? 'grid-cols-1'
                                 : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '
-                            } lg:w-full md:w-60 mx-auto h-full gap-2  place-items-center
+                            } lg:w-full md:w-full mx-auto h-full gap-2  place-items-center
                          `}
                           >
                             {images.map((image, index) => {
@@ -1297,7 +1297,7 @@ function Index({ error, user }) {
 
                     {triggerShowWorksheet &&
                       currentStudentWork?.studentWork?.body && (
-                        <div className="w-full h-full">
+                        <div className="w-96 lg:w-full h-full">
                           <Editor
                             disabled={true}
                             apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
