@@ -56,6 +56,8 @@ function Index() {
   const [studentSummit, setStudentSummit] = useState({
     body: '',
   });
+  const [triggerShowFiles, setTiggerShowFiles] = useState(true);
+  const [triggerShowWorksheet, setTriggerShowWorksheet] = useState(false);
   const [triggerMenu, setTriggerMenu] = useState(false);
   const assignment = useQuery(
     ['assignment'],
@@ -803,120 +805,179 @@ application/pdf,
           {activeMenu === 1 && (
             <div className="w-11/12 max-w-3xl  flex flex-col gap-2 items-center justify-top">
               {studentWork?.status === 'no-work' ? (
-                <div className="font-Kanit text-2xl text-red-400 font-light h-20 flex items-center justify-center gap-2">
+                <div
+                  className="font-Kanit text-2xl text-red-400 font-light h-20 flex items-center 
+                justify-center gap-2"
+                >
                   <span>คุณยังไม่ส่งงาน</span>
                   <div className="flex items-center justify-center ">
                     <CiFaceFrown />
                   </div>
                 </div>
               ) : (
-                <div className="w-full h-80 overflow-auto ring-2 rounded-2xl  flex flex-col   gap-5 mt-5">
-                  {studentWork?.picture && (
-                    <SlideshowLightbox
-                      downloadImages={true}
-                      lightboxIdentifier="lightbox1"
-                      showThumbnails={true}
-                      framework="next"
-                      images={studentWork.picture}
-                      theme="day"
-                      className={`container grid w-full  h-max items-center place-items-center
+                <div className="w-full h-full">
+                  <ul className="flex w-full justify-center gap-2 font-Kanit">
+                    <li
+                      onClick={() => {
+                        setTiggerShowFiles(() => true);
+                        setTriggerShowWorksheet(() => false);
+                      }}
+                      className={` select-none ${
+                        triggerShowFiles
+                          ? 'font-medium underline underline-offset-2'
+                          : 'font-normal'
+                      }`}
+                    >
+                      ไฟล์งาน
+                    </li>
+                    <li className="border-r-2 border-black"></li>
+                    <li
+                      className={`select-none ${
+                        triggerShowWorksheet
+                          ? 'font-medium underline underline-offset-2'
+                          : 'font-normal'
+                      }`}
+                      onClick={() => {
+                        setTiggerShowFiles(() => false);
+                        setTriggerShowWorksheet(() => true);
+                      }}
+                    >
+                      ใบงาน
+                    </li>
+                  </ul>
+                  {triggerShowFiles && (
+                    <div className="w-full h-80 overflow-auto ring-2 ring-blue-400 rounded-2xl  flex flex-col   gap-5 mt-5">
+                      {studentWork?.picture && (
+                        <SlideshowLightbox
+                          downloadImages={true}
+                          lightboxIdentifier="lightbox1"
+                          showThumbnails={true}
+                          framework="next"
+                          images={studentWork.picture}
+                          theme="day"
+                          className={`container grid w-full  h-max items-center place-items-center
                        ${
                          studentWork?.picture.length === 1
                            ? 'grid-cols-1'
                            : 'grid-cols-2 md:grid-cols-3 '
                        }  gap-2  `}
-                    >
-                      {studentWork?.picture?.map((image, index) => {
-                        return (
-                          <Image
-                            key={index}
-                            src={image.src}
-                            alt={image.alt}
-                            width={240}
-                            height={160}
-                            className="object-cover "
-                            data-lightboxjs="lightbox1"
-                            quality={80}
-                            placeholder="blur"
-                            blurDataURL="/logo/TaTuga camp.png"
-                          />
-                        );
-                      })}
-                    </SlideshowLightbox>
+                        >
+                          {studentWork?.picture?.map((image, index) => {
+                            return (
+                              <Image
+                                key={index}
+                                src={image.src}
+                                alt={image.alt}
+                                width={240}
+                                height={160}
+                                className="object-cover "
+                                data-lightboxjs="lightbox1"
+                                quality={80}
+                                placeholder="blur"
+                                blurDataURL="/logo/TaTuga camp.png"
+                              />
+                            );
+                          })}
+                        </SlideshowLightbox>
+                      )}
+                      <div className="flex flex-col gap-5 justify-start items-center">
+                        {studentWork?.files?.length > 0 &&
+                          studentWork?.files.map((file, index) => {
+                            if (file.fileType === 'pdf') {
+                              return (
+                                <div
+                                  key={index}
+                                  className="w-full flex justify-center"
+                                >
+                                  <embed
+                                    src={file.url}
+                                    type="application/pdf"
+                                    frameBorder="0"
+                                    scrolling="auto"
+                                    height="500px"
+                                    width="80%"
+                                  ></embed>
+                                </div>
+                              );
+                            }
+                            if (file.fileType === 'docx') {
+                              return (
+                                <div
+                                  key={index}
+                                  className="w-full flex  justify-center"
+                                >
+                                  <iframe
+                                    width="80%"
+                                    height="500px"
+                                    src={`https://docs.google.com/gview?url=${file.url}&embedded=true`}
+                                  ></iframe>
+                                </div>
+                              );
+                            }
+                            if (
+                              file.fileType === 'mp4' ||
+                              file.fileType === 'mov' ||
+                              file.fileType === 'MOV'
+                            ) {
+                              return (
+                                <div
+                                  key={index}
+                                  className="w-full flex  justify-center"
+                                >
+                                  <ReactPlayer
+                                    playsinline
+                                    controls
+                                    width="100%"
+                                    height="100%"
+                                    url={file.url}
+                                  />
+                                </div>
+                              );
+                            }
+                            if (
+                              file.fileType === 'mp3' ||
+                              file.fileType === 'aac'
+                            ) {
+                              return (
+                                <div
+                                  key={index}
+                                  className="w-full flex  justify-center"
+                                >
+                                  <audio
+                                    src={file.url}
+                                    controls={true}
+                                    autoPlay={false}
+                                  />
+                                </div>
+                              );
+                            }
+                          })}
+                      </div>
+                    </div>
                   )}
-                  <div className="flex flex-col gap-5 justify-start items-center">
-                    {studentWork?.files?.length > 0 &&
-                      studentWork?.files.map((file, index) => {
-                        if (file.fileType === 'pdf') {
-                          return (
-                            <div
-                              key={index}
-                              className="w-full flex justify-center"
-                            >
-                              <embed
-                                src={file.url}
-                                type="application/pdf"
-                                frameBorder="0"
-                                scrolling="auto"
-                                height="500px"
-                                width="80%"
-                              ></embed>
-                            </div>
-                          );
-                        }
-                        if (file.fileType === 'docx') {
-                          return (
-                            <div
-                              key={index}
-                              className="w-full flex  justify-center"
-                            >
-                              <iframe
-                                width="80%"
-                                height="500px"
-                                src={`https://docs.google.com/gview?url=${file.url}&embedded=true`}
-                              ></iframe>
-                            </div>
-                          );
-                        }
-                        if (
-                          file.fileType === 'mp4' ||
-                          file.fileType === 'mov' ||
-                          file.fileType === 'MOV'
-                        ) {
-                          return (
-                            <div
-                              key={index}
-                              className="w-full flex  justify-center"
-                            >
-                              <ReactPlayer
-                                playsinline
-                                controls
-                                width="100%"
-                                height="100%"
-                                url={file.url}
-                              />
-                            </div>
-                          );
-                        }
-                        if (
-                          file.fileType === 'mp3' ||
-                          file.fileType === 'aac'
-                        ) {
-                          return (
-                            <div
-                              key={index}
-                              className="w-full flex  justify-center"
-                            >
-                              <audio
-                                src={file.url}
-                                controls={true}
-                                autoPlay={false}
-                              />
-                            </div>
-                          );
-                        }
-                      })}
-                  </div>
+
+                  {triggerShowWorksheet && (
+                    <div className="w-full h-80 mt-5">
+                      <Editor
+                        disabled={true}
+                        apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                        init={{
+                          setup: function (editor) {
+                            editor.on('init', function () {
+                              setLoadingTiny(() => false);
+                            });
+                          },
+                          height: '100%',
+                          width: '100%',
+                          menubar: false,
+                          toolbar: false,
+                          selector: 'textarea', // change this value according to your HTML
+                        }}
+                        initialValue={fetchStudentWork.data.data.body}
+                        value={fetchStudentWork.data.data.body}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
