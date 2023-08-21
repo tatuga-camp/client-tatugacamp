@@ -441,3 +441,24 @@ export async function DeleteStudentWork({ assignmentId, studentId }) {
     throw new Error(err);
   }
 }
+
+export async function ReviewStudentWorksheetApi({ body, studentWorkId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const updateStudentWork = await axios.put(
+      `${process.env.Server_Url}/user/assignment/review/student-worksheet`,
+      { body, studentWorkId },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return updateStudentWork;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}

@@ -5,11 +5,19 @@ import {
   DeleteStudentWork,
   ReviewStudentWork,
   ReviewStudentWorkNoWork,
+  ReviewStudentWorksheetApi,
   ViewAllAssignOnStudent,
 } from '../../../../../../service/assignment.js';
 import { FiSettings } from 'react-icons/fi';
 import { Box, Skeleton, TextField } from '@mui/material';
-import { MdDelete, MdOutlineAssignmentReturn } from 'react-icons/md';
+import {
+  MdDelete,
+  MdOutlineAssignmentReturn,
+  MdOutlineEditOff,
+  MdOutlineModeEditOutline,
+  MdZoomInMap,
+  MdZoomOutMap,
+} from 'react-icons/md';
 import Swal from 'sweetalert2';
 import Image from 'next/image';
 import 'lightbox.js-react/dist/index.css';
@@ -33,9 +41,10 @@ import { parseCookies } from 'nookies';
 import ReactPlayer from 'react-player';
 import { Editor } from '@tinymce/tinymce-react';
 import AssignMultipleClassroom from '../../../../../../components/form/assignMultipleClassroom.js';
-import { AiOutlineComment } from 'react-icons/ai';
+import { AiFillEdit, AiOutlineComment } from 'react-icons/ai';
 import { HiOutlineNewspaper, HiPaperClip } from 'react-icons/hi2';
 import Link from 'next/link.js';
+import Loading from '../../../../../../components/loading/loading.js';
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -47,10 +56,14 @@ const validateScore = (value) => {
 function Index({ error, user }) {
   const router = useRouter();
   const [loadingTiny, setLoadingTiny] = useState(true);
+  const [loadingReviewStudentWorksheet, setLoadingReviewStudentWorksheet] =
+    useState(false);
   const [triggerUpdateAssignment, setTriggerUpdateAssignment] = useState(false);
   const [triggerShowFiles, setTriggerShowFiles] = useState(true);
   const [triggerShowComment, setTriggerShowComment] = useState(false);
   const [triggerShowWorksheet, setTiggerShowWorksheet] = useState(false);
+  const [triggerFullScreen, setTriggerFullScreen] = useState(false);
+  const [triggerEditBody, setTriggerEditBody] = useState(false);
   const [triggerAssignMultipleClassroom, setTriggerAssignMultipleClassroom] =
     useState(false);
   const [comment, setComment] = useState();
@@ -466,6 +479,39 @@ function Index({ error, user }) {
       });
     }
   };
+
+  const handleChangeCurrentStudentWork = (content, editor) => {
+    setCurrentStudentWork((prev) => {
+      return {
+        ...prev,
+        studentWork: {
+          ...prev.studentWork,
+          body: content,
+        },
+      };
+    });
+  };
+  //handle review student work sheet
+  const handleReviewStudentWorksheet = async () => {
+    try {
+      setLoadingReviewStudentWorksheet(() => true);
+      await ReviewStudentWorksheetApi({
+        body: currentStudentWork.studentWork.body,
+        studentWorkId: currentStudentWork.studentWork.id,
+      });
+      studentOnAssignments.refetch();
+      setLoadingReviewStudentWorksheet(() => false);
+      Swal.fire('success', 'update successfully', 'success');
+    } catch (err) {
+      setLoadingReviewStudentWorksheet(() => false);
+      console.log(err);
+      Swal.fire(
+        'error',
+        err?.props?.response?.data?.error?.message?.toString(),
+        'error',
+      );
+    }
+  };
   if (error?.statusCode === 401) {
     return <Unauthorized />;
   }
@@ -491,7 +537,11 @@ function Index({ error, user }) {
         <div className="h-full ">
           {/* menu bars */}
 
-          <div className=" w-full h-20 drop-shadow-md bg-white z-10 flex sticky top-0  justify-center gap-9">
+          <div
+            className={` w-full h-20  drop-shadow-md bg-white z-10 ${
+              triggerFullScreen ? 'hidden' : 'flex'
+            }  sticky top-0  justify-center gap-9`}
+          >
             <Link
               href={`/classroom/teacher/${router.query.classroomId}/assignment/`}
               className="font-Poppins z-20 hover:scale-110 transition 
@@ -891,8 +941,8 @@ function Index({ error, user }) {
                active:border-solid  focus:border-2 
               focus:border-solid"
                         >
-                          {user.language === 'Thai' && 'ส่ง'}
-                          {user.language === 'English' && 'summit'}
+                          {user.language === 'Thai' && 'ตรวจ'}
+                          {user.language === 'English' && 'review'}
                         </button>
                       </form>
                     )}
@@ -945,406 +995,522 @@ function Index({ error, user }) {
                       </div>
                     )}
                   </div>
-                  <div className="md:h-96 lg:h-80 ring-2  ring-black  p-0 m-2 relative rounded-md overflow-auto md:w-full ">
+                  <div
+                    className={`${
+                      triggerFullScreen
+                        ? 'fixed flex justify-center flex-col items-center top-0 right-0 left-0 bottom-0 m-auto w-screen h-screen z-50'
+                        : 'w-full'
+                    }`}
+                  >
                     <div
-                      className="w-full h-max py-2 border-b-2 bg-white border-slate-200 sticky z-20 flex justify-center items-center gap-5
-                     top-0"
+                      className={`
+                    ${
+                      triggerFullScreen
+                        ? 'relative md:h-4/5 bg-white  lg:h-4/5  scale-100  p-0 m-2 ring-2 ring-black  rounded-md overflow-auto md:w-9/12'
+                        : 'relative md:h-96 bg-white  lg:h-80  scale-100  p-0 m-2 ring-2 ring-black  rounded-md overflow-auto md:w-full'
+                    } transition duration-200
+                      `}
                     >
-                      <button
-                        onClick={() => {
-                          setTriggerShowFiles(() => true);
-                          setTriggerShowComment(() => false);
-                          setTiggerShowWorksheet(() => false);
-                        }}
-                        aria-label="button to trigger show student's assignment"
-                        className={`text-xl flex gap-2 justify-center items-center p-3 hover:scale-110 transition duration-150 ${
-                          triggerShowFiles
-                            ? '  text-green-200 bg-green-600'
-                            : 'text-green-700 bg-green-200'
-                        }
-                       hover:text-green-200 hover:bg-green-600 rounded-full  `}
+                      <div
+                        className="w-full h-max py-2 border-b-2 bg-white
+                       border-slate-200 sticky z-40 justify-around flex  items-center gap-5
+                     top-0"
                       >
-                        <HiPaperClip />
-                        {triggerShowFiles && (
-                          <span className="text-xs">ไฟล์งาน</span>
-                        )}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setTriggerShowFiles(() => false);
-                          setTriggerShowComment(() => true);
-                          setTiggerShowWorksheet(() => false);
-                        }}
-                        aria-label="button to trigger show student's comment"
-                        className={`text-xl flex gap-2 justify-center items-center p-3 hover:scale-110 transition duration-150 ${
-                          triggerShowComment
-                            ? '  text-green-200 bg-green-600'
-                            : 'text-green-700 bg-green-200'
-                        }
+                        <div className="flex w-max gap-2 items-center justify-center">
+                          <button
+                            onClick={() => {
+                              setTriggerShowFiles(() => true);
+                              setTriggerShowComment(() => false);
+                              setTiggerShowWorksheet(() => false);
+                            }}
+                            aria-label="button to trigger show student's assignment"
+                            className={`text-xl flex gap-2 justify-center items-center p-3 hover:scale-110 transition duration-150 ${
+                              triggerShowFiles
+                                ? '  text-green-200 bg-green-600'
+                                : 'text-green-700 bg-green-200'
+                            }
                        hover:text-green-200 hover:bg-green-600 rounded-full  `}
-                      >
-                        <AiOutlineComment />
-                        {triggerShowComment && (
-                          <span className="text-xs">คอมเมนต์</span>
-                        )}
-                      </button>
-                      {currentStudentWork?.studentWork?.body && (
+                          >
+                            <HiPaperClip />
+                            {triggerShowFiles && (
+                              <span className="text-xs">ไฟล์งาน</span>
+                            )}
+                          </button>
+                          <button
+                            onClick={() => {
+                              setTriggerShowFiles(() => false);
+                              setTriggerShowComment(() => true);
+                              setTiggerShowWorksheet(() => false);
+                            }}
+                            aria-label="button to trigger show student's comment"
+                            className={`text-xl flex gap-2 justify-center items-center p-3 hover:scale-110 transition duration-150 ${
+                              triggerShowComment
+                                ? '  text-green-200 bg-green-600'
+                                : 'text-green-700 bg-green-200'
+                            }
+                       hover:text-green-200 hover:bg-green-600 rounded-full  `}
+                          >
+                            <AiOutlineComment />
+                            {triggerShowComment && (
+                              <span className="text-xs">คอมเมนต์</span>
+                            )}
+                          </button>
+                          {currentStudentWork?.studentWork?.body && (
+                            <button
+                              onClick={() => {
+                                setTriggerShowFiles(() => false);
+                                setTriggerShowComment(() => false);
+                                setTiggerShowWorksheet(() => true);
+                              }}
+                              aria-label="button to trigger show student's comment"
+                              className={`text-xl flex gap-2 justify-center items-center p-3 hover:scale-110 transition duration-150 ${
+                                triggerShowWorksheet
+                                  ? '  text-green-200 bg-green-600'
+                                  : 'text-green-700 bg-green-200'
+                              }
+                       hover:text-green-200 hover:bg-green-600 rounded-full  `}
+                            >
+                              <HiOutlineNewspaper />
+                              {triggerShowWorksheet && (
+                                <span className="text-xs">ใบงาน</span>
+                              )}
+                            </button>
+                          )}
+                        </div>
                         <button
                           onClick={() => {
-                            setTriggerShowFiles(() => false);
-                            setTriggerShowComment(() => false);
-                            setTiggerShowWorksheet(() => true);
+                            setTriggerFullScreen((prev) => {
+                              if (prev === false) {
+                                document.body.style.overflow = 'hidden';
+                              } else {
+                                document.body.style.overflow = 'auto';
+                              }
+                              return !prev;
+                            });
                           }}
-                          aria-label="button to trigger show student's comment"
-                          className={`text-xl flex gap-2 justify-center items-center p-3 hover:scale-110 transition duration-150 ${
-                            triggerShowWorksheet
-                              ? '  text-green-200 bg-green-600'
-                              : 'text-green-700 bg-green-200'
-                          }
-                       hover:text-green-200 hover:bg-green-600 rounded-full  `}
+                          className=" hover:scale-110 transition duration-150
+                      flex items-center gap-2"
                         >
-                          <HiOutlineNewspaper />
-                          {triggerShowWorksheet && (
-                            <span className="text-xs">ใบงาน</span>
+                          {triggerFullScreen ? (
+                            <MdZoomInMap />
+                          ) : (
+                            <MdZoomOutMap />
+                          )}
+
+                          {triggerFullScreen ? (
+                            <span>
+                              {user.language === 'Thai' ? 'ออก' : 'out'}
+                            </span>
+                          ) : (
+                            <span>
+                              {user.language === 'Thai'
+                                ? 'ขยาย'
+                                : 'full screen'}
+                            </span>
                           )}
                         </button>
-                      )}
-                    </div>
-                    {triggerShowFiles && (
-                      <div className=" flex flex-col w-full gap-10 ">
-                        {currentStudentWork && images && images !== null ? (
-                          <SlideshowLightbox
-                            downloadImages={true}
-                            lightboxIdentifier="lightbox1"
-                            showThumbnails={true}
-                            framework="next"
-                            images={images}
-                            theme="day"
-                            className={`container grid ${
-                              images.length === 1
-                                ? 'grid-cols-1'
-                                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '
-                            } lg:w-full md:w-full mx-auto h-full gap-2  place-items-center
+                      </div>
+                      {triggerShowFiles && (
+                        <div className=" flex flex-col w-full gap-10 ">
+                          {currentStudentWork && images && images !== null ? (
+                            <SlideshowLightbox
+                              downloadImages={true}
+                              lightboxIdentifier="lightbox1"
+                              showThumbnails={true}
+                              framework="next"
+                              images={images}
+                              theme="day"
+                              className={`container grid ${
+                                images.length === 1
+                                  ? 'grid-cols-1'
+                                  : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 '
+                              } lg:w-full md:w-full mx-auto h-full gap-2  place-items-center
                          `}
-                          >
-                            {images.map((image, index) => {
-                              return (
-                                <div
-                                  key={index}
-                                  className="lg:w-60 overflow-hidden  lg:h-60 md:w-40 md:h-40 relative bg-blue-200 "
-                                >
-                                  <Image
-                                    src={image.src}
-                                    alt="student's work"
-                                    layout="fill"
-                                    className="object-cover hover:scale-125 transition duration-150"
-                                    data-lightboxjs="lightbox1"
-                                    quality={60}
-                                    placeholder="blur"
-                                    blurDataURL="/logo/TaTuga camp.png"
-                                  />
-                                </div>
-                              );
-                            })}
-                          </SlideshowLightbox>
-                        ) : (
-                          <div
-                            className="w-full   h-80 text-center flex items-center justify-center font-Kanit
+                            >
+                              {images.map((image, index) => {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="lg:w-60 overflow-hidden  lg:h-60 md:w-40 md:h-40 relative bg-blue-200 "
+                                  >
+                                    <Image
+                                      src={image.src}
+                                      alt="student's work"
+                                      layout="fill"
+                                      className="object-cover hover:scale-125 transition duration-150"
+                                      data-lightboxjs="lightbox1"
+                                      quality={60}
+                                      placeholder="blur"
+                                      blurDataURL="/logo/TaTuga camp.png"
+                                    />
+                                  </div>
+                                );
+                              })}
+                            </SlideshowLightbox>
+                          ) : (
+                            <div
+                              className="w-full   h-80 text-center flex items-center justify-center font-Kanit
                       font-bold text-2xl "
-                          >
-                            {currentStudentWork?.status === 'no-work' &&
-                              user.language === 'Thai' &&
-                              'ผู้เรียนยังไม่ส่งงาน'}
-                            {currentStudentWork?.status === 'have-work' &&
-                              !currentStudentWork?.studentWork?.body &&
-                              user.language === 'Thai' &&
-                              'ตรวจงานโดยผู้เรียนไม่ส่งงาน'}
-                            {!currentStudentWork &&
-                              user.language === 'Thai' &&
-                              'โปรดเลือกงาน'}
-                            {currentStudentWork?.status === 'no-work' &&
-                              user.language === 'English' &&
-                              "NO student's work"}
-                            {currentStudentWork?.status === 'have-work' &&
-                              user.language === 'English' &&
-                              "Finish checking without student's work"}
-                            {!currentStudentWork &&
-                              user.language === 'English' &&
-                              'Please select some student'}
+                            >
+                              {currentStudentWork?.status === 'no-work' &&
+                                user.language === 'Thai' &&
+                                'ผู้เรียนยังไม่ส่งงาน'}
+                              {currentStudentWork?.status === 'have-work' &&
+                                !currentStudentWork?.studentWork?.body &&
+                                user.language === 'Thai' &&
+                                'ตรวจงานโดยผู้เรียนไม่ส่งงาน'}
+                              {!currentStudentWork &&
+                                user.language === 'Thai' &&
+                                'โปรดเลือกงาน'}
+                              {currentStudentWork?.status === 'no-work' &&
+                                user.language === 'English' &&
+                                "NO student's work"}
+                              {currentStudentWork?.status === 'have-work' &&
+                                user.language === 'English' &&
+                                "Finish checking without student's work"}
+                              {!currentStudentWork &&
+                                user.language === 'English' &&
+                                'Please select some student'}
+                            </div>
+                          )}
+                          <div className="flex flex-col gap-5 justify-start items-center">
+                            {files.map((file, index) => {
+                              if (file.fileType === 'pdf') {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="w-full flex justify-center"
+                                  >
+                                    <embed
+                                      src={file.url}
+                                      type="application/pdf"
+                                      frameBorder="0"
+                                      scrolling="auto"
+                                      height="500px"
+                                      width="80%"
+                                    ></embed>
+                                  </div>
+                                );
+                              }
+                              if (file.fileType === 'docx') {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="w-full flex  justify-center"
+                                  >
+                                    <iframe
+                                      width="80%"
+                                      height="500px"
+                                      src={`https://docs.google.com/gview?url=${file.url}&embedded=true`}
+                                    ></iframe>
+                                  </div>
+                                );
+                              }
+                              if (
+                                file.fileType === 'mp4' ||
+                                file.fileType === 'mov' ||
+                                file.fileType === 'MOV'
+                              ) {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="w-full flex  justify-center"
+                                  >
+                                    <ReactPlayer
+                                      playsinline
+                                      controls
+                                      url={file.url}
+                                    />
+                                  </div>
+                                );
+                              }
+                              if (
+                                file.fileType === 'mp3' ||
+                                file.fileType === 'aac'
+                              ) {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="w-full flex  justify-center"
+                                  >
+                                    <audio
+                                      src={file.url}
+                                      controls={true}
+                                      autoPlay={false}
+                                    />
+                                  </div>
+                                );
+                              }
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      {triggerShowComment &&
+                        comment?.map((comment, index) => {
+                          if (comment.user) {
+                            return (
+                              <div
+                                key={index}
+                                className=" w-full h-max mt-5 flex items-start justify-start relative "
+                              >
+                                <div className="flex gap-2 md:ml-2 lg:ml-20 w-full ">
+                                  {comment.user.picture ? (
+                                    <div className="w-12 h-12 rounded-full overflow-hidden relative">
+                                      <Image
+                                        src={comment.user.picture}
+                                        alt="profile"
+                                        layout="fill"
+                                        sizes="(max-width: 768px) 100vw"
+                                        className="object-cover"
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
+                                      <span className="uppercase font-sans font-black text-3xl text-white">
+                                        {comment.user.firstName.charAt(0)}
+                                      </span>
+                                    </div>
+                                  )}
+                                  <div className="w-max md:max-w-[15rem] lg:max-w-xl  pr-10  bg-green-100 rounded-3xl h-full relative  p-2">
+                                    <div className="text-md ml-4 font-bold first-letter:uppercase">
+                                      {comment.user.firstName}
+                                      {comment.user?.lastName}
+                                    </div>
+                                    <div
+                                      className="pl-4 break-words "
+                                      dangerouslySetInnerHTML={{
+                                        __html: comment.body,
+                                      }}
+                                    />
+                                    <div className="w-full min-w-[8rem] mt-2 flex justify-end text-red-400">
+                                      {!comment.selected && (
+                                        <button
+                                          onClick={() =>
+                                            handleConfirmDelete(index)
+                                          }
+                                          className="underline"
+                                        >
+                                          ลบ
+                                        </button>
+                                      )}
+                                      {comment.selected && (
+                                        <div className="flex gap-2">
+                                          <button
+                                            onClick={() =>
+                                              handleDeleteTeacherComment({
+                                                teacherCommentId: comment.id,
+                                                studentId:
+                                                  currentStudentWork.id,
+                                              })
+                                            }
+                                          >
+                                            YES
+                                          </button>
+                                          <button
+                                            onClick={() =>
+                                              handleUnConfirmDelete(index)
+                                            }
+                                          >
+                                            NO
+                                          </button>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          } else if (comment.student) {
+                            return (
+                              <div
+                                key={index}
+                                className=" w-full h-max mt-5 flex items-start justify-start relative "
+                              >
+                                <div className="flex gap-2 md:ml-2 lg:ml-20">
+                                  {comment.student.picture ? (
+                                    <div className="w-12 h-12 rounded-full overflow-hidden relative">
+                                      <Image
+                                        src={comment.student.picture}
+                                        alt="profile"
+                                        layout="fill"
+                                        sizes="(max-width: 768px) 100vw"
+                                        className="object-cover"
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
+                                      <span className="uppercase font-sans font-black text-3xl text-white">
+                                        {comment.student.firstName.charAt(0)}
+                                      </span>
+                                    </div>
+                                  )}
+                                  <div className="w-max max-w-[10rem] lg:max-w-xl px-5 pr-8  bg-blue-100 rounded-3xl h-full relative  p-2">
+                                    <div className="text-md ml-4 font-bold first-letter:uppercase">
+                                      {comment.student.firstName}
+                                      {comment.student?.lastName}
+                                    </div>
+                                    <div
+                                      className="pl-4 break-words "
+                                      dangerouslySetInnerHTML={{
+                                        __html: comment.body,
+                                      }}
+                                    />
+                                    <div className="w-full min-w-[8rem] mt-2 flex justify-end text-red-400">
+                                      {!comment.selected && (
+                                        <button
+                                          onClick={() =>
+                                            handleConfirmDelete(index)
+                                          }
+                                          className="underline"
+                                        >
+                                          ลบ
+                                        </button>
+                                      )}
+                                      {comment.selected && (
+                                        <div className="flex gap-2">
+                                          <button
+                                            onClick={() =>
+                                              handleDeleteStudentComment({
+                                                studentCommentId: comment.id,
+                                                studentId:
+                                                  currentStudentWork.id,
+                                              })
+                                            }
+                                          >
+                                            YES
+                                          </button>
+                                          <button
+                                            onClick={() =>
+                                              handleUnConfirmDelete(index)
+                                            }
+                                          >
+                                            NO
+                                          </button>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          }
+                        })}
+
+                      {triggerShowWorksheet &&
+                        currentStudentWork?.studentWork?.body && (
+                          <div className="w-full  lg:w-full h-full relative">
+                            <button
+                              onClick={() => {
+                                setTriggerEditBody((prev) => !prev);
+                              }}
+                              className="flex absolute top-2 right-6 hover:scale-110 transition duration-100
+                          hover:ring-2 active:bg-blue-700
+                          m-auto z-20  w-10 h-10 items-center justify-center text-xl  rounded-full bg-blue-600 text-blue-100"
+                            >
+                              {triggerEditBody ? (
+                                <MdOutlineEditOff />
+                              ) : (
+                                <MdOutlineModeEditOutline />
+                              )}
+                            </button>
+                            <Editor
+                              disabled={!triggerEditBody}
+                              apiKey={
+                                process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY
+                              }
+                              textareaName="body"
+                              init={{
+                                selector: 'textarea',
+                                link_context_toolbar: true,
+                                height: '100%',
+                                width: '100%',
+                                menubar: true,
+                                paste_data_images: false,
+                                plugins: [
+                                  'advlist',
+                                  'autolink',
+                                  'lists',
+                                  'link',
+                                  'charmap',
+                                  'preview',
+                                  'anchor',
+                                  'searchreplace',
+                                  'visualblocks',
+                                  'code',
+                                  'fullscreen',
+                                  'insertdatetime',
+                                  'media',
+                                  'table',
+                                  'help',
+                                  'wordcount',
+                                ],
+                                toolbar:
+                                  'undo redo | formatselect | blocks | ' +
+                                  'bold italic backcolor | alignleft aligncenter ' +
+                                  'alignright alignjustify | bullist numlist outdent indent | ' +
+                                  'removeformat | help | link ',
+                                content_style:
+                                  'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                              }}
+                              value={currentStudentWork.studentWork.body}
+                              onEditorChange={handleChangeCurrentStudentWork}
+                            />
                           </div>
                         )}
-                        <div className="flex flex-col gap-5 justify-start items-center">
-                          {files.map((file, index) => {
-                            if (file.fileType === 'pdf') {
-                              return (
-                                <div
-                                  key={index}
-                                  className="w-full flex justify-center"
-                                >
-                                  <embed
-                                    src={file.url}
-                                    type="application/pdf"
-                                    frameBorder="0"
-                                    scrolling="auto"
-                                    height="500px"
-                                    width="80%"
-                                  ></embed>
-                                </div>
-                              );
-                            }
-                            if (file.fileType === 'docx') {
-                              return (
-                                <div
-                                  key={index}
-                                  className="w-full flex  justify-center"
-                                >
-                                  <iframe
-                                    width="80%"
-                                    height="500px"
-                                    src={`https://docs.google.com/gview?url=${file.url}&embedded=true`}
-                                  ></iframe>
-                                </div>
-                              );
-                            }
-                            if (
-                              file.fileType === 'mp4' ||
-                              file.fileType === 'mov' ||
-                              file.fileType === 'MOV'
-                            ) {
-                              return (
-                                <div
-                                  key={index}
-                                  className="w-full flex  justify-center"
-                                >
-                                  <ReactPlayer
-                                    playsinline
-                                    controls
-                                    url={file.url}
-                                  />
-                                </div>
-                              );
-                            }
-                            if (
-                              file.fileType === 'mp3' ||
-                              file.fileType === 'aac'
-                            ) {
-                              return (
-                                <div
-                                  key={index}
-                                  className="w-full flex  justify-center"
-                                >
-                                  <audio
-                                    src={file.url}
-                                    controls={true}
-                                    autoPlay={false}
-                                  />
-                                </div>
-                              );
-                            }
-                          })}
-                        </div>
+                    </div>
+                    {triggerShowWorksheet && triggerEditBody && (
+                      <div className="w-full flex items-center justify-center mt-2">
+                        {loadingReviewStudentWorksheet ? (
+                          <Loading />
+                        ) : (
+                          <button
+                            onClick={handleReviewStudentWorksheet}
+                            className="w-max h-max hover:scale-105 transition duration-150 active:ring-2 ring-black
+                     p-2 bg-blue-500 text-white rounded-md drop-shadow-md"
+                          >
+                            UPDATE
+                          </button>
+                        )}
                       </div>
                     )}
-
-                    {triggerShowComment &&
-                      comment?.map((comment, index) => {
-                        if (comment.user) {
-                          return (
-                            <div
-                              key={index}
-                              className=" w-full h-max mt-5 flex items-start justify-start relative "
-                            >
-                              <div className="flex gap-2 md:ml-2 lg:ml-20 w-full ">
-                                {comment.user.picture ? (
-                                  <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                                    <Image
-                                      src={comment.user.picture}
-                                      alt="profile"
-                                      layout="fill"
-                                      sizes="(max-width: 768px) 100vw"
-                                      className="object-cover"
-                                    />
-                                  </div>
-                                ) : (
-                                  <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
-                                    <span className="uppercase font-sans font-black text-3xl text-white">
-                                      {comment.user.firstName.charAt(0)}
-                                    </span>
-                                  </div>
-                                )}
-                                <div className="w-max md:max-w-[15rem] lg:max-w-xl  pr-10  bg-green-100 rounded-3xl h-full relative  p-2">
-                                  <div className="text-md ml-4 font-bold first-letter:uppercase">
-                                    {comment.user.firstName}
-                                    {comment.user?.lastName}
-                                  </div>
-                                  <div
-                                    className="pl-4 break-words "
-                                    dangerouslySetInnerHTML={{
-                                      __html: comment.body,
-                                    }}
-                                  />
-                                  <div className="w-full min-w-[8rem] mt-2 flex justify-end text-red-400">
-                                    {!comment.selected && (
-                                      <button
-                                        onClick={() =>
-                                          handleConfirmDelete(index)
-                                        }
-                                        className="underline"
-                                      >
-                                        ลบ
-                                      </button>
-                                    )}
-                                    {comment.selected && (
-                                      <div className="flex gap-2">
-                                        <button
-                                          onClick={() =>
-                                            handleDeleteTeacherComment({
-                                              teacherCommentId: comment.id,
-                                              studentId: currentStudentWork.id,
-                                            })
-                                          }
-                                        >
-                                          YES
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleUnConfirmDelete(index)
-                                          }
-                                        >
-                                          NO
-                                        </button>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        } else if (comment.student) {
-                          return (
-                            <div
-                              key={index}
-                              className=" w-full h-max mt-5 flex items-start justify-start relative "
-                            >
-                              <div className="flex gap-2 md:ml-2 lg:ml-20">
-                                {comment.student.picture ? (
-                                  <div className="w-12 h-12 rounded-full overflow-hidden relative">
-                                    <Image
-                                      src={comment.student.picture}
-                                      alt="profile"
-                                      layout="fill"
-                                      sizes="(max-width: 768px) 100vw"
-                                      className="object-cover"
-                                    />
-                                  </div>
-                                ) : (
-                                  <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
-                                    <span className="uppercase font-sans font-black text-3xl text-white">
-                                      {comment.student.firstName.charAt(0)}
-                                    </span>
-                                  </div>
-                                )}
-                                <div className="w-max max-w-[10rem] lg:max-w-xl px-5 pr-8  bg-blue-100 rounded-3xl h-full relative  p-2">
-                                  <div className="text-md ml-4 font-bold first-letter:uppercase">
-                                    {comment.student.firstName}
-                                    {comment.student?.lastName}
-                                  </div>
-                                  <div
-                                    className="pl-4 break-words "
-                                    dangerouslySetInnerHTML={{
-                                      __html: comment.body,
-                                    }}
-                                  />
-                                  <div className="w-full min-w-[8rem] mt-2 flex justify-end text-red-400">
-                                    {!comment.selected && (
-                                      <button
-                                        onClick={() =>
-                                          handleConfirmDelete(index)
-                                        }
-                                        className="underline"
-                                      >
-                                        ลบ
-                                      </button>
-                                    )}
-                                    {comment.selected && (
-                                      <div className="flex gap-2">
-                                        <button
-                                          onClick={() =>
-                                            handleDeleteStudentComment({
-                                              studentCommentId: comment.id,
-                                              studentId: currentStudentWork.id,
-                                            })
-                                          }
-                                        >
-                                          YES
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleUnConfirmDelete(index)
-                                          }
-                                        >
-                                          NO
-                                        </button>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        }
-                      })}
-
-                    {triggerShowWorksheet &&
-                      currentStudentWork?.studentWork?.body && (
-                        <div className="w-96 lg:w-full h-full">
-                          <Editor
-                            disabled={true}
-                            apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
-                            init={{
-                              setup: function (editor) {
-                                editor.on('init', function () {
-                                  setLoadingTiny(() => false);
-                                });
-                              },
-                              height: '100%',
-                              width: '100%',
-                              menubar: false,
-                              toolbar: false,
-                              selector: 'textarea', // change this value according to your HTML
-                            }}
-                            initialValue={currentStudentWork.studentWork.body}
-                            value={currentStudentWork.studentWork.body}
+                    {triggerShowComment && (
+                      <form
+                        onSubmit={handlePostComment}
+                        className="w-full flex items-center justify-center mt-2 gap-5 "
+                      >
+                        <Box width="50%">
+                          <TextField
+                            name="comment"
+                            variant="filled"
+                            color="success"
+                            onChange={handleOnChangeReviewWork}
+                            fullWidth
+                            value={teacherReview.comment}
+                            label="comment"
                           />
-                        </div>
-                      )}
-                  </div>
-
-                  {triggerShowComment && (
-                    <form
-                      onSubmit={handlePostComment}
-                      className="w-full flex items-center justify-center mt-2 gap-5 "
-                    >
-                      <Box width="50%">
-                        <TextField
-                          name="comment"
-                          onChange={handleOnChangeReviewWork}
-                          fullWidth
-                          value={teacherReview.comment}
-                          label="comment"
-                        />
-                      </Box>
-                      <button
-                        className="w-max px-5 py-2 h-max  rounded-full bg-[#2C7CD1] hover:bg-red-500 tranti duration-150
+                        </Box>
+                        <button
+                          className="w-max px-5 py-2 h-max  rounded-full bg-[#2C7CD1] hover:bg-red-500 tranti duration-150
                        text-white font-sans font-bold
               text-md cursor-pointer hover: active:border-2  active:border-gray-300
                active:border-solid flex items-center justify-center  focus:border-2 
               focus:border-solid"
-                      >
-                        <SendIcon />
-                      </button>
-                    </form>
-                  )}
+                        >
+                          <SendIcon />
+                        </button>
+                      </form>
+                    )}
+                    {triggerFullScreen && (
+                      <div
+                        onClick={() => {
+                          document.body.style.overflow = 'auto';
+                          setTriggerFullScreen(() => false);
+                        }}
+                        className="w-screen h-screen fixed right-0 backdrop-blur-sm  left-0 top-0 bottom-0 m-auto -z-10 bg-white/50 "
+                      ></div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
