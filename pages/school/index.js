@@ -9,7 +9,7 @@ import {
   sideMenusThai,
 } from '../../data/school/menubarsHomepage';
 import Head from 'next/head';
-import Image from 'next/image';
+import Image from "next/image";
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { SiGoogleclassroom } from 'react-icons/si';
 import {
@@ -259,11 +259,10 @@ function Index({
               {user?.picture ? (
                 <Image
                   src={user?.picture}
-                  layout="fill"
-                  sizes="(max-width: 768px) 100vw"
                   className="object-cover"
                   alt={`profile of ${user?.firstName}`}
-                />
+                  fill
+                  sizes="(max-width: 768px) 100vw" />
               ) : (
                 <span className="text-3xl font-Kanit font-semibold text-white">
                   {user?.firstName?.charAt(0)}
@@ -406,10 +405,9 @@ function Index({
                             {teacher.picture ? (
                               <Image
                                 src={teacher.picture}
-                                layout="fill"
-                                sizes="(max-width: 768px) 100vw"
                                 className="object-cover"
-                              />
+                                fill
+                                sizes="(max-width: 768px) 100vw" />
                             ) : (
                               <span className="font-bold text-2xl uppercase">
                                 {teacher.firstName.charAt(0)}
@@ -554,10 +552,9 @@ function Index({
                         <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
                           <Image
                             src={list.student.picture}
-                            layout="fill"
-                            sizes="(max-width: 768px) 100vw"
                             className="object-cover"
-                          />
+                            fill
+                            sizes="(max-width: 768px) 100vw" />
                         </div>
                         <div className="flex flex-col gap-0  items-start justify-center">
                           <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
@@ -614,10 +611,9 @@ function Index({
                         <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
                           <Image
                             src={list.student.picture}
-                            layout="fill"
-                            sizes="(max-width: 768px) 100vw"
                             className="object-cover"
-                          />
+                            fill
+                            sizes="(max-width: 768px) 100vw" />
                         </div>
                         <div className="flex flex-col gap-0  items-start justify-center">
                           <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
@@ -674,10 +670,9 @@ function Index({
                         <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
                           <Image
                             src={list.student.picture}
-                            layout="fill"
-                            sizes="(max-width: 768px) 100vw"
                             className="object-cover"
-                          />
+                            fill
+                            sizes="(max-width: 768px) 100vw" />
                         </div>
                         <div className="flex flex-col gap-0  items-start justify-center">
                           <div className="text-sm font-semibold flex gap-2 w-80 truncate ">

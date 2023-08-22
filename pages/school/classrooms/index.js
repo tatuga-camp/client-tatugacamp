@@ -15,7 +15,7 @@ import {
   GetAllClassroomNumber,
 } from '../../../service/school/classroom';
 import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
+import Image from "next/image";
 import { useRouter } from 'next/router';
 
 function Index({ user, error, teachersNumber, classroomNumber }) {
@@ -71,10 +71,9 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                   {classroom.user.picture ? (
                     <Image
                       src={classroom.user.picture}
-                      layout="fill"
-                      sizes="(max-width: 768px) 100vw"
                       className="object-cover"
-                    />
+                      fill
+                      sizes="(max-width: 768px) 100vw" />
                   ) : (
                     <span className="font-bold text-2xl uppercase">
                       {classroom.user.firstName.charAt(0)}

@@ -4,7 +4,7 @@ import { AiOutlineUserAdd } from 'react-icons/ai';
 import { Box, Pagination, Skeleton, TextField } from '@mui/material';
 
 import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
+import Image from "next/image";
 import { GetUserCookie } from '../../../service/user';
 import { parseCookies } from 'nookies';
 import {
@@ -168,10 +168,9 @@ function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
                               {teacher.picture ? (
                                 <Image
                                   src={teacher.picture}
-                                  layout="fill"
-                                  sizes="(max-width: 768px) 100vw"
                                   className="object-cover"
-                                />
+                                  fill
+                                  sizes="(max-width: 768px) 100vw" />
                               ) : (
                                 <span className="font-bold text-2xl uppercase">
                                   {teacher.firstName.charAt(0)}

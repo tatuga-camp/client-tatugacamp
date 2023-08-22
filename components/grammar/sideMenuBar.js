@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 import React, { useRef, useState } from 'react';
 import { FiChevronRight, FiChevronDown } from 'react-icons/fi';
 import { BsFacebook } from 'react-icons/bs';
@@ -46,10 +46,9 @@ function SideMenuBar({ trigger, handleCloseMenu }) {
                   src="/logo/TaTuga camp.png"
                   priority
                   className="w-full h-full object-contain"
-                  layout="fill"
-                  sizes="(max-width: 768px) 100vw"
                   alt="TaTuga camp logo"
-                />
+                  fill
+                  sizes="(max-width: 768px) 100vw" />
               </li>
               <li className="MoreSugar text-xl text-[#2C7CD1] group-hover:text-white">
                 TaTuga camp

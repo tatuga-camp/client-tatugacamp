@@ -7,7 +7,7 @@ import {
   UploadProfilePicture,
 } from '../../service/user';
 import Swal from 'sweetalert2';
-import Image from 'next/image';
+import Image from "next/image";
 import Loading from '../../components/loading/loading';
 import { useRouter } from 'next/router';
 import Unauthorized from '../../components/error/unauthorized';
@@ -179,12 +179,11 @@ function Setting({ userServerSide, error }) {
                     <Loading />
                   ) : (
                     <Image
-                      sizes="(max-width: 768px) 100vw"
                       src={user.data.data.picture}
-                      layout="fill"
                       className="object-cover"
                       alt={`profile picture of ${user.data.data.firstName}`}
-                    />
+                      fill
+                      sizes="(max-width: 768px) 100vw" />
                   )}
                 </div>
               ) : (

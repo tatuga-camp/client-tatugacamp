@@ -71,10 +71,9 @@ function Index({ user, error }) {
               <div className="w-16 h-16 rounded-xl overflow-hidden relative">
                 <Image
                   src={user?.picture}
-                  layout="fill"
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 700px"
-                />
+                  fill
+                  sizes="(max-width: 768px) 100vw, 700px" />
               </div>
             ) : (
               <div

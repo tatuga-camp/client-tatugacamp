@@ -18,7 +18,7 @@ import { PortableText } from '@portabletext/react';
 import { myPortableTextComponents } from '../../data/portableContent';
 import { cardData } from '../../data/card-classroom';
 
-function Index({ commonQuestions }) {
+function Index({ commonQuestions, announcement }) {
   const router = useRouter();
   const usersNumber = 8.5;
   const studentNumber = 310;
@@ -71,11 +71,12 @@ function Index({ commonQuestions }) {
         <meta charSet="UTF-8" />
       </Head>
       <Layout>
-        <Alert className="fixed bottom-0 z-40  md:w-full" severity="warning">
-          <AlertTitle>แจ้งข่าวสาร</AlertTitle>
-          tatuga class —{' '}
-          <strong>ปิดปรับปรุง Server ชั่วคราว เวลา 23.40 - 03.00 น</strong>
-        </Alert>
+        {announcement && (
+          <Alert className="fixed bottom-0 z-40  md:w-full" severity="warning">
+            <AlertTitle>แจ้งข่าวสาร</AlertTitle>
+            tatuga class — <strong>{announcement.description}</strong>
+          </Alert>
+        )}
         <header className="w-full max-w-9xl   h-max  flex justify-center items-center gap-12 font-sans">
           <div className="lg:w-max lg:max-w-4xl bg-transparent lg:ml-5 xl:pl-10 p-10 gap-2 flex flex-col items-start justify-center ">
             <div className="md:mt-5 mt-10">
@@ -212,12 +213,12 @@ function Index({ commonQuestions }) {
                     <Image
                       alt="tatuga avatar"
                       priority
-                      sizes="(max-width: 768px) 100vw"
                       src={list.picture}
-                      layout="fill"
                       placeholder="blur"
                       blurDataURL={list.imageProps.blurDataURL}
                       className="object-contain  object-center  transition duration-150  "
+                      fill
+                      sizes="(max-width: 768px) 100vw"
                     />
                   </div>
                   <div className="h-10 text-xs lg:relative  leading-tight text-black group-hover:text-white font-semibold ">
@@ -328,11 +329,14 @@ function Index({ commonQuestions }) {
 export default Index;
 
 export async function getServerSideProps(ctx) {
-  const query = `*[_type == "commonQuestions"]`;
-  const commonQuestions = await sanityClient.fetch(query);
+  const commentQuery = `*[_type == "commonQuestions"]`;
+  const announcementQuery = `*[_type == "announcement"][0]`;
+  const commonQuestions = await sanityClient.fetch(commentQuery);
+  const announcementFetch = await sanityClient.fetch(announcementQuery);
   return {
     props: {
       commonQuestions,
+      announcement: announcementFetch,
     },
   };
 }

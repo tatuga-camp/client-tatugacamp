@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Footer from '../components/footer/Footer';
 import Hands from '../components/svg/Hands';
-import Image from 'next/image';
+import Image from "next/image";
 import Script from 'next/script';
 import { sanityClient, urlFor } from '../sanity';
 import { useQuery } from '@tanstack/react-query';
@@ -135,16 +135,17 @@ export default function Home({ post, blurData }) {
                   >
                     {index === current && (
                       <Image
-                        sizes="(max-width: 768px) 100vw"
                         className="object-center"
                         src={urlFor(silder.mainImage.asset._ref).url()}
-                        layout="fill"
-                        objectFit="cover"
                         alt={silder.title}
                         placeholder="blur"
                         quality={50}
                         blurDataURL={silder.imageProps.blurDataURL}
-                      />
+                        fill
+                        sizes="(max-width: 768px) 100vw"
+                        style={{
+                          objectFit: "cover"
+                        }} />
                     )}
                   </div>
                 );

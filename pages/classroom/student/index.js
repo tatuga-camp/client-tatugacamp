@@ -7,7 +7,7 @@ import { JoinClassroom } from '../../../service/student/classroom';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { BiError } from 'react-icons/bi';
-import Image from 'next/image';
+import Image from "next/image";
 import Link from 'next/link';
 import { Skeleton } from '@mui/material';
 import Head from 'next/head';
@@ -119,10 +119,9 @@ function Index() {
                       <div className="w-40 h-40 md:w-60 md:h-60 ring-4 ring-blue-600 relative rounded-full overflow-hidden bg-white">
                         <Image
                           src={classroom?.data?.data?.teacher?.picture}
-                          layout="fill"
-                          sizes="(max-width: 768px) 100vw"
                           className="object-cover"
-                        />
+                          fill
+                          sizes="(max-width: 768px) 100vw" />
                       </div>
                     ) : (
                       <div className="w-40 h-40 relative rounded-full overflow-hidden flex items-center justify-center bg-white">

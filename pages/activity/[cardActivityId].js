@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
+import Image from "next/image";
 import { sanityClient, urlFor } from '../../sanity';
 import Head from 'next/head';
 import Script from 'next/script';
@@ -131,13 +131,12 @@ function Index(props) {
               >
                 <Image
                   src={urlFor(props.data[0].mainImage.asset._ref).url()}
-                  layout="fill"
-                  sizes="(max-width: 768px) 100vw"
                   alt={props.data[0].title}
                   className="object-contain"
                   placeholder="blur"
                   blurDataURL="/logo/TaTuga camp.png"
-                />
+                  fill
+                  sizes="(max-width: 768px) 100vw" />
               </li>
             </ul>
             <li xyz="fade-100% big-100% wide-100% tall-100%">

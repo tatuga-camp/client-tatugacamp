@@ -14,7 +14,7 @@ import { BsFillPeopleFill } from 'react-icons/bs';
 import { FaUserCheck } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { IoPeopleCircleOutline } from 'react-icons/io5';
-import Image from 'next/image';
+import Image from "next/image";
 import { UpdateSchoolImageCover } from '../service/school/school';
 import Swal from 'sweetalert2';
 import Loading from '../components/loading/loading';
@@ -64,7 +64,7 @@ function Layout({
     <main className="font-Kanit relative">
       <div className="bg-yellow-400  w-full h-80 relative flex items-center justify-center ">
         {user.imageCover ? (
-          <Image layout="fill" className="object-cover" src={user.imageCover} />
+          <Image className="object-cover" src={user.imageCover} fill sizes="100vw" />
         ) : (
           <h1 className="font-Poppins text-center text-4xl font-semibold">
             BACKGROUND COVER

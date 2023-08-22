@@ -1,5 +1,5 @@
 import Lottie from 'lottie-react';
-import Image from 'next/image';
+import Image from "next/image";
 import React, { useEffect, useState } from 'react';
 import { FiPlus, FiPlusSquare, FiSave, FiSettings } from 'react-icons/fi';
 import {
@@ -389,13 +389,12 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                     <div className="relative w-40 h-40 bg-transparent rounded-full ">
                       <Image
                         src={student?.picture}
-                        layout="fill"
                         alt="students avatar"
                         className="object-cover "
-                        sizes="(max-width: 768px) 100vw, 700px"
                         placeholder="blur"
                         blurDataURL="/logo/TaTuga camp.png"
-                      />
+                        fill
+                        sizes="(max-width: 768px) 100vw, 700px" />
                     </div>
                     <div
                       className={`absolute w-14 h-14  rounded-full ${
@@ -576,10 +575,9 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                           >
                             <Image
                               src={avartar}
-                              layout="fill"
-                              sizes="(max-width: 768px) 100vw"
                               className="object-contain"
-                            />
+                              fill
+                              sizes="(max-width: 768px) 100vw" />
                           </button>
                         );
                       })}
