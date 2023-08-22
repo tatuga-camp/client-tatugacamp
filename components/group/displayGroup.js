@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Loading from '../loading/loading';
-import Image from 'next/image';
+import Image from "next/image";
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { BsFullscreen, BsFullscreenExit } from 'react-icons/bs';
 import { MdDelete } from 'react-icons/md';

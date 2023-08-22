@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import Image from 'next/image';
+import Image from "next/image";
 import React from 'react';
 import Call from '../svg/Call';
 import Swal from 'sweetalert2';
@@ -23,10 +23,13 @@ function FooterActivities() {
             width={200}
             height={200}
             alt="tatuga logo"
-            sizes="(max-width: 768px) 100vw"
             src="https://storage.googleapis.com/tatugacamp.com/logo%20/tatugacamp%20facebook.jpg"
             priority
-          />
+            sizes="(max-width: 768px) 100vw"
+            style={{
+              maxWidth: "100%",
+              height: "auto"
+            }} />
         </div>
         <ul className="list-none text-center w-full pl-0 justify-center mt-5 md:mt-16">
           <li>

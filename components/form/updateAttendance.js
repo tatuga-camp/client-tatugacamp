@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { DeleteNote, UpdateAttendnaceAPI } from '../../service/attendance';
@@ -145,10 +145,9 @@ function UpdateAttendance({
         >
           <Image
             src={student?.picture}
-            layout="fill"
-            sizes="(max-width: 768px) 100vw"
             className="object-cover"
-          />
+            fill
+            sizes="(max-width: 768px) 100vw" />
         </div>
         <div className="font-Kanit flex gap-3">
           <span>{student?.number}</span>

@@ -116,12 +116,12 @@ export default function DisclosureComponent({ body, video }) {
         >
           <Image
             src={urlFor(asset).url()}
-            layout="fill"
             className="object-contain"
             placeholder="blur"
             blurDataURL="/logo/TaTuga camp.png"
             alt="some images about TaTuga camp teaching you English grammar"
-          />
+            fill
+            sizes="100vw" />
         </div>
       </div>
     );

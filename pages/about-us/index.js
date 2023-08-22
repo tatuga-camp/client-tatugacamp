@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 import React, { useEffect, useState } from 'react';
 import { sanityClient, urlFor } from '../../sanity';
 import 'swiper/css';
@@ -77,10 +77,13 @@ function Index({ members }) {
               src="https://storage.googleapis.com/tatugacamp.com/logo%20/tatugacamp%20facebook.jpg"
               width={200}
               height={200}
-              sizes="(max-width: 768px) 100vw"
               quality={100}
               className=""
-            />
+              sizes="(max-width: 768px) 100vw"
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
           </div>
         </header>
         <main className="w-full flex items-center justify-center font-Poppins max-w-[99rem]">
@@ -94,25 +97,23 @@ function Index({ members }) {
                   <div className="w-full bg-white h-72  relative group-hover:opacity-0 opacity-100 group-hover:w-0 group-hover:h-0 transition duration-150 ">
                     <Image
                       src={urlFor(member.mainImage.asset._ref).url()}
-                      layout="fill"
-                      sizes="(max-width: 768px) 100vw"
                       className="object-cover scale-110 drop-shadow-xl relative z-10"
                       placeholder="blur"
                       blurDataURL={member.imageProps.blurDataURL}
                       alt={`picture of ${member.name}`}
-                    />
+                      fill
+                      sizes="(max-width: 768px) 100vw" />
                     <div className="w-full absolute md:h-28 h-40 bg-[#EDB901] bottom-0 -z-5"></div>
                   </div>
                   <div className=" bg-white relative opacity-0 w-0 h-0 group-hover:opacity-100 group-hover:w-full group-hover:h-72  transition duration-150 ">
                     <Image
                       src={urlFor(member.secondImage.asset._ref).url()}
-                      layout="fill"
-                      sizes="(max-width: 768px) 100vw"
                       className="object-cover scale-110 drop-shadow-xl relative z-10"
                       placeholder="blur"
                       blurDataURL={member.imageProps.blurDataURL}
                       alt={`picture of ${member.name}`}
-                    />
+                      fill
+                      sizes="(max-width: 768px) 100vw" />
                     <div className="w-full absolute md:h-28 h-40  bg-[#2C7CD1] bottom-0 -z-5"></div>
                   </div>
                   <span className="md:text-2xl text-md  font-semibold mt-2 text-[#2C7CD1] group-hover:text-[#EDB901]">

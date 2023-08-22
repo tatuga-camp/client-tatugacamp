@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 import { useState } from 'react';
 import { urlFor } from '../sanity';
 
@@ -85,14 +85,13 @@ const SanityImage = ({ asset }) => {
       >
         <Image
           src={urlFor(asset).url()}
-          layout="fill"
-          sizes="(max-width: 768px) 100vw"
           className="object-contain"
           placeholder="blur"
           blurDataURL="/logo/TaTuga camp.png"
           alt="some images about  tatuga class"
           unoptimized={true}
-        />
+          fill
+          sizes="(max-width: 768px) 100vw" />
       </div>
     </div>
   );

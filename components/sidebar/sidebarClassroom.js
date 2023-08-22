@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -46,11 +46,10 @@ function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
                 {user?.picture ? (
                   <Image
                     src={user?.picture}
-                    layout="fill"
-                    sizes="(max-width: 768px) 100vw"
                     className="object-cover"
                     alt={`profile of ${user?.firstName}`}
-                  />
+                    fill
+                    sizes="(max-width: 768px) 100vw" />
                 ) : (
                   <span className="text-3xl font-Kanit font-semibold text-white">
                     {user?.firstName?.charAt(0)}

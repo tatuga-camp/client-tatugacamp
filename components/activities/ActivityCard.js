@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
+import Image from "next/image";
 import Heart from '../svg/Heart';
 import Link from 'next/link';
 import { urlFor } from '../../sanity';
@@ -40,13 +40,12 @@ function ActivityCard(props) {
           <Image
             src={urlFor(props.image).url()}
             alt={props.title}
-            layout="fill"
             className=" w-full h-full object-contain z-10 group-hover:scale-125  ease-in-out transition duration-300"
             placeholder="blur"
             quality={40}
-            sizes="(max-width: 768px) 100vw"
             blurDataURL="LURfXxtP.8RRtRoLofWq?^aMMxo|"
-          />
+            fill
+            sizes="(max-width: 768px) 100vw" />
         </div>
         <div className="w-full h-max ">
           <div className="font-Inter font-bold text-lg mt-0 md:text-2xl md:mt-2 ">

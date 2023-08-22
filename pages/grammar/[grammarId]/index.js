@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Image from 'next/image';
+import Image from "next/image";
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import SideMenuBar from '../../../components/grammar/sideMenuBar';
@@ -156,15 +156,14 @@ function Index({ grammarData, getAuther }) {
         >
           <Image
             src={urlFor(asset).url()}
-            layout="fill"
             className="object-contain"
             placeholder="blur"
-            sizes="(max-width: 768px) 100vw"
             blurDataURL="/logo/TaTuga camp.png"
             alt="some images about TaTuga camp teaching you English grammar"
             onLoad={onLoad}
             onLoadingComplete={onLoadingComplete}
-          />
+            fill
+            sizes="(max-width: 768px) 100vw" />
         </div>
       </div>
     );
@@ -220,12 +219,11 @@ function Index({ grammarData, getAuther }) {
                 <li className="h-16 w-16 text-center bg-white drop-shadow-lg rounded-full relative overflow-hidden">
                   <Image
                     src={urlFor(getAuther.image.asset._ref).url()}
-                    layout="fill"
                     className="object-cover"
                     quality={60}
-                    sizes="(max-width: 768px) 100vw"
                     alt={`Image of ${getAuther.name} `}
-                  />
+                    fill
+                    sizes="(max-width: 768px) 100vw" />
                 </li>
                 <li>
                   <ul className="list-none pl-0">

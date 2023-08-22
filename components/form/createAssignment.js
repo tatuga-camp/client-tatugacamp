@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { GrScorecard } from 'react-icons/gr';
-import Image from 'next/image';
+import Image from "next/image";
 import {
   AssignWorkToSTudent,
   CreateAssignmentApi,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSprings, animated, to as interpolate } from '@react-spring/web';
 import { useDrag } from 'react-use-gesture';
-import Image from 'next/image';
+import Image from "next/image";
 
 const to = (i) => ({
   x: 0,
@@ -88,10 +88,9 @@ function Deck({ students }) {
                 >
                   <Image
                     src={students[i].picture}
-                    layout="fill"
-                    sizes="(max-width: 768px) 100vw"
                     className="object-cover"
-                  />
+                    fill
+                    sizes="(max-width: 768px) 100vw" />
                 </animated.div>
               ) : (
                 <animated.div

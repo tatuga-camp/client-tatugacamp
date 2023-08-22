@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import Image from 'next/image';
+import Image from "next/image";
 import React from 'react';
 import Call from '../svg/Call';
 import Swal from 'sweetalert2';
@@ -22,11 +22,14 @@ function Footer(props) {
             className="object-center rounded-full "
             width={200}
             height={200}
-            sizes="(max-width: 768px) 100vw"
             alt="tatuga logo"
             src="https://storage.googleapis.com/tatugacamp.com/logo%20/tatugacamp%20facebook.jpg"
             priority
-          />
+            sizes="(max-width: 768px) 100vw"
+            style={{
+              maxWidth: "100%",
+              height: "auto"
+            }} />
         </div>
         <ul className="list-none text-center w-full pl-0 justify-center mt-5 md:mt-16">
           <li>

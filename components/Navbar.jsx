@@ -113,7 +113,7 @@ function Navbar() {
                 tatuga class 🧑‍🎓
               </li>
             </Link>
-            <Link href="/about-us">
+            <Link className="no-underline" href="/about-us">
               <li
                 onClick={onClick}
                 className="w-max bg-white rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"

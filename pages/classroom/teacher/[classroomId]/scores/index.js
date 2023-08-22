@@ -104,7 +104,7 @@ function Index({ user, error }) {
           >
             <thead className="w-max sticky top-0 bg-white h-max py-3 z-10">
               <tr className="flex ">
-                <th className="flex w-10 md:w-24  items-center justify-center sticky left-0 bg-white">
+                <th className="flex w-10 md:min-w-[10rem] md:w-max md:max-w-lg  items-center justify-center sticky left-0 bg-white">
                   {user.language === 'Thai' && 'เลขที่'}
                   {user.language === 'English' && 'number'}
                 </th>
@@ -167,9 +167,9 @@ function Index({ user, error }) {
                 return (
                   <tr
                     key={student.id}
-                    className="flex hover:ring-2 hover:bg-slate-200 group "
+                    className="flex  hover:bg-slate-200 group "
                   >
-                    <th className="w-10 md:w-24 text-center flex items-center justify-center bg-white group-hover:bg-slate-200 sticky left-0">
+                    <th className="w-10 md:min-w-[10rem] md:w-max md:max-w-lg   text-center flex items-center justify-center bg-white group-hover:bg-slate-200 sticky left-0">
                       {student.number}
                     </th>
                     <td

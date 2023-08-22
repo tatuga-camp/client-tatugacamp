@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { BiLogOutCircle, BiUser, BiWrench } from 'react-icons/bi';
-import Image from 'next/image';
+import Image from "next/image";
 import { Menu, Transition } from '@headlessui/react';
 import Loading from '../loading/loading';
 import { useRouter } from 'next/router';
@@ -80,10 +80,9 @@ function AuthButton() {
             <Image
               src={data?.data?.picture}
               alt={data?.data?.firstName}
-              layout="fill"
               className=" object-cover "
-              sizes="(max-width: 768px) 100vw"
-            />
+              fill
+              sizes="(max-width: 768px) 100vw" />
           </div>
         ) : (
           <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
