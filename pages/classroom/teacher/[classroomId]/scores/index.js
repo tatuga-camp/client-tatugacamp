@@ -155,12 +155,15 @@ function Index({ user, error }) {
                     {user.language === 'Thai' && 'คะแนนพิเศษ'}
                     {user.language === 'English' && 'motivative scores'}
                   </span>
-                  <span>
-                    {
-                      studentsScores?.data?.data?.classroom
-                        .specialScorePercentage
-                    }
-                  </span>
+                  {studentsScores?.data?.data?.classroom
+                    ?.specialScorePercentage && (
+                    <span>
+                      {
+                        studentsScores?.data?.data?.classroom
+                          ?.specialScorePercentage
+                      }
+                    </span>
+                  )}
                 </th>
                 <th className=" w-40">
                   {user.language === 'Thai' && 'รวม'}
