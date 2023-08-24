@@ -268,14 +268,15 @@ function Index({ user, error }) {
                             >
                               {student.score.totalPoints}
                             </div>
-                            {student.nationality && (
-                              <div
-                                className={`w-max h-5 px-2 py-1 rounded-r-full absolute left-0  top-16 bg-blue-500  ring-2 ring-white
+                            {student.nationality &&
+                              student.nationality !== 'null' && (
+                                <div
+                                  className={`w-max h-5 px-2 py-1 rounded-r-full absolute left-0  top-16 bg-blue-500  ring-2 ring-white
   flex justify-center items-center font-sans font-medium text-[0.5rem] z-10 text-white`}
-                              >
-                                {student.nationality}
-                              </div>
-                            )}
+                                >
+                                  {student.nationality}
+                                </div>
+                              )}
                             <div
                               className="w-40 h-52 cursor-pointer  flex-col items-center justify-start flex
   duration-200  bg-white  overflow-hidden  hover:bg-orange-100 transition "

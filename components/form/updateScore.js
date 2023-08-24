@@ -1,5 +1,5 @@
 import Lottie from 'lottie-react';
-import Image from "next/image";
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { FiPlus, FiPlusSquare, FiSave, FiSettings } from 'react-icons/fi';
 import {
@@ -151,9 +151,13 @@ function UpdateScore({
       const formData = new FormData();
       formData.append('file', file);
       formData.append('firstName', studentData.firstName);
-      formData.append('lastName', studentData?.lastName);
+      if (studentData.lastName) {
+        formData.append('lastName', studentData.lastName);
+      }
       formData.append('number', studentData.number);
-      formData.append('nationality', studentData.nationality);
+      if (studentData.nationality) {
+        formData.append('nationality', studentData.nationality);
+      }
       formData.append('picture', studentData.picture);
       await UpdateStudent({
         formData,
@@ -394,7 +398,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                         placeholder="blur"
                         blurDataURL="/logo/TaTuga camp.png"
                         fill
-                        sizes="(max-width: 768px) 100vw, 700px" />
+                        sizes="(max-width: 768px) 100vw, 700px"
+                      />
                     </div>
                     <div
                       className={`absolute w-14 h-14  rounded-full ${
@@ -577,7 +582,8 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                               src={avartar}
                               className="object-contain"
                               fill
-                              sizes="(max-width: 768px) 100vw" />
+                              sizes="(max-width: 768px) 100vw"
+                            />
                           </button>
                         );
                       })}

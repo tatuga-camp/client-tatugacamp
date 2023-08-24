@@ -138,6 +138,11 @@ function Index({ user, error }) {
                           {user.language === 'English' && 'scores'} {` `}
                           {assignment.maxScore}
                         </span>
+                        {assignment.percentage && (
+                          <span className="text-sm font-normal">
+                            {assignment.percentage}
+                          </span>
+                        )}
                         <span className="font-normal italic">
                           ({formattedDate})
                         </span>
@@ -145,9 +150,17 @@ function Index({ user, error }) {
                     </th>
                   );
                 })}
-                <th className=" w-40">
-                  {user.language === 'Thai' && 'คะแนนพิเศษ'}
-                  {user.language === 'English' && 'motivative scores'}
+                <th className=" w-40 flex flex-col justify-center items-center">
+                  <span>
+                    {user.language === 'Thai' && 'คะแนนพิเศษ'}
+                    {user.language === 'English' && 'motivative scores'}
+                  </span>
+                  <span>
+                    {
+                      studentsScores?.data?.data?.classroom
+                        .specialScorePercentage
+                    }
+                  </span>
                 </th>
                 <th className=" w-40">
                   {user.language === 'Thai' && 'รวม'}
@@ -187,12 +200,12 @@ function Index({ user, error }) {
                         >
                           {!studentWork.studentWork
                             ? '0'
-                            : studentWork.studentWork.score}
+                            : studentWork.studentWork.score.toFixed(2)}
                         </td>
                       );
                     })}
                     <td className=" w-40 text-center  flex items-center justify-center">
-                      {student.score.totalPoints}
+                      {student.score.totalPoints.toFixed(2)}
                     </td>
                     <td className=" w-40 text-center  flex items-center justify-center">
                       {totalScore.toFixed(2)}
