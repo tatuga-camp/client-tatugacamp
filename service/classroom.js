@@ -261,3 +261,32 @@ export async function UpdateClassroom({ classroomState }) {
     throw new Error(err);
   }
 }
+
+export async function UpdatePercentageClassroom({
+  classroomId,
+  maxScore,
+  percentage,
+}) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const classroom = await axios.put(
+      `${process.env.Server_Url}/user/assignment/update/classroom/speical-score/percentage`,
+      {
+        classroomId,
+        maxScore,
+        percentage,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+
+    return classroom.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}

@@ -462,3 +462,24 @@ export async function ReviewStudentWorksheetApi({ body, studentWorkId }) {
     throw new Error(err);
   }
 }
+
+export async function UpdatePercentAssignment({ percentage, assignmentId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const update = await axios.put(
+      `${process.env.Server_Url}/user/assignment/update/percentage`,
+      { percentage, assignmentId },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return update.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
