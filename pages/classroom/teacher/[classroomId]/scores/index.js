@@ -21,11 +21,16 @@ import { GiUpgrade } from 'react-icons/gi';
 import CreateGrade from '../../../../../components/form/createGrade';
 import { AiOutlinePercentage } from 'react-icons/ai';
 import AddPercentageOnAssignment from '../../../../../components/form/addPercentageOnAssignment';
+import AddPercentageOnSpecialScore from '../../../../../components/form/addPercentageOnSpecialScore';
 
 function Index({ user, error }) {
   const router = useRouter();
   const [triggerCreateCreate, setTriggerCreateGrade] = useState(false);
   const [triggerAddPercentage, setTriggerAddPercentage] = useState(false);
+  const [
+    triggerAddPercentageOnSpecialScore,
+    setTriggerAddPercentageOnSpecialScore,
+  ] = useState(false);
   const [selectAssignment, setSelectAssignment] = useState();
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === 'Thai') {
@@ -82,7 +87,16 @@ function Index({ user, error }) {
       {triggerAddPercentage && (
         <AddPercentageOnAssignment
           selectAssignment={selectAssignment}
+          studentsScores={studentsScores}
           setTriggerAddPercentage={setTriggerAddPercentage}
+        />
+      )}
+      {triggerAddPercentageOnSpecialScore && (
+        <AddPercentageOnSpecialScore
+          studentsScores={studentsScores}
+          setTriggerAddPercentageOnSpecialScore={
+            setTriggerAddPercentageOnSpecialScore
+          }
         />
       )}
       <Head>
@@ -178,23 +192,31 @@ function Index({ user, error }) {
                               {` `}
                               {assignment.maxScore}
                             </span>
-                            <span className="text-sm w-full bg-blue-600 py-2 font-semibold text-white rounded-md ">
-                              {assignment.percentage}
-                            </span>
-                          </div>
-                        ) : (
-                          <div className="text-sm font-normal flex flex-col gap-1">
-                            {/* <button
+                            <button
                               onClick={() => {
                                 setSelectAssignment(() => assignment);
                                 document.body.style.overflow = 'hidden';
                                 setTriggerAddPercentage(() => true);
                               }}
-                              className="w-full flex justify-center items-center
+                              className="w-20 flex justify-center items-center
+                             p-1 text-white bg-blue-500 rounded-lg "
+                            >
+                              {assignment.percentage}
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="text-sm font-normal flex flex-col gap-1">
+                            <button
+                              onClick={() => {
+                                setSelectAssignment(() => assignment);
+                                document.body.style.overflow = 'hidden';
+                                setTriggerAddPercentage(() => true);
+                              }}
+                              className="w-20 flex justify-center items-center
                              p-1 text-white bg-blue-500 rounded-lg "
                             >
                               Add <AiOutlinePercentage />
-                            </button> */}
+                            </button>
                             <span>
                               {user.language === 'Thai' && 'คะแนนเต็ม'}
                               {user.language === 'English' && 'scores'} {` `}
@@ -215,13 +237,31 @@ function Index({ user, error }) {
                     {user.language === 'English' && 'motivative scores'}
                   </span>
                   {studentsScores?.data?.data?.classroom
-                    ?.specialScorePercentage && (
-                    <span className="text-sm w-28 bg-blue-600  py-2 font-semibold text-white rounded-md ">
+                    ?.specialScorePercentage ? (
+                    <button
+                      onClick={() => {
+                        document.body.style.overflow = 'hidden';
+                        setTriggerAddPercentageOnSpecialScore(() => true);
+                      }}
+                      className="w-20 flex justify-center items-center
+                   p-1 text-white bg-blue-500 rounded-lg "
+                    >
                       {
                         studentsScores?.data?.data?.classroom
                           ?.specialScorePercentage
                       }
-                    </span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        document.body.style.overflow = 'hidden';
+                        setTriggerAddPercentageOnSpecialScore(() => true);
+                      }}
+                      className="w-20 flex justify-center items-center
+                 p-1 text-white bg-blue-500 rounded-lg "
+                    >
+                      Add <AiOutlinePercentage />
+                    </button>
                   )}
                 </th>
                 <th className=" w-40">
