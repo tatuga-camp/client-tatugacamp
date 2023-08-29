@@ -17,9 +17,16 @@ import {
   sideMenusEnglish,
   sideMenusThai,
 } from '../../../../../data/menubarsScores';
+import { GiUpgrade } from 'react-icons/gi';
+import CreateGrade from '../../../../../components/form/createGrade';
+import { AiOutlinePercentage } from 'react-icons/ai';
+import AddPercentageOnAssignment from '../../../../../components/form/addPercentageOnAssignment';
 
 function Index({ user, error }) {
   const router = useRouter();
+  const [triggerCreateCreate, setTriggerCreateGrade] = useState(false);
+  const [triggerAddPercentage, setTriggerAddPercentage] = useState(false);
+  const [selectAssignment, setSelectAssignment] = useState();
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === 'Thai') {
       return sideMenusThai();
@@ -56,11 +63,28 @@ function Index({ user, error }) {
       console.log(err);
     }
   };
+
+  const handleTriggerCreateGrade = () => {
+    setTriggerCreateGrade(() => true);
+    document.body.style.overflow = 'hidden';
+  };
   if (error?.statusCode === 401) {
     return <Unauthorized />;
   }
   return (
     <div className="w-full font-Kanit bg-blue-50 pb-40">
+      {triggerCreateCreate && (
+        <CreateGrade
+          setTriggerCreateGrade={setTriggerCreateGrade}
+          studentsScores={studentsScores}
+        />
+      )}
+      {triggerAddPercentage && (
+        <AddPercentageOnAssignment
+          selectAssignment={selectAssignment}
+          setTriggerAddPercentage={setTriggerAddPercentage}
+        />
+      )}
       <Head>
         <meta
           name="viewport"
@@ -71,15 +95,27 @@ function Index({ user, error }) {
       </Head>
       <Layout language={user.language} sideMenus={sideMenus} />
       <div className=" w-full flex flex-col items-center justify-start mt-10">
-        <button
-          className="w-max px-5 flex gap-1 mb-2 hover:scale-105 transition duration-150 active:bg-blue-800 bg-blue-500 font-Poppins font-semibold text-white rounded-lg py-2"
-          onClick={handleDownloadFile}
-        >
-          dowload
-          <div>
-            <SiMicrosoftexcel />
-          </div>
-        </button>
+        <header className="flex gap-4">
+          <button
+            className="w-max px-5 flex gap-1 mb-2 hover:scale-105 transition duration-150 active:bg-blue-800 bg-blue-500 font-Poppins font-semibold text-white rounded-lg py-2"
+            onClick={handleDownloadFile}
+          >
+            dowload
+            <div>
+              <SiMicrosoftexcel />
+            </div>
+          </button>
+          <button
+            className="w-max px-5 flex gap-1 mb-2 hover:scale-105 transition items-center
+             duration-150 active:bg-blue-800 bg-blue-500 font-Poppins font-semibold text-white rounded-lg py-2"
+            onClick={handleTriggerCreateGrade}
+          >
+            ปรับการคำนวนเกรด
+            <div>
+              <GiUpgrade />
+            </div>
+          </button>
+        </header>
         {studentsScores.isLoading || studentsScores.isFetching ? (
           <div className="flex flex-col gap-5 mt-5">
             <Skeleton variant="rectangular" width={700} height={40} />
@@ -102,7 +138,7 @@ function Index({ user, error }) {
             className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem]
               lg:w-[80rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
           >
-            <thead className="w-max sticky top-0 bg-white h-max py-3 z-10">
+            <thead className="w-max sticky top-0 border-b-2 bg-white h-max py-3 z-10">
               <tr className="flex ">
                 <th className="flex w-10 md:min-w-[10rem] md:w-max md:max-w-lg  items-center justify-center sticky left-0 bg-white">
                   {user.language === 'Thai' && 'เลขที่'}
@@ -128,20 +164,43 @@ function Index({ user, error }) {
                     },
                   );
                   return (
-                    <th key={assignment.id} className=" w-40 truncate ">
-                      <div className="flex  flex-col items-center justify-center">
+                    <th key={assignment.id} className="w-40 truncate ">
+                      <div className="flex  w-full flex-col items-center justify-center">
                         <span className="text-sm truncate w-40">
                           {assignment.title}
                         </span>
-                        <span className="text-sm font-normal">
-                          {user.language === 'Thai' && 'คะแนนเต็ม'}
-                          {user.language === 'English' && 'scores'} {` `}
-                          {assignment.maxScore}
-                        </span>
-                        {assignment.percentage && (
-                          <span className="text-sm font-normal">
-                            {assignment.percentage}
-                          </span>
+
+                        {assignment.percentage ? (
+                          <div className="flex flex-col">
+                            <span className="text-sm font-normal">
+                              {user.language === 'Thai' && 'คะแนนดิบเต็ม'}
+                              {user.language === 'English' && 'raw scores'}{' '}
+                              {` `}
+                              {assignment.maxScore}
+                            </span>
+                            <span className="text-sm w-full bg-blue-600 py-2 font-semibold text-white rounded-md ">
+                              {assignment.percentage}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="text-sm font-normal flex flex-col gap-1">
+                            {/* <button
+                              onClick={() => {
+                                setSelectAssignment(() => assignment);
+                                document.body.style.overflow = 'hidden';
+                                setTriggerAddPercentage(() => true);
+                              }}
+                              className="w-full flex justify-center items-center
+                             p-1 text-white bg-blue-500 rounded-lg "
+                            >
+                              Add <AiOutlinePercentage />
+                            </button> */}
+                            <span>
+                              {user.language === 'Thai' && 'คะแนนเต็ม'}
+                              {user.language === 'English' && 'scores'} {` `}
+                              {assignment.maxScore}
+                            </span>
+                          </div>
                         )}
                         <span className="font-normal italic">
                           ({formattedDate})
@@ -150,14 +209,14 @@ function Index({ user, error }) {
                     </th>
                   );
                 })}
-                <th className=" w-40 flex flex-col justify-center items-center">
+                <th className="w-40 flex  flex-col justify-start items-center">
                   <span>
                     {user.language === 'Thai' && 'คะแนนพิเศษ'}
                     {user.language === 'English' && 'motivative scores'}
                   </span>
                   {studentsScores?.data?.data?.classroom
                     ?.specialScorePercentage && (
-                    <span>
+                    <span className="text-sm w-28 bg-blue-600  py-2 font-semibold text-white rounded-md ">
                       {
                         studentsScores?.data?.data?.classroom
                           ?.specialScorePercentage

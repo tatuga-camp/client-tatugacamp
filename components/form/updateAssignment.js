@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import Image from "next/image";
+import Image from 'next/image';
 import Loading from '../loading/loading';
 import { MdError, MdOutlineCancel } from 'react-icons/md';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
@@ -70,7 +70,7 @@ function UpdateAssignment({
         };
       }),
     );
-  }, [studentOnAssignments.data]);
+  }, [studentOnAssignments?.data?.data]);
 
   // when input checkobx change apply value to isChecked in each student
   const handleChangeCheck = ({ studentId }) => {
@@ -301,7 +301,8 @@ function UpdateAssignment({
                 src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/IMG_3053.PNG"
                 className="object-contain"
                 fill
-                sizes="(max-width: 768px) 100vw" />
+                sizes="(max-width: 768px) 100vw"
+              />
             </div>
           </div>
         </div>
