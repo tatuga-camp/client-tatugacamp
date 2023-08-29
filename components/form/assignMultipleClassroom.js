@@ -82,22 +82,22 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
   return (
     <div className="font-Kanit flex flex-col justify-start items-center">
       <header className="w-full flex flex-col gap-2 justify-center items-center">
-        <div className="flex justify-center items-center p-3 bg-blue-600 text-white text-3xl rounded-full">
+        <div className="flex justify-center items-center p-3 bg-blue-600 text-white lg:text-lg xl:text-3xl rounded-full">
           <MdOutlineAssignmentReturn />
         </div>
-        <h3 className="text-blue-600 font-semibold text-3xl">
+        <h3 className="text-blue-600 font-semibold lg:text-xl xl:text-3xl">
           {user.language === 'Thai'
             ? 'มอบหมายงานหลายห้อง'
             : 'assign to another classroom'}
         </h3>
-        <span className="w-7/12 text-center">
+        <span className="w-7/12 xl:text-base lg:text-sm text-center">
           {user.language === 'Thai'
             ? 'เมื่อคุณครูกดสร้างชื้นงานให้ห้องอื่นๆ แล้ว จำเป็นต้องเข้าไปในห้องเรียนนั้นๆ เพื่อทำการเลือกว่างานชัิ้นนี้ จะมอบหมายให้แก่นักเรียนคนไหนบ้าง โดยกดเข้าไปที่ปุ่มตั้งค่า ด้านขวาล่างของหน้าชิ้นงาน'
             : 'after summiting assign work to another classroom, you must assign this work to the students in each classroom as well by clicking the setting button on the bottom right of the assignment screen '}
         </span>
       </header>
-      <main className="mt-5 h-60  overflow-auto">
-        <table className="">
+      <main className="mt-5 md:h-96 lg:h-40 xl:h-60 w-full flex my-5 lg:my-2 justify-center items-center  overflow-auto">
+        <table className="w-10/12">
           <thead className=" bg-orange-600 sticky top-0 drop-shadow-md text-white font-semibold ">
             <tr className="">
               <td className="w-60 py-4 pl-4">ชื่อห้อง</td>

@@ -129,6 +129,7 @@ function Index({ error, user }) {
   useEffect(() => {
     if (router.isReady) {
       students.refetch();
+      studentOnAssignments.refetch();
       assignment.refetch();
     }
   }, [router.isReady]);
@@ -155,6 +156,8 @@ function Index({ error, user }) {
 
   //handle show update assignmnet compponent
   const handleClickUpdateAssignment = () => {
+    students.refetch();
+    studentOnAssignments.refetch();
     setTriggerAssignMultipleClassroom(() => false);
     setTriggerUpdateAssignment(true);
   };
@@ -209,6 +212,7 @@ function Index({ error, user }) {
       setTriggerAssignMultipleClassroom(() => false);
     }
     if (index === 1) {
+      students.refetch();
       studentOnAssignments.refetch();
     }
     setActiveMenu(index);

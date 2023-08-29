@@ -14,10 +14,11 @@ import { BsFillPeopleFill } from 'react-icons/bs';
 import { FaUserCheck } from 'react-icons/fa';
 import { useRouter } from 'next/router';
 import { IoPeopleCircleOutline } from 'react-icons/io5';
-import Image from "next/image";
+import Image from 'next/image';
 import { UpdateSchoolImageCover } from '../service/school/school';
 import Swal from 'sweetalert2';
 import Loading from '../components/loading/loading';
+import Link from 'next/link';
 
 function Layout({
   children,
@@ -64,7 +65,12 @@ function Layout({
     <main className="font-Kanit relative">
       <div className="bg-yellow-400  w-full h-80 relative flex items-center justify-center ">
         {user.imageCover ? (
-          <Image className="object-cover" src={user.imageCover} fill sizes="100vw" />
+          <Image
+            className="object-cover"
+            src={user.imageCover}
+            fill
+            sizes="100vw"
+          />
         ) : (
           <h1 className="font-Poppins text-center text-4xl font-semibold">
             BACKGROUND COVER
@@ -161,13 +167,9 @@ function Layout({
         }  w-full justify-center pt-20 mb-5`}
       >
         <div className="w-11/12 h-28 grid grid-cols-6  gap-5 ">
-          <button
-            onClick={() => {
-              router.push({
-                pathname: '/school',
-              });
-            }}
-            className={`ring-2 ring-black row-span-1 col-span-2 transition duration-150
+          <Link
+            href={'/school'}
+            className={`ring-2 no-underline ring-black row-span-1 col-span-2 transition duration-150
             ${lastRoute === 'school' ? 'bg-pink-400' : 'bg-white'}
             hover:bg-pink-400 group  rounded-lg
            flex justify-center gap-10 items-center relative `}
@@ -198,19 +200,16 @@ function Layout({
                 homepage
               </span>
             </div>
-          </button>
-          <button
+          </Link>
+          <Link
+            href={'/school/manage-account'}
             onClick={() => {
               if (lastRoute === 'manage-account') {
                 setTriggerCreateUser(() => false);
                 setSelectTeacher(() => null);
-              } else {
-                router.push({
-                  pathname: '/school/manage-account',
-                });
               }
             }}
-            className={`row-span-1 col-span-2 transition ${
+            className={`row-span-1 no-underline col-span-2 transition ${
               lastRoute === 'manage-account' ? 'bg-blue-400' : 'bg-white'
             } duration-150 hover:bg-blue-400 group 
              rounded-lg flex justify-center gap-10 items-center relative  ring-2 ring-black`}
@@ -244,15 +243,11 @@ function Layout({
                 เพิ่ม/จัดการ บัญชี
               </span>
             </div>
-          </button>
+          </Link>
 
-          <button
-            onClick={() => {
-              router.push({
-                pathname: '/school/classrooms',
-              });
-            }}
-            className={` ring-2 ring-black row-span-1 col-span-2 
+          <Link
+            href={'/school/classrooms'}
+            className={` ring-2 no-underline ring-black row-span-1 col-span-2 
             ${lastRoute === 'classrooms' ? 'bg-green-400' : 'bg-white'}
             transition duration-150 hover:bg-green-400 group  rounded-lg
            flex justify-center gap-10 items-center relative`}
@@ -291,7 +286,7 @@ function Layout({
                 ตรวจสอบห้องเรียน
               </span>
             </div>
-          </button>
+          </Link>
         </div>
       </div>
 
