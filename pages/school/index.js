@@ -9,7 +9,7 @@ import {
   sideMenusThai,
 } from '../../data/school/menubarsHomepage';
 import Head from 'next/head';
-import Image from "next/image";
+import Image from 'next/image';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { SiGoogleclassroom } from 'react-icons/si';
 import {
@@ -262,7 +262,8 @@ function Index({
                   className="object-cover"
                   alt={`profile of ${user?.firstName}`}
                   fill
-                  sizes="(max-width: 768px) 100vw" />
+                  sizes="(max-width: 768px) 100vw"
+                />
               ) : (
                 <span className="text-3xl font-Kanit font-semibold text-white">
                   {user?.firstName?.charAt(0)}
@@ -407,7 +408,8 @@ function Index({
                                 src={teacher.picture}
                                 className="object-cover"
                                 fill
-                                sizes="(max-width: 768px) 100vw" />
+                                sizes="(max-width: 768px) 100vw"
+                              />
                             ) : (
                               <span className="font-bold text-2xl uppercase">
                                 {teacher.firstName.charAt(0)}
@@ -451,12 +453,12 @@ function Index({
                         </td>
                         <td className="w-32  flex justify-center">
                           <div className="font-Poppins font-semibold text-blue-600">
-                            {teacher.student.length.toLocaleString()}
+                            {teacher.students}
                           </div>
                         </td>
                         <td className="w-32  flex justify-center">
                           <div className="font-Poppins font-semibold text-blue-600">
-                            {teacher.classroom.length.toLocaleString()}
+                            {teacher.classrooms}
                           </div>
                         </td>
                       </tr>
@@ -554,7 +556,8 @@ function Index({
                             src={list.student.picture}
                             className="object-cover"
                             fill
-                            sizes="(max-width: 768px) 100vw" />
+                            sizes="(max-width: 768px) 100vw"
+                          />
                         </div>
                         <div className="flex flex-col gap-0  items-start justify-center">
                           <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
@@ -613,7 +616,8 @@ function Index({
                             src={list.student.picture}
                             className="object-cover"
                             fill
-                            sizes="(max-width: 768px) 100vw" />
+                            sizes="(max-width: 768px) 100vw"
+                          />
                         </div>
                         <div className="flex flex-col gap-0  items-start justify-center">
                           <div className="text-sm font-semibold flex gap-2 w-80 truncate ">
@@ -672,7 +676,8 @@ function Index({
                             src={list.student.picture}
                             className="object-cover"
                             fill
-                            sizes="(max-width: 768px) 100vw" />
+                            sizes="(max-width: 768px) 100vw"
+                          />
                         </div>
                         <div className="flex flex-col gap-0  items-start justify-center">
                           <div className="text-sm font-semibold flex gap-2 w-80 truncate ">

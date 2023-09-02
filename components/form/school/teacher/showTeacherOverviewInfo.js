@@ -13,6 +13,7 @@ import { SiGoogleclassroom } from 'react-icons/si';
 import { useRouter } from 'next/router';
 import { GetAllStudentsInTeacherByNationlity } from '../../../../service/school/student';
 import { formattedColorCodesArray } from '../../../../data/chart/color';
+import Link from 'next/link';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 const options = {
@@ -23,8 +24,8 @@ const options = {
   },
 };
 function ShowTeacherOverviewInfo({ setTriggerShowTeacherInfo, selectTeacher }) {
-  const [page, setPage] = useState(1);
   const router = useRouter();
+  const [page, setPage] = useState(1);
   const [attendacneData, setAttendanceData] = useState();
   const [dataNationality, setDataNationality] = useState();
   const [triggerTableNationality, setTriggerTableNationality] = useState(false);
@@ -240,7 +241,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
           ห้องเรียนทั้งหมด
         </span>
         <div className="grid grid-cols-1 gap-2 p-5 w-full overflow-auto place-items-center">
-          {classrooms?.data?.classrooms.map((classroom) => {
+          {classrooms?.data?.classrooms?.map((classroom) => {
             return (
               <div
                 style={{
@@ -258,20 +259,18 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
                   {classroom.description}
                 </span>
                 <div className="flex gap-2 items-center">
-                  <button
+                  <Link
+                    href={`/school/classrooms/teacher/${selectTeacher.id}/classroom/${classroom.id}`}
                     onClick={() => {
                       document.body.style.overflow = 'auto';
-                      router.push({
-                        pathname: `/school/classrooms/teacher/${selectTeacher.id}/classroom/${classroom.id}`,
-                      });
                     }}
-                    className="p-3 transition duration-150 hover:bg-green-200 hover:text-green-600 bg-blue-200 text-blue-600 rounded-full flex items-center gap-2 py-2"
+                    className="p-3 no-underline transition duration-150 hover:bg-green-200 hover:text-green-600 bg-blue-200 text-blue-600 rounded-full flex items-center gap-2 py-2"
                   >
                     <div className="">
                       <SiGoogleclassroom />
                     </div>
                     <span>สำรวจห้องเรียน</span>
-                  </button>
+                  </Link>
                   <div className="w-max h-max text-xs text-white bg-orange-500 rounded-md p-2">
                     {classroom.students.length} คน
                   </div>
