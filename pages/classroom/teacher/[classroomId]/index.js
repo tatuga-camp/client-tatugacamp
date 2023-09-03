@@ -211,6 +211,7 @@ function Index({ user, error }) {
 
                 {triggerUpdateStudent && (
                   <UpdateScore
+                    user={user}
                     language={user.language}
                     student={selectStudent}
                     scores={scores.data}

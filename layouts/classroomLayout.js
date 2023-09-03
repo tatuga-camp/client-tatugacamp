@@ -4,7 +4,7 @@ import { FiChevronsLeft, FiChevronsRight, FiSidebar } from 'react-icons/fi';
 import AuthButton from '../components/auth/button';
 import { FiSettings, FiArrowLeftCircle } from 'react-icons/fi';
 import SidebarClassroom from '../components/sidebar/sidebarClassroom';
-import Image from "next/image";
+import Image from 'next/image';
 import { BsFillPeopleFill, BsPeopleFill, BsQrCodeScan } from 'react-icons/bs';
 import { GiCardRandom } from 'react-icons/gi';
 import { CgMenuBoxed } from 'react-icons/cg';
@@ -26,6 +26,7 @@ import RandomIcon from '../components/svg/RandomIcon';
 import QRCode from 'react-qr-code';
 import { HiRectangleGroup } from 'react-icons/hi2';
 import CreateGroup from '../components/form/createGroup';
+import AttendanceCheckerForSchool from '../components/form/school/attendance/attendanceChecker';
 
 function Layout({ children, sideMenus, language, groups }) {
   const router = useRouter();
@@ -291,21 +292,24 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                     src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/IMG_3064.PNG"
                     className="object-contain "
                     fill
-                    sizes="(max-width: 768px) 100vw" />
+                    sizes="(max-width: 768px) 100vw"
+                  />
                 </div>
                 <div className="w-40 h-40 bg-transparent rotate-12 absolute top-3 -right-20">
                   <Image
                     src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/IMG_3052.PNG"
                     className="object-contain"
                     fill
-                    sizes="(max-width: 768px) 100vw" />
+                    sizes="(max-width: 768px) 100vw"
+                  />
                 </div>
                 <div className="w-40 h-40 bg-transparent absolute top-3 right-20 -rotate-12">
                   <Image
                     src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/mermaid/IMG_3205%20(1).PNG"
                     className="object-contain"
                     fill
-                    sizes="(max-width: 768px) 100vw" />
+                    sizes="(max-width: 768px) 100vw"
+                  />
                 </div>
               </div>
             </div>
@@ -331,13 +335,22 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
         </span>
       </button>
 
-      {triggerAttendance && (
-        <AttendanceChecker
-          language={language}
-          setTriggerAttendance={setTriggerAttendance}
-          students={students}
-        />
-      )}
+      {triggerAttendance &&
+        (user?.data?.data?.schoolUser?.organization === 'immigration' ? (
+          <AttendanceCheckerForSchool
+            user={user}
+            language={language}
+            setTriggerAttendance={setTriggerAttendance}
+            students={students}
+          />
+        ) : (
+          <AttendanceChecker
+            user={user}
+            language={language}
+            setTriggerAttendance={setTriggerAttendance}
+            students={students}
+          />
+        ))}
 
       <div className="w-10/12 md:hidden text-center  font-Kanit bg-red-500 text-white p-4 rounded-xl">
         <div className="text-2xl">

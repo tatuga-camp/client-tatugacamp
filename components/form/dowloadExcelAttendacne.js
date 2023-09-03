@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import { DownloadExcelAttendance } from '../../service/dowloadFile';
 import { useRouter } from 'next/router';
 
-function DowloadExcelAttendacne({ close, language, teacherId }) {
+function DowloadExcelAttendacne({ close, language, teacherId, user }) {
   const router = useRouter();
   const [excelData, setExcelData] = useState({
     holiday:
@@ -14,6 +14,7 @@ function DowloadExcelAttendacne({ close, language, teacherId }) {
     present:
       language === 'Thai' ? 'มาเรียน' : language === 'English' && 'present',
     late: language === 'Thai' ? 'สาย' : language === 'English' && 'late',
+    warn: language === 'Thai' ? 'เฝ้าระวัง' : language === 'English' && 'warn',
   });
   const handleChangeExcelData = (e) => {
     const { name, value } = e.target;
@@ -34,6 +35,7 @@ function DowloadExcelAttendacne({ close, language, teacherId }) {
         present: excelData.present,
         sick: excelData.sick,
         late: excelData.late,
+        warn: excelData.warn,
         teacherId,
       });
       Swal.fire(
@@ -173,6 +175,30 @@ function DowloadExcelAttendacne({ close, language, teacherId }) {
               required
             />
           </div>
+          {user?.schoolUser?.organization === 'immigration' && (
+            <div className="flex flex-col relative mt-2">
+              <label className="font-sans font-normal">
+                {language === 'Thai' && 'เฝ้าระวัง'}
+                {language === 'English' && 'warn '}
+              </label>
+              <input
+                onChange={handleChangeExcelData}
+                className="w-60 h-7 rounded-md ring-2  pl-10 
+                placeholder:italic placeholder:font-light"
+                type="text"
+                name="warn"
+                value={excelData.warn}
+                placeholder={
+                  language === 'Thai'
+                    ? 'กรอกอักษร เมื่อนักเรียนมีสถานะเฝ้าระวัง'
+                    : language === 'English' &&
+                      "Put any text when student's warn"
+                }
+                maxLength="10"
+                required
+              />
+            </div>
+          )}
 
           <button
             aria-label="create classroom button"

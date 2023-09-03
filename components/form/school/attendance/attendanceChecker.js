@@ -2,13 +2,21 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { MdEmojiPeople, MdOutlineEventNote } from 'react-icons/md';
 import Swal from 'sweetalert2';
-import { CreateAttendance, GetAllAttendance } from '../../service/attendance';
-import Loading from '../loading/loading';
+
 import { useQuery } from '@tanstack/react-query';
 import { Editor } from '@tinymce/tinymce-react';
 import { IoCaretBackCircleSharp } from 'react-icons/io5';
+import {
+  CreateAttendance,
+  GetAllAttendance,
+} from '../../../../service/attendance';
+import Loading from '../../../loading/loading';
 
-function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
+function AttendanceCheckerForSchool({
+  setTriggerAttendance,
+  students,
+  language,
+}) {
   const router = useRouter();
   const [isCheckStudent, setIsCheckStudent] = useState();
   const currentDate = new Date().toISOString().slice(0, 10); // get current date in "yyyy-mm-dd" format
@@ -36,6 +44,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
             holiday: false,
             sick: false,
             late: false,
+            warn: false,
           },
         };
       }),
@@ -60,7 +69,8 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
               prevStudent[studentId].present) ||
             prevStudent[studentId].absent ||
             prevStudent[studentId].sick ||
-            prevStudent[studentId].late
+            prevStudent[studentId].late ||
+            prevStudent[studentId].warn
           ) {
             return {
               ...prevStudent,
@@ -74,7 +84,8 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
             (prevStudent[studentId].present && prevStudent[studentId].absent) ||
             prevStudent[studentId].holiday ||
             prevStudent[studentId].sick ||
-            prevStudent[studentId].late
+            prevStudent[studentId].late ||
+            prevStudent[studentId].warn
           ) {
             return {
               ...prevStudent,
@@ -88,7 +99,8 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
             (prevStudent[studentId].holiday && prevStudent[studentId].absent) ||
             prevStudent[studentId].present ||
             prevStudent[studentId].sick ||
-            prevStudent[studentId].late
+            prevStudent[studentId].late ||
+            prevStudent[studentId].warn
           ) {
             return {
               ...prevStudent,
@@ -102,7 +114,23 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
             (prevStudent[studentId].late && prevStudent[studentId].absent) ||
             prevStudent[studentId].present ||
             prevStudent[studentId].sick ||
-            prevStudent[studentId].holiday
+            prevStudent[studentId].holiday ||
+            prevStudent[studentId].warn
+          ) {
+            return {
+              ...prevStudent,
+              [studentId]: {
+                ...!prevStudent[studentId],
+                [name]: !prevStudent[prevStudent.id][name],
+              },
+            };
+          }
+          if (
+            (prevStudent[studentId].warn && prevStudent[studentId].absent) ||
+            prevStudent[studentId].present ||
+            prevStudent[studentId].sick ||
+            prevStudent[studentId].holiday ||
+            prevStudent[studentId].late
           ) {
             return {
               ...prevStudent,
@@ -135,7 +163,8 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
             prevStudent[prevStudent.id].present) ||
           prevStudent[prevStudent.id].absent ||
           prevStudent[prevStudent.id].sick ||
-          prevStudent[prevStudent.id].late
+          prevStudent[prevStudent.id].late ||
+          prevStudent[prevStudent.id].warn
         ) {
           return {
             ...prevStudent,
@@ -150,7 +179,8 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
             prevStudent[prevStudent.id].present) ||
           prevStudent[prevStudent.id].absent ||
           prevStudent[prevStudent.id].holiday ||
-          prevStudent[prevStudent.id].late
+          prevStudent[prevStudent.id].late ||
+          prevStudent[prevStudent.id].warn
         ) {
           return {
             ...prevStudent,
@@ -165,7 +195,8 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
             prevStudent[prevStudent.id].absent) ||
           prevStudent[prevStudent.id].holiday ||
           prevStudent[prevStudent.id].sick ||
-          prevStudent[prevStudent.id].late
+          prevStudent[prevStudent.id].late ||
+          prevStudent[prevStudent.id].warn
         ) {
           return {
             ...prevStudent,
@@ -180,7 +211,8 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
             prevStudent[prevStudent.id].absent) ||
           prevStudent[prevStudent.id].present ||
           prevStudent[prevStudent.id].sick ||
-          prevStudent[prevStudent.id].late
+          prevStudent[prevStudent.id].late ||
+          prevStudent[prevStudent.id].warn
         ) {
           return {
             ...prevStudent,
@@ -195,7 +227,24 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
             prevStudent[prevStudent.id].absent) ||
           prevStudent[prevStudent.id].present ||
           prevStudent[prevStudent.id].sick ||
-          prevStudent[prevStudent.id].holiday
+          prevStudent[prevStudent.id].holiday ||
+          prevStudent[prevStudent.id].warn
+        ) {
+          return {
+            ...prevStudent,
+            [prevStudent.id]: {
+              ...!prevStudent[prevStudent.id],
+              [name]: !prevStudent[prevStudent.id][name],
+            },
+          };
+        }
+        if (
+          (prevStudent[prevStudent.id].warn &&
+            prevStudent[prevStudent.id].absent) ||
+          prevStudent[prevStudent.id].present ||
+          prevStudent[prevStudent.id].sick ||
+          prevStudent[prevStudent.id].holiday ||
+          prevStudent[prevStudent.id].late
         ) {
           return {
             ...prevStudent,
@@ -513,6 +562,25 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                     </span>
                   </button>
                 </th>
+                <th className="w-10 text-xs md:text-base md:w-20">
+                  <button
+                    onClick={handleCheckAllstudent}
+                    name="warn"
+                    role="button"
+                    aria-label="check all"
+                    className="w-full bg-red-700 rounded-2xl text-white text-center
+                  hover:scale-110 transition duration-150 cursor-pointer group"
+                  >
+                    <span className="block group-hover:hidden">
+                      {language === 'Thai' && 'เฝ้าระวัง'}
+                      {language === 'English' && 'warn'}
+                    </span>
+                    <span className="hidden group-hover:block text-sm">
+                      {language === 'Thai' && 'เลือกทั้งหมด'}
+                      {language === 'English' && 'pick all'}
+                    </span>
+                  </button>
+                </th>
               </tr>
             </thead>
             <tbody
@@ -627,6 +695,25 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                         />
                       </div>
                     </td>
+                    <td className="w-10 text-xs md:text-base md:w-20 flex justify-center">
+                      <div
+                        className=" bg-red-700 rounded-md text-white text-center 
+                      p-1  w-6 h-6 flex items-center justify-center"
+                      >
+                        <input
+                          onChange={(event) =>
+                            handleIsCheckStudent({
+                              studentId: student.id,
+                              event,
+                            })
+                          }
+                          checked={student?.[student.id].warn}
+                          name="warn"
+                          className="h-5 w-5 ring-2  rounded-full shadow"
+                          type="checkbox"
+                        />
+                      </div>
+                    </td>
                   </tr>
                 );
               })}
@@ -646,4 +733,4 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
   );
 }
 
-export default AttendanceChecker;
+export default AttendanceCheckerForSchool;

@@ -104,6 +104,7 @@ function Index({ error, user }) {
                   {({ close }) => (
                     <DowloadExcelAttendacne
                       close={close}
+                      user={user}
                       language={user.language}
                     />
                   )}
@@ -114,6 +115,7 @@ function Index({ error, user }) {
 
           {triggerUpdateAttendance && (
             <UpdateAttendance
+              user={user}
               language={user.language}
               setTriggerUpdateAttendance={setTriggerUpdateAttendance}
               attendances={attendances}
@@ -244,6 +246,14 @@ function Index({ error, user }) {
                       {user.language === 'English' && 'absent'}
                     </span>
                   </th>
+                  {user?.schoolUser?.organization === 'immigration' && (
+                    <th className="w-36 flex items-center justify-center ">
+                      <span className="text-center">
+                        {user.language === 'Thai' && 'จำนวนเฝ้าระวัง'}
+                        {user.language === 'English' && 'warn'}
+                      </span>
+                    </th>
+                  )}
                   <th className="w-36 flex items-center justify-center ">
                     <span className="text-center">
                       {user.language === 'Thai' && 'เปอร์เซ็นมาเรียน'}
@@ -327,11 +337,18 @@ function Index({ error, user }) {
                                       {user.language === 'English' && 'late'}
                                     </div>
                                   )}
+                                  {status.warn && (
+                                    <div className="bg-red-700 w-full flex items-center justify-center py-1  text-white">
+                                      {user.language === 'Thai' && 'เฝ้าระวัง'}
+                                      {user.language === 'English' && 'warn'}
+                                    </div>
+                                  )}
                                   {!status.holiday &&
                                     !status.absent &&
                                     !status.present &&
                                     !status.sick &&
-                                    !status.late && (
+                                    !status.late &&
+                                    !status.warn && (
                                       <div className="bg-gray-600 w-full flex items-center justify-center py-1  text-white">
                                         {user.language === 'Thai' &&
                                           'ไม่มีข้อมูล'}
@@ -369,6 +386,13 @@ function Index({ error, user }) {
                             {item.statistics.number.absent}
                           </span>
                         </td>
+                        {user?.schoolUser?.organization === 'immigration' && (
+                          <td className="w-36 flex items-center justify-center ">
+                            <span className="text-center">
+                              {item.statistics.number.warn}
+                            </span>
+                          </td>
+                        )}
                         <td className="w-36 flex items-center justify-center ">
                           <span className="text-center">
                             {item.statistics.percent.present.toFixed(2)}%
