@@ -20,18 +20,23 @@ import { GetOneClassroom } from '../service/classroom';
 import { GetUser } from '../service/user';
 import { GetAllStudents } from '../service/students';
 import { useQuery } from '@tanstack/react-query';
-import RandomStudents from '../components/form/randomStudents';
+import RandomStudents from '../components/random/randomStudents';
 import { IoPersonAdd, IoWarningOutline } from 'react-icons/io5';
 import RandomIcon from '../components/svg/RandomIcon';
 import QRCode from 'react-qr-code';
 import { HiRectangleGroup } from 'react-icons/hi2';
 import CreateGroup from '../components/form/createGroup';
 import AttendanceCheckerForSchool from '../components/form/school/attendance/attendanceChecker';
+import RouletteRandomStudent from '../components/random/rouletteRandomStudent';
+import RandomTools from '../components/form/randomTools';
 
 function Layout({ children, sideMenus, language, groups }) {
   const router = useRouter();
   const [triggerRandomStudent, setTriggerRandomStudent] = useState(false);
+  const [triggerRandomTools, setTriggerRandomTools] = useState(false);
   const [triggerAttendance, setTriggerAttendance] = useState(false);
+  const [triggerRouletteRandomStudent, setTriggerRouletteRandomStudent] =
+    useState(false);
   const user = useQuery(['user'], () => GetUser());
   const classroom = useQuery(
     ['classroom'],
@@ -439,7 +444,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
             <div>
               <button
                 onClick={() => {
-                  setTriggerRandomStudent(() => true);
+                  setTriggerRandomTools(() => true);
                   document.body.style.overflow = 'hidden';
                 }}
                 role="button"
@@ -454,13 +459,35 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                   {language === 'English' && 'random student'}
                 </span>
               </button>
-
+              {triggerRandomTools && (
+                <RandomTools
+                  students={students?.data?.data}
+                  classroomId={router?.query?.classroomId}
+                  language={language}
+                  setTriggerRandomTools={setTriggerRandomTools}
+                  setTriggerRouletteRandomStudent={
+                    setTriggerRouletteRandomStudent
+                  }
+                  setTriggerRandomStudent={setTriggerRandomStudent}
+                />
+              )}
               {triggerRandomStudent && (
                 <RandomStudents
                   classroomId={router?.query?.classroomId}
                   setTriggerRandomStudent={setTriggerRandomStudent}
                   students={students?.data?.data}
                   language={language}
+                />
+              )}
+
+              {triggerRouletteRandomStudent && (
+                <RouletteRandomStudent
+                  students={students?.data?.data}
+                  classroomId={router?.query?.classroomId}
+                  language={language}
+                  setTriggerRouletteRandomStudent={
+                    setTriggerRouletteRandomStudent
+                  }
                 />
               )}
             </div>
