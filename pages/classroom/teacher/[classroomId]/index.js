@@ -151,7 +151,7 @@ function Index({ user, error }) {
                           groupQuery.refetch();
                         }
                       }}
-                      className={`w-28 ring-2 p-2 flex items-center justify-center   rounded-lg hover:bg-orange-600 hover:ring-black hover:text-white hover:drop-shadow-lg
+                      className={`w-max ring-2 p-2 flex items-center justify-center   rounded-lg hover:bg-orange-600 hover:ring-black hover:text-white hover:drop-shadow-lg
                truncate transition duration-150 ease-out ${
                  classroomGroupActive === index
                    ? 'bg-orange-500 text-white'

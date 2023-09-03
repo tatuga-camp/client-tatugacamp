@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSprings, animated, to as interpolate } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
-import Image from "next/image";
+import Image from 'next/image';
 import Swal from 'sweetalert2';
 import { MdRestartAlt } from 'react-icons/md';
 import { RiShuffleLine } from 'react-icons/ri';
@@ -133,6 +133,7 @@ function RandomStudents({
               return [
                 ...prev,
                 {
+                  id: shuffledArray[index].id,
                   firstName: shuffledArray[index].firstName,
                   lastName: shuffledArray[index]?.lastName,
                   number: shuffledArray[index].number,
@@ -276,7 +277,8 @@ function RandomStudents({
                           src={shuffledArray[i].picture}
                           className="object-cover"
                           fill
-                          sizes="100vw" />
+                          sizes="100vw"
+                        />
                       </animated.div>
                     ) : (
                       <animated.div
