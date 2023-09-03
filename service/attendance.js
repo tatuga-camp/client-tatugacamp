@@ -196,11 +196,13 @@ export async function UpdateAttendnaceAPI({
   attendanceId,
   imagesBase64,
   note,
+  warn,
 }) {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const formData = new FormData();
+
     if (imagesBase64.length > 0) {
       for (const imageBase64 of imagesBase64) {
         const response = await fetch(imageBase64);
@@ -265,7 +267,7 @@ export async function UpdateAttendnaceAPI({
 
       const update = await axios.put(
         `${process.env.Server_Url}/user/attendance/update`,
-        { absent, present, holiday, sick, late, note: updatedContent },
+        { absent, present, holiday, sick, warn, late, note: updatedContent },
         {
           params: {
             attendanceId: attendanceId,
@@ -277,11 +279,10 @@ export async function UpdateAttendnaceAPI({
       );
       return update;
     } else {
-      console.log(note);
       if (note) {
         const update = await axios.put(
           `${process.env.Server_Url}/user/attendance/update`,
-          { absent, present, holiday, sick, late, note },
+          { absent, present, holiday, sick, late, note, warn },
           {
             params: {
               attendanceId: attendanceId,
@@ -295,7 +296,7 @@ export async function UpdateAttendnaceAPI({
       } else if (!note) {
         const update = await axios.put(
           `${process.env.Server_Url}/user/attendance/update`,
-          { absent, present, holiday, sick, late },
+          { absent, present, holiday, sick, late, warn },
           {
             params: {
               attendanceId: attendanceId,

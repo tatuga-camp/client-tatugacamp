@@ -8,6 +8,7 @@ export async function DownloadExcelAttendance({
   present,
   holiday,
   sick,
+  warn,
   late,
   teacherId,
 }) {
@@ -23,6 +24,7 @@ export async function DownloadExcelAttendance({
           holiday,
           sick,
           late,
+          warn,
           teacherId,
         },
         {

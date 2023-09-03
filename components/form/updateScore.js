@@ -40,9 +40,11 @@ function UpdateScore({
   groupId,
   close,
   group,
+  user,
   miniGroupId,
 }) {
   const router = useRouter();
+  console.log(user);
   const [classroomId, setClassroomId] = useState();
   const [soundPositive, setSoundPositive] = useState(null);
   const [soundNagative, setSoundNagative] = useState(null);
@@ -510,32 +512,34 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                         <FcViewDetails />
                       </div>
                     </div>
-                    <div className="flex flex-col  relative mt-2 mb-2">
-                      <Box sx={{ minWidth: 120 }}>
-                        <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">
-                            {language === 'Thai' && 'สัญชาติ'}
-                            {language === 'English' && 'nationality'}
-                          </InputLabel>
-                          <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            name="nationality"
-                            value={studentData.nationality}
-                            label="nationality"
-                            onChange={handleOnChange}
-                          >
-                            {nationalities.map((nationality, index) => {
-                              return (
-                                <MenuItem key={index} value={nationality}>
-                                  {nationality}
-                                </MenuItem>
-                              );
-                            })}
-                          </Select>
-                        </FormControl>
-                      </Box>
-                    </div>
+                    {user?.schoolUser?.organization === 'immigration' && (
+                      <div className="flex flex-col  relative mt-2 mb-2">
+                        <Box sx={{ minWidth: 120 }}>
+                          <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">
+                              {language === 'Thai' && 'สัญชาติ'}
+                              {language === 'English' && 'nationality'}
+                            </InputLabel>
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              name="nationality"
+                              value={studentData.nationality}
+                              label="nationality"
+                              onChange={handleOnChange}
+                            >
+                              {nationalities.map((nationality, index) => {
+                                return (
+                                  <MenuItem key={index} value={nationality}>
+                                    {nationality}
+                                  </MenuItem>
+                                );
+                              })}
+                            </Select>
+                          </FormControl>
+                        </Box>
+                      </div>
+                    )}
                     {error && (
                       <div className=" bottom-12 w-max text-red-600">
                         {error}

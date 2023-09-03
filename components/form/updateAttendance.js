@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { DeleteNote, UpdateAttendnaceAPI } from '../../service/attendance';
@@ -31,13 +31,20 @@ const checkList = [
     titleEnglish: 'late',
     bgColor: 'bg-orange-500',
   },
+  {
+    titleThai: 'เฝ้าระวัง',
+    titleEnglish: 'warn',
+    bgColor: 'bg-red-700',
+  },
 ];
+
 function UpdateAttendance({
   setTriggerUpdateAttendance,
   student,
   attendanceData,
   attendances,
   language,
+  user,
 }) {
   const [activeAttendance, setActiveAttendance] = useState();
   const [note, setNote] = useState({
@@ -69,6 +76,9 @@ function UpdateAttendance({
     if (attendanceData?.late) {
       setActiveAttendance(4);
     }
+    if (attendanceData?.warn) {
+      setActiveAttendance(5);
+    }
     setReCheck(() => {
       return {
         absent: attendanceData?.absent,
@@ -76,6 +86,7 @@ function UpdateAttendance({
         holiday: attendanceData?.holiday,
         late: attendanceData?.late,
         sick: attendanceData?.sick,
+        warn: attendanceData?.warn,
       };
     });
   }, []);
@@ -104,6 +115,7 @@ function UpdateAttendance({
         holiday: reCheck.holiday,
         sick: reCheck.sick,
         late: reCheck.late,
+        warn: reCheck.warn,
         imagesBase64: imageUrls,
         note: note.body,
       });
@@ -147,7 +159,8 @@ function UpdateAttendance({
             src={student?.picture}
             className="object-cover"
             fill
-            sizes="(max-width: 768px) 100vw" />
+            sizes="(max-width: 768px) 100vw"
+          />
         </div>
         <div className="font-Kanit flex gap-3">
           <span>{student?.number}</span>
@@ -277,6 +290,7 @@ function UpdateAttendance({
                           holiday: false,
                           sick: false,
                           late: false,
+                          warn: false,
                         };
                       } else if (index === 1) {
                         return {
@@ -285,6 +299,7 @@ function UpdateAttendance({
                           holiday: true,
                           sick: false,
                           late: false,
+                          warn: false,
                         };
                       } else if (index === 2) {
                         return {
@@ -293,6 +308,7 @@ function UpdateAttendance({
                           holiday: false,
                           sick: true,
                           late: false,
+                          warn: false,
                         };
                       } else if (index === 3) {
                         return {
@@ -301,6 +317,7 @@ function UpdateAttendance({
                           holiday: false,
                           sick: false,
                           late: false,
+                          warn: false,
                         };
                       } else if (index === 4) {
                         return {
@@ -309,6 +326,16 @@ function UpdateAttendance({
                           holiday: false,
                           sick: false,
                           late: true,
+                          warn: false,
+                        };
+                      } else if (index === 5) {
+                        return {
+                          absent: false,
+                          present: false,
+                          holiday: false,
+                          sick: false,
+                          late: false,
+                          warn: true,
                         };
                       }
                     });
@@ -316,6 +343,11 @@ function UpdateAttendance({
                   }}
                   key={index}
                   className={`
+                  ${
+                    user?.schoolUser?.organization !== 'immigration' &&
+                    index === 5 &&
+                    'hidden'
+                  }
                   ${attendance.bgColor}
                   w-max min-w-[5rem] h-8 text-center flex items-center justify-center text-white rounded-lg cursor-pointer 
                   border-2 border-solid hover:scale-105 transition duration-150 ${
