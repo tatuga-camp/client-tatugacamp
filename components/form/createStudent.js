@@ -291,7 +291,7 @@ function CreateStudent({ close, language }) {
                   <input
                     className="w-60 h-7 rounded-md ring-2   pl-10 
                 placeholder:italic placeholder:font-light"
-                    type="number"
+                    type="text"
                     name="number"
                     placeholder="เช่น 02"
                     maxLength="10"
