@@ -499,7 +499,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                         onChange={handleOnChange}
                         className="w-40 h-7 rounded-md ring-2   pl-10 
                 placeholder:italic placeholder:font-light"
-                        type="number"
+                        type="text"
                         name="number"
                         placeholder="แก้ไขเลขที่"
                         min="1"
