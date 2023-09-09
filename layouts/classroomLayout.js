@@ -29,6 +29,7 @@ import CreateGroup from '../components/form/createGroup';
 import AttendanceCheckerForSchool from '../components/form/school/attendance/attendanceChecker';
 import RouletteRandomStudent from '../components/random/rouletteRandomStudent';
 import RandomTools from '../components/form/randomTools';
+import { RiNotification2Fill } from 'react-icons/ri';
 
 function Layout({ children, sideMenus, language, groups }) {
   const router = useRouter();
@@ -182,11 +183,16 @@ function Layout({ children, sideMenus, language, groups }) {
                     onClick={() => {
                       document.body.style.overflow = 'hidden';
                     }}
-                    className="absolute top-24 z-20 left-3 text-2xl text-gray-500 cursor-pointer
-border-none flex  items-center justify-center hover:animate-spin bg-transparent animate-none 	"
+                    className="absolute top-24  z-20 left-3 text-2xl text-gray-500 cursor-pointer
+border-none flex  items-center justify-center hover:scale-110 transition duration-100 bg-transparent	"
                   >
-                    <div className="flex items-center justify-center">
-                      <FiSettings />
+                    <div className="flex text-base bg-blue-400 p-1 rounded-xl text-white gap-2 items-center justify-center">
+                      <FiSettings />{' '}
+                      <span className="text-sm font-Kanit">
+                        {language === 'Thai'
+                          ? 'แก้ไขห้องเรียน'
+                          : 'classroom setting'}
+                      </span>
                     </div>
                   </Popover.Button>
                   <Popover.Panel>
@@ -543,17 +549,7 @@ border-none flex  items-center justify-center hover:animate-spin bg-transparent 
                 <span className="text-sm font-medium">students</span>
               </div>
             </div>
-            <div className="md:w-5/6 w-full   py-1 h-16 bg-[#503E9D] flex items-center justify-start gap-5  rounded-lg text-white">
-              <div className="bg-white/40 backdrop-blur-sm p-3 rounded-lg ml-5">
-                <AiTwotoneStar size={20} />
-              </div>
-              <div className="flex items-start justify-center flex-col font-sans">
-                <span className="font-bold text-2xl"></span>
-                <span className="text-sm font-medium text-gray-200">
-                  Tasks progress incoming
-                </span>
-              </div>
-            </div>
+
             <div
               className=" md:w-full lg:w-full w-full col-span-2 md:col-span-1
                   py-1 h-16 bg-[#EB6297] flex items-center md:justify-start justify-center gap-5  rounded-lg text-white"

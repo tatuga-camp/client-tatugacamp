@@ -611,10 +611,10 @@ function Index() {
                     <div className=" font-Kanit flex-col font-semibold flex justify-center items-center">
                       {assignment?.student.status === 'no-work' && IsDue && (
                         <div
-                          className="w-20 h-20 bg-red-600 rounded-2xl text-base text-white font-Kanit font-semibold
+                          className="w-20 h-20 bg-red-600 rounded-2xl p-2 text-center text-sm text-white font-Kanit font-semibold
                          flex justify-center items-center"
                         >
-                          <span className="w-10/12">เลยกำหนดส่ง</span>
+                          <span className="">เลยกำหนดส่ง</span>
                         </div>
                       )}
                       {assignment?.student.status === 'no-work' && !IsDue && (

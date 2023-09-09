@@ -122,7 +122,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                 />
               ) : (
                 <span className="font-bold text-5xl uppercase">
-                  {classroom?.data?.user.firstName.charAt(0)}
+                  {classroom?.data?.user?.firstName?.charAt(0)}
                 </span>
               )}
             </div>

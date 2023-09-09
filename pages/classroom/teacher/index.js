@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MdSchool } from 'react-icons/md';
+import { MdOutlinePendingActions, MdSchool } from 'react-icons/md';
 import { FcCancel } from 'react-icons/fc';
 import CreateClass from '../../../components/form/createClass';
 import { Popover } from '@headlessui/react';
@@ -39,6 +39,8 @@ import { SiGoogleclassroom } from 'react-icons/si';
 import AchieveClassroomComponent from '../../../components/classroom/achieveClassroom';
 import UpdateOrderClassroom from '../../../components/form/updateOrderClassroom';
 import { useQuery } from '@tanstack/react-query';
+import { GetAllPendingReviews } from '../../../service/pending-review';
+import PendingReviews from '../../../components/classroom/pendingReviews';
 
 const classroomMenus = [
   {
@@ -57,6 +59,15 @@ const classroomMenus = [
     bgColorSecond: 'bg-green-100',
     textColorMain: 'text-green-600',
     textColorSecond: 'text-green-100',
+  },
+  {
+    title: 'Pending review',
+    icon: <MdOutlinePendingActions />,
+    color: 'red',
+    bgColorMain: 'bg-red-600',
+    bgColorSecond: 'bg-red-100',
+    textColorMain: 'text-red-600',
+    textColorSecond: 'text-red-100',
   },
 ];
 function Index({ error, user, whatsNews }) {
@@ -98,6 +109,8 @@ function Index({ error, user, whatsNews }) {
   useEffect(() => {
     classrooms.refetch();
   }, [page]);
+
+  //refetch when trigger active clssroom
 
   useEffect(() => {
     if (user) {
@@ -550,7 +563,11 @@ function Index({ error, user, whatsNews }) {
                       activeMenu === index ? list.bgColorMain : 'bg-white'
                     }
 h-20 group ${
-                      index === 0 ? 'hover:bg-blue-600' : 'hover:bg-green-600'
+                      index === 0
+                        ? 'hover:bg-blue-600'
+                        : index === 1
+                        ? 'hover:bg-green-600'
+                        : index === 2 && 'hover:bg-red-600'
                     } flex flex-col justify-center items-center`}
                   >
                     <div
@@ -818,6 +835,7 @@ h-20 group ${
               </div>
             )}
             {activeMenu === 1 && <AchieveClassroomComponent user={user} />}
+            {activeMenu === 2 && <PendingReviews user={user} />}
           </div>
         </div>
       </div>
