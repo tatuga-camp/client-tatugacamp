@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { GrScorecard } from 'react-icons/gr';
-import Image from "next/image";
+import Image from 'next/image';
 import {
   AssignWorkToSTudent,
   CreateAssignmentApi,
@@ -259,6 +259,7 @@ export default function CreateAssignment({
                     input.click();
                   },
                   plugins: [
+                    'contextmenu',
                     'advlist',
                     'autolink',
                     'lists',
@@ -277,6 +278,8 @@ export default function CreateAssignment({
                     'help',
                     'wordcount',
                   ],
+                  contextmenu:
+                    'paste | link image inserttable | cell row column deletetable',
                   toolbar:
                     'undo redo | formatselect | blocks | ' +
                     'bold italic backcolor | alignleft aligncenter ' +

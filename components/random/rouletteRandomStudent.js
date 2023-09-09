@@ -25,9 +25,9 @@ const innerRadius = 0;
 const radiusLineColor = '#eeeeee';
 const radiusLineWidth = 2;
 const fontWeight = 'normal';
-const fontSize = 10;
+const fontSize = 13;
 const fontStyle = 'normal';
-const textDistance = 60;
+const textDistance = 50;
 const spinDuration = 0.5;
 
 function RouletteRandomStudent({
