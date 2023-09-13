@@ -6,7 +6,7 @@ export async function GetAssignment({ assignmentId }) {
       return null;
     }
     const assignment = await axios.get(
-      `${process.env.Server_Url}/student/student-assignment/get-assignment`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/student-assignment/get-assignment`,
       {
         params: {
           assignmentId: assignmentId,
@@ -28,7 +28,7 @@ export async function GetAllAssignment({ studentId, classroomId }) {
       return null;
     }
     const assignments = await axios.get(
-      `${process.env.Server_Url}/student/student-assignment/get-all`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/student-assignment/get-all`,
       {
         params: {
           studentId: studentId,
@@ -49,7 +49,7 @@ export async function GetAllAssignment({ studentId, classroomId }) {
 export async function GetMyWork({ studentId, assignmentId }) {
   try {
     const myWork = await axios.get(
-      `${process.env.Server_Url}/student/student-assignment/view-my-work`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/student-assignment/view-my-work`,
       {
         params: {
           studentId: studentId,
@@ -94,7 +94,7 @@ export async function SummitWork({ formFiles, assignmentId, studentId }) {
       }),
     );
     const urls = await axios.post(
-      `${process.env.Server_Url}/student/student-assignment/summit-work`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/student-assignment/summit-work`,
       { files },
       {
         params: {
@@ -121,7 +121,7 @@ export async function SummitWork({ formFiles, assignmentId, studentId }) {
 
     const pictureArrayToString = urls.data.baseUrls.join(', ');
     const createWork = await axios.post(
-      `${process.env.Server_Url}/student/student-assignment/create-work-after-signURL`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/student-assignment/create-work-after-signURL`,
       { picture: pictureArrayToString },
       {
         params: {
@@ -147,7 +147,7 @@ export async function SummitWorkWithWorkSheet({
 }) {
   try {
     const createWork = await axios.post(
-      `${process.env.Server_Url}/student/student-assignment/create-work-after-signURL`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/student-assignment/create-work-after-signURL`,
       { body },
       {
         params: {

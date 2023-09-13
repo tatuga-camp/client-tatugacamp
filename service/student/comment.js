@@ -1,5 +1,5 @@
-import axios from "axios";
-import Error from "next/error";
+import axios from 'axios';
+import Error from 'next/error';
 
 export async function GetComments({ assignmentId, studentId }) {
   try {
@@ -7,16 +7,16 @@ export async function GetComments({ assignmentId, studentId }) {
       return null;
     }
     const comments = await axios.get(
-      `${process.env.Server_Url}/student/comment/get-comment`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/comment/get-comment`,
       {
         params: {
           assignmentId: assignmentId,
           studentId: studentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-      }
+      },
     );
 
     return comments;
@@ -32,7 +32,7 @@ export async function PostComment({ assignmentId, studentId, body }) {
     }
 
     const comments = await axios.post(
-      `${process.env.Server_Url}/student/comment/post-comment`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/comment/post-comment`,
       {
         body: body,
       },
@@ -42,9 +42,9 @@ export async function PostComment({ assignmentId, studentId, body }) {
           studentId: studentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-      }
+      },
     );
 
     return comments;

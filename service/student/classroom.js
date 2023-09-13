@@ -1,5 +1,5 @@
-import axios from "axios";
-import Error from "next/error";
+import axios from 'axios';
+import Error from 'next/error';
 
 export async function JoinClassroom({ classroomCode }) {
   try {
@@ -7,15 +7,15 @@ export async function JoinClassroom({ classroomCode }) {
       return null;
     }
     const classrooms = await axios.get(
-      `${process.env.Server_Url}/student/classroom/get-a-classroom`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/classroom/get-a-classroom`,
       {
         params: {
           classroomCode: classroomCode,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-      }
+      },
     );
     return classrooms;
   } catch (err) {
