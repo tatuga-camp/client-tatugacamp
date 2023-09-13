@@ -1,18 +1,18 @@
-import axios from "axios";
-import Error from "next/error";
+import axios from 'axios';
+import Error from 'next/error';
 
 export async function GetStudent({ studentId }) {
   try {
     const student = await axios.get(
-      `${process.env.Server_Url}/student/get-a-student`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/get-a-student`,
       {
         params: {
           studentId: studentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-      }
+      },
     );
     return student;
   } catch (err) {
@@ -31,9 +31,9 @@ export async function UpdateStudent({ formData, studentId }) {
           studentId: studentId,
         },
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
-      }
+      },
     );
     console.log(updateStudent);
     return updateStudent;

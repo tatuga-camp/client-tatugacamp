@@ -84,6 +84,8 @@ function PendingReviews({ user }) {
                                     fill
                                     className="object-cover"
                                     src={student.picture}
+                                    sizes="(max-width: 768px) 100vw"
+                                    quality={60}
                                   />
                                 </div>
                               </div>
