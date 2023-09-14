@@ -41,29 +41,52 @@ function RouletteRandomStudent({
   const [audioSheer, setAudioSheer] = useState(null);
   const { width, height } = useWindowSize();
   const [activeConfetti, setActiveConfetti] = useState(false);
-  const [outCard, setOutCard] = useState();
+  const [outCard, setOutCard] = useState([]);
   const [studentList, setStudentList] = useState([{ option: 'loading' }]);
   useEffect(() => {
     const shuffledArrayObject = localStorage.getItem(
       `${classroomId}:shuffledArray`,
     );
-    const parsedshuffledArrayObject = JSON.parse(shuffledArrayObject);
-    setStudentList(() => {
-      return parsedshuffledArrayObject.map((student) => {
-        return {
-          id: student.id,
-          option: `${student.firstName} ${student?.lastName}`,
-          firstName: student.firstName,
-          lastName: student.lastName,
-          picture: student.picture,
-          number: student.number,
-        };
+
+    if (shuffledArrayObject !== 'undefined') {
+      const parsedshuffledArrayObject = JSON.parse(shuffledArrayObject);
+      setStudentList(() => {
+        return parsedshuffledArrayObject?.map((student) => {
+          return {
+            id: student.id,
+            option: `${student.firstName} ${
+              student.lastName ? student.lastName : ''
+            }`,
+            firstName: student.firstName,
+            lastName: student.lastName,
+            picture: student.picture,
+            number: student.number,
+          };
+        });
       });
-    });
+    } else {
+      setStudentList(() => {
+        return students.map((student) => {
+          return {
+            id: student.id,
+            option: `${student.firstName} ${
+              student.lastName ? student.lastName : ''
+            }`,
+            firstName: student.firstName,
+            lastName: student.lastName,
+            picture: student.picture,
+            number: student.number,
+          };
+        });
+      });
+    }
+
     const outCardArrayObject = localStorage.getItem(`${classroomId}:outCard`);
     const parsedoutCardArrayObject = JSON.parse(outCardArrayObject);
 
-    setOutCard(() => parsedoutCardArrayObject);
+    setOutCard(() =>
+      !parsedoutCardArrayObject ? [] : parsedoutCardArrayObject,
+    );
     setAudioSheer(() => new Audio(sound.sheer));
     setFirstRender(() => true);
   }, []);
@@ -110,7 +133,9 @@ function RouletteRandomStudent({
       return students.map((student) => {
         return {
           id: student.id,
-          option: `${student.firstName} ${student?.lastName}`,
+          option: `${student.firstName} ${
+            student.lastName ? student.lastName : ''
+          }`,
           firstName: student.firstName,
           lastName: student.lastName,
           picture: student.picture,
