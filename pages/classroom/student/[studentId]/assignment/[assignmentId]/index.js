@@ -187,7 +187,11 @@ function Index() {
                 'error',
               );
             } else {
-              Swal.fire('error', err?.props?.response?.message, 'error');
+              Swal.fire(
+                'error',
+                err?.props?.response?.data?.message.toString(),
+                'error',
+              );
             }
             console.log(err);
           }
