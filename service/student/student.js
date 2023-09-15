@@ -24,7 +24,7 @@ export async function GetStudent({ studentId }) {
 export async function UpdateStudent({ formData, studentId }) {
   try {
     const updateStudent = await axios.put(
-      `${process.env.Server_Url}/student/update`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/update`,
       formData,
       {
         params: {
