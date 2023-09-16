@@ -184,8 +184,8 @@ function Index({ user, error }) {
               students' avatar are here */}
             {classroomGroupActive === 'default' && (
               <div
-                className=" md:w-11/12 lg:w-full max-w-7xl grid grid-cols-2 gap-4 items-center justify-center md:justify-start
-              md:grid md:grid-cols-4 lg:grid-cols-6 md:gap-5 mt-10 place-items-center	"
+                className=" md:w-11/12 lg:w-10/12 xl:w-11/12 max-w-7xl grid grid-cols-2 gap-4 items-center justify-center md:justify-start
+              md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 md:gap-5 mt-10 place-items-center	"
               >
                 <Popover>
                   {({ open }) => (

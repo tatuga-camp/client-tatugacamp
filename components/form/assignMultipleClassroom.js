@@ -96,8 +96,8 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
             : 'after summiting assign work to another classroom, you must assign this work to the students in each classroom as well by clicking the setting button on the bottom right of the assignment screen '}
         </span>
       </header>
-      <main className="mt-5 md:h-96 lg:h-40 xl:h-60 w-full flex my-5 lg:my-2 justify-center items-center  overflow-auto">
-        <table className="w-10/12">
+      <main className="pb-40 w-full lg:w-10/12 flex-col items-center gap-3 flex justify-center">
+        <table className="md:w-10/12 lg:w-full">
           <thead className=" bg-orange-600 sticky top-0 drop-shadow-md text-white font-semibold ">
             <tr className="">
               <td className="w-60 py-4 pl-4">ชื่อห้อง</td>
@@ -106,7 +106,7 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
               <td className="w-40">เลือก</td>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {classroomState?.map((classroom) => {
               return (
                 <tr key={classroom?.id} className="border-b border-black">
@@ -130,24 +130,24 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
             })}
           </tbody>
         </table>
-      </main>
-      <footer className="flex flex-col justify-center items-center gap-2">
-        {loading ? (
-          <Loading />
-        ) : (
-          <button
-            onClick={handleClickToAssign}
-            className="px-4 py-2 rounded-md bg-blue-500 text-white hover:scale-110 transition duration-100 
+        <footer className="flex flex-col justify-center items-center gap-2">
+          {loading ? (
+            <Loading />
+          ) : (
+            <button
+              onClick={handleClickToAssign}
+              className="px-4 py-2 rounded-md bg-blue-500 text-white hover:scale-110 transition duration-100 
         drop-shadow-md hover:bg-blue-700 active:ring-2 ring-blue-200"
-          >
-            {user.language === 'Thai' ? 'มอบหมาย' : 'assign'}
-          </button>
-        )}
-        <Pagination
-          count={classrooms?.data?.totalPages}
-          onChange={(e, page) => setPage(page)}
-        />
-      </footer>
+            >
+              {user.language === 'Thai' ? 'มอบหมาย' : 'assign'}
+            </button>
+          )}
+          <Pagination
+            count={classrooms?.data?.totalPages}
+            onChange={(e, page) => setPage(page)}
+          />
+        </footer>
+      </main>
     </div>
   );
 }
