@@ -60,7 +60,7 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
       const classrooms = classroomOnlySelectd.map((classroom) => {
         return { classroomId: classroom.id };
       });
-      const response = await CreateAssignmentToAnotherClassroom({
+      await CreateAssignmentToAnotherClassroom({
         classrooms,
         assignmentId: router.query.assignmentId,
       });
