@@ -48,7 +48,7 @@ function RouletteRandomStudent({
       `${classroomId}:shuffledArray`,
     );
 
-    if (shuffledArrayObject !== 'undefined') {
+    if (shuffledArrayObject) {
       const parsedshuffledArrayObject = JSON.parse(shuffledArrayObject);
       setStudentList(() => {
         return parsedshuffledArrayObject?.map((student) => {
@@ -82,11 +82,13 @@ function RouletteRandomStudent({
     }
 
     const outCardArrayObject = localStorage.getItem(`${classroomId}:outCard`);
-    const parsedoutCardArrayObject = JSON.parse(outCardArrayObject);
+    if (outCardArrayObject) {
+      const parsedoutCardArrayObject = JSON.parse(outCardArrayObject);
+      setOutCard(() => parsedoutCardArrayObject);
+    } else {
+      setOutCard(() => []);
+    }
 
-    setOutCard(() =>
-      !parsedoutCardArrayObject ? [] : parsedoutCardArrayObject,
-    );
     setAudioSheer(() => new Audio(sound.sheer));
     setFirstRender(() => true);
   }, []);

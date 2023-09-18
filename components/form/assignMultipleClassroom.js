@@ -13,15 +13,13 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [classroomState, setClassroomState] = useState();
-  const classrooms = useQuery(
-    ['classrooms', page],
-    () => GetAllClassrooms({ page: page }),
-    { keepPreviousData: true },
+  const classrooms = useQuery(['classrooms'], () =>
+    GetAllClassrooms({ page: page, getAll: true }),
   );
 
   useEffect(() => {
     if (router.isReady) {
-      const filteredArray = classrooms?.data?.classrooms.filter(
+      const filteredArray = classrooms?.data?.filter(
         (classroom) => classroom.id !== router.query.classroomId,
       );
       setClassroomState(() =>
@@ -142,10 +140,6 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
               {user.language === 'Thai' ? 'มอบหมาย' : 'assign'}
             </button>
           )}
-          <Pagination
-            count={classrooms?.data?.totalPages}
-            onChange={(e, page) => setPage(page)}
-          />
         </footer>
       </main>
     </div>

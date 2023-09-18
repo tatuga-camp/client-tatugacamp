@@ -73,7 +73,7 @@ export async function DeleteClassroom(classroomId) {
   }
 }
 
-export async function GetAllClassrooms({ page }) {
+export async function GetAllClassrooms({ page, getAll }) {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
@@ -82,6 +82,7 @@ export async function GetAllClassrooms({ page }) {
       {
         params: {
           page: page,
+          getAll: getAll,
         },
         headers: {
           'Content-Type': 'application/json',

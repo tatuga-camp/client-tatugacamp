@@ -75,7 +75,7 @@ function RandomStudents({
       const shuffledArrayObject = localStorage.getItem(
         `${classroomId}:shuffledArray`,
       );
-      if (shuffledArrayObject !== 'undefined') {
+      if (shuffledArrayObject) {
         const parsedArrayObject = JSON.parse(shuffledArrayObject);
         return parsedArrayObject;
       } else {
@@ -85,10 +85,10 @@ function RandomStudents({
     setOutCard(() => {
       const outCardArrayObject = localStorage.getItem(`${classroomId}:outCard`);
 
-      if (outCardArrayObject !== 'undefined') {
+      if (outCardArrayObject) {
         const parsedArrayObject = JSON.parse(outCardArrayObject);
         return parsedArrayObject;
-      } else if (parsedArrayObject) {
+      } else {
         return [];
       }
     });
