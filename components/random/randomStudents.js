@@ -57,7 +57,7 @@ function RandomStudents({
   //   autoPlay: true,
   // });
   function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
+    for (let i = array?.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
@@ -75,20 +75,21 @@ function RandomStudents({
       const shuffledArrayObject = localStorage.getItem(
         `${classroomId}:shuffledArray`,
       );
-      const parsedArrayObject = JSON.parse(shuffledArrayObject);
-      if (parsedArrayObject?.length === 0 || !parsedArrayObject) {
-        return shuffleArray(newStudents);
-      } else if (parsedArrayObject?.length > 0) {
+      if (shuffledArrayObject !== 'undefined') {
+        const parsedArrayObject = JSON.parse(shuffledArrayObject);
         return parsedArrayObject;
+      } else {
+        return shuffleArray(newStudents);
       }
     });
     setOutCard(() => {
       const outCardArrayObject = localStorage.getItem(`${classroomId}:outCard`);
-      const parsedArrayObject = JSON.parse(outCardArrayObject);
-      if (!parsedArrayObject) {
-        return [];
-      } else if (parsedArrayObject) {
+
+      if (outCardArrayObject !== 'undefined') {
+        const parsedArrayObject = JSON.parse(outCardArrayObject);
         return parsedArrayObject;
+      } else if (parsedArrayObject) {
+        return [];
       }
     });
     setTimeout(() => {
@@ -97,7 +98,7 @@ function RandomStudents({
     setFirstRender(() => true);
   }, []);
 
-  const [props, api] = useSprings(shuffledArray.length, (i) => ({
+  const [props, api] = useSprings(shuffledArray?.length, (i) => ({
     ...to(i),
     from: from(i),
   })); // Create a bunch of springs using the helpers above

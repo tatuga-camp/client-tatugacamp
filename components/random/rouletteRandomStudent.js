@@ -25,7 +25,7 @@ const innerRadius = 0;
 const radiusLineColor = '#eeeeee';
 const radiusLineWidth = 2;
 const fontWeight = 'normal';
-const fontSize = 13;
+const fontSize = 12;
 const fontStyle = 'normal';
 const textDistance = 50;
 const spinDuration = 0.5;
@@ -98,7 +98,7 @@ function RouletteRandomStudent({
   const handleSpinClick = () => {
     if (!mustSpin) {
       setLoadingSpin(() => true);
-      const newPrizeNumber = Math.floor(Math.random() * studentList.length);
+      const newPrizeNumber = Math.floor(Math.random() * studentList?.length);
       setSelectedStudent(() => studentList[newPrizeNumber]);
       setPrizeNumber(newPrizeNumber);
       setMustSpin(true);
