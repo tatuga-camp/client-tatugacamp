@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Layout from "../../../components/layout";
-import Hands from "../../../components/svg/Hands";
-import { FaUserCircle } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { HiLockClosed } from "react-icons/hi";
-import { BsFacebook } from "react-icons/bs";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Swal from "sweetalert2";
-import { currentBrowser } from "../../../utils/platforms";
-import Loading from "../../../components/loading/loading";
-import Head from "next/head";
-import { ConfirmResetPassword } from "../../../service/auth";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Layout from '../../../components/layout';
+import Hands from '../../../components/svg/Hands';
+import { FaUserCircle } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { HiLockClosed } from 'react-icons/hi';
+import { BsFacebook } from 'react-icons/bs';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
+import { currentBrowser } from '../../../utils/platforms';
+import Loading from '../../../components/loading/loading';
+import Head from 'next/head';
+import { ConfirmResetPassword } from '../../../service/auth';
 
 function Index() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const [input, setInput] = useState({
-    password: "",
-    confirmPassword: "",
+    password: '',
+    confirmPassword: '',
   });
 
   const [error, setError] = useState({
-    password: "",
-    confirmPassword: "",
+    password: '',
+    confirmPassword: '',
   });
 
   const onInputChange = (e) => {
@@ -40,26 +40,26 @@ function Index() {
   const validateInput = (e) => {
     let { name, value } = e.target;
     setError((prev) => {
-      const stateObj = { ...prev, [name]: "" };
+      const stateObj = { ...prev, [name]: '' };
 
       switch (name) {
-        case "password":
+        case 'password':
           if (!value) {
-            stateObj[name] = "Please enter Password.";
+            stateObj[name] = 'Please enter Password.';
           } else if (input.confirmPassword && value !== input.confirmPassword) {
-            stateObj["confirmPassword"] = "Password does not match.";
+            stateObj['confirmPassword'] = 'Password does not match.';
           } else {
-            stateObj["confirmPassword"] = input.confirmPassword
-              ? ""
+            stateObj['confirmPassword'] = input.confirmPassword
+              ? ''
               : error.confirmPassword;
           }
           break;
 
-        case "confirmPassword":
+        case 'confirmPassword':
           if (!value) {
-            stateObj[name] = "Enter Confirm Password.";
+            stateObj[name] = 'Enter Confirm Password.';
           } else if (input.password && value !== input.password) {
-            stateObj[name] = "Password does not match.";
+            stateObj[name] = 'Password does not match.';
           }
           break;
 
@@ -79,18 +79,18 @@ function Index() {
         resetToken: router.query.resetToken,
         password: input.password,
       });
-      Swal.fire("Password has change", res, "success");
+      Swal.fire('Password has change', res, 'success');
       setLoading(() => false);
       router.push({
-        pathname: "/auth/signIn",
+        pathname: '/auth/signIn',
       });
     } catch (err) {
       setLoading(() => false);
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -142,7 +142,7 @@ function Index() {
               <label className="font-sans font-normal">New Password</label>
               <input
                 required
-                className="w-60 h-7 rounded-md border-none ring-2 bg-[#FFC800] pl-10 
+                className="w-60 h-7 rounded-md border-none ring-2 ring-black bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"
                 type="password"
                 name="password"
@@ -167,7 +167,7 @@ function Index() {
               <label className="font-sans font-normal">Confirm password</label>
               <input
                 required
-                className="w-60 h-7 rounded-md border-none ring-2 bg-[#FFC800] pl-10 
+                className="w-60 h-7 rounded-md border-none ring-2 ring-black bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"
                 type="password"
                 name="confirmPassword"

@@ -6,25 +6,25 @@ import {
   InputLabel,
   OutlinedInput,
   TextField,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { CreateAccount } from "../../../service/school/teacher";
-import Swal from "sweetalert2";
-import Loading from "../../loading/loading";
+} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { CreateAccount } from '../../../service/school/teacher';
+import Swal from 'sweetalert2';
+import Loading from '../../loading/loading';
 
 function CreateAccountForm({ teachers }) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [teacherData, setTeacherData] = useState({
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    phone: "",
-    school: "",
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    school: '',
   });
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [require, setRequire] = useState(true);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -49,11 +49,11 @@ function CreateAccountForm({ teachers }) {
 
   useEffect(() => {
     if (
-      teacherData.email !== "" &&
-      teacherData.lastName !== "" &&
-      teacherData.password !== "" &&
-      teacherData.phone !== "" &&
-      teacherData.school !== ""
+      teacherData.email !== '' &&
+      teacherData.lastName !== '' &&
+      teacherData.password !== '' &&
+      teacherData.phone !== '' &&
+      teacherData.school !== ''
     ) {
       setRequire(() => false);
     } else {
@@ -78,30 +78,30 @@ function CreateAccountForm({ teachers }) {
       });
       setTeacherData(() => {
         return {
-          email: "",
-          password: "",
-          firstName: "",
-          lastName: "",
-          phone: "",
-          school: "",
+          email: '',
+          password: '',
+          firstName: '',
+          lastName: '',
+          phone: '',
+          school: '',
         };
       });
       teachers.refetch();
       setLoading(() => false);
-      setConfirmPassword(() => "");
-      Swal.fire("success", "success", "success");
+      setConfirmPassword(() => '');
+      Swal.fire('success', 'success', 'success');
     } catch (err) {
       setLoading(() => false);
       console.log(err);
       Swal.fire(
-        "Error",
+        'Error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
   return (
-    <form className="w-96 p-3 h-full flex flex-col items-center justify-center ring-2 gap-3 rounded-3xl">
+    <form className="w-96 p-3 h-full flex flex-col items-center justify-center ring-2 ring-black gap-3 rounded-3xl">
       <h3>สร้างบัญชี</h3>
 
       <Box width="100%">
@@ -116,7 +116,7 @@ function CreateAccountForm({ teachers }) {
         />
       </Box>
       <FormControl
-        sx={{ m: 1, width: "100%" }}
+        sx={{ m: 1, width: '100%' }}
         variant="outlined"
         error={passwordError}
       >
@@ -124,7 +124,7 @@ function CreateAccountForm({ teachers }) {
         <OutlinedInput
           autoComplete="on"
           id="outlined-adornment-password"
-          type={showPassword ? "text" : "password"}
+          type={showPassword ? 'text' : 'password'}
           name="password"
           value={teacherData.password}
           onChange={handleChange}
@@ -144,14 +144,14 @@ function CreateAccountForm({ teachers }) {
         />
         {passwordError && <p>Passwords do not match.</p>}
       </FormControl>
-      <FormControl sx={{ m: 1, width: "100%" }} variant="outlined">
+      <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
         <InputLabel htmlFor="outlined-adornment-confirm-password">
           Confirm Password
         </InputLabel>
         <OutlinedInput
           autoComplete="on"
           id="outlined-adornment-confirm-password"
-          type={showPassword ? "text" : "password"}
+          type={showPassword ? 'text' : 'password'}
           value={confirmPassword}
           onChange={handleConfirmPasswordChange}
           onBlur={validatePassword}

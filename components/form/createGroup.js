@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { FcBusinessContact, FcLineChart, FcViewDetails } from "react-icons/fc";
-import Swal from "sweetalert2";
+import React, { useState } from 'react';
+import { FcBusinessContact, FcLineChart, FcViewDetails } from 'react-icons/fc';
+import Swal from 'sweetalert2';
 
-import { useRouter } from "next/router";
-import { CreateGroupApi } from "../../service/group";
-import Loading from "../../components/loading/loading";
-import { MdGroup } from "react-icons/md";
+import { useRouter } from 'next/router';
+import { CreateGroupApi } from '../../service/group';
+import Loading from '../../components/loading/loading';
+import { MdGroup } from 'react-icons/md';
 
 function CreateGroup({ close, language, groups }) {
   const router = useRouter();
   const [groupData, setGroupData] = useState({
-    title: "",
-    groupNumber: "",
+    title: '',
+    groupNumber: '',
   });
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
@@ -26,16 +26,16 @@ function CreateGroup({ close, language, groups }) {
       groups?.refetch();
       close();
       setLoading(() => false);
-      Swal.fire("success", "create classroom success", "success");
-      document.body.style.overflow = "auto";
+      Swal.fire('success', 'create classroom success', 'success');
+      document.body.style.overflow = 'auto';
     } catch (err) {
       setLoading(() => false);
-      document.body.style.overflow = "auto";
-      console.log("err", err);
+      document.body.style.overflow = 'auto';
+      console.log('err', err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -65,24 +65,24 @@ function CreateGroup({ close, language, groups }) {
             onSubmit={handleSubmit}
           >
             <span className="text-xl font-semibold text-[#2C7CD1]">
-              {language === "Thai" && "แบ่งกลุ่ม"}
-              {language === "English" && "Create group"}
+              {language === 'Thai' && 'แบ่งกลุ่ม'}
+              {language === 'English' && 'Create group'}
             </span>
             <div className="flex flex-col relative">
               <label className="font-sans font-normal">
-                {language === "Thai" && "หัวข้อ"}
-                {language === "English" && "title"}
+                {language === 'Thai' && 'หัวข้อ'}
+                {language === 'English' && 'title'}
               </label>
               <input
                 onChange={handleChagne}
-                className="w-60 h-7 rounded-md ring-2   pl-10 
+                className="w-60 h-7 rounded-md ring-2 ring-black   pl-10 
                 placeholder:italic placeholder:font-light"
                 type="text"
                 name="title"
                 placeholder={
-                  language === "Thai"
-                    ? "เช่น กลุ่มสำหรับเล่นกิจกรรม"
-                    : language === "English" && "Ex. group for do activity"
+                  language === 'Thai'
+                    ? 'เช่น กลุ่มสำหรับเล่นกิจกรรม'
+                    : language === 'English' && 'Ex. group for do activity'
                 }
                 maxLength="20"
               />
@@ -96,18 +96,18 @@ function CreateGroup({ close, language, groups }) {
 
             <div className="flex flex-col relative mt-2">
               <label className="font-sans font-normal">
-                {language === "Thai" && "จำนวนกลุ่ม"}
-                {language === "English" && "number of groups"}
+                {language === 'Thai' && 'จำนวนกลุ่ม'}
+                {language === 'English' && 'number of groups'}
               </label>
               <input
                 onChange={handleChagne}
-                className="w-60 h-7 rounded-md  ring-2  pl-10 
+                className="w-60 h-7 rounded-md  ring-2 ring-black  pl-10 
                 placeholder:italic placeholder:font-light"
                 type="number"
                 min="1"
                 name="groupNumber"
                 placeholder={
-                  language === "Thai" ? "เช่น 5" : language === "English" && "5"
+                  language === 'Thai' ? 'เช่น 5' : language === 'English' && '5'
                 }
               />
               <div
@@ -130,8 +130,8 @@ function CreateGroup({ close, language, groups }) {
                active:border-solid  focus:border-2 
               focus:border-solid"
               >
-                {language === "Thai" && "สร้าง"}
-                {language === "English" && "create"}
+                {language === 'Thai' && 'สร้าง'}
+                {language === 'English' && 'create'}
               </button>
             )}
           </form>
@@ -139,7 +139,7 @@ function CreateGroup({ close, language, groups }) {
         <div
           onClick={() => {
             close();
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = 'auto';
           }}
           className="w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/30 "
         ></div>

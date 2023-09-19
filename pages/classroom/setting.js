@@ -7,7 +7,7 @@ import {
   UploadProfilePicture,
 } from '../../service/user';
 import Swal from 'sweetalert2';
-import Image from "next/image";
+import Image from 'next/image';
 import Loading from '../../components/loading/loading';
 import { useRouter } from 'next/router';
 import Unauthorized from '../../components/error/unauthorized';
@@ -183,7 +183,8 @@ function Setting({ userServerSide, error }) {
                       className="object-cover"
                       alt={`profile picture of ${user.data.data.firstName}`}
                       fill
-                      sizes="(max-width: 768px) 100vw" />
+                      sizes="(max-width: 768px) 100vw"
+                    />
                   )}
                 </div>
               ) : (
@@ -259,7 +260,7 @@ function Setting({ userServerSide, error }) {
                   name="firstName"
                   className="appearance-none block w-60 md:w-40 lg:w-full bg-[#EDBA02]
                  text-black font-bold font-sans focus:bg-[#e7c95c] placeholder:text-whit  border-none
-                  border-red-500 rounded py-3 px-4 mb-3 leading-tight ring-2 
+                  border-red-500 rounded py-3 px-4 mb-3 leading-tight ring-2 ring-black 
                  focus:outline-none e"
                   id="grid-first-name"
                   type="text"
@@ -278,7 +279,7 @@ function Setting({ userServerSide, error }) {
                   value={userData.lastName}
                   onChange={handleChange}
                   name="lastName"
-                  className="appearance-none block w-60 md:w-40 lg:w-full ring-2
+                  className="appearance-none block w-60 md:w-40 lg:w-full ring-2 ring-black
                 bg-[#EDBA02] text-black font-bold font-sans focus:bg-[#e7c95c] placeholder:text-whit  border-none
                  rounded py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                   id="grid-last-name"
@@ -299,7 +300,7 @@ function Setting({ userServerSide, error }) {
                   value={userData.phone}
                   onChange={handleChange}
                   name="phone"
-                  className="appearance-none block w-60 md:w-40 lg:w-full ring-2
+                  className="appearance-none block w-60 md:w-40 lg:w-full ring-2 ring-black
                 bg-[#EDBA02] text-black font-bold font-sans focus:bg-[#e7c95c] placeholder:text-red-500 placeholder:font-normal border-none
                  rounded py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                   id="grid-last-name"
@@ -320,7 +321,7 @@ function Setting({ userServerSide, error }) {
                   value={userData.school}
                   onChange={handleChange}
                   name="school"
-                  className="appearance-none block w-60 md:w-40 lg:w-full ring-2
+                  className="appearance-none block w-60 md:w-40 lg:w-full ring-2 ring-black
                 bg-[#EDBA02] text-black font-bold font-sans focus:bg-[#e7c95c] placeholder:text-red-500 placeholder:font-normal border-none
                 rounded py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                   id="grid-last-name"

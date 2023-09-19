@@ -1,15 +1,15 @@
-import { Switch } from "@headlessui/react";
-import { Box, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { RiLockPasswordLine } from "react-icons/ri";
-import { FaUserSlash } from "react-icons/fa";
-import Swal from "sweetalert2";
+import { Switch } from '@headlessui/react';
+import { Box, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { RiLockPasswordLine } from 'react-icons/ri';
+import { FaUserSlash } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 import {
   ResetPassword,
   UpdateTeacherAccount,
-} from "../../../service/school/teacher";
-import Loading from "../../loading/loading";
-import Image from "next/image";
+} from '../../../service/school/teacher';
+import Loading from '../../loading/loading';
+import Image from 'next/image';
 
 function SettingAccountForm({ selectTeacher, teachers }) {
   const [loading, setLoading] = useState(false);
@@ -72,23 +72,23 @@ function SettingAccountForm({ selectTeacher, teachers }) {
 
       setLoading(() => false);
       teachers.refetch();
-      Swal.fire("success", "success", "success");
+      Swal.fire('success', 'success', 'success');
     } catch (err) {
       setLoading(() => false);
       console.log(err);
       Swal.fire(
-        "Error",
+        'Error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
   const handleResetPassword = async () => {
     const { value: password } = await Swal.fire({
-      title: "Enter your password",
-      input: "text",
-      inputLabel: "Password",
-      inputPlaceholder: "Enter your password",
+      title: 'Enter your password',
+      input: 'text',
+      inputLabel: 'Password',
+      inputPlaceholder: 'Enter your password',
     });
 
     if (password) {
@@ -97,22 +97,27 @@ function SettingAccountForm({ selectTeacher, teachers }) {
           password: password,
           teacherId: selectTeacher.id,
         });
-        Swal.fire("success", res, "success");
+        Swal.fire('success', res, 'success');
       } catch (err) {
         console.log(err);
         Swal.fire(
-          "Error",
+          'Error',
           err?.props?.response?.data?.message.toString(),
-          "error"
+          'error',
         );
       }
     }
   };
   return (
-    <div className="w-96 p-3 h-full flex flex-col items-center justify-start ring-2 gap-3 rounded-3xl">
+    <div className="w-96 p-3 h-full flex flex-col items-center justify-start ring-2 ring-black gap-3 rounded-3xl">
       <div className="w-24  h-24 relative  bg-blue-400 flex justify-center items-center text-white mt-2 rounded-md">
         {selectTeacher?.picture ? (
-          <Image src={selectTeacher.picture} className="object-cover" fill sizes="100vw" />
+          <Image
+            src={selectTeacher.picture}
+            className="object-cover"
+            fill
+            sizes="100vw"
+          />
         ) : (
           <span className="font-bold text-5xl uppercase">
             {selectTeacher.firstName.charAt(0)}
@@ -177,7 +182,7 @@ function SettingAccountForm({ selectTeacher, teachers }) {
         />
       </Box>
       <div className="flex justify-center gap-2">
-        <div className="flex ring-2 rounded-xl ring-red-400 flex-col gap-1 p-3 items-center">
+        <div className="flex ring-2  rounded-xl ring-red-400 flex-col gap-1 p-3 items-center">
           <Switch
             name="isDisabled"
             checked={teacherData.isDisabled}
@@ -190,13 +195,13 @@ function SettingAccountForm({ selectTeacher, teachers }) {
               })
             }
             className={`${
-              teacherData.isDisabled ? "bg-red-500" : "bg-green-400"
+              teacherData.isDisabled ? 'bg-red-500' : 'bg-green-400'
             } relative inline-flex h-6 w-12 items-center rounded-full`}
           >
             <span className="sr-only">Disable User</span>
             <span
               className={`${
-                teacherData.isDisabled ? "translate-x-7" : "translate-x-1"
+                teacherData.isDisabled ? 'translate-x-7' : 'translate-x-1'
               } inline-block h-4 w-4 transform rounded-full bg-white transition`}
             />
           </Switch>
@@ -210,7 +215,7 @@ function SettingAccountForm({ selectTeacher, teachers }) {
         <button
           type="button"
           onClick={handleResetPassword}
-          className="flex gap-1 p-3 transition duration-100 hover:scale-105 active:ring-2 bg-slate-300 rounded-lg items-center"
+          className="flex gap-1 p-3 transition ring-black duration-100 hover:scale-105 active:ring-2 bg-slate-300 rounded-lg items-center"
         >
           <div className="flex justify-center items-center">
             <RiLockPasswordLine />
@@ -226,7 +231,7 @@ function SettingAccountForm({ selectTeacher, teachers }) {
         <button
           onClick={handleUpdateTeacher}
           type="button"
-          className="bg-blue-400 p-2 rounded-xl drop-shadow-md text-white px-10 hover:scale-105 transition duration-150 active:ring-2"
+          className="bg-blue-400 p-2 rounded-xl drop-shadow-md text-white px-10 hover:scale-105 ring-black transition duration-150 active:ring-2"
         >
           SAVE
         </button>

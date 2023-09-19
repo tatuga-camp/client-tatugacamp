@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Loading from '../loading/loading';
-import Image from "next/image";
+import Image from 'next/image';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { BsFullscreen, BsFullscreenExit } from 'react-icons/bs';
 import { MdDelete } from 'react-icons/md';
@@ -220,7 +220,7 @@ function DisplayGroup({
             checked={isSetting}
             onChange={setIsSetting}
             className={`${isSetting ? 'bg-blue-400' : 'bg-teal-700'}
-          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors ring-black duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
           >
             <span
               aria-hidden="true"
@@ -245,7 +245,7 @@ function DisplayGroup({
       </div>
       {unGroupStudents && isSetting && !isAddGroup && (
         <div className="w-full justify-center flex my-5">
-          <div className="w-10/12 p-5 ring-2 gap-x-8 gap-y-3 bg-white rounded-md grid md:grid-cols-2 lg:grid-cols-3">
+          <div className="w-10/12 p-5 ring-2 ring-black gap-x-8 gap-y-3 bg-white rounded-md grid md:grid-cols-2 lg:grid-cols-3">
             {unGroupStudents?.map((student) => {
               return (
                 <div
@@ -288,7 +288,7 @@ function DisplayGroup({
 
             <span className="text-lg">ยกเลิก</span>
           </button>
-          <div className="flex gap-2 bg-blue-200 text-black ring-2 ring-orange-400 rounded-lg p-2">
+          <div className="flex gap-2 bg-blue-200 text-black ring-2  ring-orange-400 rounded-lg p-2">
             <div className="flex gap-1 ">
               <span>
                 {user.language === 'Thai'
@@ -361,7 +361,7 @@ function DisplayGroup({
                             group?.data?.miniGroups.length > 2
                               ? 'md:w-80 lg:w-80 '
                               : 'w-max max-w-3xl'
-                          }   h-max p-2 ring-2 flex justify-start
+                          }   h-max p-2 ring-2 ring-black flex justify-start
                  bg-white flex-col  items-center hover:scale-110 transition duration-150
                   hover:drop-shadow-md cursor-pointer hover:ring-orange-400 relative  rounded-lg ring-orange-400"
               `}
@@ -437,9 +437,9 @@ function DisplayGroup({
                     group?.data?.miniGroups.length > 2
                       ? 'md:w-80 lg:w-80 '
                       : 'w-max max-w-3xl'
-                  }   h-max p-2 ring-2 flex justify-start
+                  }   h-max p-2 ring-2  ring-black flex justify-start
     flex-col  items-center transition duration-150  
-      hover:drop-shadow-md bg-sky-100  hover:ring-orange-400 relative overflow-hidden   rounded-lg ring-orange-400"
+      hover:drop-shadow-md bg-sky-100  hover:ring-orange-400 relative overflow-hidden   rounded-lg "
   `}
                 >
                   {isAddGroup && (

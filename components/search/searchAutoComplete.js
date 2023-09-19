@@ -46,7 +46,7 @@ function SearchAutoComplete({
             as="input"
             placeholder="ค้นหาได้เลย.."
             type="text"
-            className="w-72  h-10 placeholder:pl-5 pl-5 border-none ring-2 appearance-none font-sans group rounded-lg focus:ring-0 ring-[#EDBA02] bg-yellow-100  "
+            className="w-72  h-10 placeholder:pl-5 pl-5 border-none  ring-2 appearance-none font-sans group rounded-lg focus:ring-0 ring-[#EDBA02] bg-yellow-100  "
             displayValue={(activity) => activity.title}
             onChange={(event) => setQuery(event.target.value)}
           />

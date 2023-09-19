@@ -92,7 +92,7 @@ function UpdateOrderClassroom({
                     : 'ring-blue-500 '
                 }
                 w-10 select-none active:scale-110 active:ring-4  hover:bg-blue-500 transition duration-150 hover:text-white cursor-pointer
-             font-semibold  h-10 text-center flex justify-center items-center ring-2
+             font-semibold  h-10 text-center flex justify-center items-center ring-2 ring-black
                rounded-lg`}
                 key={index}
               >

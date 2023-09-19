@@ -300,7 +300,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                   }
                   defaultValue={currentDate}
                   name="deadline"
-                  className="w-20  md:w-max appearance-none outline-none border-none ring-2 rounded-md px-5 
+                  className="w-20  md:w-max appearance-none outline-none border-none ring-2  rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black "
                   type="date"
                   placeholder="Please select a date"
@@ -546,7 +546,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                             })
                           }
                           checked={student?.[student.id].present}
-                          className="h-5 ring-2  w-5 rounded-full shadow"
+                          className="h-5  w-5 rounded-full shadow"
                           type="checkbox"
                         />
                       </div>
@@ -565,7 +565,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                           }
                           checked={student?.[student.id].holiday}
                           name="holiday"
-                          className="h-5 w-5 ring-2  rounded-full shadow"
+                          className="h-5 w-5  rounded-full shadow"
                           type="checkbox"
                         />
                       </div>
@@ -584,7 +584,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                           }
                           checked={student?.[student.id].sick}
                           name="sick"
-                          className="h-5 w-5  ring-2  rounded-full shadow"
+                          className="h-5 w-5   rounded-full shadow"
                           type="checkbox"
                         />
                       </div>
@@ -603,7 +603,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                           }
                           checked={student?.[student.id].absent}
                           name="absent"
-                          className="h-5 w-5 ring-2  rounded-full shadow"
+                          className="h-5 w-5  rounded-full shadow"
                           type="checkbox"
                         />
                       </div>
@@ -622,7 +622,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                           }
                           checked={student?.[student.id].late}
                           name="late"
-                          className="h-5 w-5 ring-2  rounded-full shadow"
+                          className="h-5 w-5  rounded-full shadow"
                           type="checkbox"
                         />
                       </div>

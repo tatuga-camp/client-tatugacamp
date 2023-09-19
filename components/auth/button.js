@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { BiLogOutCircle, BiUser, BiWrench } from 'react-icons/bi';
-import Image from "next/image";
+import Image from 'next/image';
 import { Menu, Transition } from '@headlessui/react';
 import Loading from '../loading/loading';
 import { useRouter } from 'next/router';
@@ -44,7 +44,7 @@ function AuthButton() {
       <div>
         <button
           onClick={() => router.push('/auth/signIn')}
-          className="flex gap-x-2 justify-center items-center focus:outline-none text-base font-Inter font-normal border-0 w-max h-auto bg-white  text-black hover:ring-2  transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
+          className="flex gap-x-2 justify-center items-center focus:outline-none text-base font-Inter font-normal border-0 w-max h-auto bg-white  text-black hover:ring-2 ring-black  transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
         >
           <span>Login</span>
           <div className="flex items-center justify-center text-[#FFC800]">
@@ -82,7 +82,8 @@ function AuthButton() {
               alt={data?.data?.firstName}
               className=" object-cover "
               fill
-              sizes="(max-width: 768px) 100vw" />
+              sizes="(max-width: 768px) 100vw"
+            />
           </div>
         ) : (
           <div className="w-10 h-10 rounded-full bg-blue-600 flex justify-center items-center">
