@@ -74,7 +74,7 @@ function AddPercentageOnSpecialScore({
         ) : (
           <button
             onClick={handleSummitUpdatePercent}
-            className="w-28 py-2 active:ring-2 hover:bg-blue-700
+            className="w-28 py-2 active:ring-2 hover:bg-blue-700 ring-black
          transition duration-150 bg-blue-500 text-white font-semibold rounded-lg"
           >
             update

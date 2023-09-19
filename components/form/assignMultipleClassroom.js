@@ -118,7 +118,7 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
                         handleChangeCheckbox({ classroomId: classroom?.id })
                       }
                       type="checkbox"
-                      className="w-6 h-6 ring-2  text-blue-600 bg-gray-100 border-gray-300 rounded
+                      className="w-6 h-6 ring-2 ring-black  text-blue-600 bg-gray-100 border-gray-300 rounded
                      focus:ring-blue-500 dark:focus:ring-blue-600
                      dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
@@ -135,7 +135,7 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
             <button
               onClick={handleClickToAssign}
               className="px-4 py-2 rounded-md bg-blue-500 text-white hover:scale-110 transition duration-100 
-        drop-shadow-md hover:bg-blue-700 active:ring-2 ring-blue-200"
+        drop-shadow-md hover:bg-blue-700 active:ring-2  ring-blue-200"
             >
               {user.language === 'Thai' ? 'มอบหมาย' : 'assign'}
             </button>

@@ -244,7 +244,7 @@ function Index() {
                   <button
                     onClick={handleSummitEditStudentData}
                     className="w-40 bg-green-500  font-Kanit py-2 rounded-lg hover:scale-105 transition
-                  active:ring-2 text-white"
+                  active:ring-2 ring-black text-white"
                   >
                     ยืนยัน
                   </button>
@@ -254,7 +254,7 @@ function Index() {
                       setSelectedImage(() => null);
                     }}
                     className="w-40 bg-red-700  font-Kanit py-2 rounded-lg hover:scale-105 transition
-                  active:ring-2 text-white"
+                  active:ring-2  ring-black text-white"
                   >
                     ยกเลิก
                   </button>
@@ -299,9 +299,9 @@ function Index() {
                   key={index}
                   onClick={() => setActiveMenu(() => index)}
                   className={`w-max px-2 h-10 rounded-md ${menu.color} ${
-                    activeMenu === index ? 'ring-2 ring-white' : 'ring-0'
+                    activeMenu === index ? 'ring-2  ring-white' : 'ring-0'
                   }  items-center flex justify-center hover:scale-110 
-                 gap-2 transition duration-150 hover:ring-1 active:ring-2`}
+                 gap-2 transition duration-150 hover:ring-1 active:ring-2 `}
                 >
                   <div
                     className="w-8 h-8  bg-white/50 backdrop-blur-md rounded-md flex 
@@ -335,10 +335,10 @@ function Index() {
                     menu.color
                   } ${
                     activeMenu === index
-                      ? 'ring-2 md:ring-4  ring-white'
+                      ? 'ring-2  md:ring-4  ring-white'
                       : 'ring-0'
                   }  items-center flex justify-center hover:scale-110 md:justify-between
-                 gap-2 md:gap-10 transition duration-150 hover:ring-1 active:ring-2 `}
+                 gap-2 md:gap-10 transition duration-150 hover:ring-1 active:ring-2  `}
                 >
                   <div
                     className="w-8 h-8  bg-white/50 backdrop-blur-md rounded-md flex 
@@ -590,7 +590,7 @@ function Index() {
                 <Link
                   href={`/classroom/student/${student?.data?.data?.id}/assignment/${assignment?.assignment?.id}?classroomId=${router?.query?.classroomId}`}
                   key={assignment.assignment?.id}
-                  className="w-11/12 md:w-10/12 no-underline hover:scale-110 transition duration-100 flex gap-5  justify-between bg-white ring-2 overflow-auto ring-blue-600 rounded-2xl p-3"
+                  className="w-11/12 md:w-10/12 no-underline hover:scale-110 transition duration-100 flex gap-5  justify-between bg-white ring-2  overflow-auto ring-blue-600 rounded-2xl p-3"
                 >
                   <div className="w-full h-28 flex flex-col justify-center  text-left   ">
                     <div className="w-48 md:w-72 text-left truncate scrollbar-hide">

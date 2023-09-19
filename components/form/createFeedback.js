@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import { Editor } from "@tinymce/tinymce-react";
-import { CreateFeedbackApi } from "../../service/feedback";
-import { tagsEnglish, tagsThai } from "../../data/tagsFeedback";
+import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
+import { Editor } from '@tinymce/tinymce-react';
+import { CreateFeedbackApi } from '../../service/feedback';
+import { tagsEnglish, tagsThai } from '../../data/tagsFeedback';
 
 function CreateFeedback({ handleCloseFeedback, language }) {
   const [tags, setTag] = useState(() => {
-    if (language === "Thai") {
+    if (language === 'Thai') {
       return tagsThai;
-    } else if (language === "English") {
+    } else if (language === 'English') {
       return tagsEnglish;
     }
   });
   const [feedbackData, setFeedbackData] = useState({
-    body: "",
-    tag: "",
+    body: '',
+    tag: '',
   });
   const [activeTag, setActiveTag] = useState();
   const [checkAuth, setCheckAuth] = useState({
@@ -24,12 +24,12 @@ function CreateFeedback({ handleCloseFeedback, language }) {
   const handleChangeCheckAuth = (e) => {
     const { name, checked } = e.target;
     setCheckAuth((prev) => {
-      if (name === "unAuth") {
+      if (name === 'unAuth') {
         return {
           [name]: checked,
           auth: false,
         };
-      } else if (name === "auth") {
+      } else if (name === 'auth') {
         return {
           [name]: checked,
           unAuth: false,
@@ -46,13 +46,13 @@ function CreateFeedback({ handleCloseFeedback, language }) {
         tag: feedbackData.tag,
         checkAuth: checkAuth,
       });
-      Swal.fire("success", "Your feedback has been sent", "success");
+      Swal.fire('success', 'Your feedback has been sent', 'success');
       handleCloseFeedback();
     } catch (err) {
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -71,37 +71,37 @@ function CreateFeedback({ handleCloseFeedback, language }) {
             onSubmit={handleSubmit}
           >
             <span className="text-xl mb-6 font-semibold text-[#2C7CD1]">
-              {language === "Thai" && "ท่านคิดเห็นอย่างไรกับ Tatuga class"}
-              {language === "English" && "What do you think of tatuga class?"}
+              {language === 'Thai' && 'ท่านคิดเห็นอย่างไรกับ Tatuga class'}
+              {language === 'English' && 'What do you think of tatuga class?'}
             </span>
             <div className="text-md  mb-6 font-normal text-black flex md:gap-6 gap-3 flex-col md:flex-row">
               <span>
-                {language === "Thai" && "ท่านต้องการระบุตัวตนหรือไม่"}
-                {language === "English" && "Do you want to identify yourself?"}
+                {language === 'Thai' && 'ท่านต้องการระบุตัวตนหรือไม่'}
+                {language === 'English' && 'Do you want to identify yourself?'}
               </span>
               <div className="flex gap-6">
                 <div className="flex items-center justify-center gap-1">
                   <span className="font-medium">
-                    {language === "Thai" && "ไม่ต้องการ"}
-                    {language === "English" && "NO"}
+                    {language === 'Thai' && 'ไม่ต้องการ'}
+                    {language === 'English' && 'NO'}
                   </span>
                   <input
                     type="checkbox"
                     name="unAuth"
-                    className="ring-2"
+                    className="ring-2 ring-black"
                     checked={checkAuth.unAuth}
                     onChange={handleChangeCheckAuth}
                   />
                 </div>
                 <div className="flex items-center justify-center gap-1">
                   <span className="font-medium">
-                    {language === "Thai" && "ต้องการ"}
-                    {language === "English" && "YES"}
+                    {language === 'Thai' && 'ต้องการ'}
+                    {language === 'English' && 'YES'}
                   </span>
                   <input
                     type="checkbox"
                     name="auth"
-                    className="ring-2"
+                    className="ring-2 ring-black"
                     checked={checkAuth.auth}
                     onChange={handleChangeCheckAuth}
                   />
@@ -114,36 +114,36 @@ function CreateFeedback({ handleCloseFeedback, language }) {
                 textareaName="description"
                 init={{
                   placeholder:
-                    language === "Thai"
-                      ? "ความคิดเห็นของท่านคือความหวังของเรา..."
-                      : language === "English" && "type your feedback here",
-                  selector: "textarea",
+                    language === 'Thai'
+                      ? 'ความคิดเห็นของท่านคือความหวังของเรา...'
+                      : language === 'English' && 'type your feedback here',
+                  selector: 'textarea',
                   link_context_toolbar: true,
-                  height: "100%",
-                  width: "100%",
+                  height: '100%',
+                  width: '100%',
                   menubar: false,
                   image_title: true,
                   automatic_uploads: true,
-                  file_picker_types: "image",
+                  file_picker_types: 'image',
                   file_picker_callback: (cb, value, meta) => {
-                    const input = document.createElement("input");
-                    input.setAttribute("type", "file");
-                    input.setAttribute("accept", "image/*");
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
 
-                    input.addEventListener("change", (e) => {
+                    input.addEventListener('change', (e) => {
                       const file = e.target.files[0];
 
                       const reader = new FileReader();
-                      reader.addEventListener("load", () => {
+                      reader.addEventListener('load', () => {
                         /*
                           Note: Now we need to register the blob in TinyMCEs image blob
                           registry. In the next release this part hopefully won't be
                           necessary, as we are looking to handle it internally.
                         */
-                        const id = "blobid" + new Date().getTime();
+                        const id = 'blobid' + new Date().getTime();
                         const blobCache =
                           tinymce.activeEditor.editorUpload.blobCache;
-                        const base64 = reader.result.split(",")[1];
+                        const base64 = reader.result.split(',')[1];
                         const blobInfo = blobCache.create(id, file, base64);
                         blobCache.add(blobInfo);
 
@@ -156,19 +156,19 @@ function CreateFeedback({ handleCloseFeedback, language }) {
                     input.click();
                   },
                   plugins: [
-                    "advlist autolink lists link image charmap print preview anchor",
-                    "searchreplace visualblocks code fullscreen",
-                    "insertdatetime media table paste code help wordcount",
-                    "link",
-                    "image",
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount',
+                    'link',
+                    'image',
                   ],
                   toolbar:
-                    "undo redo | formatselect | " +
-                    "bold italic backcolor | alignleft aligncenter " +
-                    "alignright alignjustify | bullist numlist outdent indent | " +
-                    "removeformat | help | link | image",
+                    'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | help | link | image',
                   content_style:
-                    "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                    'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                 }}
                 onEditorChange={(newText) =>
                   setFeedbackData((prev) => {
@@ -197,8 +197,8 @@ function CreateFeedback({ handleCloseFeedback, language }) {
                     className={`md:p-4 p-1 border-2 gap-2 transition duration-150 hover:scale-110 hover:border-orange-300
                      border-solid rounded-xl  ${
                        activeTag === index
-                         ? "border-orange-500"
-                         : "border-gray-200"
+                         ? 'border-orange-500'
+                         : 'border-gray-200'
                      } items-center justify-center w-full flex`}
                     type="button"
                   >
@@ -216,8 +216,8 @@ function CreateFeedback({ handleCloseFeedback, language }) {
                active:border-solid  focus:border-2 
               focus:border-solid"
             >
-              {language === "Thai" && "ส่ง"}
-              {language === "English" && "summit"}
+              {language === 'Thai' && 'ส่ง'}
+              {language === 'English' && 'summit'}
             </button>
           </form>
         </div>

@@ -428,7 +428,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                     onClick={() => setTriggerSetting((prev) => (prev = true))}
                     aria-label="button for setting student's data"
                     className="w-max h-max  bg-slate-500 mt-2  text-lg cursor-pointer hover:text-red-500 hover:bg-white
-                  text-white p-1 rounded-md flex gap-2 px-6 transition duration-150 ease-in-out z-20 group hover:ring-2  bottom-0 ring-black"
+                  text-white p-1 rounded-md flex gap-2  px-6 transition duration-150 ease-in-out z-20 group hover:ring-2  bottom-0 ring-black"
                   >
                     <span>
                       {language === 'Thai' && 'ตั้งค่า'}
@@ -452,7 +452,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                       </label>
                       <input
                         onChange={handleOnChange}
-                        className="w-40 h-7 rounded-md ring-2  pl-10 
+                        className="w-40 h-7 rounded-md ring-2 ring-black  pl-10 
                 placeholder:italic placeholder:font-light"
                         type="text"
                         name="firstName"
@@ -475,7 +475,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                       </label>
                       <input
                         onChange={handleOnChange}
-                        className="w-40 h-7 rounded-md  ring-2 pl-10 
+                        className="w-40 h-7 rounded-md  ring-2 ring-black pl-10 
                 placeholder:italic placeholder:font-light"
                         type="text"
                         name="lastName"
@@ -497,7 +497,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                       </label>
                       <input
                         onChange={handleOnChange}
-                        className="w-40 h-7 rounded-md ring-2   pl-10 
+                        className="w-40 h-7 rounded-md ring-2 ring-black   pl-10 
                 placeholder:italic placeholder:font-light"
                         type="text"
                         name="number"
@@ -656,7 +656,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                         {score.score > 0 && (
                           <div
                             className="w-max h-max px-2 bg-blue-500 rounded-full absolute
-                          z-40 ring-2 text-xs font-medium left-2  top-2"
+                          z-40 ring-2 ring-black text-xs font-medium left-2  top-2"
                           >
                             {score.score}
                           </div>

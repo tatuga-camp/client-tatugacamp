@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import Navbar from "../../../components/Navbar";
-import { parseCookies } from "nookies";
-import { GetUserCookie, UpdateUserData } from "../../../service/user";
-import Image from "next/image";
-import { HiLanguage } from "react-icons/hi2";
-import { Autocomplete, TextField } from "@mui/material";
-import { FiSave } from "react-icons/fi";
-import Swal from "sweetalert2";
-import { useRouter } from "next/router";
-import Unauthorized from "../../../components/error/unauthorized";
+import React, { useState } from 'react';
+import Navbar from '../../../components/Navbar';
+import { parseCookies } from 'nookies';
+import { GetUserCookie, UpdateUserData } from '../../../service/user';
+import Image from 'next/image';
+import { HiLanguage } from 'react-icons/hi2';
+import { Autocomplete, TextField } from '@mui/material';
+import { FiSave } from 'react-icons/fi';
+import Swal from 'sweetalert2';
+import { useRouter } from 'next/router';
+import Unauthorized from '../../../components/error/unauthorized';
 
-const options = ["Thai", "English"];
+const options = ['Thai', 'English'];
 
 function Index({ user, error }) {
   const [languageValue, setLanguageValue] = useState(options[0]);
   const router = useRouter();
-  const [inputLanguageValue, setInputLanguageValue] = useState("");
+  const [inputLanguageValue, setInputLanguageValue] = useState('');
   const [activeRole, setActiveRole] = useState(0);
   const [userData, setUserData] = useState({
     firstName: user.firstName,
@@ -27,23 +27,23 @@ function Index({ user, error }) {
     try {
       const userUpdate = await UpdateUserData(userData);
       if (userUpdate.status === 200) {
-        Swal.fire("success", "update your profile successfully😃", "success");
+        Swal.fire('success', 'update your profile successfully😃', 'success');
       }
-      if (userUpdate.data.role === "TEACHER") {
+      if (userUpdate.data.role === 'TEACHER') {
         router.push({
-          pathname: "/classroom/teacher",
+          pathname: '/classroom/teacher',
         });
-      } else if (userUpdate.data.role === "SCHOOL") {
+      } else if (userUpdate.data.role === 'SCHOOL') {
         router.push({
-          pathname: "/school",
+          pathname: '/school',
         });
       }
     } catch (err) {
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -55,11 +55,11 @@ function Index({ user, error }) {
     <div className="h-screen  bg-gradient-to-t from-blue-100 to-white">
       <Navbar />
       <div className="w-full flex justify-start items-center flex-col  font-Kanit">
-        <header className="bg-white w-max h-max mt-40 md:mt-10 max-w-xs md:max-w-5xl drop-shadow-md p-3 px-10 rounded-lg ring-2">
+        <header className="bg-white w-max h-max mt-40 md:mt-10 max-w-xs md:max-w-5xl drop-shadow-md p-3 px-10 ring-black rounded-lg ring-2">
           <h1 className="font-medium text-center flex flex-col md:flex-row justify-center gap-5 items-center ">
-            {userData.language === "Thai"
-              ? "ข้อต้อนรับ "
-              : userData.language === "English" && "welcome"}{" "}
+            {userData.language === 'Thai'
+              ? 'ข้อต้อนรับ '
+              : userData.language === 'English' && 'welcome'}{' '}
             <div className="flex flex-col justify-center items-center">
               <section className="flex gap-2 uppercase text-blue-600">
                 <span>{user.firstName}</span>
@@ -73,7 +73,8 @@ function Index({ user, error }) {
                   src={user?.picture}
                   className="object-cover"
                   fill
-                  sizes="(max-width: 768px) 100vw, 700px" />
+                  sizes="(max-width: 768px) 100vw, 700px"
+                />
               </div>
             ) : (
               <div
@@ -124,7 +125,7 @@ function Index({ user, error }) {
           </div>
           <button
             onClick={handleSaveUser}
-            className="w-max p-2 hover:scale-110 transition duration-150 flex items-center gap-1 text-lg bg-green-400 uppercase text-white rounded-lg ring-2"
+            className="w-max p-2 hover:scale-110 transition duration-150 flex items-center gap-1 text-lg bg-green-400 uppercase text-white ring-black rounded-lg ring-2"
           >
             SAVE
             <div className="flex justify-center items-center">
@@ -149,7 +150,7 @@ export async function getServerSideProps(context) {
       props: {
         error: {
           statusCode: 401,
-          message: "unauthorized",
+          message: 'unauthorized',
         },
       },
     };
@@ -170,7 +171,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };
@@ -191,7 +192,7 @@ export async function getServerSideProps(context) {
         props: {
           error: {
             statusCode: 401,
-            message: "unauthorized",
+            message: 'unauthorized',
           },
         },
       };

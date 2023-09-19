@@ -146,7 +146,7 @@ function Index() {
             <div className="flex flex-col relative">
               <label className="font-sans font-normal">Username</label>
               <input
-                className="w-60 h-7 rounded-md border-none  ring-2 bg-[#FFC800] pl-10 
+                className="w-60 h-7 rounded-md border-none  ring-2 ring-black bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"
                 type="text"
                 name="username"
@@ -163,7 +163,7 @@ function Index() {
             <div className="flex flex-col relative mt-2">
               <label className="font-sans font-normal">Password</label>
               <input
-                className="w-60 h-7 rounded-md border-none ring-2 bg-[#FFC800] pl-10 
+                className="w-60 h-7 rounded-md border-none ring-2 ring-black bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"
                 type="password"
                 name="password"

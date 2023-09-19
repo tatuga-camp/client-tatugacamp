@@ -614,7 +614,7 @@ function AttendanceCheckerForSchool({
                             })
                           }
                           checked={student?.[student.id].present}
-                          className="h-5 ring-2  w-5 rounded-full shadow"
+                          className="h-5 ring-2 ring-black  w-5 rounded-full shadow"
                           type="checkbox"
                         />
                       </div>
@@ -633,7 +633,7 @@ function AttendanceCheckerForSchool({
                           }
                           checked={student?.[student.id].holiday}
                           name="holiday"
-                          className="h-5 w-5 ring-2  rounded-full shadow"
+                          className="h-5 w-5 ring-2 ring-black  rounded-full shadow"
                           type="checkbox"
                         />
                       </div>
@@ -652,7 +652,7 @@ function AttendanceCheckerForSchool({
                           }
                           checked={student?.[student.id].sick}
                           name="sick"
-                          className="h-5 w-5  ring-2  rounded-full shadow"
+                          className="h-5 w-5  ring-2 ring-black  rounded-full shadow"
                           type="checkbox"
                         />
                       </div>
@@ -671,7 +671,7 @@ function AttendanceCheckerForSchool({
                           }
                           checked={student?.[student.id].absent}
                           name="absent"
-                          className="h-5 w-5 ring-2  rounded-full shadow"
+                          className="h-5 w-5 ring-2 ring-black  rounded-full shadow"
                           type="checkbox"
                         />
                       </div>
@@ -690,7 +690,7 @@ function AttendanceCheckerForSchool({
                           }
                           checked={student?.[student.id].late}
                           name="late"
-                          className="h-5 w-5 ring-2  rounded-full shadow"
+                          className="h-5 w-5 ring-2 ring-black  rounded-full shadow"
                           type="checkbox"
                         />
                       </div>
@@ -709,7 +709,7 @@ function AttendanceCheckerForSchool({
                           }
                           checked={student?.[student.id].warn}
                           name="warn"
-                          className="h-5 w-5 ring-2  rounded-full shadow"
+                          className="h-5 w-5 ring-2 ring-black  rounded-full shadow"
                           type="checkbox"
                         />
                       </div>

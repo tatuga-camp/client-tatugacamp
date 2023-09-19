@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function SearchBar(props) {
   const handleSumit = (e) => {
@@ -43,7 +43,7 @@ function SearchBar(props) {
             type="search"
             name="activities"
             id="default-search"
-            className="block ring-2  p-4 pl-10 w-96 text-sm placeholder-white text-white bg-[#2C7CD1] rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+            className="block ring-2 ring-black  p-4 pl-10 w-96 text-sm placeholder-white text-white bg-[#2C7CD1] rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
             placeholder="Search for activity, such as Taboo......."
           />
           <button

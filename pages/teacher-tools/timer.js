@@ -1,17 +1,17 @@
-import React from "react";
-import Head from "next/head";
-import { useState, useEffect } from "react";
+import React from 'react';
+import Head from 'next/head';
+import { useState, useEffect } from 'react';
 import {
   BsFullscreen,
   BsFullscreenExit,
   BsStopCircle,
   BsPlayCircle,
-} from "react-icons/bs";
-import { VscDebugRestart } from "react-icons/vsc";
-import sound from "../../public/sound/ringing.mp3";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import { FiArrowLeftCircle } from "react-icons/fi";
-import { useRouter } from "next/router";
+} from 'react-icons/bs';
+import { VscDebugRestart } from 'react-icons/vsc';
+import sound from '../../public/sound/ringing.mp3';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import { FiArrowLeftCircle } from 'react-icons/fi';
+import { useRouter } from 'next/router';
 const Timer = () => {
   const router = useRouter();
   const [initalTime, setInitalTime] = useState(0);
@@ -21,7 +21,7 @@ const Timer = () => {
   const [secondInput, setSecondInput] = useState(0);
   const [audio, setAudio] = useState(null);
   const [start, setStart] = useState(false);
-  const [counter, setCounter] = useState("wait");
+  const [counter, setCounter] = useState('wait');
   const handle = useFullScreenHandle();
   const [classroomId, setClassroomId] = useState();
 
@@ -48,7 +48,7 @@ const Timer = () => {
   //prepare sound for the last 3 sec
   useEffect(() => {
     setAudio(new Audio(sound));
-    setClassroomId(localStorage.getItem("classroomId"));
+    setClassroomId(localStorage.getItem('classroomId'));
   }, []);
 
   //set miliseconds to seconds and minutes
@@ -65,7 +65,7 @@ const Timer = () => {
 
   // reduce every 1 sec
   useEffect(() => {
-    if (counter === "wait") {
+    if (counter === 'wait') {
     } else {
       const timer =
         counter >= 0 &&
@@ -97,23 +97,23 @@ const Timer = () => {
 
   const sideMenus = [
     {
-      title: "โรงเรียน",
-      icon: "🏫",
+      title: 'โรงเรียน',
+      icon: '🏫',
       url: `/classroom/teacher`,
     },
     {
-      title: "ห้องเรียน",
-      icon: "👨‍🏫",
+      title: 'ห้องเรียน',
+      icon: '👨‍🏫',
       url: `/classroom/teacher/${classroomId}`,
     },
     {
-      title: "timer",
-      icon: "⏲️",
+      title: 'timer',
+      icon: '⏲️',
       url: `/teacher-tools/timer`,
     },
 
     {
-      title: "Go back",
+      title: 'Go back',
       icon: <FiArrowLeftCircle />,
       url: `/classroom/${classroomId}`,
     },
@@ -183,9 +183,9 @@ const Timer = () => {
 
           <div
             className={`w-full h-screen  ${
-              seconds < 4 && counter !== "wait" && minutes === 0
+              seconds < 4 && counter !== 'wait' && minutes === 0
                 ? `bg-red-700`
-                : " bg-blue-400"
+                : ' bg-blue-400'
             } flex  items-center justify-center font-Inter text-[20rem] font-bold text-white`}
           >
             <div className="flex flex-col justify-center items-center">
@@ -194,7 +194,7 @@ const Timer = () => {
                   <div className="">
                     <div className="flex gap-4">
                       <p id="minute">
-                        {minutes < 10 ? "0" + minutes : minutes}
+                        {minutes < 10 ? '0' + minutes : minutes}
                       </p>
                     </div>
                   </div>
@@ -202,7 +202,7 @@ const Timer = () => {
                 {minutes > 0 && <span> : </span>}
                 <div className="">
                   <div className="flex gap-4">
-                    <p id="second">{seconds < 10 ? "0" + seconds : seconds}</p>
+                    <p id="second">{seconds < 10 ? '0' + seconds : seconds}</p>
                   </div>
                 </div>
               </div>
@@ -304,7 +304,7 @@ const Timer = () => {
               return (
                 <button
                   key={index}
-                  className="border-0 ring-2 hover:scale-125 transition duration-200 ease-out text-white ring-white font-Inter font-extrabold bg-transparent rounded-md p-2 cursor-pointer"
+                  className="border-0 ring-2  hover:scale-125 transition duration-200 ease-out text-white ring-white font-Inter font-extrabold bg-transparent rounded-md p-2 cursor-pointer"
                   onClick={() => {
                     setCounter(time.miliseconds);
                     setStart(true);
@@ -313,7 +313,7 @@ const Timer = () => {
                 >
                   {time.minutes && (
                     <span>
-                      {time.minutes} {time.minutes > 1 ? "minutes" : "minute"}
+                      {time.minutes} {time.minutes > 1 ? 'minutes' : 'minute'}
                     </span>
                   )}
                   {time.seconds && <span> {time.seconds} seconds</span>}

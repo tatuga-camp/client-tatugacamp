@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Layout from "../../../components/layout";
-import Hands from "../../../components/svg/Hands";
-import { FaUserCircle } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
-import { HiLockClosed } from "react-icons/hi";
-import { BsFacebook } from "react-icons/bs";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Swal from "sweetalert2";
-import { currentBrowser } from "../../../utils/platforms";
-import Loading from "../../../components/loading/loading";
-import Head from "next/head";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Layout from '../../../components/layout';
+import Hands from '../../../components/svg/Hands';
+import { FaUserCircle } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { HiLockClosed } from 'react-icons/hi';
+import { BsFacebook } from 'react-icons/bs';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
+import { currentBrowser } from '../../../utils/platforms';
+import Loading from '../../../components/loading/loading';
+import Head from 'next/head';
 
 function Index() {
   const [brower, setBrower] = useState();
@@ -21,19 +21,19 @@ function Index() {
     setBrower(currentBrowser(window));
   }, []);
   const [input, setInput] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    firstName: "",
-    lastName: "",
+    email: '',
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: '',
   });
 
   const [error, setError] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    firstName: "",
-    lastName: "",
+    email: '',
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: '',
   });
 
   const onInputChange = (e) => {
@@ -48,44 +48,44 @@ function Index() {
   const validateInput = (e) => {
     let { name, value } = e.target;
     setError((prev) => {
-      const stateObj = { ...prev, [name]: "" };
+      const stateObj = { ...prev, [name]: '' };
 
       switch (name) {
-        case "email":
+        case 'email':
           if (!value) {
-            stateObj[name] = "Please enter email.";
+            stateObj[name] = 'Please enter email.';
           }
           break;
 
-        case "firstName":
+        case 'firstName':
           if (!value) {
-            stateObj[name] = "required";
+            stateObj[name] = 'required';
           }
           break;
 
-        case "lastName":
+        case 'lastName':
           if (!value) {
-            stateObj[name] = "required";
+            stateObj[name] = 'required';
           }
           break;
 
-        case "password":
+        case 'password':
           if (!value) {
-            stateObj[name] = "Please enter Password.";
+            stateObj[name] = 'Please enter Password.';
           } else if (input.confirmPassword && value !== input.confirmPassword) {
-            stateObj["confirmPassword"] = "Password does not match.";
+            stateObj['confirmPassword'] = 'Password does not match.';
           } else {
-            stateObj["confirmPassword"] = input.confirmPassword
-              ? ""
+            stateObj['confirmPassword'] = input.confirmPassword
+              ? ''
               : error.confirmPassword;
           }
           break;
 
-        case "confirmPassword":
+        case 'confirmPassword':
           if (!value) {
-            stateObj[name] = "Enter Confirm Password.";
+            stateObj[name] = 'Enter Confirm Password.';
           } else if (input.password && value !== input.password) {
-            stateObj[name] = "Password does not match.";
+            stateObj[name] = 'Password does not match.';
           }
           break;
 
@@ -111,35 +111,35 @@ function Index() {
             password: inputObject.password,
             firstName: inputObject.firstName,
             lastName: inputObject.lastName,
-            provider: "JWT",
+            provider: 'JWT',
           },
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
-          }
+          },
         )
         .then(setLoading(true));
       if (data.data.access_token) {
         setLoading(false);
         Swal.fire({
-          icon: "success",
-          title: "Login success",
+          icon: 'success',
+          title: 'Login success',
         });
         router.push(
           `/account/reception/?access_token=${data.data.access_token}`,
           undefined,
           {
             shallow: true,
-          }
+          },
         );
       }
     } catch (err) {
-      if (err.code === "ERR_BAD_REQUEST") {
+      if (err.code === 'ERR_BAD_REQUEST') {
         setLoading(false);
         Swal.fire({
-          icon: "error",
-          title: "Login error",
+          icon: 'error',
+          title: 'Login error',
           text: err.response.data.message,
         });
       } else {
@@ -211,7 +211,7 @@ function Index() {
               <input
                 required
                 className="w-60 h-7 rounded-md border-none bg-[#FFC800] focus:bg-[#FFC800] active:bg-[#FFC800]  pl-10 
-                placeholder:italic ring-2 placeholder:font-light"
+                placeholder:italic ring-2 ring-black placeholder:font-light"
                 type="text"
                 name="email"
                 placeholder="type your email"
@@ -236,7 +236,7 @@ function Index() {
                 <label className="font-sans font-normal">first name</label>
                 <input
                   required
-                  className="w-32 h-7 ring-2 rounded-md border-none bg-[#FFC800] 
+                  className="w-32 h-7 ring-2 ring-black rounded-md border-none bg-[#FFC800] 
                 placeholder:italic placeholder:font-light pl-4 "
                   type="text"
                   name="firstName"
@@ -256,7 +256,7 @@ function Index() {
                 <label className="font-sans font-normal">last name</label>
                 <input
                   required
-                  className=" h-7 w-32 ring-2 rounded-md border-none bg-[#FFC800] 
+                  className=" h-7 w-32 ring-2 ring-black rounded-md border-none bg-[#FFC800] 
                 placeholder:italic placeholder:font-light pl-4 "
                   type="text"
                   name="lastName"
@@ -277,7 +277,7 @@ function Index() {
               <label className="font-sans font-normal">Password</label>
               <input
                 required
-                className="w-60 h-7 ring-2 rounded-md border-none bg-[#FFC800] pl-10 
+                className="w-60 h-7 ring-2 ring-black rounded-md border-none bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"
                 type="password"
                 name="password"
@@ -302,7 +302,7 @@ function Index() {
               <label className="font-sans font-normal">Confirm password</label>
               <input
                 required
-                className="w-60 h-7 ring-2 rounded-md border-none bg-[#FFC800] pl-10 
+                className="w-60 h-7 ring-2 ring-black rounded-md border-none bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"
                 type="password"
                 name="confirmPassword"
@@ -353,7 +353,7 @@ function Index() {
             )}
           </form>
           <div className="w-80">
-            {brower !== "scoial media browser" ? (
+            {brower !== 'scoial media browser' ? (
               <a
                 onClick={GetAccesTokenGoogle}
                 className="w-full  h-9 mt-2 rounded-full bg-white border-black text-black font-sans font-bold
