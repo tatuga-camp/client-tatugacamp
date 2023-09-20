@@ -1,13 +1,13 @@
-import { Box, TextField } from "@mui/material";
-import React, { useState } from "react";
-import Layout from "../../../components/layout";
-import { PostRequestResetPassword } from "../../../service/auth";
-import Swal from "sweetalert2";
-import Loading from "../../../components/loading/loading";
-import Head from "next/head";
+import { Box, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import Layout from '../../../components/layout';
+import { PostRequestResetPassword } from '../../../service/auth';
+import Swal from 'sweetalert2';
+import Loading from '../../../components/loading/loading';
+import Head from 'next/head';
 
 function Index() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [isloading, setIsloading] = useState(false);
   const [wait, setWait] = useState(false);
   const [secound, setSecound] = useState(0);
@@ -16,7 +16,7 @@ function Index() {
       setIsloading(() => true);
       e.preventDefault();
       const res = await PostRequestResetPassword({ email });
-      Swal.fire("Email is sent", res, "success");
+      Swal.fire('Email is sent', res, 'success');
       setIsloading(() => false);
       setWait(() => true);
       hanldeTimmingWait();
@@ -24,9 +24,9 @@ function Index() {
       setIsloading(() => false);
       console.log(err);
       Swal.fire(
-        "error",
+        'error',
         err?.props?.response?.data?.message.toString(),
-        "error"
+        'error',
       );
     }
   };
@@ -63,7 +63,7 @@ function Index() {
         <title>forget password</title>
       </Head>
       <div
-        className="font-sans h-screen w-full bg-[url('/background-Auth.svg')] bg-no-repeat bg-cover
+        className="font-sans gap-5 h-screen w-full bg-[url('/background-Auth.svg')] bg-no-repeat bg-cover
 flex flex-col justify-center items-center"
       >
         <form
@@ -101,6 +101,18 @@ flex flex-col justify-center items-center"
           )}
           {wait && <span>โปรดตรวจสอบอีเมลของคุณ</span>}
         </form>
+        <p className="font-Kanit bg-white ring-2 ring-black rounded-lg p-5 font-normal  w-80 sm:w-96">
+          ระบบลืมรหัสผ่านใช้ได้สำหรับผู้ใช้งานที่ลงทะเบียนผ่าน tatuga class
+          เท่านั้น หากคุณเข้าสู่ระบบผ่าน google หรือ facebook โปรดดำเนินการผ่าน
+          provider เจ้านั้นๆ
+          <hr />
+          <span className="font-medium">
+            "หากมีความประสงค์อยากย้ายการเข้าสู่ระบบเป็น tatuga class"{' '}
+          </span>
+          <a href="https://www.facebook.com/TatugaCamp/">
+            ติดต่อ - facebook: tatuga camp
+          </a>
+        </p>
       </div>
     </Layout>
   );
