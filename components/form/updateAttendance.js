@@ -191,11 +191,18 @@ function UpdateAttendance({
                 </button>
               ))}
             {attendanceData?.note ? (
-              <div
-                className="h-full w-full  overflow-auto ml-2"
-                dangerouslySetInnerHTML={{
-                  __html: attendanceData?.note,
+              <Editor
+                disabled={true}
+                apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                init={{
+                  height: '100%',
+                  width: '100%',
+                  menubar: false,
+                  toolbar: false,
+                  selector: 'textarea', // change this value according to your HTML
                 }}
+                initialValue={attendanceData?.note}
+                value={attendanceData?.note}
               />
             ) : (
               <Editor

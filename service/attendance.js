@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 export async function CreateAttendance({
   classroomId,
   attendanceDate,
+  endAttendanceDate,
   isChecks,
   note,
   imagesBase64,
@@ -14,6 +15,9 @@ export async function CreateAttendance({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const formatDate = new Date(attendanceDate).toISOString();
+
+    const endAttendanceDateFormat = new Date(endAttendanceDate).toISOString();
+
     const uniqueId = uuidv4();
     if (imagesBase64.length > 0) {
       const formData = new FormData();
@@ -121,6 +125,7 @@ export async function CreateAttendance({
           groupId: uniqueId,
           students: students,
           note,
+          endDate: endAttendanceDateFormat,
         },
         {
           params: {
