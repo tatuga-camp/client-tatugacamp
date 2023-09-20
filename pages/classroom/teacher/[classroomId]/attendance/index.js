@@ -140,7 +140,7 @@ function Index({ error, user }) {
           ) : (
             <table
               className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem]
-              lg:w-[80rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
+              lg:w-[60rem] xl:w-[80rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
             >
               <thead className="w-max sticky top-0 bg-white h-max py-3 z-30">
                 <tr className="flex ">
@@ -168,6 +168,12 @@ function Index({ error, user }) {
                           day: '2-digit',
                           month: 'short',
                           year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                          hour12:
+                            user.language === 'Thai'
+                              ? false
+                              : user.language === 'English' && true, // Use 24-hour format
                         },
                       );
                       return (

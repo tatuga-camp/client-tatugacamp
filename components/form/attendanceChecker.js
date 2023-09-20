@@ -7,15 +7,18 @@ import Loading from '../loading/loading';
 import { useQuery } from '@tanstack/react-query';
 import { Editor } from '@tinymce/tinymce-react';
 import { IoCaretBackCircleSharp } from 'react-icons/io5';
+import { FaArrowRight } from 'react-icons/fa';
 
 function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
   const router = useRouter();
   const [isCheckStudent, setIsCheckStudent] = useState();
-  const currentDate = new Date().toISOString().slice(0, 10); // get current date in "yyyy-mm-dd" format
+  const currentDate = new Date().toISOString().slice(0, 16); // get current date in "yyyy-mm-dd" format
   const [attendanceDate, setAttendanceDate] = useState(currentDate);
+  const [endAttendanceDate, setEndAttendanceDate] = useState(currentDate);
   const [note, setNote] = useState({
     body: '',
   });
+
   const [loading, setLoading] = useState(false);
   const [triggerAddNote, setTriggerAddNote] = useState(false);
   const attendances = useQuery(
@@ -230,6 +233,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
         imagesBase64: imageUrls,
         attendanceDate: attendanceDate,
         classroomId: router.query.classroomId,
+        endAttendanceDate: endAttendanceDate,
       });
       setLoading(false);
       Swal.fire('success', 'check attendacne completed', 'success');
@@ -250,46 +254,37 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
   return (
     <div className="fixed top-0 right-0 left-0 bottom-0 m-auto righ z-40">
       <div
-        className="w-screen  md:w-11/12  lg:w-3/4 h-5/6 max-h-[35rem]  fixed z-40 top-0 bottom-0 right-0
+        className="w-screen  md:w-11/12 lg:w-11/12  xl:w-3/4 h-5/6 md:max-h-[35rem] overflow-auto  fixed z-40 top-0 bottom-0 right-0
        left-0 m-auto flex  items-center justify-center gap-5 py-5  bg-white p-0 md:p-5 rounded-none md:rounded-lg  "
       >
         <div className="w-full md:w-full   md:h-full  flex flex-col items-center justify-start gap-5 ">
           {/* headers parts */}
-          <div className="w-full flex-col  md:flex-row flex items-center justify-between md:justify-around ">
-            <div className="flex">
-              <span className="font-Kanit text-xl font-semibold text-black">
-                {language === 'Thai' && 'เช็คชื่อผู้เรียน'}
-                {language === 'English' && 'attendance check'}
-              </span>
-              <div className="text-3xl text-blue-600">
-                <MdEmojiPeople />
-              </div>
-            </div>
-            <div className="flex gap-10 items-end justify-center">
-              <button
-                onClick={() => setTriggerAddNote((prev) => !prev)}
-                className="flex gap-2 items-center justify-center bg-green-200 px-5 py-2 rounded-lg
+          <div className="w-full flex-col flex items-center justify-between md:justify-around ">
+            <button
+              onClick={() => setTriggerAddNote((prev) => !prev)}
+              className="flex gap-2 items-center justify-center bg-green-200 px-5 py-2 rounded-lg
               text-green-700 font-semibold font-Kanit transition duration-150 hover:text-green-200 hover:bg-green-600
               active:ring-2 ring-green-800"
-              >
-                {triggerAddNote ? (
-                  <div className="flex gap-2 items-center">
-                    <IoCaretBackCircleSharp />
-                    {language === 'Thai' && 'กลับ'}
-                    {language === 'English' && 'back'}
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <MdOutlineEventNote />
-                    {language === 'Thai' && 'เพิ่มโน๊ต'}
-                    {language === 'English' && 'add note'}
-                  </div>
-                )}
-              </button>
+            >
+              {triggerAddNote ? (
+                <div className="flex gap-2 items-center">
+                  <IoCaretBackCircleSharp />
+                  {language === 'Thai' && 'กลับ'}
+                  {language === 'English' && 'back'}
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <MdOutlineEventNote />
+                  {language === 'Thai' && 'เพิ่มโน๊ต'}
+                  {language === 'English' && 'add note'}
+                </div>
+              )}
+            </button>
+            <div className="flex gap-2  md:gap-10 items-end justify-center">
               <div className="mt-2 flex flex-col text-black items-center font-Kanit">
                 <label>
-                  {language === 'Thai' && 'เลือกวันที่'}
-                  {language === 'English' && 'pick date'}
+                  {language === 'Thai' && 'เริ่มคลาสเมื่อ'}
+                  {language === 'English' && 'begin class at'}
                 </label>
                 <input
                   onChange={(e) =>
@@ -298,11 +293,34 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                       return value;
                     })
                   }
+                  value={attendanceDate}
                   defaultValue={currentDate}
-                  name="deadline"
-                  className="w-20  md:w-max appearance-none outline-none border-none ring-2  rounded-md px-5 
+                  className="w-28 md:w-40 lg:w-max  appearance-none outline-none border-none ring-2  rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black "
-                  type="date"
+                  type="datetime-local"
+                  placeholder="Please select a date"
+                />
+              </div>
+              <div className="">
+                <FaArrowRight />
+              </div>
+              <div className="mt-2 flex flex-col text-black items-center font-Kanit">
+                <label>
+                  {language === 'Thai' && 'จบคลาสเมื่อ'}
+                  {language === 'English' && 'end class at'}
+                </label>
+                <input
+                  onChange={(e) =>
+                    setEndAttendanceDate(() => {
+                      const value = e.target.value;
+                      return value;
+                    })
+                  }
+                  value={endAttendanceDate}
+                  defaultValue={currentDate}
+                  className="w-28 md:w-40  lg:w-max appearance-none outline-none border-none ring-2  rounded-md px-5 
+                py-2 text-lg ring-gray-200 focus:ring-black "
+                  type="datetime-local"
                   placeholder="Please select a date"
                 />
               </div>
@@ -319,9 +337,10 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                   onClick={handleSummitForm}
                   className="w-max bg-blue-500 text-white flex items-center hover:scale-110 transition duration-150 
                 cursor-pointer
-               justify-center h-max px-8 py-2 rounded-lg font-Poppins"
+               justify-center h-max px-8 py-2 font-Kanit rounded-lg drop-shadow-md"
                 >
-                  submit
+                  {language === 'Thai' && 'ยืนยัน'}
+                  {language === 'English' && 'submit'}
                 </button>
               )}
             </div>
@@ -409,7 +428,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
 
           <table className={`${triggerAddNote ? ' w-0 h-0 hidden' : 'block'}`}>
             <thead className="">
-              <tr className=" w-full  text-black font-Kanit flex gap-2 md:gap-3 lg:gap-5 ">
+              <tr className=" w-full border-b-2 border-black pb-2  text-black font-Kanit flex gap-2 md:gap-3 lg:gap-5 ">
                 <th className="w-9 text-xs md:text-base md:w-28">
                   {language === 'Thai' && 'เลขที่'}
                   {language === 'English' && 'number'}
