@@ -24,6 +24,7 @@ function AttendanceCheckerForSchool({
   const [note, setNote] = useState({
     body: '',
   });
+
   const [loading, setLoading] = useState(false);
   const [triggerAddNote, setTriggerAddNote] = useState(false);
   const attendances = useQuery(
@@ -279,6 +280,7 @@ function AttendanceCheckerForSchool({
         imagesBase64: imageUrls,
         attendanceDate: attendanceDate,
         classroomId: router.query.classroomId,
+        endAttendanceDate: attendanceDate,
       });
       setLoading(false);
       Swal.fire('success', 'check attendacne completed', 'success');
@@ -351,7 +353,7 @@ function AttendanceCheckerForSchool({
                   name="deadline"
                   className="w-20  md:w-max appearance-none outline-none border-none ring-2 rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black "
-                  type="date"
+                  type="datetime-local"
                   placeholder="Please select a date"
                 />
               </div>
