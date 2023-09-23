@@ -7,7 +7,7 @@ export async function JoinClassroom({ classroomCode }) {
       return null;
     }
     const classrooms = await axios.get(
-      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/classroom/get-a-classroom`,
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/classroom/join-classroom`,
       {
         params: {
           classroomCode: classroomCode,
@@ -18,6 +18,29 @@ export async function JoinClassroom({ classroomCode }) {
       },
     );
     return classrooms;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
+export async function StudentGetClassroom({ classroomId }) {
+  try {
+    if (!classroomId) {
+      return null;
+    }
+    const classrooms = await axios.get(
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/classroom/get-a-classroom`,
+      {
+        params: {
+          classroomId: classroomId,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return classrooms.data;
   } catch (err) {
     console.log(err);
     throw new Error(err);

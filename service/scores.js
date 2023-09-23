@@ -148,6 +148,29 @@ export async function UpdateScoreOnWholeGroup({
   }
 }
 
+export async function AllowStudentViewScore({ classroomId, allow }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+
+    const allowStudent = await axios.put(
+      `${process.env.Server_Url}/user/score/allow-score-view`,
+      {
+        classroomId,
+        allow,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return allowStudent.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 export async function CreateScoreOnClass({ title, emoji, classroomId, score }) {
   try {
     const cookies = parseCookies();

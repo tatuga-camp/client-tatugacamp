@@ -33,6 +33,7 @@ import { FiRefreshCw } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { HiOutlineNewspaper } from 'react-icons/hi2';
 import CreateStudentWork from '../../../../../../components/form/createStudentWork';
+import { StudentGetClassroom } from '../../../../../../service/student/classroom';
 
 function Index() {
   const router = useRouter();
@@ -49,8 +50,8 @@ function Index() {
   const [studentWork, setStudnetWork] = useState();
   const [deadline, setDeadline] = useState();
   const [fileSize, setFilesSize] = useState(0);
-  const [classroom, setClassroom] = useState();
   const [isDue, setIsDue] = useState(false);
+  const [classroomCode, setClassroomCode] = useState();
   const currentTime = new Date();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [studentSummit, setStudentSummit] = useState({
@@ -59,6 +60,14 @@ function Index() {
   const [triggerShowFiles, setTiggerShowFiles] = useState(true);
   const [triggerShowWorksheet, setTriggerShowWorksheet] = useState(false);
   const [triggerMenu, setTriggerMenu] = useState(false);
+
+  const classroom = useQuery(
+    ['classroom'],
+    () => StudentGetClassroom({ classroomId: router.query.classroomId }),
+    {
+      enabled: false,
+    },
+  );
   const assignment = useQuery(
     ['assignment'],
     () => GetAssignment({ assignmentId: router.query.assignmentId }),
@@ -267,6 +276,7 @@ function Index() {
       student.refetch();
       comments.refetch();
       assignment.refetch();
+      classroom.refetch();
     }
   }, [router.isReady]);
 
@@ -274,11 +284,6 @@ function Index() {
     setTeacher(() => {
       const teacher = localStorage.getItem('teacher');
       return JSON.parse(teacher);
-    });
-    setClassroom(() => {
-      const classroom = localStorage.getItem('classroom-student');
-      const classroomConverted = JSON.parse(classroom);
-      return classroomConverted;
     });
     initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, 'individual');
 
@@ -382,13 +387,13 @@ function Index() {
          border-blue-500 rounded-l-2xl flex flex-col py-2 pl-2 md:pl-10 gap-0 truncate font-Kanit  border-l-2 border-solid"
         >
           <span className="font-semibold text-blue-500 md:text-2xl truncate">
-            {classroom?.title}
+            {classroom?.data?.title}
           </span>
           <span className="text-xs md:text-sm truncate">
-            {classroom?.level}
+            {classroom?.data?.level}
           </span>
           <span className="text-xs md:text-sm  truncate">
-            {classroom?.description}
+            {classroom?.data?.description}
           </span>
         </div>
       </nav>

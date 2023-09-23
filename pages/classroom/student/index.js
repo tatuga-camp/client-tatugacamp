@@ -7,7 +7,7 @@ import { JoinClassroom } from '../../../service/student/classroom';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { BiError } from 'react-icons/bi';
-import Image from "next/image";
+import Image from 'next/image';
 import Link from 'next/link';
 import { Skeleton } from '@mui/material';
 import Head from 'next/head';
@@ -24,10 +24,6 @@ function Index() {
       JoinClassroom({ classroomCode: rounter.query.classroomCode }).then(
         (res) => {
           localStorage.setItem('teacher', JSON.stringify(res.data.teacher));
-          localStorage.setItem(
-            'classroom-student',
-            JSON.stringify(res.data.classroom),
-          );
           return res;
         },
       ),
@@ -121,7 +117,8 @@ function Index() {
                           src={classroom?.data?.data?.teacher?.picture}
                           className="object-cover"
                           fill
-                          sizes="(max-width: 768px) 100vw" />
+                          sizes="(max-width: 768px) 100vw"
+                        />
                       </div>
                     ) : (
                       <div className="w-40 h-40 relative rounded-full overflow-hidden flex items-center justify-center bg-white">
