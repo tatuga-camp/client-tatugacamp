@@ -19,6 +19,11 @@ import { BsImage, BsImageFill } from 'react-icons/bs';
 import { GetStudent, UpdateStudent } from '../../../../service/student/student';
 import Swal from 'sweetalert2';
 import Link from 'next/link';
+import { GrScorecard } from 'react-icons/gr';
+import { StudentGetClassroom } from '../../../../service/student/classroom';
+import TotalSumScore from '../../../../components/student/totalSumScore';
+import Attendance from '../../../../components/student/attendance';
+import { StudentGetAllScore } from '../../../../service/student/score';
 
 function Index() {
   const [classroomCode, setClassroomCode] = useState();
@@ -26,20 +31,24 @@ function Index() {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState();
   const [selectedImage, setSelectedImage] = useState(null);
-  const [classroom, setClassroom] = useState();
+  const [menus, setMenus] = useState();
 
-  const menus = [
+  const totalScore = useQuery(
+    ['student-totalScore'],
+    () =>
+      StudentGetAllScore({
+        studentId: router.query.studentId,
+        classroomId: router.query.classroomId,
+      }),
+    { enabled: false },
+  );
+  const classroom = useQuery(
+    ['classroom'],
+    () => StudentGetClassroom({ classroomId: router.query.classroomId }),
     {
-      title: 'ชิ้นงาน',
-      icon: <MdWork />,
-      color: 'bg-yellow-400',
+      enabled: false,
     },
-    {
-      title: 'ข้อมูลการเข้าเรียน',
-      icon: <HiOutlineHandRaised />,
-      color: 'bg-gray-400',
-    },
-  ];
+  );
   const router = useRouter();
   const student = useQuery(
     ['student'],
@@ -73,23 +82,54 @@ function Index() {
   );
 
   useEffect(() => {
+    setMenus(() => {
+      if (classroom?.data?.allowStudentsToViewScores) {
+        return [
+          {
+            title: 'ชิ้นงาน',
+            icon: <MdWork />,
+            color: 'bg-yellow-400',
+          },
+          {
+            title: 'ข้อมูลการเข้าเรียน',
+            icon: <HiOutlineHandRaised />,
+            color: 'bg-gray-400',
+          },
+          {
+            title: 'คะแนนรวม',
+            icon: <GrScorecard />,
+            color: 'bg-blue-400',
+          },
+        ];
+      } else {
+        return [
+          {
+            title: 'ชิ้นงาน',
+            icon: <MdWork />,
+            color: 'bg-yellow-400',
+          },
+          {
+            title: 'ข้อมูลการเข้าเรียน',
+            icon: <HiOutlineHandRaised />,
+            color: 'bg-gray-400',
+          },
+        ];
+      }
+    });
+  }, [classroom.isSuccess]);
+
+  useEffect(() => {
     setClassroomCode(() => {
       const rawClassroomCode = localStorage.getItem('classroomCode');
       const classroomCode = JSON.parse(rawClassroomCode);
       return classroomCode;
     });
-    setClassroom(() => {
-      const classroom = localStorage.getItem('classroom-student');
-      const classroomConverted = JSON.parse(classroom);
-      return classroomConverted;
-    });
-  }, []);
-
-  useEffect(() => {
     if (router.isReady) {
       student.refetch();
       assignments.refetch();
       attendances.refetch();
+      classroom.refetch();
+      totalScore.refetch();
     }
   }, [router.isReady]);
 
@@ -179,17 +219,18 @@ function Index() {
           </div>
         </div>
         <div
-          className="w-40 md:w-60 bg-white h-14 md:h-20 border-b-2 border-t-2 border-r-0
-         border-blue-500 rounded-l-2xl flex flex-col py-2 pl-2 md:pl-10 gap-0 truncate font-Kanit  border-l-2 border-solid"
+          className="w-40 md:w-60 bg-white md:h-20 border-b-2 border-t-2 border-r-0
+         border-blue-500 rounded-l-2xl flex flex-col py-2 pl-2 md:pl-10 gap-0 
+         truncate font-Kanit h-max  border-l-2 border-solid"
         >
-          <span className="font-semibold text-blue-500 md:text-2xl truncate">
-            {classroom?.title}
+          <span className="font-semibold  text-blue-500 md:text-2xl truncate">
+            {classroom?.data?.title}
           </span>
           <span className="text-xs md:text-sm truncate">
-            {classroom?.level}
+            {classroom?.data?.level}
           </span>
           <span className="text-xs md:text-sm  truncate">
-            {classroom?.description}
+            {classroom?.data?.description}
           </span>
         </div>
       </nav>
@@ -292,8 +333,8 @@ function Index() {
               )}
             </div>
           </div>
-          <div className="flex gap-5  md:hidden">
-            {menus.map((menu, index) => {
+          <div className="flex gap-5 flex-wrap w-full justify-center  md:hidden">
+            {menus?.map((menu, index) => {
               return (
                 <button
                   key={index}
@@ -326,7 +367,7 @@ function Index() {
 
         <div className="grid grid-cols-1 pb-2 md:mt-10  gap-4 place-items-center w-full mt-8 max-w-xl md:max-w-lg	">
           <div className="hidden gap-5  md:flex">
-            {menus.map((menu, index) => {
+            {menus?.map((menu, index) => {
               return (
                 <button
                   key={index}
@@ -353,203 +394,7 @@ function Index() {
               );
             })}
           </div>
-          {activeMenu === 1 && (
-            <section className="w-full h-full flex  justify-center">
-              <ul className="grid pl-0 grid-cols-1 gap-5 w-full h-full py-10 max-w-3xl md:w-10/12 rounded-t-3xl lg:rounded-3xl bg-white place-items-center">
-                <div className="w-full flex justify-start flex-col items-center font-Kanit ">
-                  <h2 className="mb-2">สถิติ</h2>
-                  <div className="grid grid-cols-2 gap-4 w-max md:w-full md:place-items-center place-items-start">
-                    <span className="col-span-2">
-                      เปอเซ็นต์การเข้าเรียน{' '}
-                      {attendances?.data?.data?.statistics?.percent?.present?.toFixed(
-                        2,
-                      )}
-                      %
-                    </span>
-                    <span>
-                      จำนวนมาเรียน{' '}
-                      <span className="font-semibold text-green-500">
-                        {attendances?.data?.data?.statistics?.number?.present}{' '}
-                        ครั้ง
-                      </span>
-                    </span>
-                    <span>
-                      จำนวนมาสาย{' '}
-                      <span className="font-semibold text-orange-500">
-                        {attendances?.data?.data?.statistics?.number?.late}{' '}
-                        ครั้ง
-                      </span>
-                    </span>
-                    <span>
-                      จำนวนลา{' '}
-                      <span className="font-semibold text-yellow-500">
-                        {attendances?.data?.data?.statistics?.number?.holiday}{' '}
-                        ครั้ง
-                      </span>
-                    </span>
-                    <span>
-                      จำนวนป่วย{' '}
-                      <span className="font-semibold text-blue-500">
-                        {attendances?.data?.data?.statistics?.number?.sick}{' '}
-                        ครั้ง
-                      </span>
-                    </span>
-                    <span>
-                      จำนวนขาดเรียน{' '}
-                      <span className="font-semibold text-red-500">
-                        {attendances?.data?.data?.statistics?.number?.absent}{' '}
-                        ครั้ง
-                      </span>
-                    </span>
-
-                    <span className="col-span-2">
-                      จำนวนคาบเรียนทั้งหมด{' '}
-                      {attendances?.data?.data?.statistics?.sum} ครั้ง
-                    </span>
-                  </div>
-                </div>
-
-                {attendances?.data?.data?.students?.map((attendance) => {
-                  const date = new Date(attendance.date);
-                  const formattedDate = date.toLocaleDateString('th-TH', {
-                    weekday: 'long',
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  });
-                  if (attendance.present) {
-                    return (
-                      <li
-                        key={attendance.id}
-                        className="flex  items-center justify-between font-Kanit w-full md:w-full rounded-md"
-                      >
-                        <div className="flex justify-start items-center ml-5 gap-2">
-                          <div className="w-10 h-10  rounded-full bg-green-100 flex items-center justify-center">
-                            <div className="flex items-center justify-center text-green-800 text-3xl">
-                              <BiHappyBeaming />
-                            </div>
-                          </div>
-                          <span className=" font-semibold text-lg">
-                            {formattedDate}
-                          </span>
-                        </div>
-                        <div className="w-max rounded-sm p-2 mr-5 bg-green-500 text-white">
-                          <span>มาเรียน</span>
-                        </div>
-                      </li>
-                    );
-                  } else if (attendance.holiday) {
-                    return (
-                      <li
-                        key={attendance.id}
-                        className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
-                      >
-                        <div className="flex justify-start items-center ml-5 gap-2">
-                          <div className="w-10 h-10  rounded-full bg-yellow-100 flex items-center justify-center">
-                            <div className="flex items-center justify-center text-yellow-400 text-3xl">
-                              <MdCardTravel />
-                            </div>
-                          </div>
-                          <span className=" font-semibold text-lg">
-                            {formattedDate}
-                          </span>
-                        </div>
-                        <div className="w-14 text-center rounded-sm p-2 mr-5 bg-yellow-500 text-white">
-                          <span>ลา</span>
-                        </div>
-                      </li>
-                    );
-                  } else if (attendance.sick) {
-                    return (
-                      <li
-                        key={attendance.id}
-                        className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
-                      >
-                        <div className="flex justify-start items-center ml-5 gap-2">
-                          <div className="w-10 h-10  rounded-full bg-blue-100 flex items-center justify-center">
-                            <div className="flex items-center justify-center text-blue-400 text-3xl">
-                              <MdOutlineSick />
-                            </div>
-                          </div>
-                          <span className=" font-semibold text-lg">
-                            {formattedDate}
-                          </span>
-                        </div>
-                        <div className="w-14 text-center rounded-sm p-2 mr-5 bg-blue-500 text-white">
-                          <span>ป่วย</span>
-                        </div>
-                      </li>
-                    );
-                  } else if (attendance.absent) {
-                    return (
-                      <li
-                        key={attendance.id}
-                        className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
-                      >
-                        <div className="flex justify-start items-center ml-5 gap-2">
-                          <div className="w-10 h-10  rounded-full bg-red-100 flex items-center justify-center">
-                            <div className="flex items-center justify-center text-red-400 text-3xl">
-                              <MdOutlineMoodBad />
-                            </div>
-                          </div>
-                          <span className=" font-semibold text-lg">
-                            {formattedDate}
-                          </span>
-                        </div>
-                        <div className="w-14 text-center rounded-sm p-2 mr-5 bg-red-500   text-white">
-                          <span>ขาด</span>
-                        </div>
-                      </li>
-                    );
-                  } else if (attendance.late) {
-                    return (
-                      <li
-                        key={attendance.id}
-                        className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
-                      >
-                        <div className="flex justify-start items-center ml-5 gap-2">
-                          <div className="w-10 h-10  rounded-full bg-orange-100 flex items-center justify-center">
-                            <div className="flex items-center justify-center text-orange-400 text-3xl">
-                              <BiRun />
-                            </div>
-                          </div>
-                          <span className=" font-semibold text-lg">
-                            {formattedDate}
-                          </span>
-                        </div>
-                        <div className="w-14 text-center rounded-sm p-2 mr-5 bg-orange-500   text-white">
-                          <span>สาย</span>
-                        </div>
-                      </li>
-                    );
-                  } else {
-                    return (
-                      <li
-                        key={attendance.id}
-                        className="flex  items-center justify-between font-Kanit w-full md:w-full  rounded-md"
-                      >
-                        <div className="flex justify-start items-center ml-5 gap-2">
-                          <div className="w-10 h-10  rounded-full bg-gray-100 flex items-center justify-center">
-                            <div className="flex items-center justify-center text-gray-400 text-3xl">
-                              <BiErrorCircle />
-                            </div>
-                          </div>
-                          <span className=" font-semibold text-lg">
-                            {formattedDate}
-                          </span>
-                        </div>
-                        <div className="w-max text-center rounded-sm p-2 mr-5 text-sm bg-gray-500 text-white">
-                          <span>ไม่มีข้อมูล</span>
-                        </div>
-                      </li>
-                    );
-                  }
-                })}
-              </ul>
-            </section>
-          )}
+          {activeMenu === 1 && <Attendance attendances={attendances} />}
           {assignments.isLoading && (
             <div className="flex flex-col justify-center items-center gap-5">
               <Skeleton variant="rectangular" width={300} height={100} />
@@ -645,6 +490,7 @@ function Index() {
                 </Link>
               );
             })}
+          {activeMenu === 2 && <TotalSumScore totalScore={totalScore} />}
         </div>
       </main>
     </div>

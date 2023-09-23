@@ -8,7 +8,7 @@ import { FiArrowLeftCircle } from 'react-icons/fi';
 import { GetAllStudentScores } from '../../../../../service/students';
 import Head from 'next/head';
 import { BiMessageAltError } from 'react-icons/bi';
-import { Skeleton } from '@mui/material';
+import { Skeleton, Switch } from '@mui/material';
 import { SiMicrosoftexcel } from 'react-icons/si';
 import { DownloadExcelScore } from '../../../../../service/dowloadFile';
 import Swal from 'sweetalert2';
@@ -22,11 +22,28 @@ import CreateGrade from '../../../../../components/form/createGrade';
 import { AiOutlinePercentage } from 'react-icons/ai';
 import AddPercentageOnAssignment from '../../../../../components/form/addPercentageOnAssignment';
 import AddPercentageOnSpecialScore from '../../../../../components/form/addPercentageOnSpecialScore';
+import { AllowStudentViewScore } from '../../../../../service/scores';
 
 function Index({ user, error }) {
   const router = useRouter();
+  const classroom = useQuery(
+    ['classroom'],
+    () => GetOneClassroom({ params: router.query.classroomId }),
+    {
+      enabled: false,
+    },
+  );
+  const studentsScores = useQuery(
+    ['studentsScores'],
+    () => GetAllStudentScores({ classroomId: router.query.classroomId }),
+    {
+      enabled: false,
+    },
+  );
   const [triggerCreateCreate, setTriggerCreateGrade] = useState(false);
   const [triggerAddPercentage, setTriggerAddPercentage] = useState(false);
+  const [triggerAllowStudentViewScore, setTriggerAllowStudentViewScore] =
+    useState(false);
   const [
     triggerAddPercentageOnSpecialScore,
     setTriggerAddPercentageOnSpecialScore,
@@ -39,17 +56,22 @@ function Index({ user, error }) {
       return sideMenusEnglish();
     }
   });
-  const studentsScores = useQuery(
-    ['studentsScores'],
-    () => GetAllStudentScores({ classroomId: router.query.classroomId }),
-    {
-      enabled: false,
-    },
-  );
+
   //check whether there is authorrized acccess or not
   useEffect(() => {
-    studentsScores.refetch();
+    if (router.isReady) {
+      classroom.refetch();
+      studentsScores.refetch();
+    }
   }, [router.isReady]);
+
+  useEffect(() => {
+    setTriggerAllowStudentViewScore(() =>
+      classroom?.data?.data?.allowStudentsToViewScores
+        ? classroom?.data?.data?.allowStudentsToViewScores
+        : false,
+    );
+  }, [classroom.data]);
 
   const handleDownloadFile = async () => {
     try {
@@ -72,6 +94,20 @@ function Index({ user, error }) {
   const handleTriggerCreateGrade = () => {
     setTriggerCreateGrade(() => true);
     document.body.style.overflow = 'hidden';
+  };
+
+  const handleTriggerAllowStudentViewScore = async () => {
+    try {
+      const fetchTriggerAllow = await AllowStudentViewScore({
+        classroomId: classroom.data.data.id,
+        allow: !triggerAllowStudentViewScore,
+      });
+      setTriggerAllowStudentViewScore(
+        () => fetchTriggerAllow.allowStudentsToViewScores,
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
   if (error?.statusCode === 401) {
     return <Unauthorized />;
@@ -121,7 +157,7 @@ function Index({ user, error }) {
           </button>
           <button
             className="w-max px-5 flex gap-1 mb-2 hover:scale-105 transition items-center
-             duration-150 active:bg-blue-800 bg-blue-500 font-Poppins font-semibold text-white rounded-lg py-2"
+             duration-150 active:bg-green-800 bg-green-500 font-Poppins font-semibold text-white rounded-lg py-2"
             onClick={handleTriggerCreateGrade}
           >
             ปรับการคำนวนเกรด
@@ -129,6 +165,20 @@ function Index({ user, error }) {
               <GiUpgrade />
             </div>
           </button>
+          <div className="flex items-center justify-center px-4 py-1 rounded-md border-2 border-black">
+            <Switch
+              onClick={handleTriggerAllowStudentViewScore}
+              checked={triggerAllowStudentViewScore}
+              inputProps={{
+                'aria-label': 'Switch to allow student to view thier score',
+              }}
+            />
+            <span>
+              {triggerAllowStudentViewScore
+                ? 'อนุญาตให้ผู้เรียนดูคะแนน'
+                : 'ไม่อนุญาตให้ผู้เรียนดูคะแนน'}
+            </span>
+          </div>
         </header>
         {studentsScores.isLoading || studentsScores.isFetching ? (
           <div className="flex flex-col gap-5 mt-5">
@@ -199,7 +249,7 @@ function Index({ user, error }) {
                                 setTriggerAddPercentage(() => true);
                               }}
                               className="w-20 flex justify-center items-center
-                             p-1 text-white bg-blue-500 rounded-lg "
+                             p-1 text-white bg-green-500 rounded-lg "
                             >
                               {assignment.percentage}
                             </button>
@@ -212,10 +262,10 @@ function Index({ user, error }) {
                                 document.body.style.overflow = 'hidden';
                                 setTriggerAddPercentage(() => true);
                               }}
-                              className="w-20 flex justify-center items-center
-                             p-1 text-white bg-blue-500 rounded-lg "
+                              className="w-max px-2 flex justify-center items-center
+                             p-1 text-white bg-blue-500 text-sm hover:scale-110 transition duration-100 "
                             >
-                              Add <AiOutlinePercentage />
+                              ตั้งค่าเปอร์เซ็นต์
                             </button>
                             <span>
                               {user.language === 'Thai' && 'คะแนนเต็ม'}
@@ -244,7 +294,7 @@ function Index({ user, error }) {
                         setTriggerAddPercentageOnSpecialScore(() => true);
                       }}
                       className="w-20 flex justify-center items-center
-                   p-1 text-white bg-blue-500 rounded-lg "
+                   p-1 text-white bg-green-500 rounded-lg "
                     >
                       {
                         studentsScores?.data?.data?.classroom
@@ -257,16 +307,26 @@ function Index({ user, error }) {
                         document.body.style.overflow = 'hidden';
                         setTriggerAddPercentageOnSpecialScore(() => true);
                       }}
-                      className="w-20 flex justify-center items-center
-                 p-1 text-white bg-blue-500 rounded-lg "
+                      className="w-max flex px-2 hover:scale-110 text-sm transition duration-150
+                       justify-center font-normal items-center
+                 p-1 text-white bg-blue-500 "
                     >
-                      Add <AiOutlinePercentage />
+                      ตั้งค่าเปอร์เซ็นต์
                     </button>
                   )}
                 </th>
-                <th className=" w-40">
-                  {user.language === 'Thai' && 'รวม'}
-                  {user.language === 'English' && 'sum'}
+                <th className="w-40 flex flex-col justify-center items-center gap-1">
+                  <div>
+                    {user.language === 'Thai' && 'รวม'}
+                    {user.language === 'English' && 'sum'}
+                  </div>
+                  <div>({studentsScores?.data?.data?.sumScoreTotal})</div>
+                  {!studentsScores?.data?.data?.classroom
+                    ?.specialScorePercentage && (
+                    <div className="font-normal w-28 text-sm text-red-500">
+                      **กรุณาตั้งเปอร์เซ็นต์ คะแนนพิเศษ**
+                    </div>
+                  )}
                 </th>
                 <th className=" w-40">
                   {user.language === 'Thai' && 'เกรด'}
