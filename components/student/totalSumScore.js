@@ -29,7 +29,7 @@ function TotalSumScore({ totalScore }) {
 
             pureMaxScore = stringWithoutPercent;
           } else {
-            pureMaxScore = assignment?.assignment?.maxScore;
+            pureMaxScore = assignment?.assignment?.maxScore.toFixed(2);
           }
           return (
             <li
@@ -64,9 +64,7 @@ function TotalSumScore({ totalScore }) {
                     {score.toFixed(2)}
                   </span>
                   <div className="w-10/12 h-[2px] bg-white"></div>
-                  <span className="text-xl font-semibold">
-                    {pureMaxScore.toFixed(2)}
-                  </span>
+                  <span className="text-xl font-semibold">{pureMaxScore}</span>
                 </div>
               )}
             </li>
