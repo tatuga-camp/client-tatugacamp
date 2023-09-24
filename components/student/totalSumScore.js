@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
+import { MdOutlineAssignment } from 'react-icons/md';
 
 function TotalSumScore({ totalScore }) {
   const [activeScore, setActiveScore] = useState();
   return (
-    <div className="w-full md:mt-5 flex font-Kanit justify-center">
-      <ul className="w-11/12 flex justify-center flex-wrap gap-4 ">
+    <div className="w-full md:mt-5 flex font-Kanit flex-col items-center gap-5 justify-center">
+      <div className=" w-24 h-24 text-center flex-col text-pink-900 bg-pink-200 rounded-full flex items-center justify-center">
+        <span className="text-3xl font-Kanit font-bold">
+          {totalScore?.data?.totalScore}
+        </span>
+        <span className="text-xs">คะแนนรวม</span>
+      </div>
+
+      <ul className="w-11/12 grid grid-cols-3 place-items-center gap-4 ">
         {totalScore?.data?.assignments?.map((assignment, index) => {
           let score = 0;
           let pureMaxScore = '0';
@@ -35,14 +43,17 @@ function TotalSumScore({ totalScore }) {
                 })
               }
               key={assignment.id}
-              className={`h-28 select-none w-max min-w-[5rem] max-w-lg group   p-2 text-center
+              className={`h-28 select-none w-full group   p-2 text-center
               ${
                 activeScore === index
-                  ? 'bg-green-700 text-white '
-                  : 'bg-green-500 text-black '
+                  ? 'bg-green-700 text-white col-span-2 '
+                  : 'bg-green-500 text-black col-span-1 '
               } rounded-lg ring-2 ring-white flex flex-col items-center
                justify-center `}
             >
+              <div className="bg-green-200 w-7 h-7 rounded-full flex items-center justify-center">
+                <MdOutlineAssignment />
+              </div>
               {activeScore === index ? (
                 <span className="text-base transition duration-150 font-medium  w-max   ">
                   {assignment.assignment.title}
@@ -57,6 +68,14 @@ function TotalSumScore({ totalScore }) {
             </li>
           );
         })}
+        <li
+          className={`h-28 select-none w-full group   p-2 text-center
+              rounded-lg ring-2 bg-orange-400 font-semibold text-white ring-white flex flex-col items-center
+               justify-center `}
+        >
+          <span>{totalScore?.data?.speicalScore}</span>
+          <span>คะแนนพิเศษ</span>
+        </li>
       </ul>
     </div>
   );
