@@ -7,7 +7,7 @@ function TotalSumScore({ totalScore }) {
     <div className="w-full md:mt-5 flex font-Kanit flex-col items-center gap-5 justify-center">
       <div className=" w-24 h-24 text-center flex-col text-pink-900 bg-pink-200 rounded-full flex items-center justify-center">
         <span className="text-3xl font-Kanit font-bold">
-          {totalScore?.data?.totalScore}
+          {totalScore?.data?.totalScore.toFixed(2)}
         </span>
         <span className="text-xs">คะแนนรวม</span>
       </div>
@@ -60,9 +60,13 @@ function TotalSumScore({ totalScore }) {
                 </span>
               ) : (
                 <div className="flex justify-center items-center flex-col">
-                  <span className="text-xl font-semibold">{score}</span>
+                  <span className="text-xl font-semibold">
+                    {score.toFixed(2)}
+                  </span>
                   <div className="w-10/12 h-[2px] bg-white"></div>
-                  <span className="text-xl font-semibold">{pureMaxScore}</span>
+                  <span className="text-xl font-semibold">
+                    {pureMaxScore.toFixed(2)}
+                  </span>
                 </div>
               )}
             </li>
@@ -73,7 +77,7 @@ function TotalSumScore({ totalScore }) {
               rounded-lg ring-2 bg-orange-400 font-semibold text-white ring-white flex flex-col items-center
                justify-center `}
         >
-          <span>{totalScore?.data?.speicalScore}</span>
+          <span>{totalScore?.data?.speicalScore.toFixed(2)}</span>
           <span>คะแนนพิเศษ</span>
         </li>
       </ul>
