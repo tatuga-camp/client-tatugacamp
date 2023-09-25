@@ -147,7 +147,27 @@ export async function UpdateScoreOnWholeGroup({
     throw new Error(err);
   }
 }
+export async function ResetSpecialScorePercentage({ classroomId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
 
+    const reset = await axios.put(
+      `${process.env.Server_Url}/user/score/resent-percertage`,
+      {
+        classroomId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return reset.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
 export async function AllowStudentViewScore({ classroomId, allow }) {
   try {
     const cookies = parseCookies();
