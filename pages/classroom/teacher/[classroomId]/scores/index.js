@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../../../../../layouts/classroomLayout';
 import Unauthorized from '../../../../../components/error/unauthorized';
 import { useRouter } from 'next/router';
-import { GetUser, GetUserCookie } from '../../../../../service/user';
+import { GetUserCookie } from '../../../../../service/user';
 import { useQuery } from '@tanstack/react-query';
-import { FiArrowLeftCircle } from 'react-icons/fi';
 import { GetAllStudentScores } from '../../../../../service/students';
 import Head from 'next/head';
 import { BiMessageAltError } from 'react-icons/bi';
@@ -19,10 +18,10 @@ import {
 } from '../../../../../data/menubarsScores';
 import { GiUpgrade } from 'react-icons/gi';
 import CreateGrade from '../../../../../components/form/createGrade';
-import { AiOutlinePercentage } from 'react-icons/ai';
 import AddPercentageOnAssignment from '../../../../../components/form/addPercentageOnAssignment';
 import AddPercentageOnSpecialScore from '../../../../../components/form/addPercentageOnSpecialScore';
 import { AllowStudentViewScore } from '../../../../../service/scores';
+import { GetOneClassroom } from '../../../../../service/classroom';
 
 function Index({ user, error }) {
   const router = useRouter();
@@ -129,6 +128,7 @@ function Index({ user, error }) {
       )}
       {triggerAddPercentageOnSpecialScore && (
         <AddPercentageOnSpecialScore
+          classroom={classroom}
           studentsScores={studentsScores}
           setTriggerAddPercentageOnSpecialScore={
             setTriggerAddPercentageOnSpecialScore
