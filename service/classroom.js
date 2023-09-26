@@ -51,7 +51,7 @@ export async function DuplicateClassroom({ classroomId }) {
     throw new Error(err);
   }
 }
-export async function DeleteClassroom(classroomId) {
+export async function DeleteClassroom({ classroomId }) {
   const cookies = parseCookies();
   const access_token = cookies.access_token;
   try {
@@ -67,7 +67,7 @@ export async function DeleteClassroom(classroomId) {
       },
     );
 
-    return deleteClassroom;
+    return deleteClassroom.data;
   } catch (err) {
     throw new Error(err);
   }
