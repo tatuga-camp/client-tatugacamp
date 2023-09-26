@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { MdOutlinePendingActions, MdSchool } from 'react-icons/md';
+import { MdDelete, MdOutlinePendingActions, MdSchool } from 'react-icons/md';
 import { FcCancel } from 'react-icons/fc';
 import CreateClass from '../../../components/form/createClass';
 import { Popover } from '@headlessui/react';
 import {
   AchieveClassroom,
+  DeleteClassroom,
   DuplicateClassroom,
   GetAllAchievedClassrooms,
   GetAllClassrooms,
@@ -94,6 +95,7 @@ function Index({ error, user, whatsNews }) {
   const [acceessFeature, setAccessFeature] = useState(false);
   const [creditClassroom, setCreditClassroom] = useState(5);
   const [loading, setLoading] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
   const classrooms = useQuery(
     ['classrooms', page],
     () => GetAllClassrooms({ page: page }),
@@ -283,6 +285,52 @@ function Index({ error, user, whatsNews }) {
   const handleReadNews = () => {
     localStorage.setItem('IsViewNews', whatsNews[0]._id);
     setIsViewNews(() => true);
+  };
+
+  const handleDeleteClassroom = async ({ classroomId }) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          setLoadingDelete(() => true);
+          await DeleteClassroom({ classroomId });
+          achievedClassrooms.refetch();
+          classrooms.refetch();
+          Swal.fire('Deleted!', 'success');
+          setLoadingDelete(() => false);
+        } catch (err) {
+          setLoadingDelete(() => false);
+          Swal.fire(
+            'error',
+            err?.props?.response?.data?.message.toString(),
+            'error',
+          );
+        }
+      }
+    });
+  };
+
+  const handleNotifyOnlyPaidPlan = () => {
+    Swal.fire({
+      icon: 'error',
+      title:
+        user.language === 'Thai' ? 'เฉพาะสมาชิกเสียเงิน' : 'only paid account',
+      text:
+        user.language === 'Thai'
+          ? 'สมชิกเริ่มต้นและสมาชิกพรีเมี่ยมเท่านั้นจึงจะมีสิทธิ์ลบห้องเรียน'
+          : 'Only tatuga starter and tatuga premuim plan be able to delete classroom',
+      footer:
+        user.language === 'Thai'
+          ? '<a href="/classroom/subscriptions">สมัครสมาชิก</a>'
+          : '<a href="/classroom/subscriptions">check out our subscription</a>',
+    });
   };
 
   if (error?.statusCode === 401) {
@@ -641,120 +689,155 @@ h-20 group ${
                       rounded-3xl p-3  overflow-hidden relative  bg-white `}
                         >
                           <div className="text-right w-full">
-                            {loading ? (
-                              <Loading />
-                            ) : (
-                              <div className="text-3xl absolute right-4 top-3">
-                                {!classroom.selected && (
-                                  <div
-                                    onClick={() =>
-                                      handleOpenClasssDeleted(index)
-                                    }
-                                    role="button"
-                                    className="text-gray-700 text-base   hover:text-red-500 
+                            <div className="text-3xl absolute right-4 top-3">
+                              {!classroom.selected && (
+                                <div
+                                  onClick={() => handleOpenClasssDeleted(index)}
+                                  role="button"
+                                  className="text-gray-700 text-base   hover:text-red-500 
                           cursor-pointer flex"
-                                  >
-                                    <BsThreeDotsVertical />
-                                  </div>
-                                )}
-                                {classroom.selected && (
-                                  <div className="flex gap-x-4">
-                                    <div
-                                      role="button"
-                                      onClick={() => {
-                                        handleCloseClasssDeleted(index);
-                                      }}
-                                      className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
-                                    >
-                                      <FcCancel />
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                          {classroom.selected && (
-                            <div className="w-full  h-40 items-center flex justify-center gap-3">
-                              <button
-                                onClick={() =>
-                                  handleAchieveClassroom({
-                                    classroomId: classroom.id,
-                                  })
-                                }
-                                className="w-28 h-20
-                              hover:bg-blue-100 group hover:text-blue-600 transition duration-150
-                               text-4xl flex flex-col justify-center  items-center text-blue-100
-                             bg-blue-600 rounded-lg"
-                              >
-                                <MdSchool />
-                                <span className="text-xs group-hover:text-black transition duration-150 text-white font-normal">
-                                  {user.language === 'Thai'
-                                    ? 'สำเร็จการศึกษา'
-                                    : 'Achieve classroom'}
-                                </span>
-                              </button>
-                              <button
-                                onClick={() => {
-                                  setTiggerUpdateOrderClassroom(() => true);
-                                  setSelectUpdateOrderClassroom(
-                                    () => classroom,
-                                  );
-                                  document.body.style.overflow = 'hidden';
-                                }}
-                                className="w-28 h-20
-                              hover:bg-pink-100 group hover:text-pink-600 transition duration-150
-                               text-4xl flex flex-col justify-center  items-center text-pink-100
-                             bg-pink-600 rounded-lg"
-                              >
-                                <AiOutlineOrderedList />
-                                <span className="text-xs group-hover:text-black transition duration-150 text-white font-normal">
-                                  {user.language === 'Thai'
-                                    ? 'เปลี่ยนตำแหน่ง'
-                                    : 'change position'}
-                                </span>
-                              </button>
-                              <label
-                                htmlFor="dropzone-file"
-                                className="
-                              hover:bg-yellow-100 cursor-pointer group hover:text-yellow-600 transition duration-150
-                              w-28 h-20 text-4xl flex flex-col justify-center  items-center text-yellow-200
-                             bg-yellow-600 rounded-lg"
-                              >
-                                <AiOutlineBgColors />
-                                <span className="text-xs group-hover:text-black text-white font-normal">
-                                  {user.language === 'Thai'
-                                    ? 'เปลี่ยนสี'
-                                    : 'Change color'}
-                                </span>
-                                <input
-                                  className="opacity-0 w-0 h-0"
-                                  value={selectedColor}
-                                  onChange={(e) =>
-                                    handleColorChange({ e, index })
-                                  }
-                                  type="color"
-                                  id="dropzone-file"
-                                />
-                              </label>
-                              {loading ? (
-                                <div className="absolute bottom-2 right-0 left-0 m-auto">
-                                  <Loading />
+                                >
+                                  <BsThreeDotsVertical />
                                 </div>
-                              ) : (
+                              )}
+                              {classroom.selected && (
+                                <div className="flex gap-x-4">
+                                  <div
+                                    role="button"
+                                    onClick={() => {
+                                      handleCloseClasssDeleted(index);
+                                    }}
+                                    className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
+                                  >
+                                    <FcCancel />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          {classroom.selected &&
+                            (loadingDelete ? (
+                              <div className="w-full h-40 flex items-center justify-center">
+                                <Loading />
+                              </div>
+                            ) : (
+                              <div className="w-full  h-40 items-center flex justify-center gap-3">
                                 <button
                                   onClick={() =>
-                                    handleUpdateClassroom({
+                                    handleAchieveClassroom({
                                       classroomId: classroom.id,
                                     })
                                   }
-                                  className="w-max h-max px-3 py-1 rounded-lg hover:bg-green-400
-                               text-white bg-green-600 absolute bottom-2 right-0 left-0 m-auto"
+                                  className="w-28 h-20
+                              hover:bg-blue-100 group hover:text-blue-600 transition duration-150
+                               text-4xl flex flex-col justify-center  items-center text-blue-100
+                             bg-blue-600 rounded-lg"
                                 >
-                                  update
+                                  <MdSchool />
+                                  <span className="text-xs group-hover:text-black transition duration-150 text-white font-normal">
+                                    {user.language === 'Thai'
+                                      ? 'สำเร็จการศึกษา'
+                                      : 'Achieve classroom'}
+                                  </span>
                                 </button>
-                              )}
-                            </div>
-                          )}
+                                <button
+                                  onClick={() => {
+                                    setTiggerUpdateOrderClassroom(() => true);
+                                    setSelectUpdateOrderClassroom(
+                                      () => classroom,
+                                    );
+                                    document.body.style.overflow = 'hidden';
+                                  }}
+                                  className="w-28 h-20
+                              hover:bg-pink-100 group hover:text-pink-600 transition duration-150
+                               text-4xl flex flex-col justify-center  items-center text-pink-100
+                             bg-pink-600 rounded-lg"
+                                >
+                                  <AiOutlineOrderedList />
+                                  <span className="text-xs group-hover:text-black transition duration-150 text-white font-normal">
+                                    {user.language === 'Thai'
+                                      ? 'เปลี่ยนตำแหน่ง'
+                                      : 'change position'}
+                                  </span>
+                                </button>
+
+                                <label
+                                  htmlFor="dropzone-file"
+                                  className="
+                              hover:bg-yellow-100 cursor-pointer group hover:text-yellow-600 transition duration-150
+                              w-28 h-20 text-4xl flex flex-col justify-center  items-center text-yellow-200
+                             bg-yellow-600 rounded-lg"
+                                >
+                                  <AiOutlineBgColors />
+                                  <span className="text-xs group-hover:text-black text-white font-normal">
+                                    {user.language === 'Thai'
+                                      ? 'เปลี่ยนสี'
+                                      : 'Change color'}
+                                  </span>
+                                  <input
+                                    className="opacity-0 w-0 h-0"
+                                    value={selectedColor}
+                                    onChange={(e) =>
+                                      handleColorChange({ e, index })
+                                    }
+                                    type="color"
+                                    id="dropzone-file"
+                                  />
+                                </label>
+                                {user.plan !== 'FREE' ? (
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteClassroom({
+                                        classroomId: classroom.id,
+                                      })
+                                    }
+                                    className="w-28 h-20
+                              hover:bg-red-100 group hover:text-red-600 transition duration-150
+                               text-4xl flex flex-col justify-center  items-center text-red-100
+                             bg-red-600 rounded-lg"
+                                  >
+                                    <MdDelete />
+                                    <span className="text-xs px-2 group-hover:text-black transition duration-150 text-white font-normal">
+                                      {user.language === 'Thai'
+                                        ? 'ลบห้องเรียน'
+                                        : 'delete'}
+                                    </span>
+                                  </button>
+                                ) : (
+                                  <button
+                                    onClick={handleNotifyOnlyPaidPlan}
+                                    className="w-28 h-20
+                          hover:bg-gray-100 group hover:text-gray-600 transition duration-150
+                           text-4xl flex flex-col justify-center  items-center text-gray-100
+                         bg-gray-600 rounded-lg"
+                                  >
+                                    <MdDelete />
+                                    <span className="text-xs px-2 group-hover:text-black transition duration-150 text-white font-normal">
+                                      {user.language === 'Thai'
+                                        ? 'ลบห้องเรียน'
+                                        : 'delete'}
+                                    </span>
+                                  </button>
+                                )}
+                                {loading ? (
+                                  <div className="absolute bottom-2 right-0 left-0 m-auto">
+                                    <Loading />
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() =>
+                                      handleUpdateClassroom({
+                                        classroomId: classroom.id,
+                                      })
+                                    }
+                                    className="w-max h-max px-3 py-1 rounded-lg hover:bg-green-400
+                               text-white bg-green-600 absolute bottom-2 right-0 left-0 m-auto"
+                                  >
+                                    update
+                                  </button>
+                                )}
+                              </div>
+                            ))}
                           <div
                             className={`${
                               classroom.selected ? 'hidden' : 'block'
