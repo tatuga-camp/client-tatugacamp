@@ -4,7 +4,7 @@ import { AiOutlineUserAdd } from 'react-icons/ai';
 import { Box, Pagination, Skeleton, TextField } from '@mui/material';
 
 import { useQuery } from '@tanstack/react-query';
-import Image from "next/image";
+import Image from 'next/image';
 import { GetUserCookie } from '../../../service/user';
 import { parseCookies } from 'nookies';
 import {
@@ -26,7 +26,7 @@ import { BsPersonFillCheck, BsPersonFillX } from 'react-icons/bs';
 import Head from 'next/head';
 
 const loadingElements = [1, 2, 3, 4, 5];
-function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
+function CreateAccount({ user, error }) {
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === 'Thai') {
       return sideMenusThai;
@@ -56,8 +56,6 @@ function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
       setSelectTeacher={setSelectTeacher}
       sideMenus={sideMenus}
       user={user}
-      teachersNumber={teachersNumber}
-      classroomNumber={classroomNumber}
       router={router}
     >
       <Head>
@@ -170,7 +168,8 @@ function CreateAccount({ user, error, teachersNumber, classroomNumber }) {
                                   src={teacher.picture}
                                   className="object-cover"
                                   fill
-                                  sizes="(max-width: 768px) 100vw" />
+                                  sizes="(max-width: 768px) 100vw"
+                                />
                               ) : (
                                 <span className="font-bold text-2xl uppercase">
                                   {teacher.firstName.charAt(0)}
@@ -279,17 +278,9 @@ export async function getServerSideProps(context) {
           },
         };
       } else if (user.role === 'SCHOOL') {
-        const teachersNumber = await GetAllTeachersNumber({
-          access_token: accessToken,
-        });
-        const classroomNumber = await GetAllClassroomNumber({
-          access_token: accessToken,
-        });
         return {
           props: {
             user,
-            teachersNumber,
-            classroomNumber,
           },
         };
       }
@@ -320,16 +311,8 @@ export async function getServerSideProps(context) {
           },
         };
       } else if (user.role === 'SCHOOL') {
-        const teachersNumber = await GetAllTeachersNumber({
-          access_token: accessToken,
-        });
-        const classroomNumber = await GetAllClassroomNumber({
-          access_token: accessToken,
-        });
         return {
           props: {
-            classroomNumber,
-            teachersNumber,
             user,
           },
         };

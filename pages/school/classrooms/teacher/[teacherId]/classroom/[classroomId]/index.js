@@ -27,7 +27,7 @@ import { SiMicrosoftexcel } from 'react-icons/si';
 import DowloadExcelAttendacne from '../../../../../../../components/form/dowloadExcelAttendacne';
 import ShowNoteAttendance from '../../../../../../../components/form/showNoteAttendance';
 
-function Index({ user, error, teachersNumber, classroomNumber }) {
+function Index({ user, error }) {
   const router = useRouter();
   const [triggerAttendanceInfo, setTriggerAttendanceInfo] = useState(false);
   const [triggerShowNote, setTriggerShowNote] = useState(false);
@@ -73,12 +73,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
   }
 
   return (
-    <Layout
-      sideMenus={sideMenus}
-      user={user}
-      teachersNumber={teachersNumber}
-      classroomNumber={classroomNumber}
-    >
+    <Layout sideMenus={sideMenus} user={user}>
       <main className="flex w-full justify-center mt-10 flex-col font-Kanit  items-center">
         {triggerAttendanceInfo && (
           <ShowStudentAttendanceInfo
@@ -195,7 +190,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
             className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem] lg:w-[60rem]
               2xl:w-[80rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
           >
-            <thead className="w-max sticky top-0  bg-white h-max py-3 z-20">
+            <thead className="w-max sticky top-0  bg-white h-max py-3 z-30">
               <tr className="flex ">
                 <th className="flex w-10 md:w-28  items-center justify-center sticky z-40 left-0 bg-white">
                   {user.language === 'Thai' && 'เลขที่'}
@@ -489,17 +484,9 @@ export async function getServerSideProps(context) {
           },
         };
       } else if (user.role === 'SCHOOL') {
-        const teachersNumber = await GetAllTeachersNumber({
-          access_token: accessToken,
-        });
-        const classroomNumber = await GetAllClassroomNumber({
-          access_token: accessToken,
-        });
         return {
           props: {
             user,
-            teachersNumber,
-            classroomNumber,
           },
         };
       }
@@ -530,16 +517,8 @@ export async function getServerSideProps(context) {
           },
         };
       } else if (user.role === 'SCHOOL') {
-        const teachersNumber = await GetAllTeachersNumber({
-          access_token: accessToken,
-        });
-        const classroomNumber = await GetAllClassroomNumber({
-          access_token: accessToken,
-        });
         return {
           props: {
-            classroomNumber,
-            teachersNumber,
             user,
           },
         };

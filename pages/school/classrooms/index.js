@@ -15,10 +15,11 @@ import {
   GetAllClassroomNumber,
 } from '../../../service/school/classroom';
 import { useQuery } from '@tanstack/react-query';
-import Image from "next/image";
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-function Index({ user, error, teachersNumber, classroomNumber }) {
+function Index({ user, error }) {
   const [page, setPage] = useState(1);
   const router = useRouter();
   const [sideMenus, setSideMenus] = useState(() => {
@@ -44,25 +45,16 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
   }
 
   return (
-    <Layout
-      sideMenus={sideMenus}
-      user={user}
-      teachersNumber={teachersNumber}
-      classroomNumber={classroomNumber}
-    >
+    <Layout sideMenus={sideMenus} user={user}>
       <main className="w-full flex justify-start gap-10 py-5 items-center flex-col">
         <div className="w-11/12  grid grid-cols-8 gap-5">
           {classrooms?.data?.classrooms?.map((classroom) => {
             return (
-              <button
-                onClick={() => {
-                  router.push({
-                    pathname: `/school/classrooms/teacher/${classroom.user.id}/classroom/${classroom.id}`,
-                  });
-                }}
+              <Link
+                href={`/school/classrooms/teacher/${classroom.user.id}/classroom/${classroom.id}`}
                 key={classroom.id}
                 className="bg-white rounded-md hover:scale-105  transition duration-150
-               overflow-hidden  col-span-2 relative h-60 flex flex-col"
+               overflow-hidden no-underline ring-2 ring-black text-black  col-span-2 relative h-60 flex flex-col"
               >
                 <div
                   className="w-20 h-20 bg-blue-100 text-blue-500 flex items-center 
@@ -73,7 +65,8 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                       src={classroom.user.picture}
                       className="object-cover"
                       fill
-                      sizes="(max-width: 768px) 100vw" />
+                      sizes="(max-width: 768px) 100vw"
+                    />
                   ) : (
                     <span className="font-bold text-2xl uppercase">
                       {classroom.user.firstName.charAt(0)}
@@ -102,7 +95,7 @@ function Index({ user, error, teachersNumber, classroomNumber }) {
                     <span>{classroom?.user?.school}</span>
                   </div>
                 </div>
-              </button>
+              </Link>
             );
           })}
         </div>
@@ -147,17 +140,9 @@ export async function getServerSideProps(context) {
           },
         };
       } else if (user.role === 'SCHOOL') {
-        const teachersNumber = await GetAllTeachersNumber({
-          access_token: accessToken,
-        });
-        const classroomNumber = await GetAllClassroomNumber({
-          access_token: accessToken,
-        });
         return {
           props: {
             user,
-            teachersNumber,
-            classroomNumber,
           },
         };
       }
@@ -188,16 +173,8 @@ export async function getServerSideProps(context) {
           },
         };
       } else if (user.role === 'SCHOOL') {
-        const teachersNumber = await GetAllTeachersNumber({
-          access_token: accessToken,
-        });
-        const classroomNumber = await GetAllClassroomNumber({
-          access_token: accessToken,
-        });
         return {
           props: {
-            classroomNumber,
-            teachersNumber,
             user,
           },
         };

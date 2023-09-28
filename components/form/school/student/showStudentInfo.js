@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { SiGoogleclassroom } from 'react-icons/si';
@@ -59,15 +60,13 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
             </div>
           </div>
         </div>
-        <div
+        <Link
+          href={`/school/classrooms/teacher/${currentStudentInfo.classroom.user.id}/classroom/${currentStudentInfo.classroom.id}`}
           onClick={() => {
             document.body.style.overflow = 'auto';
-            router.push({
-              pathname: `/school/classrooms/teacher/${currentStudentInfo.classroom.user.id}/classroom/${currentStudentInfo.classroom.id}`,
-            });
           }}
           role="button"
-          className="flex gap-3 cursor-pointer group"
+          className="flex no-underline text-black border-2 border-black p-2 rounded-lg gap-3 cursor-pointer group"
         >
           <div
             className="text-3xl w-10 h-10 group-hover:bg-green-600 group-hover:text-green-100 transition duration-100
@@ -81,7 +80,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
             </span>
             <span>ระดับ {currentStudentInfo.classroom.level}</span>
           </div>
-        </div>
+        </Link>
         <div className="flex gap-3">
           <div
             className="text-3xl w-10 h-10 bg-pink-200 text-pink-600 p-3 flex overflow-hidden
