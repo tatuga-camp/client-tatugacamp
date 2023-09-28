@@ -85,7 +85,16 @@ const loadingElements = [1, 2, 3, 4, 5];
 
 function Index({ user, error }) {
   const router = useRouter();
-
+  const [currentDate, setCurrentDate] = useState();
+  const [currentTime, setCurrentTime] = useState();
+  const [triggerStudentInfo, setTriggerStudentInfo] = useState(false);
+  const [currentStudentInfo, setCurrentStudentInfo] = useState();
+  const [selectTeacher, setSelectTeacher] = useState();
+  const [triggerTableNationality, setTriggerTableNationality] = useState(false);
+  const [triggerShowTeacherInfo, setTriggerShowTeacherInfo] = useState(false);
+  const [page, setPage] = useState(1);
+  const [dataNationality, setDataNationality] = useState();
+  const [dataNationalityTabel, setDataNationalityTabel] = useState();
   const classroomNumber = useQuery(['classroom-number'], () =>
     GetAllClassroomNumber(),
   );
@@ -97,6 +106,24 @@ function Index({ user, error }) {
   );
   const studentNationality = useQuery(['student-nationality'], () =>
     GetAllStudentsByNationlity(),
+  );
+  const topTenAbsent = useQuery(['top-ten-absent'], () => GetTopTenAbsent(), {
+    enabled: false,
+  });
+  const topTenSick = useQuery(['top-ten-sick'], () => GetTopTenSick(), {
+    enabled: false,
+  });
+  const teachers = useQuery(
+    ['teachers', page],
+    () => GetAllTeachers({ page: page }),
+    { keepPreviousData: true },
+  );
+  const topTenHoliday = useQuery(
+    ['top-ten-holiday'],
+    () => GetTopTenHoliday(),
+    {
+      enabled: false,
+    },
   );
 
   const data = {
@@ -119,42 +146,6 @@ function Index({ user, error }) {
       },
     ],
   };
-
-  const [page, setPage] = useState(1);
-
-  const [dataNationality, setDataNationality] = useState(() => {
-    let value = [];
-    let nationalities = [];
-    for (const key in studentNationality.data) {
-      // Access the property key and value
-      const number = studentNationality.data[key];
-      value.push(number);
-      nationalities.push(key);
-    }
-
-    return {
-      labels: nationalities,
-      datasets: [
-        {
-          label: 'จำนวน',
-          data: value,
-          backgroundColor: formattedColorCodesArray,
-          borderColor: formattedColorCodesArray,
-          borderWidth: 1,
-        },
-      ],
-    };
-  });
-  const [dataNationalityTabel, setDataNationalityTabel] = useState(() => {
-    let value = [];
-    let nationalities = [];
-    for (const key in studentNationality.data) {
-      // Access the property key and value
-      const number = studentNationality.data[key];
-      nationalities.push({ nationality: key, number });
-    }
-    return nationalities;
-  });
 
   useEffect(() => {
     setDataNationality(() => {
@@ -191,14 +182,7 @@ function Index({ user, error }) {
       return nationalities;
     });
   }, [studentNationality.isSuccess]);
-  const [currentDate, setCurrentDate] = useState();
-  const [currentTime, setCurrentTime] = useState();
 
-  const [triggerStudentInfo, setTriggerStudentInfo] = useState(false);
-  const [currentStudentInfo, setCurrentStudentInfo] = useState();
-  const [selectTeacher, setSelectTeacher] = useState();
-  const [triggerTableNationality, setTriggerTableNationality] = useState(false);
-  const [triggerShowTeacherInfo, setTriggerShowTeacherInfo] = useState(false);
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === 'Thai') {
       return sideMenusThai;
@@ -207,24 +191,6 @@ function Index({ user, error }) {
     }
   });
 
-  const topTenAbsent = useQuery(['top-ten-absent'], () => GetTopTenAbsent(), {
-    enabled: false,
-  });
-  const topTenSick = useQuery(['top-ten-sick'], () => GetTopTenSick(), {
-    enabled: false,
-  });
-  const teachers = useQuery(
-    ['teachers', page],
-    () => GetAllTeachers({ page: page }),
-    { keepPreviousData: true },
-  );
-  const topTenHoliday = useQuery(
-    ['top-ten-holiday'],
-    () => GetTopTenHoliday(),
-    {
-      enabled: false,
-    },
-  );
   useEffect(() => {
     topTenAbsent.refetch();
     topTenSick.refetch();
@@ -577,19 +543,20 @@ function Index({ user, error }) {
           )}
           <div className=" flex w-11/12 gap-5 justify-center ">
             <div
-              className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
+              className="bg-white w-96 ring-2 overflow-hidden ring-black  p-5 rounded-lg
            flex flex-col justify-start items-center"
             >
               <h3 className="font-Kanit font-normal text-red-600 mb-3">
                 ขาดเรียน 10 อันดับแรก{' '}
               </h3>
-              <ul className="w-max h-max  grid list-none pl-0">
+              <ul className="w-full h-max  grid list-none pl-0">
                 {topTenAbsent.isLoading ? (
-                  <div className="flex flex-col gap-3">
-                    <Skeleton variant="rectangular" width="100%" height={20} />
-                    <Skeleton variant="rectangular" width="100%" height={20} />
-                    <Skeleton variant="rectangular" width="100%" height={20} />
-                    <Skeleton variant="rectangular" width="100%" height={20} />
+                  <div className="flex w-full flex-col gap-3">
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
                   </div>
                 ) : (
                   topTenAbsent.data?.map((list, index) => {
@@ -638,19 +605,19 @@ function Index({ user, error }) {
             </div>
 
             <div
-              className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
+              className="bg-white w-96 ring-2 ring-black overflow-hidden  p-5 rounded-lg
            flex flex-col justify-start items-center"
             >
               <h3 className="font-Kanit font-normal text-blue-600 mb-3">
                 สถิติป่วย 10 อันดับแรก{' '}
               </h3>
-              <ul className="w-max h-max  grid list-none pl-0">
+              <ul className="w-full h-max  grid list-none pl-0">
                 {topTenSick.isLoading ? (
-                  <div className="flex flex-col gap-3">
-                    <Skeleton variant="rectangular" width="100%" height={20} />
-                    <Skeleton variant="rectangular" width="100%" height={20} />
-                    <Skeleton variant="rectangular" width="100%" height={20} />
-                    <Skeleton variant="rectangular" width="100%" height={20} />
+                  <div className="flex w-full flex-col gap-3">
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
                   </div>
                 ) : (
                   topTenSick.data?.map((list, index) => {
@@ -698,19 +665,22 @@ function Index({ user, error }) {
             </div>
 
             <div
-              className="bg-white w-96 ring-2 ring-black  p-5 rounded-lg
+              className="bg-white w-96 ring-2 overflow-hidden ring-black  p-5 rounded-lg
            flex flex-col justify-start items-center"
             >
               <h3 className="font-Kanit font-normal text-orange-600 mb-3">
                 สถิติลา 10 อันดับแรก{' '}
               </h3>
-              <ul className="w-max h-max  grid list-none pl-0">
+              <ul className="w-full h-max  grid list-none pl-0">
                 {topTenHoliday.isLoading ? (
                   <div className="flex flex-col gap-3">
-                    <Skeleton variant="rectangular" width="100%" height={20} />
-                    <Skeleton variant="rectangular" width="100%" height={20} />
-                    <Skeleton variant="rectangular" width="100%" height={20} />
-                    <Skeleton variant="rectangular" width="100%" height={20} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
+                    <Skeleton width="100%" height={40} />
                   </div>
                 ) : (
                   topTenHoliday.data?.map((list, index) => {
