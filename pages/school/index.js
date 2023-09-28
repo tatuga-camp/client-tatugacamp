@@ -79,6 +79,7 @@ const optionsPie = {
     },
   },
 };
+
 const labels = ['จำนวนทั้งหมด'];
 
 const loadingElements = [1, 2, 3, 4, 5];
@@ -95,6 +96,7 @@ function Index({ user, error }) {
   const [page, setPage] = useState(1);
   const [dataNationality, setDataNationality] = useState();
   const [dataNationalityTabel, setDataNationalityTabel] = useState();
+
   const classroomNumber = useQuery(['classroom-number'], () =>
     GetAllClassroomNumber(),
   );
@@ -131,17 +133,17 @@ function Index({ user, error }) {
     datasets: [
       {
         label: 'จำนวนนักเรียน',
-        data: labels.map(() => studentNumber.data),
+        data: labels.map(() => studentNumber?.data),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: 'จำนวนห้องเรียน',
-        data: labels.map(() => classroomNumber.data),
+        data: labels.map(() => classroomNumber?.data),
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
       {
         label: 'จำนวนบัญชี',
-        data: labels.map(() => teachersNumber.data),
+        data: labels.map(() => teachersNumber?.data),
         backgroundColor: 'rgba(0, 128, 0, 0.5)',
       },
     ],
@@ -151,9 +153,9 @@ function Index({ user, error }) {
     setDataNationality(() => {
       let value = [];
       let nationalities = [];
-      for (const key in studentNationality.data) {
+      for (const key in studentNationality?.data) {
         // Access the property key and value
-        const number = studentNationality.data[key];
+        const number = studentNationality?.data[key];
         value.push(number);
         nationalities.push(key);
       }
@@ -525,7 +527,8 @@ function Index({ user, error }) {
                 </ul>
               ) : (
                 <div className="w-96 h-96">
-                  {studentNationality.isLoading ? (
+                  {studentNationality.isLoading ||
+                  dataNationality === undefined ? (
                     <Skeleton height="100%" />
                   ) : (
                     <Doughnut data={dataNationality} options={optionsPie} />
