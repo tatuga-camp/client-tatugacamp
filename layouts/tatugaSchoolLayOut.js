@@ -19,17 +19,25 @@ import { UpdateSchoolImageCover } from '../service/school/school';
 import Swal from 'sweetalert2';
 import Loading from '../components/loading/loading';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
+import { GetAllTeachersNumber } from '../service/school/teacher';
+import { GetAllClassroomNumber } from '../service/school/classroom';
 
 function Layout({
   children,
   user,
   sideMenus,
-  teachersNumber,
   setTriggerCreateUser,
   setSelectTeacher,
-  classroomNumber,
 }) {
   const router = useRouter();
+  const teachersNumber = useQuery(['teachers-number'], () =>
+    GetAllTeachersNumber(),
+  );
+  const classroomNumber = useQuery(['classroom-number'], () =>
+    GetAllClassroomNumber(),
+  );
+
   const [triggersidebar, setTriggerSidebar] = useState(true);
   const [loading, setLoading] = useState();
   const [file, setFile] = useState();
@@ -131,7 +139,7 @@ function Layout({
           {({ open }) => (
             <>
               {user && (
-                <Popover.Button className="w-max   h-max border-none active:border-none z-30 absolute">
+                <Popover.Button className="w-max   h-max border-none active:border-none z-30 fixed">
                   <div className="flex p-2 ml-2 flex-col font-Kanit justify-center items-center ">
                     <div
                       aria-label="Show sidebar"
@@ -271,7 +279,7 @@ function Layout({
                ${lastRoute === 'classrooms' ? 'text-white' : 'text-black'}
               font-semibold text-2xl text-black font-Kanit group-hover:text-white`}
               >
-                <NumberAnimated n={classroomNumber} />{' '}
+                <NumberAnimated n={classroomNumber?.data} />{' '}
                 <span className="text-sm font-normal">ห้องเรียน</span>
               </div>
               <span

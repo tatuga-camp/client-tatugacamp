@@ -2,8 +2,10 @@ import axios from 'axios';
 import Error from 'next/error';
 import { parseCookies } from 'nookies';
 
-export async function GetAllStudentsNumber({ access_token }) {
+export async function GetAllStudentsNumber() {
   try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
     const students = await axios.get(
       `${process.env.Server_Url}/user/school/student/get-student-number`,
       {
@@ -19,8 +21,10 @@ export async function GetAllStudentsNumber({ access_token }) {
   }
 }
 
-export async function GetAllStudentsByNationlity({ access_token }) {
+export async function GetAllStudentsByNationlity() {
   try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
     const students = await axios.get(
       `${process.env.Server_Url}/user/school/student/get-students-by-nationality`,
       {

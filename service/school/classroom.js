@@ -91,8 +91,10 @@ export async function GetAllClassroom({ page }) {
   }
 }
 
-export async function GetAllClassroomNumber({ access_token }) {
+export async function GetAllClassroomNumber() {
   try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
     const classroom = await axios.get(
       `${process.env.Server_Url}/user/school/classroom/get-classrooms-number`,
       {

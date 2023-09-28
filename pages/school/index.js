@@ -83,43 +83,51 @@ const labels = ['จำนวนทั้งหมด'];
 
 const loadingElements = [1, 2, 3, 4, 5];
 
-function Index({
-  user,
-  error,
-  teachersNumber,
-  classroomNumber,
-  studentNationality,
-  studentNumber,
-}) {
+function Index({ user, error }) {
+  const router = useRouter();
+
+  const classroomNumber = useQuery(['classroom-number'], () =>
+    GetAllClassroomNumber(),
+  );
+  const teachersNumber = useQuery(['teachers-number'], () =>
+    GetAllTeachersNumber(),
+  );
+  const studentNumber = useQuery(['student-number'], () =>
+    GetAllStudentsNumber(),
+  );
+  const studentNationality = useQuery(['student-nationality'], () =>
+    GetAllStudentsByNationlity(),
+  );
+
   const data = {
     labels,
     datasets: [
       {
         label: 'จำนวนนักเรียน',
-        data: labels.map(() => studentNumber),
+        data: labels.map(() => studentNumber.data),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: 'จำนวนห้องเรียน',
-        data: labels.map(() => classroomNumber),
+        data: labels.map(() => classroomNumber.data),
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
       {
         label: 'จำนวนบัญชี',
-        data: labels.map(() => teachersNumber),
+        data: labels.map(() => teachersNumber.data),
         backgroundColor: 'rgba(0, 128, 0, 0.5)',
       },
     ],
   };
 
   const [page, setPage] = useState(1);
-  const router = useRouter();
+
   const [dataNationality, setDataNationality] = useState(() => {
     let value = [];
     let nationalities = [];
-    for (const key in studentNationality) {
+    for (const key in studentNationality.data) {
       // Access the property key and value
-      const number = studentNationality[key];
+      const number = studentNationality.data[key];
       value.push(number);
       nationalities.push(key);
     }
@@ -137,18 +145,55 @@ function Index({
       ],
     };
   });
-  const [currentDate, setCurrentDate] = useState();
-  const [currentTime, setCurrentTime] = useState();
   const [dataNationalityTabel, setDataNationalityTabel] = useState(() => {
     let value = [];
     let nationalities = [];
-    for (const key in studentNationality) {
+    for (const key in studentNationality.data) {
       // Access the property key and value
-      const number = studentNationality[key];
+      const number = studentNationality.data[key];
       nationalities.push({ nationality: key, number });
     }
     return nationalities;
   });
+
+  useEffect(() => {
+    setDataNationality(() => {
+      let value = [];
+      let nationalities = [];
+      for (const key in studentNationality.data) {
+        // Access the property key and value
+        const number = studentNationality.data[key];
+        value.push(number);
+        nationalities.push(key);
+      }
+
+      return {
+        labels: nationalities,
+        datasets: [
+          {
+            label: 'จำนวน',
+            data: value,
+            backgroundColor: formattedColorCodesArray,
+            borderColor: formattedColorCodesArray,
+            borderWidth: 1,
+          },
+        ],
+      };
+    });
+    setDataNationalityTabel(() => {
+      let value = [];
+      let nationalities = [];
+      for (const key in studentNationality.data) {
+        // Access the property key and value
+        const number = studentNationality.data[key];
+        nationalities.push({ nationality: key, number });
+      }
+      return nationalities;
+    });
+  }, [studentNationality.isSuccess]);
+  const [currentDate, setCurrentDate] = useState();
+  const [currentTime, setCurrentTime] = useState();
+
   const [triggerStudentInfo, setTriggerStudentInfo] = useState(false);
   const [currentStudentInfo, setCurrentStudentInfo] = useState();
   const [selectTeacher, setSelectTeacher] = useState();
@@ -232,13 +277,7 @@ function Index({
           selectTeacher={selectTeacher}
         />
       )}
-      <Layout
-        sideMenus={sideMenus}
-        user={user}
-        teachersNumber={teachersNumber}
-        classroomNumber={classroomNumber}
-        router={router}
-      >
+      <Layout sideMenus={sideMenus} user={user} router={router}>
         <Head>
           <title>{user.school ? user.school : user.firstName}</title>
         </Head>
@@ -285,7 +324,11 @@ function Index({
               <div className="p-5 gap-2 flex ">
                 <div className="flex gap-2 items-center flex-col justify-center">
                   <span className="font-semibold text-5xl">
-                    <NumberAnimated n={teachersNumber} />{' '}
+                    {teachersNumber.isLoading ? (
+                      <Skeleton width={50} />
+                    ) : (
+                      <NumberAnimated n={teachersNumber.data} />
+                    )}
                   </span>
                   <span className="text-slate-500 font-medium font-Kanit">
                     บัญชีทั้งหมด
@@ -294,7 +337,11 @@ function Index({
                 <div className="h-full w-[1px] bg-slate-700 mx-5"></div>
                 <div className="flex gap-2 items-center flex-col justify-center">
                   <span className="font-semibold text-5xl">
-                    <NumberAnimated n={studentNumber} />{' '}
+                    {studentNumber.isLoading ? (
+                      <Skeleton width={50} />
+                    ) : (
+                      <NumberAnimated n={studentNumber.data} />
+                    )}
                   </span>
                   <span className="text-slate-500 font-medium font-Kanit">
                     นักเรียนทั้งหมด
@@ -512,7 +559,11 @@ function Index({
                 </ul>
               ) : (
                 <div className="w-96 h-96">
-                  <Doughnut data={dataNationality} options={optionsPie} />
+                  {studentNationality.isLoading ? (
+                    <Skeleton height="100%" />
+                  ) : (
+                    <Doughnut data={dataNationality} options={optionsPie} />
+                  )}
                 </div>
               )}
             </div>
@@ -747,25 +798,9 @@ export async function getServerSideProps(context) {
           },
         };
       } else if (user.role === 'SCHOOL') {
-        const teachersNumber = await GetAllTeachersNumber({
-          access_token: accessToken,
-        });
-        const classroomNumber = await GetAllClassroomNumber({
-          access_token: accessToken,
-        });
-        const studentNumber = await GetAllStudentsNumber({
-          access_token: accessToken,
-        });
-        const studentNationality = await GetAllStudentsByNationlity({
-          access_token: accessToken,
-        });
         return {
           props: {
             user,
-            teachersNumber,
-            classroomNumber,
-            studentNumber,
-            studentNationality,
           },
         };
       }
@@ -796,25 +831,8 @@ export async function getServerSideProps(context) {
           },
         };
       } else if (user.role === 'SCHOOL') {
-        const teachersNumber = await GetAllTeachersNumber({
-          access_token: accessToken,
-        });
-        const classroomNumber = await GetAllClassroomNumber({
-          access_token: accessToken,
-        });
-        const studentNumber = await GetAllStudentsNumber({
-          access_token: accessToken,
-        });
-        const studentNationality = await GetAllStudentsByNationlity({
-          access_token: accessToken,
-        });
-
         return {
           props: {
-            classroomNumber,
-            teachersNumber,
-            studentNumber,
-            studentNationality,
             user,
           },
         };
