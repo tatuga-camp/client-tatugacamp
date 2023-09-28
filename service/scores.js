@@ -168,6 +168,28 @@ export async function ResetSpecialScorePercentage({ classroomId }) {
     throw new Error(err);
   }
 }
+
+export async function ResetAassignmentPercentage({ assignmentId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+
+    const reset = await axios.put(
+      `${process.env.Server_Url}/user/score/reset-assignment-percentage`,
+      {
+        assignmentId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return reset.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
 export async function AllowStudentViewScore({ classroomId, allow }) {
   try {
     const cookies = parseCookies();
