@@ -84,6 +84,7 @@ function Index() {
   useEffect(() => {
     setMenus(() => {
       if (classroom?.data?.allowStudentsToViewScores) {
+        totalScore.refetch();
         return [
           {
             title: 'ชิ้นงาน',
@@ -129,7 +130,6 @@ function Index() {
       assignments.refetch();
       attendances.refetch();
       classroom.refetch();
-      totalScore.refetch();
     }
   }, [router.isReady]);
 
@@ -184,7 +184,7 @@ function Index() {
   return (
     <div
       className={` w-full bg-slate-100  ${
-        assignments?.data?.data.length > 2 ? 'h-full' : 'h-screen'
+        assignments?.data?.data.length > 2 ? 'h-full min-h-screen' : 'h-screen'
       }  md:h-full md:pb-40 lg:pb-96 lg:h-full`}
     >
       <Head>
@@ -234,7 +234,7 @@ function Index() {
           </span>
         </div>
       </nav>
-      <main className="w-full h-max flex md:flex-row md:items-start md:justify-around lg:justify-center  items-center justify-start flex-col  mt-40 gap-3 relative">
+      <main className="w-full h-max flex   items-center justify-start flex-col  mt-40 gap-3 relative">
         <header className="flex flex-col justify-center items-center gap-5 md:w-96">
           <div className=" flex items-center justify-center relative">
             {student?.data?.data?.picture && (
@@ -326,22 +326,26 @@ function Index() {
               {student.isFetching ? (
                 <Skeleton variant="text" width={200} />
               ) : (
-                <div className="flex gap-4 text-2xl font-semibold text-blue-500">
-                  <span>{student?.data?.data?.firstName}</span>
-                  <span>{student?.data?.data?.lastName}</span>
+                <div className="flex gap-4 text-2xl md:text-xl font-semibold text-blue-500">
+                  <span>
+                    {student?.data?.data?.firstName}{' '}
+                    {student?.data?.data?.lastName}
+                  </span>
                 </div>
               )}
             </div>
           </div>
-          <div className="flex gap-5 flex-wrap w-full justify-center  md:hidden">
+          <div className="flex gap-5 flex-wrap  w-full font-Kanit  justify-center  ">
             {menus?.map((menu, index) => {
               return (
                 <button
                   key={index}
                   onClick={() => setActiveMenu(() => index)}
                   className={`w-max px-2 h-10 rounded-md ${menu.color} ${
-                    activeMenu === index ? 'ring-2  ring-white' : 'ring-0'
-                  }  items-center flex justify-center hover:scale-110 
+                    activeMenu === index
+                      ? 'ring-2 drop-shadow-lg  ring-white'
+                      : 'ring-0'
+                  }  items-center  flex justify-center hover:scale-110 
                  gap-2 transition duration-150 hover:ring-1 active:ring-2 `}
                 >
                   <div
@@ -365,35 +369,7 @@ function Index() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 pb-2 md:mt-10  gap-4 place-items-center w-full mt-8 max-w-xl md:max-w-lg	">
-          <div className="hidden gap-5  md:flex">
-            {menus?.map((menu, index) => {
-              return (
-                <button
-                  key={index}
-                  onClick={() => setActiveMenu(() => index)}
-                  className={`w-max px-2 h-10 md:h-12 md:px-5 rounded-md ${
-                    menu.color
-                  } ${
-                    activeMenu === index
-                      ? 'ring-2  md:ring-4  ring-white'
-                      : 'ring-0'
-                  }  items-center flex justify-center hover:scale-110 md:justify-between
-                 gap-2 md:gap-10 transition duration-150 hover:ring-1 active:ring-2  `}
-                >
-                  <div
-                    className="w-8 h-8  bg-white/50 backdrop-blur-md rounded-md flex 
-                items-center justify-center t  text-black"
-                  >
-                    {menu.icon}
-                  </div>
-                  <span className="text-md text-black  md:text-lg md:font-medium font-Kanit font-normal">
-                    {menu.title}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+        <div className="grid grid-cols-1 pb-2 gap-4 place-items-center w-full mt-8 max-w-xl	">
           {activeMenu === 1 && <Attendance attendances={attendances} />}
           {assignments.isLoading && (
             <div className="flex flex-col justify-center items-center gap-5">

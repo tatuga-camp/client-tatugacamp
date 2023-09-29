@@ -43,7 +43,7 @@ function TotalSumScore({ totalScore }) {
                 })
               }
               key={assignment.id}
-              className={`h-28 select-none w-full group   p-2 text-center
+              className={`h-28 select-none w-full group cursor-pointer   p-2 text-center
               ${
                 activeScore === index
                   ? 'bg-green-700 text-white col-span-2 '
