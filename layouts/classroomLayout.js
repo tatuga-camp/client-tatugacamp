@@ -9,7 +9,11 @@ import { BsFillPeopleFill, BsPeopleFill, BsQrCodeScan } from 'react-icons/bs';
 import { GiCardRandom } from 'react-icons/gi';
 import { CgMenuBoxed } from 'react-icons/cg';
 
-import { AiOutlineUserAdd, AiTwotoneStar } from 'react-icons/ai';
+import {
+  AiOutlineQrcode,
+  AiOutlineUserAdd,
+  AiTwotoneStar,
+} from 'react-icons/ai';
 import CreateStudent from '../components/form/createStudent';
 import { RxLapTimer } from 'react-icons/rx';
 import { useRouter } from 'next/router';
@@ -30,12 +34,14 @@ import AttendanceCheckerForSchool from '../components/form/school/attendance/att
 import RouletteRandomStudent from '../components/random/rouletteRandomStudent';
 import RandomTools from '../components/form/randomTools';
 import { RiNotification2Fill } from 'react-icons/ri';
+import CheckAttendanceByQrCode from '../components/form/checkAttendanceByQrCode';
 
 function Layout({ children, sideMenus, language, groups }) {
   const router = useRouter();
   const [triggerRandomStudent, setTriggerRandomStudent] = useState(false);
   const [triggerRandomTools, setTriggerRandomTools] = useState(false);
   const [triggerAttendance, setTriggerAttendance] = useState(false);
+  const [triggerAttendanceQrCode, setTriggerAttendanceQrCode] = useState(false);
   const [triggerRouletteRandomStudent, setTriggerRouletteRandomStudent] =
     useState(false);
   const user = useQuery(['user'], () => GetUser());
@@ -374,22 +380,22 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
       </div>
       {!user.isError && user?.data?.status === 200 && (
         <div className="md:flex hidden flex-col gap-3 lg:mt-0 md:pl-5 lg:pl-0 lg:w-3/4 md:w-11/12 items-center justify-center md:items-start">
-          <div className="font-sans font-normal tracking-wide flex flex-wrap mt-5 md:mt-0 items-center gap-5 pl-5 md:pl-0 text-gray-400">
+          <div className="tracking-wide flex flex-wrap mt-5 md:mt-0 items-center gap-5 pl-5 md:pl-0 text-gray-400">
             <span>Overview</span>
             <Popover className="relative ">
               {({ open }) => (
                 <>
                   <Popover.Button
                     onClick={() => students.refetch()}
-                    className="bg-transparent border-none"
+                    className="bg-transparen  border-none"
                   >
                     <div
                       aria-label="สร้างผู้เรียนของคุณ"
                       className={`
-                      w-max p-3 bg-[#2C7CD1] rounded-2xl cursor-pointer flex gap-2
-             hover:scale-110 transition duration-200 ease-in-out`}
+                      w-max p-3 bg-[#2C7CD1]  cursor-pointer  gap-2
+             hover:scale-110 rounded-md  transition duration-200 ease-in-out h-12 flex items-center justify-center`}
                     >
-                      <div className="text-white">
+                      <div className="text-white flex items-center justify-center ">
                         <IoPersonAdd />
                       </div>
                       <span className="font-Kanit font-semibold text-lg text-white">
@@ -418,7 +424,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
               }
               role="button"
               className="font-Kanit flex items-center justify-center gap-2 text-white
-           bg-orange-500 w-max p-3 rounded-2xl hover:scale-110 transition duration-150 cursor-pointer"
+           bg-orange-500 w-max p-3 rounded-md hover:scale-110 transition duration-150 cursor-pointer h-12 "
             >
               <div>
                 <RxLapTimer />
@@ -436,7 +442,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
               }}
               role="button"
               className="font-Kanit flex items-center justify-center gap-2 text-white
-           bg-green-700 w-max p-3 rounded-2xl hover:scale-110 transition duration-150 cursor-pointer"
+           bg-green-700 w-max p-3 rounded-md hover:scale-110 transition duration-150 cursor-pointer h-12"
             >
               <div>
                 <MdEmojiPeople />
@@ -455,7 +461,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                 }}
                 role="button"
                 className="font-Kanit flex items-center justify-center gap-2 text-white
-           bg-orange-500 w-max p-3 rounded-xl hover:scale-110 transition duration-150 cursor-pointer"
+           bg-orange-500 w-max p-3 rounded-md hover:scale-110 transition duration-150 cursor-pointer h-12"
               >
                 <div className="flex items-center justify-center">
                   <RandomIcon />
@@ -508,7 +514,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                     >
                       <div
                         className="font-Kanit flex items-center justify-center gap-2 text-white
-           bg-violet-500 w-max p-3 rounded-xl hover:scale-110 relative transition duration-150 cursor-pointer"
+           bg-violet-500 w-max p-3 rounded-md hover:scale-110 relative transition duration-150 cursor-pointer h-12"
                       >
                         <div className="flex items-center justify-center">
                           <HiRectangleGroup />
@@ -531,6 +537,26 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                   </>
                 )}
               </Popover>
+            </div>
+            <div>
+              {triggerAttendanceQrCode && (
+                <CheckAttendanceByQrCode
+                  setTriggerAttendanceQrCode={setTriggerAttendanceQrCode}
+                />
+              )}
+              <button
+                onClick={() => {
+                  setTriggerAttendanceQrCode(() => true);
+                  document.body.style.overflow = 'hidden';
+                }}
+                className="font-Kanit font-semibold flex items-center justify-center gap-2 text-white
+           bg-green-500 w-max p-3 rounded-md hover:scale-110 relative transition duration-150 cursor-pointer h-12"
+              >
+                เช็คชื่อด้วย
+                <div>
+                  <AiOutlineQrcode />
+                </div>
+              </button>
             </div>
           </div>
 
