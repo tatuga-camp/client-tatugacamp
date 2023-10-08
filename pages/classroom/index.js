@@ -17,6 +17,7 @@ import { sanityClient } from '../../sanity';
 import { PortableText } from '@portabletext/react';
 import { myPortableTextComponents } from '../../data/portableContent';
 import { cardData } from '../../data/card-classroom';
+import Link from 'next/link';
 
 function Index({ commonQuestions, announcement }) {
   const router = useRouter();
@@ -136,19 +137,16 @@ function Index({ commonQuestions, announcement }) {
               <div className="text-2xl font-Kanit font-bold text-blue-900">
                 สำหรับครู
               </div>
-              <button
-                onClick={() =>
-                  router.push({
-                    pathname: '/classroom/teacher',
-                  })
-                }
-                className="w-40  h-9  rounded-full bg-[#2C7CD1] hover:scale-110 transition duration-150 text-white font-sans font-bold
+              <Link
+                href={'/classroom/teacher'}
+                className="w-40 no-underline text-center flex items-center justify-center
+                  h-9  rounded-full bg-[#2C7CD1] hover:scale-110 transition duration-150 text-white font-sans font-bold
               text-md cursor-pointer hover: active:border-2  active:border-gray-300
                active:border-solid  focus:border-2 
               focus:border-solid"
               >
                 จัดการชั้นเรียน
-              </button>
+              </Link>
             </div>
           </div>
 
