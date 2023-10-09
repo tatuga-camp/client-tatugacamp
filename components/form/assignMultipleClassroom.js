@@ -19,7 +19,7 @@ function AssignMultipleClassroom({ user, setTriggerAssignMultipleClassroom }) {
 
   useEffect(() => {
     if (router.isReady) {
-      const filteredArray = classrooms?.data?.filter(
+      const filteredArray = classrooms?.data?.classrooms?.filter(
         (classroom) => classroom.id !== router.query.classroomId,
       );
       setClassroomState(() =>
