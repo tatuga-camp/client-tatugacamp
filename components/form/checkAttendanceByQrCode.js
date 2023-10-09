@@ -10,10 +10,10 @@ import {
 } from '../../service/attendance';
 import QRCode from 'react-qr-code';
 import Error from 'next/error';
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Skeleton, Snackbar } from '@mui/material';
 import Loading from '../loading/loading';
 import { MdOutlineUpdate } from 'react-icons/md';
-
+const numberSketion = [1, 2, 3, 4];
 function CheckAttendanceByQrCode({
   setTriggerAttendanceQrCode,
   language,
@@ -56,7 +56,6 @@ function CheckAttendanceByQrCode({
 
   const handleCreateAttendanceQrCode = async () => {
     try {
-      console.log(attendanceQrData);
       setIsLoading(() => true);
       if (
         !attendanceQrData.date ||
@@ -184,7 +183,7 @@ function CheckAttendanceByQrCode({
               maxWidth: '100%',
               width: '100%',
             }}
-            value={`${process.env.NEXT_PUBLIC_CLIENT_URL}/classroom/attendance-qrCode/?classroomId=${classroomId}&attendanceQRCodeId=${selectQrCodeId}`}
+            value={`${process.env.NEXT_PUBLIC_CLIENT_URL}/classroom/student/attendance-qrCode/?classroomId=${classroomId}&attendanceQRCodeId=${selectQrCodeId}`}
             viewBox={`0 0 256 256`}
           />{' '}
         </div>
@@ -359,132 +358,155 @@ function CheckAttendanceByQrCode({
                   </tr>
                 </thead>
                 <tbody className="border-spacing-2 h-40 overflow-y-auto">
-                  {allQrCode?.data?.map((qrCode, index) => {
-                    const date = new Date(qrCode.date);
-                    const formattedDate = date.toLocaleDateString(
-                      `${
-                        language === 'Thai'
-                          ? 'th-TH'
-                          : language === 'English' && 'en-US'
-                      }`,
-                      {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12:
-                          language === 'Thai'
-                            ? false
-                            : language === 'English' && true, // Use 24-hour format
-                      },
-                    );
+                  {allQrCode.isLoading
+                    ? numberSketion.map((list, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>
+                              <Skeleton variant="rectangular" w />
+                            </td>
+                            <td>
+                              <Skeleton variant="rectangular" />
+                            </td>
+                            <td>
+                              <Skeleton variant="rectangular" />
+                            </td>
+                            <td>
+                              <Skeleton variant="rectangular" />
+                            </td>
+                            <td>
+                              <Skeleton variant="rectangular" />
+                            </td>
+                          </tr>
+                        );
+                      })
+                    : allQrCode?.data?.map((qrCode, index) => {
+                        const date = new Date(qrCode.date);
+                        const formattedDate = date.toLocaleDateString(
+                          `${
+                            language === 'Thai'
+                              ? 'th-TH'
+                              : language === 'English' && 'en-US'
+                          }`,
+                          {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12:
+                              language === 'Thai'
+                                ? false
+                                : language === 'English' && true, // Use 24-hour format
+                          },
+                        );
 
-                    const expireAt = new Date(qrCode.exipreAt);
-                    const formattedExpireAt = expireAt.toLocaleDateString(
-                      `${
-                        language === 'Thai'
-                          ? 'th-TH'
-                          : language === 'English' && 'en-US'
-                      }`,
-                      {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12:
-                          language === 'Thai'
-                            ? false
-                            : language === 'English' && true, // Use 24-hour format
-                      },
-                    );
-                    return (
-                      <tr
-                        key={qrCode.id}
-                        className={`border-b-2 border-spacing-2 h-14 border-slate-200 ${
-                          selectUpdate.index === index
-                            ? 'bg-blue-100'
-                            : 'bg-white'
-                        }`}
-                      >
-                        <td>{formattedDate}</td>
-
-                        <td>{formattedExpireAt}</td>
-                        <td>
-                          {qrCode.isLimitOneBrowser ? (
-                            <span className="text-red-500 font-medium">
-                              แสกนได้ครั้งเดียว
-                            </span>
-                          ) : (
-                            <span className="text-green-400 font-medium">
-                              แสกนได้หลายครั้ง
-                            </span>
-                          )}
-                        </td>
-                        <td className="">
-                          <button
-                            onClick={() => {
-                              setSelectQrCodeId(() => qrCode.id);
-                              setTriggerShowQrCode(() => true);
-                            }}
-                            className="flex gap-2 justify-center items-center px-4 py-1
-                     bg-green-400 text-white rounded-lg hover:bg-green-700 active:scale-110 transition duration-150"
+                        const expireAt = new Date(qrCode.exipreAt);
+                        const formattedExpireAt = expireAt.toLocaleDateString(
+                          `${
+                            language === 'Thai'
+                              ? 'th-TH'
+                              : language === 'English' && 'en-US'
+                          }`,
+                          {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12:
+                              language === 'Thai'
+                                ? false
+                                : language === 'English' && true, // Use 24-hour format
+                          },
+                        );
+                        return (
+                          <tr
+                            key={qrCode.id}
+                            className={`border-b-2 border-spacing-2 h-14 border-slate-200 ${
+                              selectUpdate.index === index
+                                ? 'bg-blue-100'
+                                : 'bg-white'
+                            }`}
                           >
-                            <span>เปิด</span>
-                            <AiOutlineQrcode />
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            onClick={() => {
-                              setTriggerUpdate((prev) => {
-                                if (index === selectUpdate.index) {
-                                  setSelectUpdate(() => {
+                            <td>{formattedDate}</td>
+
+                            <td>{formattedExpireAt}</td>
+                            <td>
+                              {qrCode.isLimitOneBrowser ? (
+                                <span className="text-red-500 font-medium">
+                                  แสกนได้ครั้งเดียว
+                                </span>
+                              ) : (
+                                <span className="text-green-400 font-medium">
+                                  แสกนได้หลายครั้ง
+                                </span>
+                              )}
+                            </td>
+                            <td className="">
+                              <button
+                                onClick={() => {
+                                  setSelectQrCodeId(() => qrCode.id);
+                                  setTriggerShowQrCode(() => true);
+                                }}
+                                className="flex gap-2 justify-center items-center px-4 py-1
+                     bg-green-400 text-white rounded-lg hover:bg-green-700 active:scale-110 transition duration-150"
+                              >
+                                <span>เปิด</span>
+                                <AiOutlineQrcode />
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                onClick={() => {
+                                  setTriggerUpdate((prev) => {
+                                    if (index === selectUpdate.index) {
+                                      setSelectUpdate(() => {
+                                        return {
+                                          data: '',
+                                          index: '',
+                                        };
+                                      });
+                                      return !prev;
+                                    } else {
+                                      return true;
+                                    }
+                                  });
+                                  setAttendanceQrData(() => {
+                                    const inputDate = new Date(qrCode.exipreAt);
+
+                                    // Get the year, month, and day from the input date
+                                    const year = inputDate.getFullYear();
+                                    const month = String(
+                                      inputDate.getMonth() + 1,
+                                    ).padStart(2, '0'); // Adding 1 to the month because it is zero-based
+                                    const day = String(
+                                      inputDate.getDate(),
+                                    ).padStart(2, '0');
+
+                                    // Create a new date string in the desired format
+                                    const newDateStr = `${year}-${month}-${day}T00:14`;
                                     return {
-                                      data: '',
-                                      index: '',
+                                      isLimitOneBrowser:
+                                        qrCode.isLimitOneBrowser,
+                                      expireAt: newDateStr,
                                     };
                                   });
-                                  return !prev;
-                                } else {
-                                  return true;
-                                }
-                              });
-                              setAttendanceQrData(() => {
-                                const inputDate = new Date(qrCode.exipreAt);
-
-                                // Get the year, month, and day from the input date
-                                const year = inputDate.getFullYear();
-                                const month = String(
-                                  inputDate.getMonth() + 1,
-                                ).padStart(2, '0'); // Adding 1 to the month because it is zero-based
-                                const day = String(
-                                  inputDate.getDate(),
-                                ).padStart(2, '0');
-
-                                // Create a new date string in the desired format
-                                const newDateStr = `${year}-${month}-${day}T00:14`;
-                                return {
-                                  isLimitOneBrowser: qrCode.isLimitOneBrowser,
-                                  expireAt: newDateStr,
-                                };
-                              });
-                              setSelectUpdate(() => {
-                                return {
-                                  data: qrCode,
-                                  index: index,
-                                };
-                              });
-                            }}
-                            className="p-3 rounded-full bg-red-500 active:scale-105 text-red-200 hover:bg-red-700"
-                          >
-                            <AiFillEdit />
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                                  setSelectUpdate(() => {
+                                    return {
+                                      data: qrCode,
+                                      index: index,
+                                    };
+                                  });
+                                }}
+                                className="p-3 rounded-full bg-red-500 active:scale-105 text-red-200 hover:bg-red-700"
+                              >
+                                <AiFillEdit />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
                 </tbody>
               </table>
             </div>
