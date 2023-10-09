@@ -319,6 +319,79 @@ export async function UpdateAttendnaceAPI({
     throw new Error(err);
   }
 }
+
+export async function GetAllQrAttendances({ classroomId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const qrAttendances = await axios.get(
+      `${process.env.Server_Url}/user/attendance/get-all/qr-code`,
+      {
+        params: {
+          classroomId: classroomId,
+        },
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return qrAttendances.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
+export async function CreateQrAttendance({
+  date,
+  endDate,
+  classroomId,
+  expireAt,
+  isLimitOneBrowser,
+}) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const create = await axios.post(
+      `${process.env.Server_Url}/user/attendance/create/qr-code`,
+      { date, endDate, expireAt, classroomId, isLimitOneBrowser },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return create.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
+export async function UpdateQrCodeAttendance({
+  qrCodeAttendanceId,
+  expireAt,
+  isLimitOneBrowser,
+}) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const update = await axios.put(
+      `${process.env.Server_Url}/user/attendance/update/qr-code`,
+      { expireAt, qrCodeAttendanceId, isLimitOneBrowser },
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return update.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
 export async function DeleteNote({ attendanceId }) {
   try {
     const cookies = parseCookies();

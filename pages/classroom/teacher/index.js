@@ -81,7 +81,7 @@ function Index({ error, user, whatsNews }) {
   });
   const router = useRouter();
   const [selectedColor, setSelectedColor] = useState({
-    index: 0,
+    index: '',
     color: '',
   });
   const [triggerUpdateOrderClassroom, setTiggerUpdateOrderClassroom] =
