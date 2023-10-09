@@ -554,7 +554,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                 className="font-Kanit select-none font-semibold flex items-center justify-center gap-2 text-white
            bg-green-500 w-max p-3 rounded-md hover:scale-110 relative transition duration-150 cursor-pointer h-12"
               >
-                เช็คชื่อด้วย
+                เช็กชื่อด้วย
                 <div>
                   <AiOutlineQrcode />
                 </div>
