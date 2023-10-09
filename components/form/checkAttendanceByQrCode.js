@@ -518,8 +518,8 @@ function CheckAttendanceByQrCode({
           document.body.style.overflow = 'auto';
           setTriggerAttendanceQrCode(() => false);
         }}
-        className={`w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-10  ${
-          triggerShowQrCode ? 'bg-black/80' : 'bg-black/30'
+        className={`w-screen backdrop-blur-sm h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-10  ${
+          triggerShowQrCode ? 'bg-white/80' : 'bg-white/30'
         } `}
       ></footer>
     </div>
