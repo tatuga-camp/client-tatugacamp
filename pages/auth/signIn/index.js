@@ -144,7 +144,7 @@ function Index() {
             className=" w-80 flex flex-col justify-center items-center"
           >
             <div className="flex flex-col relative">
-              <label className="font-sans font-normal">Username</label>
+              <label className="font-sans font-normal">email</label>
               <input
                 className="w-60 h-7 rounded-md border-none  ring-2 ring-black bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"

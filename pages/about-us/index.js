@@ -1,13 +1,10 @@
-import Image from "next/image";
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { sanityClient, urlFor } from '../../sanity';
-import 'swiper/css';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import Head from 'next/head';
 import Layout from '../../components/layout';
 import { returnProps } from '../../utils/imageMetadata';
-import Hands from '../../components/svg/Hands';
 
 function Index({ members }) {
   const { height, width } = useWindowDimensions();
@@ -81,9 +78,10 @@ function Index({ members }) {
               className=""
               sizes="(max-width: 768px) 100vw"
               style={{
-                maxWidth: "100%",
-                height: "auto"
-              }} />
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+            />
           </div>
         </header>
         <main className="w-full flex items-center justify-center font-Poppins max-w-[99rem]">
@@ -102,7 +100,8 @@ function Index({ members }) {
                       blurDataURL={member.imageProps.blurDataURL}
                       alt={`picture of ${member.name}`}
                       fill
-                      sizes="(max-width: 768px) 100vw" />
+                      sizes="(max-width: 768px) 100vw"
+                    />
                     <div className="w-full absolute md:h-28 h-40 bg-[#EDB901] bottom-0 -z-5"></div>
                   </div>
                   <div className=" bg-white relative opacity-0 w-0 h-0 group-hover:opacity-100 group-hover:w-full group-hover:h-72  transition duration-150 ">
@@ -113,7 +112,8 @@ function Index({ members }) {
                       blurDataURL={member.imageProps.blurDataURL}
                       alt={`picture of ${member.name}`}
                       fill
-                      sizes="(max-width: 768px) 100vw" />
+                      sizes="(max-width: 768px) 100vw"
+                    />
                     <div className="w-full absolute md:h-28 h-40  bg-[#2C7CD1] bottom-0 -z-5"></div>
                   </div>
                   <span className="md:text-2xl text-md  font-semibold mt-2 text-[#2C7CD1] group-hover:text-[#EDB901]">
