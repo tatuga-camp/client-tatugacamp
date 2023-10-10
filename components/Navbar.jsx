@@ -12,6 +12,7 @@ import useScrollDirection from '../hooks/useScrollDirection';
 import { currentBrowser } from '../utils/platforms';
 import AuthButton from './auth/button';
 import { useRouter } from 'next/router';
+import MiniLogo from './svg/miniLogo';
 
 function Navbar() {
   const [brower, setBrower] = useState();
@@ -152,15 +153,19 @@ function Navbar() {
         {/* Full screen */}
 
         <ul
-          className={`hidden md:flex  list-none justify-end pl-0 content-center w-full drop-shadow-md h-max 
-          bg-white gap-x-8  py-5 font-normal items-center text-black transition-all duration-500 `}
+          className={`hidden md:flex  list-none justify-end pl-0 content-center w-full h-max 
+          bg-white border-b-2 border-black b gap-x-8  py-5 font-normal items-center text-black transition-all duration-500 `}
         >
           <li className="mr-auto ml-5">
             <Link className="no-underline" href="/">
               <Button className="flex items-center pt-4 pr-4 ">
-                <div className="w-max">
-                  <span className="MoreSugar normal-case text-4xl">
-                    Tatuga camp
+                <div className="w-max flex gap-2 justify-center items-center">
+                  <div className="w-10 h-10">
+                    <MiniLogo />
+                  </div>
+                  <div className="h-7 w-[2px] bg-black"></div>
+                  <span className=" text-2xl font-Poppins font-semibold">
+                    TATUGACAMP
                   </span>
                 </div>
               </Button>
@@ -169,21 +174,21 @@ function Navbar() {
 
           <li className="">
             <Link className="no-underline" href="/about-us">
-              <button className="focus:outline-none text-base font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
+              <button className="focus:outline-none text-base text-black font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>About us</span>
               </button>
             </Link>
           </li>
           <li className="">
             <Link className="no-underline" href="/school">
-              <button className="focus:outline-none text-base font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
+              <button className="focus:outline-none text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga school 🏫</span>
               </button>
             </Link>
           </li>
           <li className="">
             <Link className="no-underline" href="/classroom">
-              <button className="focus:outline-none text-base font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
+              <button className="focus:outline-none text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga class 👩‍🏫</span>
               </button>
             </Link>

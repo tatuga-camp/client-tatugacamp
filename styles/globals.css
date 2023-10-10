@@ -67,23 +67,6 @@
   border-width: 10px;
   border-color: rgb(17, 24, 39);
 }
-.swiper-slide {
-  text-align: center;
-  width: max-content;
-  background: rgba(255, 255, 255, 0);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-}
 
 .underLineHover {
   position: relative;
@@ -242,3 +225,26 @@ input[type='reset'] {
   font-size: 0.9rem !important;
   font-family: Kanit, serif;
 }
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  height: calc((100% - 30px) / 2) !important;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .swiper-slide {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+} */

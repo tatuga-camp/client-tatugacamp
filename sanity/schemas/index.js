@@ -3,7 +3,6 @@ import category from './category';
 import post from './post';
 import author from './author';
 import HeroImages from './HeroImages';
-import aboutCard from './aboutCard';
 import grammar from './grammar';
 import taboo from './taboo';
 import categoryTaboo from './categoryTaboo';
@@ -11,13 +10,15 @@ import members from './members';
 import commonQuestions from './commonQuestions';
 import whatsNews from './whatsNews';
 import announcement from './announcement';
+import homepagePosts from './homepagePosts';
+import serviceCard from './serviceCard';
+import whatWeGotCards from './whatWeGotCards';
+import thanksSchools from './thanksSchools';
 export const schemaTypes = [
   post,
   author,
   category,
   HeroImages,
-  aboutCard,
-  grammar,
   blockContent,
   taboo,
   categoryTaboo,
@@ -25,4 +26,8 @@ export const schemaTypes = [
   commonQuestions,
   whatsNews,
   announcement,
+  homepagePosts,
+  serviceCard,
+  whatWeGotCards,
+  thanksSchools,
 ];
