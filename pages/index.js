@@ -130,7 +130,6 @@ export default function Home({
           />
           <meta name="google" content="nositelinkssearchbox" key="sitelinks" />
           <meta name="google" content="notranslate" key="notranslate" />
-          <meta name="description" content="เรื่องราวของพวกเรา TaTuga camp" />
           <meta name="description" content={DataDescriptionMeta} />
           <meta
             name="keywords"
