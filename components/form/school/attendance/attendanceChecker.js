@@ -299,7 +299,7 @@ function AttendanceCheckerForSchool({
     }
   };
   return (
-    <div className="fixed top-0 right-0 left-0 bottom-0 m-auto righ z-40">
+    <div className="fixed top-0 right-0 left-0 bottom-0 m-auto righ z-50">
       <div
         className="w-screen  md:w-11/12  lg:w-3/4 h-5/6 max-h-[35rem]  fixed z-40 top-0 bottom-0 right-0
        left-0 m-auto flex  items-center justify-center gap-5 py-5  bg-white p-0 md:p-5 rounded-none md:rounded-lg  "
