@@ -116,7 +116,7 @@ export default function Home({
           />
           <meta
             property="og:description"
-            content="Introducing our exceptional team, wholeheartedly devoted to crafting enchanting and inspiring educational journeys."
+            content="#เว็บไซต์จัดการชั้นเรียน #ค่ายภาษาอังกฤษ #ทำเว็บไซต์โรงเรียนแบบทันสมัย #การ์ดเกมเพื่อการเรียนรู้ จบที่นี้ - tatuga camp! "
           />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="600" />
