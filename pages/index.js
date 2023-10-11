@@ -104,9 +104,33 @@ export default function Home({
           <PropTatugaCamp />
         </div>
         <Head>
-          <title>Tatuga camp</title>
+          <title>tatugacamp - เว็บไซต์เพื่อการศึกษาครบวงจร</title>
+          <meta
+            property="og:image"
+            content="https://storage.googleapis.com/tatugacamp.com/thumnail/WordCloud.app.jpg"
+          />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:title"
+            content="tatugacamp - เว็บไซต์เพื่อการศึกษาครบวงจร"
+          />
+          <meta
+            property="og:description"
+            content="Introducing our exceptional team, wholeheartedly devoted to crafting enchanting and inspiring educational journeys."
+          />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="600" />
+          <meta
+            property="og:image:secure_url"
+            content="https://storage.googleapis.com/tatugacamp.com/thumnail/WordCloud.app.jpg"
+          />
+          <meta
+            name="twitter:image:src"
+            content="https://storage.googleapis.com/tatugacamp.com/thumnail/WordCloud.app.jpg"
+          />
           <meta name="google" content="nositelinkssearchbox" key="sitelinks" />
           <meta name="google" content="notranslate" key="notranslate" />
+          <meta name="description" content="เรื่องราวของพวกเรา TaTuga camp" />
           <meta name="description" content={DataDescriptionMeta} />
           <meta
             name="keywords"
