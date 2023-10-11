@@ -27,6 +27,7 @@ import 'swiper/css/grid';
 // import required modules
 import { Pagination, Autoplay, Grid } from 'swiper/modules';
 import Link from 'next/link';
+import PropTatugaCamp from '../components/svg/blobs/blob2';
 
 const tags = [
   { title: '#ค่ายภาษาอังกฤษ' },
@@ -97,8 +98,11 @@ export default function Home({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <Layout>
+        <div className="absolute -z-30 right-0 top-1/4 w-8/12">
+          <PropTatugaCamp />
+        </div>
         <Head>
           <title>Tatuga camp</title>
           <meta name="google" content="nositelinkssearchbox" key="sitelinks" />
@@ -126,8 +130,8 @@ export default function Home({
         ></Script>
 
         {/* Image silder */}
-        <header className="flex w-full flex-col mt-28 md:mt-0 md:flex-col-reverse lg:flex-row relative md:justify-start lg:justify-around items-center">
-          <div className="w-full max-w-sm md:max-w-2xl md:h-max lg:h-96 ml-0 md:ml-10  flex flex-col items-center justify-center gap-4">
+        <header className="flex w-full flex-col mt-28 md:mt-0 md:flex-col-reverse lg:flex-row relative md:justify-center lg:justify-around items-center">
+          <div className="w-full max-w-sm md:max-w-lg md:h-max lg:h-96 ml-0 md:ml-0  flex flex-col items-center justify-center gap-4">
             <h1 className="text-2xl md:text-6xl text-main-color font-Poppins font-semibold">
               Tatuga camp
             </h1>
@@ -153,7 +157,7 @@ export default function Home({
           <div className="relative w-full md:w-max md:min-w-[25rem] lg:min-w-[25rem] xl:min-w-[30rem] z-10   max-w-xl  h-96 ">
             {domLoad && (
               <div
-                className={`w-80 xl:min-w-[30rem] md:min-w-[25rem] lg:min-w-[25rem]  max-w-xl h-60 rounded-3xl  ring-2 ring-black 
+                className={`w-80 xl:min-w-[30rem] md:w-max md:min-w-[15rem] lg:min-w-[25rem]  max-w-xl h-60 rounded-3xl  ring-2 ring-black 
             ${
               isVideoLoading ? ' bg-transparent' : 'bg-white'
             } overflow-hidden absolute top-0 bottom-0 right-0 left-0 m-auto z-20 `}
@@ -161,7 +165,10 @@ export default function Home({
                 <ReactPlayer
                   onReady={handleVideoReady}
                   loop={true}
-                  playsinline
+                  playing={true}
+                  playsinline={true}
+                  volume={0.5}
+                  muted={true}
                   controls
                   width="100%"
                   height="100%"
@@ -255,7 +262,7 @@ export default function Home({
           </div>
         </header>
         <div className="  ">
-          <main className=" flex flex-col justify-center items-center   bg-no-repeat bg-cover ">
+          <main className=" flex flex-col justify-center items-center h-full   bg-no-repeat bg-cover ">
             <section className="flex flex-col items-center lg:mt-0 md:mt-20 justify-center w-full  font-Poppins">
               <h2 className="text-2xl text-black font-semibold">welcome to</h2>
               <h2 className="text-xl text-main-color font-semibold">
@@ -270,7 +277,7 @@ export default function Home({
                 <div
                   id={item.tag}
                   key={index}
-                  className="w-full  h-full md:gap-20 lg:gap-40 xl:gap-20 flex flex-col items-center"
+                  className="w-full  h-full gap-20 md:gap-20 lg:gap-40 xl:gap-20 flex flex-col items-center"
                 >
                   <section
                     className={`mt-10 items-center md:w-11/12 lg:w-10/12 flex justify-around h-full ${
@@ -348,7 +355,7 @@ export default function Home({
                     </div>
                   </section>
                   {index === 0 && (
-                    <div className="w-full h-full flex-col md:flex-col lg:flex-row mt-20 md:mt-0  md:items-center lg:items-start  px-10 flex justify-center gap-10">
+                    <div className="w-full h-max  flex-col md:flex-col lg:flex-row mt-20 md:mt-0  md:items-center lg:items-start  px-10 flex justify-center gap-10">
                       <div className="lg:w-max md:w-96 text-center md:text-left  min-w-[15rem] max-w-xs  xl:max-w-sm h-full  flex flex-col justify-center">
                         <h3 className="font-Poppins lg:text-2xl xl:text-4xl text-main-color font-bold">
                           Tatuga Camp
@@ -396,19 +403,24 @@ export default function Home({
                     </div>
                   )}
                   {index === 0 && (
-                    <div className="w-full  md:h-full lg:h-96  mt-10 flex flex-col items-center justify-start">
-                      <h3 className="font-Poppins text-4xl text-main-color font-bold">
-                        Tatuga Camp
-                      </h3>
-                      <h5 className=" text-2xl text-black font-semibold font-Kanit">
-                        ค่ายเรามีอะไรบ้าง?
-                      </h5>
-                      <ul className="w-11/12 grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-10 place-content-center">
+                    <div className="w-full h-max    md:h-full lg:h-full  mt-10 flex flex-col items-center justify-center">
+                      <div className="text-center">
+                        <h3 className="font-Poppins text-4xl text-main-color font-bold">
+                          Tatuga Camp
+                        </h3>
+                        <h5 className=" text-2xl text-black font-semibold font-Kanit">
+                          ค่ายเรามีอะไรบ้าง?
+                        </h5>
+                      </div>
+                      <ul
+                        className="w-11/12 h-full  grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-10 
+                      "
+                      >
                         {whatWeGotCards.map((list, index) => {
                           return (
                             <li
                               key={index}
-                              className="w-full h-full  p-3 rounded-lg md:gap-4 gap-3 lg:gap-2 flex 
+                              className="w-full h-96  p-3 rounded-lg md:gap-4 gap-3 lg:gap-2 flex 
                               flex-col  items-center justify-start"
                             >
                               <h3 className="text-2xl md:text-2xl lg:text-xl text-center xl:text-2xl font-Kanit text-main-color font-semibold">
@@ -468,15 +480,15 @@ export default function Home({
                           clickable: true,
                         }}
                         modules={[Grid, Pagination, Autoplay]}
-                        className=""
+                        className="bg-transparent"
                       >
                         {thanksSchools.map((list, index) => {
                           return (
                             <SwiperSlide
                               key={index}
-                              className="border-4 border-transparent"
+                              className="border-4 bg-transparent border-transparent"
                             >
-                              <div className="ring-2 px-2 flex flex-col justify-around items-center w-full h-full rounded-xl">
+                              <div className="ring-2 px-2 bg-white flex flex-col justify-around items-center w-full h-full rounded-xl">
                                 <div className="w-24 h-24 rounded-full overflow-hidden relative">
                                   <Image
                                     src={list.mainImage.asset.url}
