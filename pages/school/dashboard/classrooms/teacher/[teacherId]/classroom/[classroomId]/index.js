@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import {
   GetAClassroom,
   GetAllClassroomNumber,
-} from '../../../../../../../service/school/classroom';
-import { GetAllTeachersNumber } from '../../../../../../../service/school/teacher';
-import { GetUserCookie } from '../../../../../../../service/user';
+} from '../../../../../../../../service/school/classroom';
+import { GetAllTeachersNumber } from '../../../../../../../../service/school/teacher';
+import { GetUserCookie } from '../../../../../../../../service/user';
 import { parseCookies } from 'nookies';
-import Unauthorized from '../../../../../../../components/error/unauthorized';
-import SchoolOnly from '../../../../../../../components/error/schoolOnly';
-import Layout from '../../../../../../../layouts/tatugaSchoolLayOut';
+import Unauthorized from '../../../../../../../../components/error/unauthorized';
+import SchoolOnly from '../../../../../../../../components/error/schoolOnly';
+import Layout from '../../../../../../../../layouts/tatugaSchoolLayOut';
 import {
   sideMenusEnglish,
   sideMenusThai,
-} from '../../../../../../../data/school/menubarsHomepage';
+} from '../../../../../../../../data/school/menubarsHomepage';
 import { useQuery } from '@tanstack/react-query';
-import { GetAttendanceClassroom } from '../../../../../../../service/school/attendance';
+import { GetAttendanceClassroom } from '../../../../../../../../service/school/attendance';
 import { useRouter } from 'next/router';
 import { Skeleton } from '@mui/material';
 import { Popover } from '@headlessui/react';
@@ -22,10 +22,10 @@ import { BiMessageAltError, BiNotepad } from 'react-icons/bi';
 import Image from 'next/image';
 import { BsFillTelephoneFill } from 'react-icons/bs';
 import { MdSchool } from 'react-icons/md';
-import ShowStudentAttendanceInfo from '../../../../../../../components/form/school/student/showStudentAttendanceInfo';
+import ShowStudentAttendanceInfo from '../../../../../../../../components/form/school/student/showStudentAttendanceInfo';
 import { SiMicrosoftexcel } from 'react-icons/si';
-import DowloadExcelAttendacne from '../../../../../../../components/form/dowloadExcelAttendacne';
-import ShowNoteAttendance from '../../../../../../../components/form/showNoteAttendance';
+import DowloadExcelAttendacne from '../../../../../../../../components/form/dowloadExcelAttendacne';
+import ShowNoteAttendance from '../../../../../../../../components/form/showNoteAttendance';
 
 function Index({ user, error }) {
   const router = useRouter();

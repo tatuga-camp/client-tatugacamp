@@ -260,7 +260,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
                 </span>
                 <div className="flex gap-2 items-center">
                   <Link
-                    href={`/school/classrooms/teacher/${selectTeacher.id}/classroom/${classroom.id}`}
+                    href={`/school/dashboard/classrooms/teacher/${selectTeacher.id}/classroom/${classroom.id}`}
                     onClick={() => {
                       document.body.style.overflow = 'auto';
                     }}

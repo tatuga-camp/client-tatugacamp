@@ -1,35 +1,35 @@
-import { FiSettings, FiArrowLeftCircle } from "react-icons/fi";
+import { FiSettings, FiArrowLeftCircle } from 'react-icons/fi';
 export const sideMenusThai = [
   {
-    title: "โรงเรียน",
-    icon: "🏫",
-    url: "/school",
+    title: 'โรงเรียน',
+    icon: '🏫',
+    url: '/school/dashboard',
   },
   {
-    title: "ตั้งค่า",
+    title: 'ตั้งค่า',
     icon: <FiSettings />,
-    url: "/school/setting",
+    url: '/school/dashboard/setting',
   },
   {
-    title: "หน้าหลัก",
+    title: 'หน้าหลัก',
     icon: <FiArrowLeftCircle />,
-    url: "/",
+    url: '/school',
   },
 ];
 export const sideMenusEnglish = [
   {
-    title: "school",
-    icon: "🏫",
-    url: "/school",
+    title: 'school',
+    icon: '🏫',
+    url: '/school/dashboard',
   },
   {
-    title: "setting",
+    title: 'setting',
     icon: <FiSettings />,
-    url: "/school/setting",
+    url: '/school/dashboard/setting',
   },
   {
-    title: "homepage",
+    title: 'homepage',
     icon: <FiArrowLeftCircle />,
-    url: "/",
+    url: '/school',
   },
 ];

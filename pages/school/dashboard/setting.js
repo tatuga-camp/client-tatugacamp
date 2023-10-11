@@ -6,12 +6,12 @@ import {
   GetUserCookie,
   UpdateUserData,
   UploadProfilePicture,
-} from '../../service/user';
+} from '../../../service/user';
 import Swal from 'sweetalert2';
-import Image from "next/image";
-import Loading from '../../components/loading/loading';
+import Image from 'next/image';
+import Loading from '../../../components/loading/loading';
 import { useRouter } from 'next/router';
-import Unauthorized from '../../components/error/unauthorized';
+import Unauthorized from '../../../components/error/unauthorized';
 import { parseCookies } from 'nookies';
 import { HiLanguage } from 'react-icons/hi2';
 import TextField from '@mui/material/TextField';
@@ -19,12 +19,12 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 import Head from 'next/head';
 import { MdSubscriptions } from 'react-icons/md';
-import { ProtalSession } from '../../service/stripe-api/portal-session';
+import { ProtalSession } from '../../../service/stripe-api/portal-session';
 import {
   sideMenusEnglish,
   sideMenusThai,
-} from '../../data/school/menubarsHomepage';
-import Layout from '../../layouts/tatugaSchoolLayOut';
+} from '../../../data/school/menubarsHomepage';
+import Layout from '../../../layouts/tatugaSchoolLayOut';
 
 const options = ['Thai', 'English'];
 
@@ -180,7 +180,8 @@ function Setting({ userServerSide, error }) {
                         className="object-cover"
                         alt={`profile picture of ${user.data.data.firstName}`}
                         fill
-                        sizes="(max-width: 768px) 100vw" />
+                        sizes="(max-width: 768px) 100vw"
+                      />
                     )}
                   </div>
                 ) : (

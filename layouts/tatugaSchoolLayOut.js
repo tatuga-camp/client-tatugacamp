@@ -176,7 +176,7 @@ function Layout({
       >
         <div className="w-11/12 h-28 grid grid-cols-6  gap-5 ">
           <Link
-            href={'/school'}
+            href={'/school/dashboard'}
             className={`ring-2 no-underline ring-black row-span-1 col-span-2 transition duration-150
             ${lastRoute === 'school' ? 'bg-pink-400' : 'bg-white'}
             hover:bg-pink-400 group  rounded-lg
@@ -210,7 +210,7 @@ function Layout({
             </div>
           </Link>
           <Link
-            href={'/school/manage-account'}
+            href={'/school/dashboard/manage-account'}
             onClick={() => {
               if (lastRoute === 'manage-account') {
                 setTriggerCreateUser(() => false);
@@ -254,7 +254,7 @@ function Layout({
           </Link>
 
           <Link
-            href={'/school/classrooms'}
+            href={'/school/dashboard/classrooms'}
             className={` ring-2 no-underline ring-black row-span-1 col-span-2 
             ${lastRoute === 'classrooms' ? 'bg-green-400' : 'bg-white'}
             transition duration-150 hover:bg-green-400 group  rounded-lg
