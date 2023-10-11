@@ -27,7 +27,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
           <div className="flex flex-col items-start gap-3 w-96 truncate">
             <span className="font-Kanit text-2xl  font-semibold truncate">
               {currentStudentInfo.student.firstName}{' '}
-              {currentStudentInfo.student.firstName}
+              {currentStudentInfo.student.lastName}
             </span>
             <div className="flex gap-5">
               <span className="font-Kanit w-max p-2 bg-blue-500 rounded-md  text-base  font-normal text-white truncate">

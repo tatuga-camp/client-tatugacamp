@@ -3,7 +3,7 @@ import React from 'react';
 
 function ShowNoteAttendance({ setTriggerShowNote, selectNote }) {
   return (
-    <div className=" fixed top-0 right-0 left-0 bottom-0 m-auto righ z-40 font-Kanit">
+    <div className=" fixed top-0 right-0 left-0 bottom-0 m-auto righ-0 z-50 font-Kanit">
       <div
         className="w-10/12 h-5/6 fixed z-40 top-0 bottom-0 right-0
    left-0 m-auto flex flex-col  items-center justify-center md:justify-start gap-2 bg-white p-0 md:p-5 rounded-lg  "
