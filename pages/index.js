@@ -26,6 +26,7 @@ import 'swiper/css/grid';
 
 // import required modules
 import { Pagination, Autoplay, Grid } from 'swiper/modules';
+import Link from 'next/link';
 
 const tags = [
   { title: '#ค่ายภาษาอังกฤษ' },
@@ -125,31 +126,34 @@ export default function Home({
         ></Script>
 
         {/* Image silder */}
-        <header className="flex w-full  relative justify-around items-center">
-          <div className="w-max max-w-2xl h-96 ml-10  flex flex-col items-center justify-center gap-4">
-            <h1 className="text-6xl text-main-color font-Poppins font-semibold">
+        <header className="flex w-full flex-col mt-28 md:mt-0 md:flex-col-reverse lg:flex-row relative md:justify-start lg:justify-around items-center">
+          <div className="w-full max-w-sm md:max-w-2xl md:h-max lg:h-96 ml-0 md:ml-10  flex flex-col items-center justify-center gap-4">
+            <h1 className="text-2xl md:text-6xl text-main-color font-Poppins font-semibold">
               Tatuga camp
             </h1>
-            <h2 className="text-second-color text-xl tracking-wider">
+            <h2 className="text-second-color text-sm md:text-xl tracking-wider">
               Where learning becomes an adventure
             </h2>
-            <ul className="flex flex-wrap justify-center w-max max-w-lg gap-2">
+            <ul className="flex flex-wrap  justify-center w-11/12 md:w-max md:max-w-lg gap-2">
               {tags.map((tag, index) => {
                 return (
-                  <li
-                    className="bg-main-color p-1 cursor-pointer select-none  hover:bg-third-color transition duration-150 active:scale-110 text-white rounded-lg "
-                    key={index}
-                  >
-                    {tag.title}
+                  <li key={index}>
+                    <Link
+                      href={`/${tag.title}`}
+                      className="bg-main-color no-underline p-1 cursor-pointer select-none 
+                     hover:bg-third-color text-sm md:tex-base  transition duration-150 active:scale-110 text-white rounded-lg "
+                    >
+                      {tag.title}
+                    </Link>
                   </li>
                 );
               })}
             </ul>
           </div>
-          <div className="relative w-max lg:min-w-[25rem]   xl:min-w-[30rem] z-10  max-w-xl  h-96 ">
+          <div className="relative w-full md:w-max md:min-w-[25rem] lg:min-w-[25rem] xl:min-w-[30rem] z-10   max-w-xl  h-96 ">
             {domLoad && (
               <div
-                className={`w-max xl:min-w-[30rem] lg:min-w-[25rem]  max-w-xl h-60 rounded-3xl  ring-2 ring-black 
+                className={`w-80 xl:min-w-[30rem] md:min-w-[25rem] lg:min-w-[25rem]  max-w-xl h-60 rounded-3xl  ring-2 ring-black 
             ${
               isVideoLoading ? ' bg-transparent' : 'bg-white'
             } overflow-hidden absolute top-0 bottom-0 right-0 left-0 m-auto z-20 `}
@@ -252,7 +256,7 @@ export default function Home({
         </header>
         <div className="  ">
           <main className=" flex flex-col justify-center items-center   bg-no-repeat bg-cover ">
-            <section className="flex flex-col items-center justify-center w-full  font-Poppins">
+            <section className="flex flex-col items-center lg:mt-0 md:mt-20 justify-center w-full  font-Poppins">
               <h2 className="text-2xl text-black font-semibold">welcome to</h2>
               <h2 className="text-xl text-main-color font-semibold">
                 Tatuga Camp
@@ -264,15 +268,18 @@ export default function Home({
 
               return (
                 <div
+                  id={item.tag}
                   key={index}
-                  className="w-full lg:gap-40 xl:gap-20 flex flex-col items-center"
+                  className="w-full  h-full md:gap-20 lg:gap-40 xl:gap-20 flex flex-col items-center"
                 >
                   <section
-                    className={`mt-10 items-center w-10/12 flex justify-around h-96 ${
-                      !odds ? 'flex-row-reverse' : 'flex-row'
+                    className={`mt-10 items-center md:w-11/12 lg:w-10/12 flex justify-around h-full ${
+                      !odds
+                        ? 'md:flex-row-reverse flex-col'
+                        : 'md:flex-row flex-col'
                     } `}
                   >
-                    <div className="w-[30rem] group h-[30rem] relative">
+                    <div className="xl:w-[30rem] xl:h-[30rem] md:w-[15rem] md:h-[15rem] w-80 h-80 group  relative">
                       <Image
                         src={item.mainImage.asset.url}
                         fill
@@ -285,7 +292,7 @@ export default function Home({
                       />
                     </div>
                     <div
-                      className="w-max text-start min-w-[20rem] lg:max-w-md xl:max-w-xl
+                      className="w-72 text-start md:w-96 lg:w-max lg:min-w-[20rem] lg:max-w-md xl:max-w-xl
                h-max font-Kanit font-bold text-black text-4xl"
                     >
                       <div className="relative ">
@@ -317,31 +324,32 @@ export default function Home({
                           />
                         </svg>
 
-                        <span className="text-main-color">
+                        <span className="text-black ">
                           <PortableText
                             value={item?.title}
                             components={myPortableTextComponents}
                           />
                         </span>
                       </div>
-                      <div className="text-lg font-normal mt-2">
+                      <div className="text-lg font-normal mt-0 md:mt-2">
                         <PortableText
                           value={item?.description}
                           components={myPortableTextComponents}
                         />
                       </div>
-                      <button
-                        className="px-9 select-none py-1 hover:bg-blue-700 active:ring-2
+                      <Link
+                        href={`${item.link}`}
+                        className="px-9 select-none py-1 no-underline hover:bg-blue-700 active:ring-2
                    active:ring-third-color active:scale-110 transition duration-150 ease-in-out
                  bg-main-color rounded-md drop-shadow-md text-white font-semibold text-lg"
                       >
                         {item?.button}
-                      </button>
+                      </Link>
                     </div>
                   </section>
                   {index === 0 && (
-                    <div className="w-full h-80  px-10 flex justify-center gap-10">
-                      <div className="w-max min-w-[15rem] max-w-xs  xl:max-w-sm h-full  flex flex-col justify-center">
+                    <div className="w-full h-full flex-col md:flex-col lg:flex-row mt-20 md:mt-0  md:items-center lg:items-start  px-10 flex justify-center gap-10">
+                      <div className="lg:w-max md:w-96 text-center md:text-left  min-w-[15rem] max-w-xs  xl:max-w-sm h-full  flex flex-col justify-center">
                         <h3 className="font-Poppins lg:text-2xl xl:text-4xl text-main-color font-bold">
                           Tatuga Camp
                         </h3>
@@ -353,12 +361,13 @@ export default function Home({
                           เรายังให้บริการจัดกิจกรรม ค่ายภาษาอังกฤษแบบครบวงจร
                         </div>
                       </div>
-                      <ul className="w-full h-full grid grid-cols-3 gap-5 place-items-center">
+                      <ul className="w-full h-full grid  grid-cols-1 md:grid-cols-3 gap-5 place-items-center">
                         {serviceCard.map((list, index) => {
                           return (
                             <li
                               key={index}
-                              className="w-full h-full ring-2 p-3 rounded-lg gap-2 flex flex-col items-center justify-start"
+                              className={`w-full h-full ring-2 p-3 rounded-lg gap-2 
+                              flex flex-col items-center justify-start`}
                             >
                               <h3 className="lg:text-xl xl:text-2xl font-Kanit text-main-color font-semibold">
                                 {list.title}
@@ -387,22 +396,22 @@ export default function Home({
                     </div>
                   )}
                   {index === 0 && (
-                    <div className="w-full  h-96 mt-10 flex flex-col items-center justify-start">
+                    <div className="w-full  md:h-full lg:h-96  mt-10 flex flex-col items-center justify-start">
                       <h3 className="font-Poppins text-4xl text-main-color font-bold">
                         Tatuga Camp
                       </h3>
                       <h5 className=" text-2xl text-black font-semibold font-Kanit">
                         ค่ายเรามีอะไรบ้าง?
                       </h5>
-                      <ul className="w-11/12 grid grid-cols-4 gap-5 mt-10 place-content-center">
+                      <ul className="w-11/12 grid md:grid-cols-2 lg:grid-cols-4 gap-5 mt-10 place-content-center">
                         {whatWeGotCards.map((list, index) => {
                           return (
                             <li
                               key={index}
-                              className="w-full h-full  p-3 rounded-lg gap-2 flex 
-                              flex-col items-center justify-start"
+                              className="w-full h-full  p-3 rounded-lg md:gap-4 gap-3 lg:gap-2 flex 
+                              flex-col  items-center justify-start"
                             >
-                              <h3 className="lg:text-xl text-center xl:text-2xl font-Kanit text-main-color font-semibold">
+                              <h3 className="text-2xl md:text-2xl lg:text-xl text-center xl:text-2xl font-Kanit text-main-color font-semibold">
                                 {list.title}
                               </h3>
                               <div className="w-full hover:scale-110 transition duration-150 ease-linear h-48 relative">
@@ -437,6 +446,18 @@ export default function Home({
                         slidesPerView={6}
                         grid={{
                           rows: 2,
+                        }}
+                        breakpoints={{
+                          0: {
+                            slidesPerView: 2,
+                          },
+
+                          768: {
+                            slidesPerView: 4,
+                          },
+                          1024: {
+                            slidesPerView: 6,
+                          },
                         }}
                         autoplay={{
                           delay: 2500,
@@ -484,8 +505,11 @@ export default function Home({
               );
             })}
 
-            <div className="w-max h-max font-Kanit  z-30 font-medium text-[1.5rem] md:text-[1.7rem]  px-5 py-3 text-white rounded-xl bg-[#2C7CD1]">
-              <span>แหล่งรวบรวมความรู้ สำหรับครู👩🏼‍🏫</span>
+            <div
+              className="w-80 h-max mt-20 font-Kanit  z-30 font-medium text-xl md:text-[1.7rem]  px-5 py-3
+             text-white rounded-xl bg-[#2C7CD1]"
+            >
+              <span id="activities">แหล่งรวบรวมความรู้ สำหรับครู👩🏼‍🏫</span>
             </div>
 
             <ul className="list-none pl-0 w-full  h-24 flex mt-10 flex-col-reverse  md:flex-row items-center justify-center md:items-end  md:gap-x-12 font-Kanit font-light text-lg">
@@ -536,7 +560,7 @@ export default function Home({
   );
 }
 
-export async function getServerSideProps(ctx) {
+export async function getStaticProps(ctx) {
   const query = `*[_type == "post"]{
     _id,
     _createdAt,
@@ -561,6 +585,8 @@ export async function getServerSideProps(ctx) {
     description,
     button,
     title,
+    link,
+    tag,
   }`;
   const queryServiceCard = `*[_type == "serviceCard"]{
     mainImage{

@@ -154,7 +154,7 @@ function Navbar() {
 
         <ul
           className={`hidden md:flex  list-none justify-end pl-0 content-center w-full h-max 
-          bg-white border-b-2 border-black b gap-x-8  py-5 font-normal items-center text-black transition-all duration-500 `}
+          bg-white border-b-2 border-black b gap-x-2  py-5 font-normal items-center text-black transition-all duration-500 `}
         >
           <li className="mr-auto ml-5">
             <Link className="no-underline" href="/">

@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import Image from "next/image";
+import Image from 'next/image';
 import React from 'react';
 import Call from '../svg/Call';
 import Swal from 'sweetalert2';
@@ -17,7 +17,7 @@ function Footer(props) {
   return (
     <div className="bg-[url('/blob-scene-haikei.svg')] bg-cover bg-bottom h-max pt-10 ">
       <div className="w-full h-full  md:py-5 pt-5 justify-center flex flex-col md:flex-row  md:pt-2   text-center text-white items-center bg-[#2C7CD1] md:bg-transparent  ">
-        <div className="md:w-max md:ml-16 ml-0 w-[10rem] h-[10rem] relative lg:-top-9 md:h-max rounded-full overflow-hidden bg-white">
+        <div className="md:w-max ring-2 ring-black md:ml-16 ml-0 w-[10rem] h-[10rem] relative lg:-top-9 md:h-max rounded-full overflow-hidden bg-white">
           <Image
             className="object-center rounded-full "
             width={200}
@@ -27,15 +27,16 @@ function Footer(props) {
             priority
             sizes="(max-width: 768px) 100vw"
             style={{
-              maxWidth: "100%",
-              height: "auto"
-            }} />
+              maxWidth: '100%',
+              height: 'auto',
+            }}
+          />
         </div>
         <ul className="list-none text-center w-full pl-0 justify-center mt-5 md:mt-16">
           <li>
             <div className="w-full flex justify-center">
-              <div className="md:w-3/4 lg:w-2/4 w-3/4 mb-5  h-max ">
-                <span className="md:text-md text-white md:text-black lg:text-white lg:text-sm font-Inter font-thin md:font-normal ">
+              <div className="md:w-3/4 border-2 border-black font-Poppins bg-white p-2 rounded-xl lg:w-2/4 w-3/4 mb-5  h-max ">
+                <span className="md:text-md text-sm text-black lg:text-sm  font-normal md:font-normal ">
                   {dataFooter}
                 </span>
               </div>
