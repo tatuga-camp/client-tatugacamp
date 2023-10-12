@@ -10,7 +10,6 @@ import { sanityClient } from '../../sanity';
 import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
 import { myPortableTextComponents } from '../../data/portableContent';
-import FooterActivities from '../../components/footer/FooterActivities';
 import Footer from '../../components/footer/Footer';
 import { TypeAnimation } from 'react-type-animation';
 
@@ -43,7 +42,7 @@ function Index({ tatugaSchoolPosts }) {
         </title>
         <meta
           property="og:image"
-          content="https://storage.googleapis.com/tatugacamp.com/thumnail/WordCloud.app.jpg"
+          content="https://storage.googleapis.com/tatugacamp.com/thumnail/school-oage.png"
         />
         <meta property="og:type" content="website" />
         <meta
@@ -58,11 +57,11 @@ function Index({ tatugaSchoolPosts }) {
         <meta property="og:image:height" content="600" />
         <meta
           property="og:image:secure_url"
-          content="https://storage.googleapis.com/tatugacamp.com/thumnail/WordCloud.app.jpg"
+          content="https://storage.googleapis.com/tatugacamp.com/thumnail/school-oage.png"
         />
         <meta
           name="twitter:image:src"
-          content="https://storage.googleapis.com/tatugacamp.com/thumnail/WordCloud.app.jpg"
+          content="https://storage.googleapis.com/tatugacamp.com/thumnail/school-oage.png"
         />
         <meta name="google" content="nositelinkssearchbox" key="sitelinks" />
         <meta name="google" content="notranslate" key="notranslate" />
