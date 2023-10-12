@@ -61,7 +61,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
           </div>
         </div>
         <Link
-          href={`/school/classrooms/teacher/${currentStudentInfo.classroom.user.id}/classroom/${currentStudentInfo.classroom.id}`}
+          href={`/school/dashboard/classrooms/teacher/${currentStudentInfo.classroom.user.id}/classroom/${currentStudentInfo.classroom.id}`}
           onClick={() => {
             document.body.style.overflow = 'auto';
           }}
