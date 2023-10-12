@@ -5,23 +5,23 @@ import { Box, Pagination, Skeleton, TextField } from '@mui/material';
 
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import { GetUserCookie } from '../../../service/user';
+import { GetUserCookie } from '../../../../service/user';
 import { parseCookies } from 'nookies';
 import {
   GetAllTeachers,
   GetAllTeachersNumber,
-} from '../../../service/school/teacher';
-import CreateAccountForm from '../../../components/form/school/createAccountForm';
-import SettingAccountForm from '../../../components/form/school/settingAccountForm';
+} from '../../../../service/school/teacher';
+import CreateAccountForm from '../../../../components/form/school/createAccountForm';
+import SettingAccountForm from '../../../../components/form/school/settingAccountForm';
 import { useRouter } from 'next/router';
-import Layout from '../../../layouts/tatugaSchoolLayOut';
+import Layout from '../../../../layouts/tatugaSchoolLayOut';
 import {
   sideMenusEnglish,
   sideMenusThai,
-} from '../../../data/school/menubarsHomepage';
-import Unauthorized from '../../../components/error/unauthorized';
-import SchoolOnly from '../../../components/error/schoolOnly';
-import { GetAllClassroomNumber } from '../../../service/school/classroom';
+} from '../../../../data/school/menubarsHomepage';
+import Unauthorized from '../../../../components/error/unauthorized';
+import SchoolOnly from '../../../../components/error/schoolOnly';
+import { GetAllClassroomNumber } from '../../../../service/school/classroom';
 import { BsPersonFillCheck, BsPersonFillX } from 'react-icons/bs';
 import Head from 'next/head';
 
