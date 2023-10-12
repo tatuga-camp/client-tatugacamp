@@ -101,7 +101,7 @@ function Navbar() {
             <Link className="no-underline" href="/">
               <li
                 onClick={onClick}
-                className="w-max bg-white rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-max bg-white text-black rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
                 Home page
               </li>
@@ -109,17 +109,31 @@ function Navbar() {
             <Link className="no-underline" href="/classroom">
               <li
                 onClick={onClick}
-                className="w-max bg-white rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-max bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
-                tatuga class 🧑‍🎓
+                tatuga class
+              </li>
+            </Link>
+            <Link className="no-underline relative" href="/school">
+              <div
+                className="px-1 w-max text-xs animate-bounce absolute top-0 left-0 m-auto 
+             bg-main-color text-white font-Poppins rounded-lg"
+              >
+                update
+              </div>
+              <li
+                onClick={onClick}
+                className="w-max bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+              >
+                tatuga school
               </li>
             </Link>
             <Link className="no-underline" href="/about-us">
               <li
                 onClick={onClick}
-                className="w-max bg-white rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-max bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
-                About us
+                about us
               </li>
             </Link>
             <div>
@@ -175,11 +189,17 @@ function Navbar() {
           <li className="">
             <Link className="no-underline" href="/about-us">
               <button className="focus:outline-none text-base text-black font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
-                <span>About us</span>
+                <span>about us</span>
               </button>
             </Link>
           </li>
-          <li className="">
+          <li className="relative">
+            <div
+              className="px-1 w-max text-xs animate-bounce absolute top-0 left-0 m-auto 
+             bg-main-color text-white font-Poppins rounded-lg"
+            >
+              update
+            </div>
             <Link className="no-underline" href="/school">
               <button className="focus:outline-none text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga school 🏫</span>

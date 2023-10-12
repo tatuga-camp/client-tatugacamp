@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../../layouts/tatugaSchoolLayOut';
-import Unauthorized from '../../../components/error/unauthorized';
-import SchoolOnly from '../../../components/error/schoolOnly';
-import {
-  sideMenusEnglish,
-  sideMenusThai,
-} from '../../../data/school/menubarsHomepage';
-import { GetAllTeachersNumber } from '../../../service/school/teacher';
-import { GetUserCookie } from '../../../service/user';
+
 import { parseCookies } from 'nookies';
 import { Pagination } from '@mui/material';
-import {
-  GetAllClassroom,
-  GetAllClassroomNumber,
-} from '../../../service/school/classroom';
+
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Layout from '../../../../layouts/tatugaSchoolLayOut';
+import SchoolOnly from '../../../../components/error/schoolOnly';
+import Unauthorized from '../../../../components/error/unauthorized';
+import {
+  sideMenusEnglish,
+  sideMenusThai,
+} from '../../../../data/school/menubarsHomepage';
+import { GetUserCookie } from '../../../../service/user';
+import { GetAllClassroom } from '../../../../service/school/classroom';
 
 function Index({ user, error }) {
   const [page, setPage] = useState(1);

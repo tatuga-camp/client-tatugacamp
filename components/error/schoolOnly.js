@@ -19,10 +19,13 @@ bg-[url('/blob-scene-haikei.svg')] bg-no-repeat bg-fixed bg-cover flex-col `}
         <div className="text-4xl text-red-400">
           <IoWarning />
         </div>
-        <div className="text-xl md:text-3xl font-Kanit">
+        <div className="text-xl break-words text-center md:text-3xl font-Kanit">
           {user.language === 'Thai'
-            ? 'สำหรับบัญชี โรงเรียน เท่านั้นถึงสามารถเข้าถึงได้'
+            ? 'สำหรับบัญชี โรงเรียน เท่านั้นถึงสามารถเข้าถึงได้ หากต้องการทดลองใช้งาน'
             : user.language === 'English' && 'Only for tatuga school user!'}
+          <a target="_blank" href="https://www.facebook.com/TatugaCamp">
+            คลิก
+          </a>
         </div>
         <div>
           <span>

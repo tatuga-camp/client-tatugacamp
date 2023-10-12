@@ -14,6 +14,7 @@ import homepagePosts from './homepagePosts';
 import serviceCard from './serviceCard';
 import whatWeGotCards from './whatWeGotCards';
 import thanksSchools from './thanksSchools';
+import tatugaSchoolPosts from './tatugaSchoolPosts';
 export const schemaTypes = [
   post,
   author,
@@ -30,4 +31,5 @@ export const schemaTypes = [
   serviceCard,
   whatWeGotCards,
   thanksSchools,
+  tatugaSchoolPosts,
 ];

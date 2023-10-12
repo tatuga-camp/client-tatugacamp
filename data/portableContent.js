@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 import { useState } from 'react';
 import { urlFor } from '../sanity';
 
@@ -33,7 +33,6 @@ export const myPortableTextComponents = {
         <br />
       </>
     ),
-    normal: ({ children }) => <div className="text-base ">{children}</div>,
 
     blockquote: ({ children }) => (
       <blockquote className="border-l-purple-500 border-l-2 border-solid border-r-0 border-y-0 my-5 pl-5 font-semibold">
@@ -91,7 +90,8 @@ const SanityImage = ({ asset }) => {
           alt="some images about  tatuga class"
           unoptimized={true}
           fill
-          sizes="(max-width: 768px) 100vw" />
+          sizes="(max-width: 768px) 100vw"
+        />
       </div>
     </div>
   );
