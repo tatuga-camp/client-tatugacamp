@@ -5,7 +5,7 @@ import Call from '../svg/Call';
 import Swal from 'sweetalert2';
 function Footer(props) {
   const dataFooter =
-    'TaTuga camp is the place where you can enjoy learning English outside classrooms with a lot of activities and games. We DO believe that learning through playing is the best way to learn, especially English! Enjoy with us TaTuga camp';
+    'Tatuga camp is the place where you can enjoy learning English outside classrooms with a lot of activities and games. We DO believe that learning through playing is the best way to learn, especially English! Enjoy with us Tatuga camp';
   props.descriptionMeta(dataFooter);
   const date = new Date().toJSON().slice(0, 10);
 
@@ -15,24 +15,25 @@ function Footer(props) {
     Swal.fire('Copy เบอร์โทร 061-027-7960 เรียบร้อย');
   };
   return (
-    <div className="bg-[url('/blob-scene-haikei.svg')] bg-cover bg-bottom h-max pt-10 ">
-      <div className="w-full h-full  md:py-5 pt-5 justify-center flex flex-col md:flex-row  md:pt-2   text-center text-white items-center bg-[#2C7CD1] md:bg-transparent  ">
-        <div className="md:w-max ring-2 ring-black md:ml-16 ml-0 w-[10rem] h-[10rem] relative lg:-top-9 md:h-max rounded-full overflow-hidden bg-white">
+    <div className=" py-5">
+      <div
+        className="w-full h-full  pt-5 justify-center flex flex-col   text-center text-white items-center
+      md:bg-transparent  "
+      >
+        <div
+          className=" ring-2 ring-black  w-40 h-40  relative
+         rounded-full overflow-hidden bg-white"
+        >
           <Image
             className="object-center rounded-full "
-            width={200}
-            height={200}
             alt="tatuga logo"
             src="https://storage.googleapis.com/tatugacamp.com/logo%20/tatugacamp%20facebook.jpg"
             priority
+            fill
             sizes="(max-width: 768px) 100vw"
-            style={{
-              maxWidth: '100%',
-              height: 'auto',
-            }}
           />
         </div>
-        <ul className="list-none text-center w-full pl-0 justify-center mt-5 md:mt-16">
+        <ul className="list-none text-center w-full pl-0 justify-center mt-5 ">
           <li>
             <div className="w-full flex justify-center">
               <div className="md:w-3/4 border-2 border-black font-Poppins bg-white p-2 rounded-xl lg:w-2/4 w-3/4 mb-5  h-max ">
@@ -77,7 +78,7 @@ function Footer(props) {
             </ul>
           </li>
           <li className="flex w-full justify-center items-center">
-            <div className="font-Inter font-thin mt-1 pb-3 md:pb-0 md:text-sm text-[0.65rem] w-3/4">
+            <div className=" font-normal font-Poppins uppercase mt-1 pb-3 md:pb-0 md:text-sm text-[0.65rem] w-3/4">
               {`Copyright © ${date} Tatuga camp Limited Partnership. All rights reserved`}
             </div>
           </li>

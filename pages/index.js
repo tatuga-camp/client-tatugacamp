@@ -98,7 +98,7 @@ export default function Home({
   };
 
   return (
-    <div className="w-full relative">
+    <div className="bg-gradient-to-b  from-white from-80% to-main-color relative">
       <Layout>
         <div className="absolute -z-30 right-0 top-1/4 w-8/12">
           <PropTatugaCamp />
@@ -154,10 +154,12 @@ export default function Home({
 
         {/* Image silder */}
         <header className="flex w-full flex-col mt-28 md:mt-0 md:flex-col-reverse lg:flex-row relative md:justify-center lg:justify-around items-center">
-          <div className="w-full max-w-sm md:max-w-lg md:h-max lg:h-96 ml-0 md:ml-0  flex flex-col items-center justify-center gap-4">
+          <div className="w-full max-w-sm md:max-w-lg md:h-max lg:h-96 ml-0 md:ml-0  flex flex-col items-center justify-center gap-1 md:gap-3">
+            <span className="font-Kanit text-sx">ทา-ทู-ก้า-แคมป์ 😁</span>
             <h1 className="text-2xl md:text-6xl text-main-color font-Poppins font-semibold">
               Tatuga camp
             </h1>
+
             <h2 className="text-second-color text-sm md:text-xl tracking-wider">
               Where learning becomes an adventure
             </h2>
