@@ -132,7 +132,7 @@ function Index({ tatugaSchoolPosts }) {
               })}
             </ul>
           </section>
-          <section className="relative w-full md:w-max md:min-w-[25rem] lg:min-w-[25rem] xl:min-w-[30rem] z-10   max-w-xl  h-96 ">
+          <section className="relative w-full md:w-max md:min-w-[20rem] lg:min-w-[25rem] xl:min-w-[30rem] z-10   max-w-xl  h-96 ">
             {domLoad && (
               <div
                 className={`w-80 xl:min-w-[30rem] md:w-max md:min-w-[15rem] lg:min-w-[25rem]  max-w-xl h-60 rounded-3xl  ring-2 ring-black 
@@ -150,7 +150,7 @@ function Index({ tatugaSchoolPosts }) {
                   controls
                   width="100%"
                   height="100%"
-                  url="https://player.vimeo.com/video/872850716"
+                  url="https://player.vimeo.com/video/873669665"
                 />
                 {isVideoLoading && (
                   <div className="absolute  w-full h-full top-0 bottom-0 right-0 left-0 m-auto">
