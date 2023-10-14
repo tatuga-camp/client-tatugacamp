@@ -60,11 +60,9 @@ function Index({ commonQuestions, announcement }) {
         />
         <meta
           name="description"
-          content="ห้องเรียนจาก Tatuga class หรือ ทาทูก้าคาส ที่จะพาคุณครูไปสู่การบริหารห้องเรียนอย่างสะดวกและสนุก กับ tatuga class 
-          TaTuga Class Classroom Management for Everyone
-          จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ สะดวก และ รวดเร็ว - tatuga class"
+          content="จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ สะดวก และ รวดเร็ว - tatuga class"
         />
-        <title>Tatuga class</title>
+        <title>Tatuga class - เว็บไซต์จัดการชั้นเรียน</title>
         <meta
           name="viewport"
           content="width=device-width; initial-scale=1.0;"
