@@ -129,12 +129,12 @@ function ShowTeacherOverviewInfo({ setTriggerShowTeacherInfo, selectTeacher }) {
       className="z-30 
 top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-center"
     >
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 items-end">
         <div
-          className="w-max  gap-8 h-max py-10 font-Kanit flex  justify-around bg-white rounded-lg
+          className="w-10/21 gap-0  xl:gap-8 h-max xl:h-max lg:py-5 xl:py-10 font-Kanit flex  justify-around bg-white rounded-lg
    drop-shadow-xl p-5 "
         >
-          <div className="flex flex-col  justify-center items-center font-Kanit">
+          <div className="flex flex-col h-60  justify-center items-center font-Kanit">
             <div
               className="w-20 h-20 bg-blue-300 mb-1 text-white rounded-md 
                             relative flex justify-center items-center overflow-hidden"
@@ -174,12 +174,12 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
               </div>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex lg:h-60  gap-2">
             <div className="flex flex-col items-center justify-center">
               <span className="font-semibold text-xl">
                 สรุปภาพรวมการเข้าเรียน
               </span>
-              <div className="w-60 h-60">
+              <div className="lg:w-52 lg:h-52 ">
                 {attendacneData ? (
                   <Pie data={attendacneData} />
                 ) : (
@@ -193,7 +193,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
             </div>
           </div>
         </div>
-        <div className="flex flex-col p-3 gap-2 w-full h-80 bg-white rounded-lg relative items-center justify-center">
+        <div className="flex flex-col p-3 gap-2 w-10/12  xl:w-full lg:h-60  bg-white rounded-lg relative items-center justify-center">
           <button
             onClick={() => setTriggerTableNationality((prev) => !prev)}
             className="w-max text-sm absolute top-2 right-2 hover:bg-green-500 hover:text-green-200

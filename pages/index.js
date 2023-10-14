@@ -130,7 +130,17 @@ export default function Home({
           />
           <meta name="google" content="nositelinkssearchbox" key="sitelinks" />
           <meta name="google" content="notranslate" key="notranslate" />
-          <meta name="description" content={DataDescriptionMeta} />
+          <meta
+            name="description"
+            content="จัดค่ายภาษาอังกฤษ ด้วยประสบการณ์ มากกว่า 30 โรงเรียน
+            การเรียนรู้ภาษาอังกฤษผ่านเกม กิจกรรมที่สนุกสนาน ด้วยนวัตกรรมที่ทันสมัย เน้นให้ผู้เรียนได้นำความรู้มาใช้ได้จริง
+            มุ่งพัฒนา 4 ทักษะภาษาอังกฤษ ฟัง พูด อ่าน เขียน และมุ่งเน้นทักษะที่จำเป็นในศตวรรษที่ 21
+            
+            เว็บไซต์จัดการชั้นเรียน Tatuga Class
+            Tatuga Class เว็บไซต์จัดการชั้นเรียนเพื่อทุกคน เว็บไซต์ที่ทุกคนสามารถจัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ
+            สะดวก และ รวดเร็ว
+            "
+          />
           <meta
             name="keywords"
             content="TaTuga camp, tatugacamp, tatuga camp, English, English camp, camp for learning English, card game, activities in classroom, กิจกรรมค่ายภาษาอังกฤษ, การ์ดเกมเพื่อการเรียนรู้, การ์ดเกม"
@@ -200,11 +210,14 @@ export default function Home({
                   url="https://player.vimeo.com/video/872850716"
                 />
                 {isVideoLoading && (
-                  <div className="absolute  w-full h-full top-0 bottom-0 right-0 left-0 m-auto">
-                    <div className=" text-6xl w-max h-max text-green-600 absolute  top-0 bottom-0 right-0 left-0 m-auto  ">
+                  <div className="absolute   w-full h-full top-0 bottom-0 right-0 left-0 m-auto">
+                    <div
+                      className=" text-6xl w-max h-max text-green-600 absolute 
+                     top-0 bottom-0 right-0 left-0 m-auto z-40  "
+                    >
                       <BsFillPlayCircleFill />
                     </div>
-                    <Skeleton height="100%" width="100%" />
+                    <div className="w-full h-full animate-pulse bg-slate-200"></div>
                   </div>
                 )}
               </div>

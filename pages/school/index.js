@@ -152,11 +152,14 @@ function Index({ tatugaSchoolPosts }) {
                   url="https://player.vimeo.com/video/873669665"
                 />
                 {isVideoLoading && (
-                  <div className="absolute  w-full h-full top-0 bottom-0 right-0 left-0 m-auto">
-                    <div className=" text-6xl w-max h-max text-green-600 absolute  top-0 bottom-0 right-0 left-0 m-auto  ">
+                  <div className="absolute   w-full h-full top-0 bottom-0 right-0 left-0 m-auto">
+                    <div
+                      className=" text-6xl w-max h-max text-green-600 absolute 
+                     top-0 bottom-0 right-0 left-0 m-auto z-40  "
+                    >
                       <BsFillPlayCircleFill />
                     </div>
-                    <Skeleton height="100%" width="100%" />
+                    <div className="w-full h-full animate-pulse bg-slate-200"></div>
                   </div>
                 )}
               </div>
