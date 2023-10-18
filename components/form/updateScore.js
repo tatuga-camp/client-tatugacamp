@@ -130,10 +130,19 @@ function UpdateScore({
     try {
       setLoadingDeleteStudent(() => true);
       const deletedStudent = await DelteStudent({ studentId: data.studentId });
-      Swal.fire('success', deletedStudent.data.message, 'success');
-      document.body.style.overflow = 'auto';
-      setLoadingDeleteStudent(() => false);
       students.refetch();
+      Swal.fire('success', deletedStudent.data.message, 'success');
+      setLoadingDeleteStudent(() => false);
+      document.body.style.overflow = 'auto';
+      if (classroomScore === true) {
+        if (classroomScore === true) {
+          close();
+        } else {
+          setTriggerUpdateStudent(() => false);
+        }
+      } else {
+        setTriggerUpdateStudent(() => false);
+      }
     } catch (err) {
       setLoadingDeleteStudent(() => false);
       Swal.fire(

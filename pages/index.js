@@ -100,7 +100,7 @@ export default function Home({
   return (
     <div className="bg-gradient-to-b  from-white from-80% to-main-color relative">
       <Layout>
-        <div className="absolute -z-30 right-0 top-1/4 w-8/12">
+        <div className="absolute z-auto right-0 top-1/4 w-8/12">
           <PropTatugaCamp />
         </div>
         <Head>

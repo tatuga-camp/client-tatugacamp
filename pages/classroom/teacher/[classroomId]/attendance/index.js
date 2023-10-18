@@ -277,14 +277,14 @@ function Index({ error, user }) {
                         className="flex hover:ring-2 hover:bg-slate-200 group "
                       >
                         <td className=" w-10 md:w-28 flex items-center justify-center sticky left-0 z-20 bg-white group-hover:bg-slate-200">
-                          {item.student.number}
+                          {item.student?.number}
                         </td>
                         <td
                           className="w-20 text-xs md:text-base  md:w-60  text-left 
                         flex justify-start items-center sticky left-10 md:left-28 z-20 bg-white group-hover:bg-slate-200"
                         >
                           <span className="text-left text-xs md:text-base truncate hover:overflow-visible">
-                            {item.student.firstName} {item.student?.lastName}
+                            {item.student?.firstName} {item.student?.lastName}
                           </span>
                         </td>
                         {item.data.map((status) => {
