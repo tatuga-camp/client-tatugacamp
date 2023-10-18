@@ -159,7 +159,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
             <div className="flex gap-2 text-slate-400">
               <span>{selectTeacher.email}</span>
             </div>
-            <div className="flex gap-3 items-center mt-5">
+            <div className="flex gap-3 xl:flex-row lg:flex-col items-center mt-5">
               <div className="flex gap-3 items-center">
                 <div className="w-8 h-8 text-lg bg-blue-200 text-blue-600 rounded-full flex items-center justify-center">
                   <AiFillPhone />
@@ -193,20 +193,22 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
             </div>
           </div>
         </div>
-        <div className="flex flex-col p-3 gap-2 w-10/12  xl:w-full lg:h-60  bg-white rounded-lg relative items-center justify-center">
-          <button
-            onClick={() => setTriggerTableNationality((prev) => !prev)}
-            className="w-max text-sm absolute top-2 right-2 hover:bg-green-500 hover:text-green-200
+        <div className="flex  flex-col p-3 gap-2 w-10/12  xl:w-full lg:h-60 xl:h-max  bg-white rounded-lg relative items-center justify-center">
+          <div className="w-full flex justify-end">
+            <button
+              onClick={() => setTriggerTableNationality((prev) => !prev)}
+              className="w-max text-sm  hover:bg-green-500 hover:text-green-200
                px-5 py-2 rounded-md bg-green-200 text-green-600 font-Kanit font-semibold flex items-center gap-2"
-          >
-            ตาราง
-            <div>
-              <BsTable />
-            </div>
-          </button>
-          <span className="font-semibold text-xl">สรุปข้อมูลสัญชาติ</span>
+            >
+              ตาราง
+              <div>
+                <BsTable />
+              </div>
+            </button>
+          </div>
+          <span className="font-semibold text-lg">สรุปข้อมูลสัญชาติ</span>
           {triggerTableNationality ? (
-            <ul className="grid grid-cols-2 overflow-auto h-80 w-full gap-x-10  place-items-start">
+            <ul className="grid grid-cols-2 overflow-auto h-60 w-full gap-x-10  place-items-start">
               {dataNationalityTabel?.map((nationality, index) => {
                 return (
                   <li
@@ -221,7 +223,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
               })}
             </ul>
           ) : (
-            <div className="lg:w-40 lg:h-40 2xl:w-60 2xl:h-60">
+            <div className="lg:w-32 lg:h-32 xl:w-60 xl:h-60">
               {dataNationality ? (
                 <Doughnut data={dataNationality} options={options} />
               ) : (
