@@ -353,19 +353,19 @@ export default function Home({
                             d="M21.9839 26.619L2.5 7.13507"
                             stroke="#F55E00"
                             strokeWidth="4"
-                            stroke-linecap="round"
+                            strokeLinecap="round"
                           />
                           <path
                             d="M27.0923 22.4175L23.4023 2"
                             stroke="#F55E00"
                             strokeWidth="4"
-                            stroke-linecap="round"
+                            strokeLinecap="round"
                           />
                           <path
                             d="M17.84 30.2373L4.44824 28.6696"
                             stroke="#F55E00"
                             strokeWidth="4"
-                            stroke-linecap="round"
+                            strokeLinecap="round"
                           />
                         </svg>
 

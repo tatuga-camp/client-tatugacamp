@@ -122,7 +122,7 @@ function Index() {
      flex flex-col justify-center items-center"
       >
         <div
-          className="w-11/12 py-5 md:w-96  md:h-max md:pb-20 border-2 border-black flex flex-col justify-start items-center 
+          className="w-11/12 py-5 md:w-96  md:h-max md:pb-10 border-2 border-black flex flex-col justify-start items-center 
         md:border-solid broder-black relative rounded-xl bg-transparent bg-white md:bg-white  "
         >
           <div
@@ -260,6 +260,14 @@ function Index() {
               </div>
               <span>continue with Facebook</span>
             </button>
+            <a
+              target="_blank"
+              href="https://www.privacypolicies.com/live/810f4bf4-2241-405b-aeb4-064b62b40dcc"
+              className="cursor-pointer text-sm mt-2  font-Kanit font-medium text-blue-700
+                 bg-white px-2 rounded-lg border-black broder-2 border-solid md:border-none"
+            >
+              Our Privacy Policy
+            </a>
           </div>
         </div>
       </div>
