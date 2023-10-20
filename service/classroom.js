@@ -73,6 +73,32 @@ export async function DeleteClassroom({ classroomId }) {
   }
 }
 
+export async function AllowStudentDeleteWorkService({
+  classroomId,
+  allowStudentToDeleteWork,
+}) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const classrooms = await axios.put(
+      `${process.env.Server_Url}/user/classroom/isAllowStudentDeleteWork`,
+      {
+        classroomId,
+        allowStudentToDeleteWork,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return classrooms.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 export async function GetAllClassrooms({ page, getAll }) {
   try {
     const cookies = parseCookies();

@@ -46,6 +46,32 @@ export async function GetAllAssignment({ studentId, classroomId }) {
   }
 }
 
+export async function DeleteMyWorkService({
+  studentId,
+  studentWorkId,
+  classroomId,
+}) {
+  try {
+    const myWork = await axios.delete(
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/student-assignment/studentWork/delete`,
+      {
+        params: {
+          studentId,
+          studentWorkId,
+          classroomId,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return myWork.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
 export async function GetMyWork({ studentId, assignmentId }) {
   try {
     const myWork = await axios.get(

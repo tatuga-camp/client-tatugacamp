@@ -5,6 +5,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { IoCaretBackOutline, IoDocumentText } from 'react-icons/io5';
 import { Box, Skeleton, TextField } from '@mui/material';
 import {
+  DeleteMyWorkService,
   GetAssignment,
   GetMyWork,
   SummitWork,
@@ -27,7 +28,11 @@ import { FcVideoFile } from 'react-icons/fc';
 import { FaFileAudio, FaRegFilePdf } from 'react-icons/fa';
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import { MdOutlineInventory2 } from 'react-icons/md';
-import { AiOutlineCloudUpload, AiOutlinePlus } from 'react-icons/ai';
+import {
+  AiFillDelete,
+  AiOutlineCloudUpload,
+  AiOutlinePlus,
+} from 'react-icons/ai';
 import { useSpring, animated } from '@react-spring/web';
 import { FiRefreshCw } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
@@ -60,6 +65,7 @@ function Index() {
   const [triggerShowFiles, setTiggerShowFiles] = useState(true);
   const [triggerShowWorksheet, setTriggerShowWorksheet] = useState(false);
   const [triggerMenu, setTriggerMenu] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const classroom = useQuery(
     ['classroom'],
@@ -340,6 +346,40 @@ function Index() {
       to: {
         y: 400,
       },
+    });
+  };
+
+  const handleDeleteStudentWork = ({ studentWorkId }) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          setIsLoading(() => true);
+          const deleteLandingPage = await DeleteMyWorkService({
+            studentId: router.query.studentId,
+            classroomId: router.query.classroomId,
+            studentWorkId: studentWork.id,
+          });
+          Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          setIsLoading(() => false);
+          location.reload();
+        } catch (err) {
+          setIsLoading(() => false);
+          console.log(err);
+          Swal.fire(
+            'error!',
+            err?.props?.response?.data?.message?.toString(),
+            'error',
+          );
+        }
+      }
     });
   };
 
@@ -854,6 +894,17 @@ application/pdf,
                       ใบงาน
                     </li>
                   </ul>
+                  {studentWork?.status !== 'no-work' && (
+                    <div className="w-full flex justify-end">
+                      <button
+                        onClick={handleDeleteStudentWork}
+                        className="flex items-center justify-center   gap-1 text-red-800  p-2 bg-red-300 rounded-full"
+                      >
+                        <AiFillDelete />
+                        ลบงาน
+                      </button>
+                    </div>
+                  )}
                   {triggerShowFiles && (
                     <div className="w-full h-80 overflow-auto ring-2 ring-blue-400 rounded-2xl  flex flex-col   gap-5 mt-5">
                       {studentWork?.picture && (
