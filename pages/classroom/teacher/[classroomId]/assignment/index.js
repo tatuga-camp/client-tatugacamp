@@ -4,13 +4,16 @@ import { GetUser, GetUserCookie } from '../../../../../service/user';
 import { useRouter } from 'next/router';
 import Unauthorized from '../../../../../components/error/unauthorized';
 import FullScreenLoading from '../../../../../components/loading/FullScreenLoading';
-import { GetOneClassroom } from '../../../../../service/classroom';
+import {
+  AllowStudentDeleteWorkService,
+  GetOneClassroom,
+} from '../../../../../service/classroom';
 import Image from 'next/image';
 import CreateAssignment from '../../../../../components/form/createAssignment';
 import { GetAllAssignments } from '../../../../../service/assignment';
 import { GetAllStudents } from '../../../../../service/students';
 import Layout from '../../../../../layouts/classroomLayout';
-import { Skeleton } from '@mui/material';
+import { Skeleton, Switch } from '@mui/material';
 import Head from 'next/head';
 import { parseCookies } from 'nookies';
 import {
@@ -18,16 +21,10 @@ import {
   sideMenusThai,
 } from '../../../../../data/menubarsAssignments';
 import Link from 'next/link';
+import { IoCreate } from 'react-icons/io5';
+import { AiOutlineSetting } from 'react-icons/ai';
 function Assignment({ error, user }) {
   const router = useRouter();
-  const [sideMenus, setSideMenus] = useState(() => {
-    if (user?.language === 'Thai') {
-      return sideMenusThai();
-    } else if (user?.language === 'English') {
-      return sideMenusEnglish();
-    }
-  });
-  const [triggerAssignment, setTriggerAssignment] = useState(false);
   const classroom = useQuery(
     ['classroom'],
     () => GetOneClassroom({ params: router.query.classroomId }),
@@ -49,6 +46,17 @@ function Assignment({ error, user }) {
       enabled: false,
     },
   );
+  const [sideMenus, setSideMenus] = useState(() => {
+    if (user?.language === 'Thai') {
+      return sideMenusThai();
+    } else if (user?.language === 'English') {
+      return sideMenusEnglish();
+    }
+  });
+  const [triggerAssignment, setTriggerAssignment] = useState(false);
+  const [triggerAllowStudentDeleteWork, setTriggerAllowStudentDeleteWork] =
+    useState(classroom?.data?.data?.allowStudentToDeleteWork);
+
   //check whether there is authorrized acccess or not
   useEffect(() => {
     classroom.refetch();
@@ -62,6 +70,25 @@ function Assignment({ error, user }) {
   if (error?.statusCode === 401) {
     return <Unauthorized />;
   }
+  useEffect(() => {
+    setTriggerAllowStudentDeleteWork(() =>
+      classroom?.data?.data?.allowStudentToDeleteWork
+        ? classroom?.data?.data?.allowStudentToDeleteWork
+        : false,
+    );
+  }, [classroom.data]);
+
+  const handleAllowStudentDeleteWork = async () => {
+    try {
+      const update = await AllowStudentDeleteWorkService({
+        classroomId: router.query.classroomId,
+        allowStudentToDeleteWork: !triggerAllowStudentDeleteWork,
+      });
+      setTriggerAllowStudentDeleteWork(() => update.allowStudentToDeleteWork);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="w-full pb-96 bg-blue-50 ">
       <Head>
@@ -73,33 +100,43 @@ function Assignment({ error, user }) {
         <title>assignments</title>
       </Head>
       <Layout sideMenus={sideMenus} language={user.language} />
+      <header className="flex w-full border-b-2 border-black/50 py-5 font-Kanit justify-start">
+        <section className="pl-20 gap-5 text-xl flex flex-col font-semibold">
+          <div className="flex w-max justify-center items-center gap-2">
+            ตั้งค่า <AiOutlineSetting />
+          </div>
+          <div className="ring-2 select-none ring-blue-300 rounded-lg p-2">
+            <Switch
+              checked={triggerAllowStudentDeleteWork}
+              onClick={handleAllowStudentDeleteWork}
+            />
+            {triggerAllowStudentDeleteWork ? (
+              <span className="text-green-500">อนุญาติให้นักเรียนลบงาน</span>
+            ) : (
+              <span className="text-red-500">ไม่อนุญาติให้นักเรียนลบงาน</span>
+            )}
+          </div>
+        </section>
+      </header>
       <div className="">
         <main className="w-full  py-5  mt-10 flex flex-col items-center justify-center relative">
           <div
             className="bg-white w-80 md:w-[28rem] h-20 rounded-full drop-shadow-md flex items-center 
-          justify-start gap-2 "
+          justify-center gap-2 "
           >
-            <div className="w-12  h-12  bg-orange-400 relative ml-5 rounded-full bg- overflow-hidden">
-              {user?.picture && (
-                <Image
-                  src={user?.picture}
-                  layout="fill"
-                  sizes="(max-width: 768px) 100vw"
-                  className="object-contain"
-                />
-              )}
-            </div>
             <button
               onClick={() => {
                 setTriggerAssignment(true);
                 document.body.style.overflow = 'hidden';
               }}
-              className="w-8/12 md:w-80 border-none py-2 rounded-full bg-blue-100 text-center font-Poppins text-sm hover:bg-[#2C7CD1] hover:text-white
-text-black transition duration-150 cursor-pointer"
+              className="w-8/12 md:w-80 border-none py-2 rounded-full
+               bg-blue-100 text-center font-Poppins text-base hover:bg-[#2C7CD1] hover:text-white
+text-black transition duration-150  cursor-pointer"
             >
-              <div className="font-Kanit font-medium">
+              <div className="font-Kanit flex items-center justify-center gap-2 font-medium">
                 {user.language === 'Thai' && 'สร้างชิ้นงาน'}
                 {user.language === 'English' && 'create your assignment'}
+                <IoCreate />
               </div>
             </button>
           </div>
