@@ -64,12 +64,6 @@ function Assignment({ error, user }) {
     students.refetch();
   }, [router.isReady]);
 
-  if (!router.isReady) {
-    return <FullScreenLoading />;
-  }
-  if (error?.statusCode === 401) {
-    return <Unauthorized />;
-  }
   useEffect(() => {
     setTriggerAllowStudentDeleteWork(() =>
       classroom?.data?.data?.allowStudentToDeleteWork
@@ -89,6 +83,14 @@ function Assignment({ error, user }) {
       console.log(err);
     }
   };
+
+  if (!router.isReady) {
+    return <FullScreenLoading />;
+  }
+  if (error?.statusCode === 401) {
+    return <Unauthorized />;
+  }
+
   return (
     <div className="w-full pb-96 bg-blue-50 ">
       <Head>
