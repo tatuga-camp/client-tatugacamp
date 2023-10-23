@@ -1,11 +1,11 @@
-import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { CreateStudentApi } from "../../service/students";
-import { v4 as uuidv4 } from "uuid";
-import Loading from "../loading/loading";
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { CreateStudentApi } from '../../service/students';
+import { v4 as uuidv4 } from 'uuid';
+import Loading from '../loading/loading';
 
 function ExcelTable({ getExcelData, students, language }) {
-  const [excelData, setExcelData] = useState("");
+  const [excelData, setExcelData] = useState('');
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -55,10 +55,10 @@ function ExcelTable({ getExcelData, students, language }) {
   };
 
   const generateTable = () => {
-    const rows = excelData.split("\n");
+    const rows = excelData.split('\n');
 
     const arrayOfObjects = rows.map((item) => {
-      const [number, firstName, lastName] = item.split("\t");
+      const [number, firstName, lastName] = item.split('\t');
       const uniqueId = uuidv4();
       return { id: uniqueId, number, firstName, lastName };
     });
@@ -67,22 +67,31 @@ function ExcelTable({ getExcelData, students, language }) {
   };
 
   return (
-    <div className=" md:w-80 lg:w-full lg:mx-auto ">
-      <div className="mb-4 relative ">
+    <div className=" md:w-80 text-black lg:w-full lg:mx-auto ">
+      <div className="mb-4 relative flex flex-col ">
         <label htmlFor="excel_data" className="block font-bold mb-2">
-          {language === "Thai" && "คัดลอคข้อมูลจาก Excel ลงที่นี่"}
-          {language === "English" && "Paste your Excel data here"}
+          {language === 'Thai' && 'คัดลอคข้อมูลจาก Excel ลงที่นี่'}
+          {language === 'English' && 'Paste your Excel data here'}
         </label>
+        <span className="mb-5">
+          ดูคู่มือการใช้งาน{' '}
+          <a
+            target="_blank"
+            href="https://youtu.be/dhnpacZxT7E?si=qa3qsWAOsy6nRJMH"
+          >
+            คลิก
+          </a>
+        </span>
         <textarea
           placeholder={
-            language === "Thai"
-              ? "เมื่อวางข้อมูลแล้ว ไม่ต้องปรับแต่งข้อมูลใดๆทั้งสิ้นเช่นการกด เว้นวรรค การเคาะบรรทัด"
-              : language === "English" &&
+            language === 'Thai'
+              ? 'เมื่อวางข้อมูลแล้ว ไม่ต้องปรับแต่งข้อมูลใดๆทั้งสิ้นเช่นการกด เว้นวรรค การเคาะบรรทัด'
+              : language === 'English' &&
                 "If you paste your data, don't need to modify your text by spacing or entering text down"
           }
           id="excel_data"
           name="excel_data"
-          className="lg:w-96 md:w-full h-96 border border-gray-300 rounded-md"
+          className="lg:w-96 md:w-full lg:h-72 xl:h-96 border border-gray-300 rounded-md"
           value={excelData}
           onChange={handleExcelDataChange}
         />
@@ -97,15 +106,15 @@ function ExcelTable({ getExcelData, students, language }) {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={generateTable}
         >
-          {language === "Thai" && "นำเข้ารายชื่อผู้เรียน"}
-          {language === "English" && "Load students"}
+          {language === 'Thai' && 'นำเข้ารายชื่อผู้เรียน'}
+          {language === 'English' && 'Load students'}
         </button>
         <button
           onClick={handleCreateMany}
           className="bg-red-500 hover:bg-red-700 cursor-pointer text-white font-bold py-2 px-4 rounded"
         >
-          {language === "Thai" && "สร้างผู้เรียน"}
-          {language === "English" && "Create students"}
+          {language === 'Thai' && 'สร้างผู้เรียน'}
+          {language === 'English' && 'Create students'}
         </button>
       </div>
     </div>

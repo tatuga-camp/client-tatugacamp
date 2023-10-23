@@ -202,7 +202,7 @@ function CheckAttendanceByQrCode({
                 <a
                   target="_blank"
                   className="cursor-pointer"
-                  href="https://youtu.be/_PijpnCS7pk?si=mxU-SbxomyA9qs2A"
+                  href="https://youtu.be/c2qjsUiZwdA?si=IaipkDprmSrF7l_9"
                 >
                   คลิก
                 </a>

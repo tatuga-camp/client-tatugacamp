@@ -37,6 +37,15 @@ function CreateClass({ close, refetch, language }) {
             {language === 'Thai' && 'สร้างห้องเรียน'}
             {language === 'English' && 'Create a classroom'}
           </span>
+          <span className="mb-5">
+            ดูคู่มือการสร้างห้องเรียน{' '}
+            <a
+              target="_blank"
+              href="https://youtu.be/IkLKD-Mk8nw?si=M2SfvBC9lkGkGlKA"
+            >
+              คลิก
+            </a>
+          </span>
           <div className="flex flex-col relative">
             <label className="font-sans font-normal">
               {language === 'Thai' && 'รายชื่อวิชา'}
