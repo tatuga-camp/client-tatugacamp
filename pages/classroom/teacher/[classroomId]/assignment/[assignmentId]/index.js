@@ -1011,7 +1011,7 @@ function Index({ error, user }) {
                     ${
                       triggerFullScreen
                         ? 'relative md:h-4/5 bg-white  lg:h-4/5  scale-100  p-0 m-2 ring-2 ring-black  rounded-md overflow-auto md:w-9/12'
-                        : 'relative md:h-96 bg-white  lg:h-80  scale-100  p-0 m-2 ring-2 ring-black  rounded-md overflow-auto md:w-full'
+                        : 'relative md:h-96 bg-white  lg:h-80 pb-5  scale-100  p-0 m-2 ring-2 ring-black  rounded-md overflow-auto md:w-full'
                     } transition duration-200
                       `}
                     >

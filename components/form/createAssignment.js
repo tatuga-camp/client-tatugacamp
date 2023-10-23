@@ -95,7 +95,7 @@ export default function CreateAssignment({
         assignmentCreated: assignmentCreated.data,
       });
       setIsChecked(assign);
-      Swal.fire('success', 'You have been assign to students', 'success');
+      Swal.fire('Success', 'Successfully assigned to students', 'success');
       setLoading(false);
       document.body.style.overflow = 'auto';
       setIsChecked(() =>
