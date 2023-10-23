@@ -257,7 +257,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
         className="w-screen  md:w-11/12 lg:w-11/12  xl:w-3/4 h-5/6 md:max-h-[35rem] overflow-auto  fixed z-40 top-0 bottom-0 right-0
        left-0 m-auto flex  items-center justify-center gap-5 py-5  bg-white p-0 md:p-5 rounded-none md:rounded-lg  "
       >
-        <div className="w-full md:w-full   md:h-full  flex flex-col items-center justify-start gap-5 ">
+        <div className="w-full md:w-full relative   md:h-full  flex flex-col items-center justify-start gap-5 ">
           {/* headers parts */}
           <div className="w-full flex-col flex items-center justify-between md:justify-around ">
             <button

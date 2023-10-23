@@ -79,7 +79,7 @@ function CreateStudent({ close, language }) {
       <div className="w-max p-3 h-max fixed right-0 left-0 top-0 bottom-0 m-auto z-40  ">
         <div className="flex items-center justify-center gap-x-5  bg-transparent h-[0.05rem] w-max">
           <div
-            className="lg:w-[40rem] md:w-80 lg:max-w-[45rem] h-[30rem] bg-white border-2 border-solid  flex-col justify-start items-center 
+            className="lg:w-[30rem] xl:w-[40rem] md:w-80 lg:max-w-[45rem] h-[30rem] bg-white border-2 border-solid  flex-col justify-start items-center 
           rounded-xl font-Kanit md:flex hidden"
           >
             <div className=" font-Kanit font-bold text-xl mt-2">
@@ -200,7 +200,7 @@ function CreateStudent({ close, language }) {
             </div>
           </div>
           <div
-            className="flex w-max relative h-max font-Kanit pt-10 p-10 bg-white border-2 border-solid rounded-lg drop-shadow-xl  
+            className="flex w-max relative h-[30rem] xl:h-max font-Kanit pt-10 p-10 bg-white border-2 border-solid rounded-lg drop-shadow-xl  
         z-20"
           >
             {isExcelData ? (
