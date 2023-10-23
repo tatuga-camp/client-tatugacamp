@@ -349,38 +349,45 @@ function Index() {
     });
   };
 
-  const handleDeleteStudentWork = ({ studentWorkId }) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
+  const handleDeleteStudentWork = async ({ studentWorkId }) => {
+    const name = student?.data?.data?.firstName;
+    let content = document.createElement('div');
+    content.innerHTML =
+      '<div>กรุณาพิมพ์ข้อความนี้</div> <strong>' +
+      name +
+      '</strong> <div>เพื่อลบงาน</div>';
+    const { value } = await Swal.fire({
+      title: 'ยืนยันการลบชิ้นงาน',
+      input: 'text',
+      html: content,
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          setIsLoading(() => true);
-          const deleteLandingPage = await DeleteMyWorkService({
-            studentId: router.query.studentId,
-            classroomId: router.query.classroomId,
-            studentWorkId: studentWork.id,
-          });
-          Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-          setIsLoading(() => false);
-          location.reload();
-        } catch (err) {
-          setIsLoading(() => false);
-          console.log(err);
-          Swal.fire(
-            'error!',
-            err?.props?.response?.data?.message?.toString(),
-            'error',
-          );
+      inputValidator: (value) => {
+        if (value !== name) {
+          return 'กรุณาพิมพ์ข้อความยืนยันให้ถูกต้อง';
         }
-      }
+      },
     });
+    if (value) {
+      try {
+        setIsLoading(() => true);
+        await DeleteMyWorkService({
+          studentId: router.query.studentId,
+          classroomId: router.query.classroomId,
+          studentWorkId: studentWork.id,
+        });
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+        setIsLoading(() => false);
+        location.reload();
+      } catch (err) {
+        setIsLoading(() => false);
+        console.log(err);
+        Swal.fire(
+          'error!',
+          err?.props?.response?.data?.message?.toString(),
+          'error',
+        );
+      }
+    }
   };
 
   return (
@@ -1073,7 +1080,7 @@ application/pdf,
                               </span>
                             </div>
                           )}
-                          <div className="w-full max-w-[15rem] md:max-w-md h-max pr-10  bg-green-100 rounded-3xl relative  p-2">
+                          <div className="w-max max-w-[15rem] md:max-w-md h-max pr-10  bg-green-100 rounded-3xl relative  p-2">
                             <div className="text-md ml-4 font-bold first-letter:uppercase">
                               {comment.user.firstName}
                               {comment.user?.lastName}

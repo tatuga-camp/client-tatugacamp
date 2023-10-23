@@ -26,7 +26,7 @@ function CreateGroup({ close, language, groups }) {
       groups?.refetch();
       close();
       setLoading(() => false);
-      Swal.fire('success', 'create classroom success', 'success');
+      Swal.fire('Success', 'Successfully Created Group', 'success');
       document.body.style.overflow = 'auto';
     } catch (err) {
       setLoading(() => false);

@@ -196,7 +196,7 @@ function Index() {
             </div>
             {!loading ? (
               <button
-                className="w-full border-none h-9 mt-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
+                className="w-11/12 border-none h-9 mt-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
               text-md cursor-pointer hover:bg-[#FFC800] active:border-2 active:text-black active:border-gray-300
                active:border-solid  focus:border-2 
               focus:border-solid"
@@ -206,7 +206,7 @@ function Index() {
             ) : (
               <button
                 type="button"
-                className="w-full border-none h-9 mt-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
+                className="w-11/12  border-none h-9 mt-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
             text-md cursor-pointer hover:bg-[#FFC800] active:border-2 active:text-black active:border-gray-300
              active:border-solid  focus:border-2 
             focus:border-solid"
@@ -215,11 +215,11 @@ function Index() {
               </button>
             )}
           </form>
-          <div className="w-80 flex flex-col">
+          <div className="w-80 flex items-center flex-col">
             {brower !== 'scoial media browser' ? (
               <button
                 onClick={GetAccesTokenGoogle}
-                className="w-full  h-9 mt-2 rounded-full bg-white border-black text-black font-sans font-bold
+                className="w-11/12   h-9 mt-2 rounded-full bg-white border-black text-black font-sans font-bold
               text-md cursor-pointer border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
                 active:border-2 active:text-black active:border-gray-300
                active:border-solid  focus:border-2 
@@ -232,7 +232,7 @@ function Index() {
               </button>
             ) : (
               <div
-                className="w-full  h-9 mt-2 rounded-full bg-gray-200 text-black font-sans font-bold
+                className="w-11/12   h-9 mt-2 rounded-full bg-gray-200 text-black font-sans font-bold
             text-md cursor-pointer border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
               active:border-2 active:text-black active:border-gray-300
              active:border-solid  focus:border-2 
@@ -249,7 +249,7 @@ function Index() {
 
             <button
               onClick={GetAccesTokenFacebook}
-              className="w-full  h-9 mt-2 rounded-full bg-white text-black font-sans font-bold cursor-pointer
+              className="w-11/12   h-9 mt-2 rounded-full bg-white text-black font-sans font-bold cursor-pointer
               text-md cursor-pointer:border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
                active:border-2 active:text-black active:border-gray-300
                active:border-solid  focus:border-2 border-2

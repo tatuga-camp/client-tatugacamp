@@ -451,7 +451,7 @@ function Index() {
                       {assignment?.student?.status === 'have-work' &&
                         assignment?.student?.isSummited === false && (
                           <div className="w-20 h-20 bg-yellow-400 rounded-2xl text-white font-Kanit font-semibold flex justify-center items-center">
-                            <span>ส่งแล้ว</span>
+                            <span>รอตรวจ</span>
                           </div>
                         )}
                       {assignment?.student?.status === 'have-work' &&
