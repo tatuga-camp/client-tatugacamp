@@ -325,7 +325,7 @@ function Index({ error, user, whatsNews }) {
       text:
         user.language === 'Thai'
           ? 'สมชิกเริ่มต้นและสมาชิกพรีเมี่ยมเท่านั้นจึงจะมีสิทธิ์ลบห้องเรียน'
-          : 'Only tatuga starter and tatuga premuim plan be able to delete classroom',
+          : 'Only tatuga starter and tatuga premium plan be able to delete classroom',
       footer:
         user.language === 'Thai'
           ? '<a href="/classroom/subscriptions">สมัครสมาชิก</a>'

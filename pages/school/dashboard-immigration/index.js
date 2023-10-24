@@ -95,6 +95,8 @@ function Index({ user, error }) {
   const [triggerTableNationality, setTriggerTableNationality] = useState(false);
   const [triggerShowTeacherInfo, setTriggerShowTeacherInfo] = useState(false);
   const [page, setPage] = useState(1);
+  const [dataNationality, setDataNationality] = useState();
+  const [dataNationalityTabel, setDataNationalityTabel] = useState();
 
   const classroomNumber = useQuery(['classroom-number'], () =>
     GetAllClassroomNumber(),
@@ -105,19 +107,20 @@ function Index({ user, error }) {
   const studentNumber = useQuery(['student-number'], () =>
     GetAllStudentsNumber(),
   );
+  const studentNationality = useQuery(['student-nationality'], () =>
+    GetAllStudentsByNationlity(),
+  );
   const topTenAbsent = useQuery(['top-ten-absent'], () => GetTopTenAbsent(), {
     enabled: false,
   });
   const topTenSick = useQuery(['top-ten-sick'], () => GetTopTenSick(), {
     enabled: false,
   });
-
   const teachers = useQuery(
     ['teachers', page],
     () => GetAllTeachers({ page: page }),
     { keepPreviousData: true },
   );
-
   const topTenHoliday = useQuery(
     ['top-ten-holiday'],
     () => GetTopTenHoliday(),
@@ -146,6 +149,42 @@ function Index({ user, error }) {
       },
     ],
   };
+
+  useEffect(() => {
+    setDataNationality(() => {
+      let value = [];
+      let nationalities = [];
+      for (const key in studentNationality?.data) {
+        // Access the property key and value
+        const number = studentNationality?.data[key];
+        value.push(number);
+        nationalities.push(key);
+      }
+
+      return {
+        labels: nationalities,
+        datasets: [
+          {
+            label: 'จำนวน',
+            data: value,
+            backgroundColor: formattedColorCodesArray,
+            borderColor: formattedColorCodesArray,
+            borderWidth: 1,
+          },
+        ],
+      };
+    });
+    setDataNationalityTabel(() => {
+      let value = [];
+      let nationalities = [];
+      for (const key in studentNationality.data) {
+        // Access the property key and value
+        const number = studentNationality.data[key];
+        nationalities.push({ nationality: key, number });
+      }
+      return nationalities;
+    });
+  }, [studentNationality.isSuccess]);
 
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === 'Thai') {
@@ -202,7 +241,7 @@ function Index({ user, error }) {
   return (
     <div className="bg-gradient-to-t from-blue-400 to-blue-50">
       {triggerShowTeacherInfo && (
-        <ShowTeacherOverviewInfo
+        <ShowTeacherOverviewInfoImmigration
           setTriggerShowTeacherInfo={setTriggerShowTeacherInfo}
           selectTeacher={selectTeacher}
         />
@@ -455,6 +494,49 @@ function Index({ user, error }) {
             <div className=" w-6/12 h-96 p-5  bg-white rounded-xl">
               <Bar options={options} data={data} />
             </div>
+            <div
+              className=" w-[30rem] h-[30rem] p-5 gap-5 relative
+              bg-white rounded-xl flex-col flex justify-center items-center"
+            >
+              <button
+                onClick={() => setTriggerTableNationality((prev) => !prev)}
+                className="w-max absolute top-2 right-2 hover:bg-green-500 hover:text-green-200
+               px-5 py-2 rounded-md bg-green-200 text-green-600 font-Kanit font-semibold flex items-center gap-2"
+              >
+                ตาราง
+                <div>
+                  <BsTable />
+                </div>
+              </button>
+              <span className="font-Kanit text-xl font-semibold">
+                สรุปข้อมูลสัญชาติทั้งหมด
+              </span>
+              {triggerTableNationality ? (
+                <ul className="grid grid-cols-2 overflow-auto h-96 w-full gap-x-10  place-items-start">
+                  {dataNationalityTabel?.map((nationality, index) => {
+                    return (
+                      <li
+                        key={index}
+                        className="flex gap-2 items-start justify-between w-full 
+                      col-span-1 font-Kanit font-medium text-left text-base p-2"
+                      >
+                        <div>{nationality.nationality}</div>
+                        <div>{nationality.number}</div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <div className="w-96 h-96">
+                  {studentNationality.isLoading ||
+                  dataNationality === undefined ? (
+                    <Skeleton height="100%" />
+                  ) : (
+                    <Doughnut data={dataNationality} options={optionsPie} />
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {triggerStudentInfo && (
@@ -692,15 +774,15 @@ export async function getServerSideProps(context) {
       } else if (user.role === 'SCHOOL') {
         if (user?.schoolUser?.organization === 'school') {
           return {
-            props: {
-              user,
+            redirect: {
+              permanent: false,
+              destination: '/school/dashboard',
             },
           };
         } else if (user?.schoolUser?.organization === 'immigration') {
           return {
-            redirect: {
-              permanent: false,
-              destination: '/school/dashboard-immigration',
+            props: {
+              user,
             },
           };
         }

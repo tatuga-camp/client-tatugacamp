@@ -16,7 +16,7 @@ import { TypeAnimation } from 'react-type-animation';
 const tags = [
   { title: '#ติดตามสถิติการมาเรียน' },
   { title: '#ติดตามความคืบหน้าในชั้นเรียน' },
-  { title: '#สร้างบัญชี Tatuga Class Premuim' },
+  { title: '#สร้างบัญชี Tatuga Class premium' },
   { title: '#ใช้งานได้ทั้งในโรงเรียนและองค์กร' },
 ];
 function Index({ tatugaSchoolPosts }) {
@@ -95,7 +95,7 @@ function Index({ tatugaSchoolPosts }) {
                 1000,
                 'Attendance Monitoring',
                 1000,
-                'Tatuga Class Premuim',
+                'Tatuga Class premium',
                 1000,
               ]}
               wrapper="h2"

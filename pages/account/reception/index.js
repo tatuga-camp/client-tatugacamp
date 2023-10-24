@@ -27,7 +27,7 @@ function Index({ user, error }) {
     try {
       const userUpdate = await UpdateUserData(userData);
       if (userUpdate.status === 200) {
-        Swal.fire('success', 'update your profile successfully😃', 'success');
+        Swal.fire('success', 'Successfully Updated Your Profile', 'success');
       }
       if (userUpdate.data.role === 'TEACHER') {
         router.push({
@@ -58,7 +58,7 @@ function Index({ user, error }) {
         <header className="bg-white w-max h-max mt-40 md:mt-10 max-w-xs md:max-w-5xl drop-shadow-md p-3 px-10 ring-black rounded-lg ring-2">
           <h1 className="font-medium text-center flex flex-col md:flex-row justify-center gap-5 items-center ">
             {userData.language === 'Thai'
-              ? 'ข้อต้อนรับ '
+              ? 'ยินดีต้อนรับ '
               : userData.language === 'English' && 'welcome'}{' '}
             <div className="flex flex-col justify-center items-center">
               <section className="flex gap-2 uppercase text-blue-600">
