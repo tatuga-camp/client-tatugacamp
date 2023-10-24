@@ -6,8 +6,11 @@ import Loading from '../loading/loading';
 import { MdError, MdOutlineCancel } from 'react-icons/md';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { GrRevert, GrScorecard } from 'react-icons/gr';
+import { TiUserDelete } from 'react-icons/ti';
+
 import {
   AssignWorkToSTudent,
+  UnAssignWorkStudentService,
   UpdateAssignmentApi,
 } from '../../service/assignment';
 import Swal from 'sweetalert2';
@@ -128,17 +131,35 @@ function UpdateAssignment({
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const updateAssignment = await UpdateAssignmentApi({
+      setLoading(() => true);
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(assignmentData.body, 'text/html');
+      const imageElements = doc.getElementsByTagName('img');
+      const imageUrls = Array.from(imageElements)
+        .map((img) => {
+          const src = img.src;
+          if (src.startsWith('data:image')) {
+            // Check if the src attribute starts with "data:image" (base64 image)
+            return src;
+          } else {
+            return null; // Skip images with actual URLs
+          }
+        })
+        .filter(Boolean); // Filter out null values (i.e., actual URLs)
+      await UpdateAssignmentApi({
         assignmentId: assignmentData.id,
         title: assignmentData.title,
         description: assignmentData.body,
         maxScore: assignmentData.maxScore,
         deadline: assignmentData.deadline,
+        imagesBase64: imageUrls,
       });
       Swal.fire('success', 'assignment has been updated', 'success');
+      setLoading(() => false);
       setTriggerUpdateAssignment(false);
       assignment.refetch();
     } catch (err) {
+      setLoading(() => false);
       console.log(err);
       Swal.fire(
         'error',
@@ -147,28 +168,43 @@ function UpdateAssignment({
       );
     }
   };
+
+  const handleUnDoAssignmentOnStudent = async ({ studentId }) => {
+    try {
+      UnAssignWorkStudentService({
+        studentId: studentId,
+        assignmentId: assignmentData.id,
+      });
+      studentOnAssignments.refetch();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col  justify-center items-center bg-white h-screen font-Kanit 
+      className="flex flex-col gap-5 relative  justify-center items-center bg-white  font-Kanit 
       "
     >
-      <div
+      <button
         onClick={() => setTriggerUpdateAssignment(false)}
-        className="absolute z-20 top-5 right-5 text-3xl hover:scale-110 hover:text-red-400 transition duration-150 cursor-pointer"
+        className="absolute gap-0 flex flex-col justify-center items-center z-20 
+        top-0 right-5 text-sm hover:scale-110 hover:text-red-400 transition duration-150 cursor-pointer"
       >
-        <MdOutlineCancel />
-      </div>
-
+        <div className="text-xl">
+          <MdOutlineCancel />
+        </div>
+        ยกเลิก
+      </button>
       <div className="w-full flex mt-2 items-center justify-center ">
-        <div className="flex w-56 h-10 justify-between bg-white  rounded-xl">
+        <div className="flex w-56  gap-5 h-10 justify-between bg-white  rounded-xl">
           {tabs.map((tab, index) => {
             return (
               <div
                 key={index}
                 role="button"
                 onClick={() => handleActiveTab(index)}
-                className={`w-28 px-4 flex items-center justify-center cursor-pointer h-full rounded-xl ${
+                className={`w-28 px-4 select-none ring-2 ring-black flex items-center justify-center cursor-pointer h-full rounded-xl ${
                   activeTab === index
                     ? 'text-white bg-orange-600'
                     : 'text-black bg-transparent'
@@ -182,7 +218,7 @@ function UpdateAssignment({
         </div>
       </div>
       {isAssignStudent === false ? (
-        <div className="w-full h-full flex gap-8  ">
+        <div className="w-full h-full flex flex-col justify-start items-center gap-8  ">
           <div className="flex-col flex gap-4 m-5 w-3/4">
             <div className="flex flex-col gap-0">
               <Box width="100%" className="bg-white">
@@ -195,114 +231,144 @@ function UpdateAssignment({
                 />
               </Box>
             </div>
+            <div className="h-96">
+              <Editor
+                apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                textareaName="description"
+                initialValue={assignmentData?.description}
+                init={{
+                  selector: 'textarea',
+                  link_context_toolbar: true,
+                  height: '100%',
+                  width: '100%',
+                  menubar: true,
+                  image_title: true,
+                  automatic_uploads: true,
+                  file_picker_types: 'image',
+                  file_picker_types: 'image',
+                  file_picker_callback: (cb, value, meta) => {
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
 
-            <Editor
-              apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
-              textareaName="description"
-              initialValue={assignmentData?.description}
-              init={{
-                selector: 'textarea',
-                link_context_toolbar: true,
-                height: '100%',
-                width: '100%',
-                menubar: true,
-                paste_data_images: false,
-                automatic_uploads: true,
-                plugins: [
-                  'advlist',
-                  'autolink',
-                  'lists',
-                  'link',
+                    input.addEventListener('change', (e) => {
+                      const file = e.target.files[0];
 
-                  'charmap',
-                  'preview',
-                  'anchor',
-                  'searchreplace',
-                  'visualblocks',
-                  'code',
-                  'fullscreen',
-                  'insertdatetime',
-                  'media',
-                  'table',
-                  'help',
-                  'wordcount',
-                ],
-                toolbar:
-                  'undo redo | formatselect | ' +
-                  'bold italic backcolor | alignleft aligncenter ' +
-                  'alignright alignjustify | bullist numlist outdent indent | ' +
-                  'removeformat | help | link |',
-                content_style:
-                  'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-              }}
-              onEditorChange={(newText) =>
-                setAssignmentData((prev) => {
-                  return {
-                    ...prev,
-                    body: newText,
-                  };
-                })
-              }
-            />
+                      const reader = new FileReader();
+                      reader.addEventListener('load', () => {
+                        /*
+                          Note: Now we need to register the blob in TinyMCEs image blob
+                          registry. In the next release this part hopefully won't be
+                          necessary, as we are looking to handle it internally.
+                        */
+                        const id = 'blobid' + new Date().getTime();
+                        const blobCache =
+                          tinymce.activeEditor.editorUpload.blobCache;
+                        const base64 = reader.result.split(',')[1];
+                        const blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
 
-            <button
-              type="submit"
-              className="w-full py-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
+                        /* call the callback and populate the Title field with the file name */
+                        cb(blobInfo.blobUri(), { title: file.name });
+                      });
+                      reader.readAsDataURL(file);
+                    });
+
+                    input.click();
+                  },
+                  plugins: [
+                    'contextmenu',
+                    'advlist',
+                    'autolink',
+                    'lists',
+                    'link',
+                    'image',
+                    'charmap',
+                    'preview',
+                    'anchor',
+                    'searchreplace',
+                    'visualblocks',
+                    'code',
+                    'fullscreen',
+                    'insertdatetime',
+                    'media',
+                    'table',
+                    'help',
+                    'wordcount',
+                  ],
+                  contextmenu:
+                    'paste | link image inserttable | cell row column deletetable',
+                  toolbar:
+                    'undo redo | formatselect | blocks | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | help | link | image',
+                  content_style:
+                    'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                }}
+                onEditorChange={(newText) =>
+                  setAssignmentData((prev) => {
+                    return {
+                      ...prev,
+                      body: newText,
+                    };
+                  })
+                }
+              />
+            </div>
+            <div className="flex  items-center justify-start gap-5">
+              <div className=" flex flex-col">
+                <label>
+                  {language === 'Thai' && 'กำหนดส่ง'}
+                  {language === 'English' && 'due by'}
+                </label>
+                <input
+                  value={formattedDate}
+                  onChange={handleChange}
+                  name="deadline"
+                  className="w-max appearance-none outline-none border-none ring-2 rounded-md px-5 
+            py-2 text-lg ring-gray-200 focus:ring-black "
+                  type="date"
+                  placeholder="Please select a date"
+                  required
+                />
+              </div>
+              <div className="flex flex-col w-max relative  h-max ">
+                <label>
+                  {language === 'Thai' && 'คะแนนของงาน'}
+                  {language === 'English' && 'score'}
+                </label>
+                <input
+                  min="1"
+                  value={assignmentData.maxScore}
+                  required
+                  step="0.01"
+                  onChange={handleChange}
+                  name="maxScore"
+                  className="w-max appearance-none outline-none border-none ring-2 rounded-md px-5 
+            py-2 text-lg ring-gray-200 focus:ring-black placeholder:text-sm"
+                  type="number"
+                />
+                <div className="text-lg absolute top-8 right-5">
+                  <GrScorecard />
+                </div>
+              </div>
+            </div>
+            <div className="w-40">
+              {loading ? (
+                <Loading />
+              ) : (
+                <button
+                  type="submit"
+                  className="w-40 py-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
           text-md cursor-pointer hover: active:border-2  active:border-gray-300
            active:border-solid  focus:border-2 hover:bg-red-500 transition duration-150
           focus:border-solid"
-            >
-              {language === 'Thai' && 'อัปเดต'}
-              {language === 'English' && 'update'}
-            </button>
-          </div>
-          <div
-            className="w-[30%]   
-      flex flex-col items-center justify-start gap-5"
-          >
-            <div className=" flex flex-col">
-              <label>
-                {language === 'Thai' && 'กำหนดส่ง'}
-                {language === 'English' && 'due by'}
-              </label>
-              <input
-                value={formattedDate}
-                onChange={handleChange}
-                name="deadline"
-                className="w-40 appearance-none outline-none border-none ring-2 rounded-md px-5 
-            py-2 text-lg ring-gray-200 focus:ring-black "
-                type="date"
-                placeholder="Please select a date"
-                required
-              />
-            </div>
-            <div className="flex flex-col w-max relative  h-max ">
-              <label>
-                {language === 'Thai' && 'คะแนนของงาน'}
-                {language === 'English' && 'score'}
-              </label>
-              <input
-                min="1"
-                value={assignmentData.maxScore}
-                required
-                step="0.01"
-                onChange={handleChange}
-                name="maxScore"
-                className="w-40 appearance-none outline-none border-none ring-2 rounded-md px-5 
-            py-2 text-lg ring-gray-200 focus:ring-black placeholder:text-sm"
-                type="number"
-              />
-              <div className="text-lg absolute top-8 right-5">
-                <GrScorecard />
-              </div>
-            </div>
-            <div className="relative w-60 h-80">
-              <Image
-                src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/IMG_3053.PNG"
-                className="object-contain"
-                fill
-                sizes="(max-width: 768px) 100vw"
-              />
+                >
+                  {language === 'Thai' && 'อัปเดต'}
+                  {language === 'English' && 'update'}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -314,7 +380,7 @@ function UpdateAssignment({
           </div>
 
           <div
-            className="w-2/4 h-full max-h-[28rem] flex relative items-center
+            className="w-11/12 h-full lg:max-h-[25rem] xl:max-h-[28rem] flex relative items-center
            justify-start overflow-auto scrollbar  flex-col "
           >
             {loading ? (
@@ -342,17 +408,24 @@ function UpdateAssignment({
                         <MdError />
                       </div>
                     )}
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-start">
                       {student.number}
                     </div>
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-start">
                       {student.firstName}
                     </div>
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-start">
                       {student?.lastName}
                     </div>
                     {student.status === 'no-assign' ? (
-                      <div className="flex items-center justify-center ">
+                      <div className="flex items-center gap-5 justify-start ">
+                        <div
+                          className="w-max px-5 text-sm py-1 bg-gray-500  rounded-lg text-white
+                      flex items-center justify-center"
+                        >
+                          {language === 'Thai' && 'ไม่ได้มอบหมาย'}
+                          {language === 'English' && 'Already assigned'}
+                        </div>
                         <input
                           checked={student?.[student.id]}
                           onChange={() =>
@@ -365,12 +438,27 @@ function UpdateAssignment({
                         />
                       </div>
                     ) : (
-                      <div
-                        className="w-full text-sm bg-green-500 py-1  rounded-lg text-white
+                      <div className="flex justify-start gap-5 items-center">
+                        <div
+                          className="w-max px-5 text-sm py-1 bg-green-500  rounded-lg text-white
                       flex items-center justify-center"
-                      >
-                        {language === 'Thai' && 'มอบหมายแล้ว'}
-                        {language === 'English' && 'Already assigned'}
+                        >
+                          {language === 'Thai' && 'มอบหมายแล้ว'}
+                          {language === 'English' && 'Already assigned'}
+                        </div>
+                        <button
+                          onClick={() =>
+                            handleUnDoAssignmentOnStudent({
+                              studentId: student.id,
+                            })
+                          }
+                          type="button"
+                          className="w-max select-none px-2 hover:bg-red-400 transition duration-100 active:scale-105
+                         h-10 gap-2 bg-red-300 rounded-md flex items-center justify-center text-red-600"
+                        >
+                          <TiUserDelete />
+                          <span className="text-xs">ยกเลิก</span>
+                        </button>
                       </div>
                     )}
                   </div>
