@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import Image from 'next/image';
 import Loading from '../loading/loading';
@@ -30,6 +30,7 @@ function UpdateAssignment({
   const [isAssignStudent, setIsAssignmentStdent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActivetab] = useState(0);
+  const loadingItems = useRef(new Set());
   const [tabs, setTabs] = useState([
     {
       titleEnglish: 'assignment',
@@ -116,6 +117,7 @@ function UpdateAssignment({
   //handle click to assign student work
   const onClickAssignWork = async () => {
     try {
+      loadingItems.current = new Set();
       setLoading(true);
       const assign = await AssignWorkToSTudent({
         isChecked,
@@ -171,15 +173,19 @@ function UpdateAssignment({
 
   const handleUnDoAssignmentOnStudent = async ({ studentId }) => {
     try {
-      UnAssignWorkStudentService({
+      loadingItems.current.add(studentId);
+      await UnAssignWorkStudentService({
         studentId: studentId,
         assignmentId: assignmentData.id,
       });
       studentOnAssignments.refetch();
+      // loadingItems.current.delete(studentId);
     } catch (err) {
+      // loadingItems.current.delete(studentId);
       console.log(err);
     }
   };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -446,19 +452,23 @@ function UpdateAssignment({
                           {language === 'Thai' && 'มอบหมายแล้ว'}
                           {language === 'English' && 'Already assigned'}
                         </div>
-                        <button
-                          onClick={() =>
-                            handleUnDoAssignmentOnStudent({
-                              studentId: student.id,
-                            })
-                          }
-                          type="button"
-                          className="w-max select-none px-2 hover:bg-red-400 transition duration-100 active:scale-105
+                        {loadingItems.current.has(student.id) ? (
+                          <Loading />
+                        ) : (
+                          <button
+                            onClick={() =>
+                              handleUnDoAssignmentOnStudent({
+                                studentId: student.id,
+                              })
+                            }
+                            type="button"
+                            className="w-max select-none px-2 hover:bg-red-400 transition duration-100 active:scale-105
                          h-10 gap-2 bg-red-300 rounded-md flex items-center justify-center text-red-600"
-                        >
-                          <TiUserDelete />
-                          <span className="text-xs">ยกเลิก</span>
-                        </button>
+                          >
+                            <TiUserDelete />
+                            <span className="text-xs">ยกเลิก</span>
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>
