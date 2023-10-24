@@ -64,6 +64,7 @@ function Index({ error, user }) {
   const [triggerShowWorksheet, setTiggerShowWorksheet] = useState(false);
   const [triggerFullScreen, setTriggerFullScreen] = useState(false);
   const [triggerEditBody, setTriggerEditBody] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [triggerAssignMultipleClassroom, setTriggerAssignMultipleClassroom] =
     useState(false);
   const [comment, setComment] = useState();
@@ -161,6 +162,7 @@ function Index({ error, user }) {
     setTriggerAssignMultipleClassroom(() => false);
     setTriggerUpdateAssignment(true);
   };
+
   const handleDelteStudentWork = async () => {
     Swal.fire({
       title: 'Are you sure?',
@@ -194,14 +196,26 @@ function Index({ error, user }) {
       confirmButtonText: 'Yes, delete it!',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const deleteAssignment = await DeleteAssignment({
-          assignmentId: assignment?.data?.data?.id,
-        });
+        try {
+          setIsLoading(() => true);
+          const deleteAssignment = await DeleteAssignment({
+            assignmentId: assignment?.data?.data?.id,
+          });
 
-        Swal.fire('Deleted!', deleteAssignment?.data, 'success');
-        router.push({
-          pathname: `/classroom/teacher/${router.query.classroomId}/assignment`,
-        });
+          Swal.fire('Deleted!', 'Successfully Deleted Assignment', 'success');
+          router.push({
+            pathname: `/classroom/teacher/${router.query.classroomId}/assignment`,
+          });
+          setIsLoading(() => false);
+        } catch (err) {
+          setIsLoading(() => false);
+          console.log(err);
+          Swal.fire(
+            'Error!',
+            err?.props?.response?.data?.message?.toString(),
+            'error',
+          );
+        }
       }
     });
   };
@@ -667,46 +681,50 @@ function Index({ error, user }) {
                         {formattedDate}
                       </span>
                     </div>
-                    <div className="flex gap-6">
-                      <div
-                        onClick={handleDeleteAssignment}
-                        className="text-xl text-white hover:text-red-600 flex items-center justify-center flex-col hover:scale-110 
+                    {isLoading ? (
+                      <Loading />
+                    ) : (
+                      <div className="flex gap-6">
+                        <button
+                          onClick={handleDeleteAssignment}
+                          className="text-xl text-white hover:text-red-600 flex items-center justify-center flex-col hover:scale-110 
                   transition duration-150 ease-in-out cursor-pointer"
-                      >
-                        <MdDelete />
-                        <span className="text-sm">
-                          {user.language === 'Thai' && 'ลบงาน'}
-                          {user.language === 'English' && 'delete assignment'}
-                        </span>
-                      </div>
-                      <div
-                        onClick={handleClickUpdateAssignment}
-                        className="text-xl flex flex-col items-center justify-center hover:scale-110 transition duration-150 cursor-pointer
+                        >
+                          <MdDelete />
+                          <span className="text-sm">
+                            {user.language === 'Thai' && 'ลบงาน'}
+                            {user.language === 'English' && 'delete assignment'}
+                          </span>
+                        </button>
+                        <div
+                          onClick={handleClickUpdateAssignment}
+                          className="text-xl flex flex-col items-center justify-center hover:scale-110 transition duration-150 cursor-pointer
             "
-                      >
-                        <FiSettings />
-                        <span className="text-sm">
-                          {user.language === 'Thai' && 'แก้ไข'}
-                          {user.language === 'English' && 'setting'}
-                        </span>
-                      </div>
-                      <div
-                        onClick={handleClickAssignMultipleClassroom}
-                        className={`text-xl flex flex-col items-center ${
-                          triggerAssignMultipleClassroom
-                            ? 'ring-white'
-                            : 'ring-transparent'
-                        } ring-2  p-2 rounded-md 
+                        >
+                          <FiSettings />
+                          <span className="text-sm">
+                            {user.language === 'Thai' && 'แก้ไข'}
+                            {user.language === 'English' && 'setting'}
+                          </span>
+                        </div>
+                        <div
+                          onClick={handleClickAssignMultipleClassroom}
+                          className={`text-xl flex flex-col items-center ${
+                            triggerAssignMultipleClassroom
+                              ? 'ring-white'
+                              : 'ring-transparent'
+                          } ring-2  p-2 rounded-md 
                         justify-center active:ring-4 hover:scale-110 transition duration-150 cursor-pointer`}
-                      >
-                        <MdOutlineAssignmentReturn />
-                        <span className="text-sm">
-                          {user.language === 'Thai' && 'มอบหมายหลายห้อง'}
-                          {user.language === 'English' &&
-                            'Assign to another classroom'}
-                        </span>
+                        >
+                          <MdOutlineAssignmentReturn />
+                          <span className="text-sm">
+                            {user.language === 'Thai' && 'มอบหมายหลายห้อง'}
+                            {user.language === 'English' &&
+                              'Assign to another classroom'}
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               </div>
