@@ -107,7 +107,6 @@ export async function CreateAssignmentApi({
       const imageUrl = urls.data.baseUrls[i];
       updatedContent = updatedContent.replace(base64Image, imageUrl);
     }
-    console.log('updatedContent', updatedContent);
 
     const updateAssignment = await axios.put(
       `${process.env.Server_Url}/user/assignment/update`,
@@ -323,7 +322,7 @@ export async function UpdateAssignmentApi({
   try {
     const maxScoreNum = Number(maxScore);
     const dateFormat = new Date(deadline);
-    console.log(dateFormat);
+
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const updatedAssignment = await axios.put(

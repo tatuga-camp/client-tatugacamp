@@ -144,7 +144,7 @@ export async function DelteStudent({ studentId }) {
         },
       },
     );
-    console.log(deleteStudent);
+
     return deleteStudent;
   } catch (err) {
     console.log(err);

@@ -474,7 +474,6 @@ function Index({ error, user }) {
       });
     }
     if (name === 'comment') {
-      console.log(value);
       setTeacherReview((prev) => {
         return {
           ...prev,

@@ -23,7 +23,7 @@ function PendingReviews({ user }) {
       pendingReview.fetchNextPage();
     }
   }, [inView]);
-  console.log();
+
   return (
     <ul className="w-full flex flex-col font-Kanit items-center justify-start gap-3">
       {pendingReview?.data?.length === 0 && (
