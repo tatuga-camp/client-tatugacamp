@@ -113,9 +113,9 @@ function Assignment({ error, user }) {
               onClick={handleAllowStudentDeleteWork}
             />
             {triggerAllowStudentDeleteWork ? (
-              <span className="text-green-500">อนุญาติให้นักเรียนลบงาน</span>
+              <span className="text-green-500">อนุญาตให้นักเรียนลบงาน</span>
             ) : (
-              <span className="text-red-500">ไม่อนุญาติให้นักเรียนลบงาน</span>
+              <span className="text-red-500">ไม่อนุญาตให้นักเรียนลบงาน</span>
             )}
           </div>
         </section>
