@@ -1,11 +1,10 @@
-import axios from "axios";
-import Error from "next/error";
-import { parseCookies } from "nookies";
-import { GetUser } from "./user";
+import axios from 'axios';
+import Error from 'next/error';
+import { parseCookies } from 'nookies';
+import { GetUser } from './user';
 
 export async function CreateFeedbackApi({ body, checkAuth, tag }) {
   try {
-    console.log(checkAuth);
     if (checkAuth.auth === true) {
       const user = await GetUser();
       const feedback = await axios.post(
@@ -19,9 +18,9 @@ export async function CreateFeedbackApi({ body, checkAuth, tag }) {
             userId: user.data.id,
           },
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-        }
+        },
       );
       return feedback;
     } else if (checkAuth.unAuth === true) {
@@ -33,9 +32,9 @@ export async function CreateFeedbackApi({ body, checkAuth, tag }) {
         },
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-        }
+        },
       );
       return feedback;
     }

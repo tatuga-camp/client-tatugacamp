@@ -24,7 +24,6 @@ function SettingAccountForm({ selectTeacher, teachers }) {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(value);
     setTeacherData((prev) => {
       return {
         ...prev,

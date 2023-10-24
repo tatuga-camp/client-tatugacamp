@@ -57,7 +57,6 @@ export async function UpdateQrCodeAttendance({
     const getLocalStoreOnattendanceQRCodeId =
       localStorage.getItem(attendanceQRCodeId);
 
-    console.log(getLocalStoreOnattendanceQRCodeId);
     if (getLocalStoreOnattendanceQRCodeId === null) {
       const attendances = await axios.put(
         `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/attendance/update`,
