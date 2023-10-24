@@ -23,10 +23,9 @@ const options = {
     },
   },
 };
-function ShowTeacherOverviewInfo({
+function ShowTeacherOverviewInfoImmigration({
   setTriggerShowTeacherInfo,
   selectTeacher,
-  user,
 }) {
   const router = useRouter();
   const [page, setPage] = useState(1);
@@ -46,10 +45,17 @@ function ShowTeacherOverviewInfo({
       enabled: false,
     },
   );
-
+  const students = useQuery(
+    ['students-teacher'],
+    () => GetAllStudentsInTeacherByNationlity({ teacherId: selectTeacher.id }),
+    {
+      enabled: false,
+    },
+  );
   useEffect(() => {
     classrooms.refetch();
     attendances.refetch();
+    students.refetch();
   }, []);
   useEffect(() => {
     if (attendances.data) {
@@ -86,7 +92,41 @@ function ShowTeacherOverviewInfo({
         };
       });
     }
-  }, [attendances.data]);
+    if (students.data) {
+      setDataNationality(() => {
+        let value = [];
+        let nationalities = [];
+        for (const key in students.data) {
+          // Access the property key and value
+          const number = students.data[key];
+          value.push(number);
+          nationalities.push(key);
+        }
+
+        return {
+          labels: nationalities,
+          datasets: [
+            {
+              label: 'จำนวน',
+              data: value,
+              backgroundColor: formattedColorCodesArray,
+              borderColor: formattedColorCodesArray,
+              borderWidth: 1,
+            },
+          ],
+        };
+      });
+      setDataNationalityTabel(() => {
+        let nationalities = [];
+        for (const key in students.data) {
+          // Access the property key and value
+          const number = students.data[key];
+          nationalities.push({ nationality: key, number });
+        }
+        return nationalities;
+      });
+    }
+  }, [attendances.data, students.data]);
   return (
     <div
       className="z-30 
@@ -102,38 +142,38 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
               className="w-20 h-20 bg-blue-300 mb-1 text-white rounded-md 
                             relative flex justify-center items-center overflow-hidden"
             >
-              {selectTeacher?.picture ? (
+              {selectTeacher.picture ? (
                 <Image
-                  src={selectTeacher?.picture}
+                  src={selectTeacher.picture}
                   layout="fill"
                   sizes="(max-width: 768px) 100vw"
                   className="object-cover"
                 />
               ) : (
                 <span className="font-bold text-2xl uppercase">
-                  {selectTeacher?.firstName?.charAt(0)}
+                  {selectTeacher.firstName.charAt(0)}
                 </span>
               )}
             </div>
             <div className="flex gap-2 font-bold text-lg">
-              <span>{selectTeacher?.firstName}</span>
-              <span>{selectTeacher?.firstName}</span>
+              <span>{selectTeacher.firstName}</span>
+              <span>{selectTeacher.firstName}</span>
             </div>
             <div className="flex gap-2 text-slate-400">
-              <span>{selectTeacher?.email}</span>
+              <span>{selectTeacher.email}</span>
             </div>
-            <div className="flex gap-3  lg:flex-col items-center mt-5">
+            <div className="flex gap-3 xl:flex-row lg:flex-col items-center mt-5">
               <div className="flex gap-3 items-center">
                 <div className="w-8 h-8 text-lg bg-blue-200 text-blue-600 rounded-full flex items-center justify-center">
                   <AiFillPhone />
                 </div>
-                {selectTeacher?.phone}
+                {selectTeacher.phone}
               </div>
               <div className="flex gap-3 items-center">
                 <div className="w-8 h-8 text-lg bg-blue-200 text-blue-600 rounded-full flex items-center justify-center">
                   <FaSchool />
                 </div>
-                {selectTeacher?.school}
+                {selectTeacher.school}
               </div>
             </div>
           </div>
@@ -155,6 +195,49 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
               </div>
             </div>
           </div>
+        </div>
+        <div className="flex  flex-col p-3 gap-2 w-10/12  xl:w-full lg:h-60 xl:h-max  bg-white rounded-lg relative items-center justify-center">
+          <div className="w-full flex justify-end">
+            <button
+              onClick={() => setTriggerTableNationality((prev) => !prev)}
+              className="w-max text-sm  hover:bg-green-500 hover:text-green-200
+               px-5 py-2 rounded-md bg-green-200 text-green-600 font-Kanit font-semibold flex items-center gap-2"
+            >
+              ตาราง
+              <div>
+                <BsTable />
+              </div>
+            </button>
+          </div>
+          <span className="font-semibold text-lg">สรุปข้อมูลสัญชาติ</span>
+          {triggerTableNationality ? (
+            <ul className="grid grid-cols-2 overflow-auto h-60 w-full gap-x-10  place-items-start">
+              {dataNationalityTabel?.map((nationality, index) => {
+                return (
+                  <li
+                    key={index}
+                    className="flex gap-2 items-start justify-between w-full 
+                      col-span-1 font-Kanit font-medium text-left text-base p-2"
+                  >
+                    <div>{nationality.nationality}</div>
+                    <div>{nationality.number}</div>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <div className="lg:w-32 lg:h-32 xl:w-60 xl:h-60">
+              {dataNationality ? (
+                <Doughnut data={dataNationality} options={options} />
+              ) : (
+                <div>
+                  <div>
+                    <BsExclamationCircleFill />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -217,4 +300,4 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
   );
 }
 
-export default ShowTeacherOverviewInfo;
+export default ShowTeacherOverviewInfoImmigration;
