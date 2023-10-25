@@ -106,6 +106,10 @@ export default function Home({
         <Head>
           <title>tatugacamp - เว็บไซต์เพื่อการศึกษาครบวงจร</title>
           <meta
+            name="facebook-domain-verification"
+            content="1ssqit5qo60k2zi8809tm53bag9t3y"
+          />
+          <meta
             property="og:image"
             content="https://storage.googleapis.com/tatugacamp.com/thumnail/WordCloud.app.jpg"
           />
