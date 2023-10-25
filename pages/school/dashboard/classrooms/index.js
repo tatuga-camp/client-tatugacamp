@@ -49,7 +49,7 @@ function Index({ user, error }) {
           {classrooms?.data?.classrooms?.map((classroom) => {
             return (
               <Link
-                href={`/school/classrooms/teacher/${classroom.user.id}/classroom/${classroom.id}`}
+                href={`/school/dashboard/classrooms/teacher/${classroom.user.id}/classroom/${classroom.id}`}
                 key={classroom.id}
                 className="bg-white rounded-md hover:scale-105  transition duration-150
                overflow-hidden no-underline ring-2 ring-black text-black  col-span-2 relative h-60 flex flex-col"
