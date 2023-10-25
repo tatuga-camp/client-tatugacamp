@@ -187,11 +187,11 @@ function Index({ user, error }) {
           </div>
         ) : (
           <table
-            className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem] lg:w-[60rem]
-              2xl:w-[80rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
+            className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem]
+          lg:w-[60rem] xl:w-[80rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
           >
-            <thead className="w-max sticky top-0  bg-white h-max py-3 z-20">
-              <tr className="flex ">
+            <thead className="w-max sticky top-0 bg-white h-max py-3 z-30">
+              <tr className="flex gap-1 ">
                 <th className="flex w-10 md:w-28  items-center justify-center sticky z-20 left-0 bg-white">
                   {user.language === 'Thai' && 'เลขที่'}
                   {user.language === 'English' && 'number'}
@@ -226,7 +226,7 @@ function Index({ user, error }) {
                         }
                       }}
                       key={status.groupId}
-                      className={`w-32 font-normal ${
+                      className={`w-36  font-normal ${
                         status.headData?.note &&
                         'hover:bg-slate-100 cursor-pointer  '
                       } flex items-end relative justify-center  h-14   `}
@@ -295,14 +295,18 @@ function Index({ user, error }) {
                   return (
                     <tr
                       key={index}
-                      className="flex hover:ring-2 hover:bg-slate-200 group "
+                      className="flex gap-1 hover:ring-2 hover:bg-slate-200 group "
                     >
-                      <td className=" w-10 md:w-28 flex items-center justify-center sticky z-10 left-0 bg-white group-hover:bg-slate-200">
+                      <td
+                        className=" w-10 md:w-28 flex items-center justify-center sticky z-10 
+                      left-0 bg-white group-hover:bg-slate-200"
+                      >
                         {item.student.number}
                       </td>
                       <td
                         className="w-20 text-xs md:text-base z-10  md:w-60  text-left 
-                        flex justify-start items-center sticky left-10 md:left-20 bg-white group-hover:bg-slate-200"
+                        flex justify-start items-center sticky left-10 md:left-20 bg-white 
+                        group-hover:bg-slate-200"
                       >
                         <span className="text-left text-xs md:text-base truncate hover:overflow-visible">
                           {item.student.firstName} {item.student?.lastName}
@@ -313,10 +317,10 @@ function Index({ user, error }) {
                         return (
                           <td
                             key={status.id}
-                            className="w-max flex items-center justify-center"
+                            className="w-36 flex items-center justify-center"
                           >
                             <button
-                              className="relative"
+                              className="relative w-full"
                               onClick={() => {
                                 setSelectAttendance(() => {
                                   return {
@@ -333,7 +337,7 @@ function Index({ user, error }) {
                                 </div>
                               )}
                               <div
-                                className={`w-32 flex items-center justify-center `}
+                                className={`w-36 flex items-center justify-center `}
                               >
                                 {status.present && (
                                   <div className="bg-green-600 w-full items-center justify-center py-1  text-white">
