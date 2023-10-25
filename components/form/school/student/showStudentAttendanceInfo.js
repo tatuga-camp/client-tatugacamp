@@ -40,7 +40,7 @@ function ShowStudentAttendanceInfo({
           </div>
           <div className="flex flex-col  items-start gap-3 w-80 break-words ">
             <span className="font-Kanit text-2xl  font-semibold ">
-              {student.firstName} {student.firstName}
+              {student.firstName} {student?.lastName}
             </span>
             <div className="flex items-center gap-5">
               <span className="font-Kanit w-max p-2 bg-blue-500 rounded-md  text-base  font-normal text-white truncate">
