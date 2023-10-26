@@ -200,7 +200,7 @@ function Index({ user, error }) {
   }
 
   return (
-    <div className="bg-gradient-to-t from-blue-400 to-blue-50">
+    <div className="bg-stone-50">
       {triggerShowTeacherInfo && (
         <ShowTeacherOverviewInfo
           setTriggerShowTeacherInfo={setTriggerShowTeacherInfo}
@@ -213,7 +213,11 @@ function Index({ user, error }) {
         </Head>
 
         <main className="w-full py-10 gap-10  h-max flex flex-col justify-center items-center font-Poppins  ">
-          <div className="w-11/12 h-[35rem] bg-white pb-3 items-center rounded-lg flex flex-col ring-2 overflow-hidden ring-black">
+          <div
+            className="w-11/12 h-[35rem] pb-5 bg-white items-center 
+             border-b-8 border-blue-500 
+          rounded-lg flex flex-col overflow-hidden ring-black"
+          >
             <div className="w-full bg-white h-28 flex justify-between">
               <div className="p-5 gap-2 flex flex-col">
                 <span className="font-Poppins text-4xl font-semibold">
@@ -425,7 +429,10 @@ function Index({ user, error }) {
             </footer>
           </div>
           <div className="w-11/12 flex gap-5 justify-center items-center ">
-            <div className=" w-6/12 h-96 p-5  bg-white rounded-xl">
+            <div
+              className=" w-6/12 h-96 p-5  ring-black bg-white 
+              border-b-8 border-red-500 rounded-xl"
+            >
               <Bar options={options} data={data} />
             </div>
           </div>

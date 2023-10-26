@@ -22,6 +22,7 @@ import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { GetAllTeachersNumber } from '../service/school/teacher';
 import { GetAllClassroomNumber } from '../service/school/classroom';
+import { PiStudentBold } from 'react-icons/pi';
 
 function Layout({
   children,
@@ -174,17 +175,23 @@ function Layout({
           lastRoute === 'setting' ? 'hidden' : 'flex'
         }  w-full justify-center pt-20 mb-5`}
       >
-        <div className="w-11/12 h-28 grid grid-cols-6  gap-5 ">
+        <div
+          className={`w-11/12 h-28 grid ${
+            user?.schoolUser?.organization === 'school'
+              ? ' grid-cols-8'
+              : ' grid-cols-6 '
+          } gap-5 `}
+        >
           <Link
             href={'/school/dashboard'}
             className={`ring-2 no-underline ring-black row-span-1 col-span-2 transition duration-150
-            ${lastRoute === 'school' ? 'bg-pink-400' : 'bg-white'}
+            ${lastRoute === 'dashboard' ? 'bg-pink-400' : 'bg-white'}
             hover:bg-pink-400 group  rounded-lg
-           flex justify-center gap-10 items-center relative `}
+           flex justify-center lg:gap-1 xl:gap-10 items-center relative `}
           >
             <div
               className={`flex justify-center items-center text-3xl 
-              ${lastRoute === 'school' ? 'text-black' : 'text-pink-600'}
+              ${lastRoute === 'dashboard' ? 'text-black' : 'text-pink-600'}
             w-16 h-16 rounded-full  group-hover:text-black
              group-hover:bg-white transition bg-pink-100 `}
             >
@@ -193,17 +200,19 @@ function Layout({
             <div className="flex flex-col  items-start">
               <span
                 className={`
-               ${lastRoute === 'school' ? 'text-white' : 'text-black'}
-              font-semibold text-2xl  font-Kanit group-hover:text-white`}
+               ${lastRoute === 'dashboard' ? 'text-white' : 'text-black'}
+              font-semibold lg:text-sm xl:text-2xl  font-Kanit group-hover:text-white`}
               >
                 หน้าหลัก
               </span>
               <span
                 className={`
                 ${
-                  lastRoute === 'school' ? 'text-slate-100' : 'text-slate-500 k'
+                  lastRoute === 'dashboard'
+                    ? 'text-slate-100'
+                    : 'text-slate-500 k'
                 }
-              font-normal font-Kanit text-base group-hover:text-slate-100`}
+              font-normal font-Kanit text-xs xl:text-base group-hover:text-slate-100`}
               >
                 homepage
               </span>
@@ -220,7 +229,7 @@ function Layout({
             className={`row-span-1 no-underline col-span-2 transition ${
               lastRoute === 'manage-account' ? 'bg-blue-400' : 'bg-white'
             } duration-150 hover:bg-blue-400 group 
-             rounded-lg flex justify-center gap-10 items-center relative  ring-2 ring-black`}
+             rounded-lg flex justify-center lg:gap-1 xl:gap-10 items-center relative  ring-2 ring-black`}
           >
             <div
               className={`flex justify-center items-center text-3xl 
@@ -232,7 +241,7 @@ function Layout({
             </div>
             <div className="flex flex-col  items-start">
               <div
-                className={`font-semibold flex items-center gap-2 text-2xl text-black font-Kanit group-hover:text-white 
+                className={`font-semibold flex items-center gap-2 lg:text-sm xl:text-2xl text-black font-Kanit group-hover:text-white 
                  ${
                    lastRoute === 'manage-account' ? 'text-white ' : 'text-black'
                  }`}
@@ -240,7 +249,7 @@ function Layout({
                 <span>บริหารจัดการบัญชี</span>
               </div>
               <span
-                className={`font-normal  font-Kanit text-base
+                className={`font-normal  font-Kanit text-xs xl:text-base
               ${
                 lastRoute === 'manage-account'
                   ? 'text-slate-100'
@@ -252,13 +261,52 @@ function Layout({
               </span>
             </div>
           </Link>
+          {user?.schoolUser?.organization === 'school' && (
+            <Link
+              href={'/school/dashboard/students'}
+              onClick={() => {
+                if (lastRoute === 'students') {
+                  setTriggerCreateUser(() => false);
+                  setSelectTeacher(() => null);
+                }
+              }}
+              className={`row-span-1 no-underline col-span-2 transition ${
+                lastRoute === 'students' ? 'bg-orange-400' : 'bg-white'
+              } duration-150 hover:bg-orange-400 group 
+             rounded-lg flex justify-center lg:gap-1 xl:gap-10 items-center relative  ring-2 ring-black`}
+            >
+              <div
+                className={`flex justify-center items-center text-3xl 
+            w-16 h-16 rounded-full text-orange-600 group-hover:text-black
+            ${lastRoute === 'students' ? 'bg-white' : 'bg-orange-100'}
+            group-hover:bg-white transition bg-orange-100 `}
+              >
+                <PiStudentBold />
+              </div>
+              <div className="flex flex-col  items-start">
+                <div
+                  className={`font-semibold flex items-center gap-2 lg:text-sm xl:text-2xl text-black font-Kanit group-hover:text-white 
+                 ${lastRoute === 'students' ? 'text-white ' : 'text-black'}`}
+                >
+                  <span>บริหารจัดการนักเรียน</span>
+                </div>
+                <span
+                  className={`font-normal  font-Kanit text-xs xl:text-base
+              ${lastRoute === 'students' ? 'text-slate-100' : 'text-slate-500'}
+              group-hover:text-slate-100`}
+                >
+                  เพิ่ม/จัดการ นักเรียน
+                </span>
+              </div>
+            </Link>
+          )}
 
           <Link
             href={'/school/dashboard/classrooms'}
             className={` ring-2 no-underline ring-black row-span-1 col-span-2 
             ${lastRoute === 'classrooms' ? 'bg-green-400' : 'bg-white'}
             transition duration-150 hover:bg-green-400 group  rounded-lg
-           flex justify-center gap-10 items-center relative`}
+           flex justify-center lg:gap-1 xl:gap-10 items-center relative`}
           >
             <div
               className={`flex justify-center items-center text-3xl 
@@ -277,7 +325,7 @@ function Layout({
                 className={`
                 flex items-center gap-2 
                ${lastRoute === 'classrooms' ? 'text-white' : 'text-black'}
-              font-semibold text-2xl text-black font-Kanit group-hover:text-white`}
+              font-semibold lg:text-sm xl:text-2xl text-black font-Kanit group-hover:text-white`}
               >
                 <NumberAnimated n={classroomNumber?.data} />{' '}
                 <span className="text-sm font-normal">ห้องเรียน</span>
@@ -289,7 +337,7 @@ function Layout({
                     ? 'text-slate-100'
                     : 'text-slate-500'
                 }
-              font-normal  font-Kanit text-base group-hover:text-slate-100`}
+              font-normal  font-Kanit text-xs xl:text-base group-hover:text-slate-100`}
               >
                 ตรวจสอบห้องเรียน
               </span>
