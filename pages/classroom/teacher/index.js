@@ -40,7 +40,6 @@ import { SiGoogleclassroom } from 'react-icons/si';
 import AchieveClassroomComponent from '../../../components/classroom/achieveClassroom';
 import UpdateOrderClassroom from '../../../components/form/updateOrderClassroom';
 import { useQuery } from '@tanstack/react-query';
-import { GetAllPendingReviews } from '../../../service/pending-review';
 import PendingReviews from '../../../components/classroom/pendingReviews';
 
 const classroomMenus = [
