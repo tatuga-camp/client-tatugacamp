@@ -74,7 +74,7 @@ function Index({ error, user }) {
     isDue: '',
     deadline: '',
   });
-
+  const [loadingIframe, setLoadingIframe] = useState(false);
   const [comfirmDeleteComment, setComfirmDeleteComment] = useState(false);
   const assignment = useQuery(
     ['assignment'],
@@ -184,6 +184,10 @@ function Index({ error, user }) {
     });
   };
 
+  const handleIframeLoading = () => {
+    setLoadingIframe(() => false);
+  };
+
   //handle click to delete assignment
   const handleDeleteAssignment = () => {
     Swal.fire({
@@ -264,6 +268,7 @@ function Index({ error, user }) {
     try {
       if (student.studentWork) {
         setStudentSummitDate((prev) => {
+          setLoadingIframe(() => true);
           const createDate = new Date(student.studentWork.createAt); // Replace with your specific date and time
           const deadlineDate = new Date(assignment?.data?.data?.deadline);
           deadlineDate.setHours(23);
@@ -1217,11 +1222,32 @@ function Index({ error, user }) {
                                 return (
                                   <div
                                     key={index}
-                                    className="w-full flex  justify-center"
+                                    className="w-full flex items-center flex-col  justify-center"
                                   >
+                                    {loadingIframe && (
+                                      <div className="relative w-full">
+                                        <div className=" flex-col w-full gap-2 bg-slate-200 h-96 animate-pulse flex justify-center items-center"></div>
+                                        <div
+                                          className="absolute flex flex-col
+                                         top-0 bottom-0 justify-center items-center right-0 left-0 m-auto "
+                                        >
+                                          <a
+                                            target="_blank"
+                                            href={file.url}
+                                            className="w-60 cursor-pointer hover:scale-105 transition duration-100
+                                             text-center h-8 no-underline font-semibold text-lg
+                                         px-5 bg-blue-400 py-1 rounded-full text-white"
+                                          >
+                                            คลิกเพื่อดาวน์โหลด
+                                          </a>
+                                          กำลังแสดงไฟล์ DOC ...
+                                        </div>
+                                      </div>
+                                    )}
                                     <iframe
-                                      width="80%"
-                                      height="500px"
+                                      onLoad={handleIframeLoading}
+                                      width={loadingIframe ? '0px' : '50%'}
+                                      height={loadingIframe ? '0px' : '500px'}
                                       src={`https://docs.google.com/gview?url=${file.url}&embedded=true`}
                                     ></iframe>
                                   </div>
