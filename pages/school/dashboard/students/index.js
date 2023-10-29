@@ -84,14 +84,14 @@ function Index({ user }) {
               สร้างชั้นเรียน
             </span>
           </button>
-          <div className="w-96">
+          {/* <div className="w-96">
             <TextField
               label="ค้นหาชั้นเรียน"
               variant="filled"
               fullWidth
               color="info"
             />
-          </div>
+          </div> */}
         </section>
         <h1 className="text-3xl font-semibold">ข้อมูลชั้นเรียน</h1>
         <table className="w-5/12 h-max overflow-auto  border-separate border-spacing-y-2">

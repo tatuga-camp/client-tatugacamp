@@ -45,6 +45,7 @@ import { AiFillEdit, AiOutlineComment } from 'react-icons/ai';
 import { HiOutlineNewspaper, HiPaperClip } from 'react-icons/hi2';
 import Link from 'next/link.js';
 import Loading from '../../../../../../components/loading/loading.js';
+import { GetAllStudentsInClassroomForTeacherService } from '../../../../../../service/teacher/student.js';
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -86,7 +87,11 @@ function Index({ error, user }) {
   const students = useQuery(
     ['students'],
     () => {
-      GetAllStudents({ classroomId: router.query.classroomId });
+      user?.data?.data?.schoolUser?.organization === 'school'
+        ? GetAllStudentsInClassroomForTeacherService({
+            classroomId: router.query.classroomId,
+          })
+        : GetAllStudents({ classroomId: router.query.classroomId });
     },
     {
       enabled: false,

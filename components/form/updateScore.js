@@ -135,11 +135,7 @@ function UpdateScore({
       setLoadingDeleteStudent(() => false);
       document.body.style.overflow = 'auto';
       if (classroomScore === true) {
-        if (classroomScore === true) {
-          close();
-        } else {
-          setTriggerUpdateStudent(() => false);
-        }
+        close();
       } else {
         setTriggerUpdateStudent(() => false);
       }
