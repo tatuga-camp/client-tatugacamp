@@ -22,6 +22,7 @@ import Trophy from '../../../../components/svg/Trophy';
 import { GetAllGroup, GetGroup } from '../../../../service/group';
 import DisplayGroup from '../../../../components/group/displayGroup';
 import Loading from '../../../../components/loading/loading';
+import { GetAllStudentsInClassroomForTeacherService } from '../../../../service/teacher/student';
 
 function Index({ user, error }) {
   const router = useRouter();
@@ -47,7 +48,12 @@ function Index({ user, error }) {
   );
   const students = useQuery(
     ['students'],
-    () => GetAllStudents({ classroomId: router.query.classroomId }),
+    () =>
+      user?.schoolUser?.organization === 'school'
+        ? GetAllStudentsInClassroomForTeacherService({
+            classroomId: router.query.classroomId,
+          })
+        : GetAllStudents({ classroomId: router.query.classroomId }),
     { enabled: false },
   );
   const scores = useQuery(
@@ -110,7 +116,12 @@ function Index({ user, error }) {
   }
   return (
     <div className="w-full pb-96 bg-slate-100 ">
-      <Layout language={user.language} sideMenus={sideMenus} groups={groups} />
+      <Layout
+        language={user.language}
+        checkUser={user}
+        sideMenus={sideMenus}
+        groups={groups}
+      />
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta charSet="UTF-8" />

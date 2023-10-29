@@ -215,7 +215,7 @@ function Index({ user, error }) {
         <main className="w-full py-10 gap-10  h-max flex flex-col justify-center items-center font-Poppins  ">
           <div
             className="w-11/12 h-[35rem] pb-5 bg-white items-center 
-             border-b-8 border-blue-500 
+             border-b-8 border-blue-500 ring-2 
           rounded-lg flex flex-col overflow-hidden ring-black"
           >
             <div className="w-full bg-white h-28 flex justify-between">
@@ -430,7 +430,7 @@ function Index({ user, error }) {
           </div>
           <div className="w-11/12 flex gap-5 justify-center items-center ">
             <div
-              className=" w-6/12 h-96 p-5  ring-black bg-white 
+              className=" w-6/12 h-96 p-5  ring-black ring-2 bg-white 
               border-b-8 border-red-500 rounded-xl"
             >
               <Bar options={options} data={data} />

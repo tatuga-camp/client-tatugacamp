@@ -23,6 +23,7 @@ import {
 import Link from 'next/link';
 import { IoCreate } from 'react-icons/io5';
 import { AiOutlineSetting } from 'react-icons/ai';
+import { GetAllStudentsInClassroomForTeacherService } from '../../../../../service/teacher/student';
 function Assignment({ error, user }) {
   const router = useRouter();
   const classroom = useQuery(
@@ -41,7 +42,12 @@ function Assignment({ error, user }) {
   );
   const students = useQuery(
     ['students'],
-    () => GetAllStudents({ classroomId: router.query.classroomId }),
+    () =>
+      user?.schoolUser?.organization === 'school'
+        ? GetAllStudentsInClassroomForTeacherService({
+            classroomId: router.query.classroomId,
+          })
+        : GetAllStudents({ classroomId: router.query.classroomId }),
     {
       enabled: false,
     },

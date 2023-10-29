@@ -2,7 +2,7 @@ import axios from 'axios';
 import Error from 'next/error';
 import { parseCookies } from 'nookies';
 
-export async function CreateClassroom(inputObject) {
+export async function CreateClassroomService(inputObject) {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;

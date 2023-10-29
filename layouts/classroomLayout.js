@@ -35,8 +35,9 @@ import RouletteRandomStudent from '../components/random/rouletteRandomStudent';
 import RandomTools from '../components/form/randomTools';
 import { RiNotification2Fill } from 'react-icons/ri';
 import CheckAttendanceByQrCode from '../components/form/checkAttendanceByQrCode';
+import { GetAllStudentsInClassroomForTeacherService } from '../service/teacher/student';
 
-function Layout({ children, sideMenus, language, groups }) {
+function Layout({ children, sideMenus, language, groups, checkUser }) {
   const router = useRouter();
   const [triggerRandomStudent, setTriggerRandomStudent] = useState(false);
   const [triggerRandomTools, setTriggerRandomTools] = useState(false);
@@ -54,7 +55,12 @@ function Layout({ children, sideMenus, language, groups }) {
   );
   const students = useQuery(
     ['students'],
-    () => GetAllStudents({ classroomId: router.query.classroomId }),
+    () =>
+      checkUser?.schoolUser?.organization === 'school'
+        ? GetAllStudentsInClassroomForTeacherService({
+            classroomId: router.query.classroomId,
+          })
+        : GetAllStudents({ classroomId: router.query.classroomId }),
     {
       enabled: false,
     },
@@ -409,6 +415,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                       <CreateStudent
                         language={language}
                         students={students}
+                        user={user}
                         close={close}
                       />
                     )}

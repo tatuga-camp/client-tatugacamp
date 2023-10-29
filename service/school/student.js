@@ -114,6 +114,60 @@ export async function CreateStudentInStudentClassService({
   }
 }
 
+export async function UpdateStudentInStudentClassService({
+  number,
+  firstName,
+  lastName,
+  studentId,
+}) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const students = await axios.put(
+      `${process.env.Server_Url}/user/schoolUser/student/update`,
+      {
+        number,
+        firstName,
+        lastName,
+        studentId,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return students.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
+export async function DeleteStudentInStudentClassService({ studentId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const students = await axios.delete(
+      `${process.env.Server_Url}/user/schoolUser/student/delete`,
+      {
+        params: {
+          studentId: studentId,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return students.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+
 export async function GetAllStudentInStudentClassService({ studentClassId }) {
   try {
     const cookies = parseCookies();
