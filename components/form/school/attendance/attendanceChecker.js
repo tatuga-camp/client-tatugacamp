@@ -11,11 +11,13 @@ import {
   GetAllAttendance,
 } from '../../../../service/attendance';
 import Loading from '../../../loading/loading';
+import { GetAllAttendanceForTeacherService } from '../../../../service/teacher/attendance';
 
 function AttendanceCheckerForSchool({
   setTriggerAttendance,
   students,
   language,
+  user,
 }) {
   const router = useRouter();
   const [isCheckStudent, setIsCheckStudent] = useState();
@@ -29,7 +31,12 @@ function AttendanceCheckerForSchool({
   const [triggerAddNote, setTriggerAddNote] = useState(false);
   const attendances = useQuery(
     ['attendance'],
-    () => GetAllAttendance({ classroomId: router.query.classroomId }),
+    () =>
+      user?.schoolUser?.organization === 'school'
+        ? GetAllAttendanceForTeacherService({
+            classroomId: router.query.classroomId,
+          })
+        : GetAllAttendance({ classroomId: router.query.classroomId }),
     {
       enabled: false,
     },

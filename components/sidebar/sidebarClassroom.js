@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -49,7 +49,8 @@ function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
                     className="object-cover"
                     alt={`profile of ${user?.firstName}`}
                     fill
-                    sizes="(max-width: 768px) 100vw" />
+                    sizes="(max-width: 768px) 100vw"
+                  />
                 ) : (
                   <span className="text-3xl font-Kanit font-semibold text-white">
                     {user?.firstName?.charAt(0)}
@@ -102,9 +103,6 @@ function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
           <li>
             <ul className="list-none pl-5 flex flex-col gap-y-3 mt-10 ">
               {sideMenus.map((list, index, array) => {
-                if (user.isSchoolAccount && index === 1) {
-                  return null;
-                }
                 return (
                   <Link className="no-underline" href={list?.url} key={index}>
                     <li

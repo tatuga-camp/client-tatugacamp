@@ -110,7 +110,7 @@ function Index({ user, error }) {
               {classroom?.data?.user?.picture ? (
                 <Image
                   src={classroom?.data?.user?.picture}
-                  layout="fill"
+                  fill
                   className="object-cover"
                   alt={`picture of ${classroom?.data?.user?.firstName}`}
                   sizes="(max-width: 768px) 100vw"

@@ -177,7 +177,7 @@ export async function GetAllAssignments({ classroomId }) {
   }
 }
 
-export async function GetAssignment({ assignmentId }) {
+export async function GetAssignment({ assignmentId, classroomId }) {
   try {
     if (!assignmentId) {
       return null;
@@ -189,6 +189,7 @@ export async function GetAssignment({ assignmentId }) {
       {
         params: {
           assignmentId: assignmentId,
+          classroomId: classroomId,
         },
         headers: {
           'Content-Type': 'application/json',

@@ -28,6 +28,7 @@ import Loading from '../loading/loading';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { nationalities } from '../../data/student/nationality';
+import { UpdateScoreOnWholeClassForTeacherService } from '../../service/teacher/score';
 function UpdateScore({
   setTriggerUpdateStudent,
   student,
@@ -44,7 +45,6 @@ function UpdateScore({
   miniGroupId,
 }) {
   const router = useRouter();
-  console.log(user);
   const [classroomId, setClassroomId] = useState();
   const [soundPositive, setSoundPositive] = useState(null);
   const [soundNagative, setSoundNagative] = useState(null);
@@ -183,7 +183,7 @@ function UpdateScore({
   };
 
   // update student points
-  const onClick = async (data) => {
+  const handleUpdateScore = async (data) => {
     try {
       setLoadingPoint(true);
       let checkNagativePoint = false;
@@ -220,9 +220,25 @@ function UpdateScore({
           </div>
         );
       });
-      if (classroomScore === true && !groupScore) {
+      if (
+        classroomScore === true &&
+        !groupScore &&
+        user?.schoolUser?.organization === 'school'
+      ) {
+        await UpdateScoreOnWholeClassForTeacherService({
+          score: data.score,
+          scoreId: data.scoreId,
+          pointsValue,
+          classroomId,
+        });
+      } else if (
+        classroomScore === true &&
+        !groupScore &&
+        user?.schoolUser?.organization !== 'school'
+      ) {
         await UpdateScoreOnWholeClass(data, pointsValue, classroomId);
       }
+
       if (classroomScore === true && groupScore) {
         await UpdateScoreOnWholeGroup({
           pointsValue,
@@ -691,7 +707,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                           >
                             <button
                               onClick={() =>
-                                onClick({
+                                handleUpdateScore({
                                   scoreId: score?.id,
                                   studentId: student?.id,
                                   scoreTitle: score?.title,

@@ -26,6 +26,7 @@ import {
 } from '../../../../../data/menuBarsAttendance';
 import DowloadExcelAttendacne from '../../../../../components/form/dowloadExcelAttendacne';
 import ShowNoteAttendance from '../../../../../components/form/showNoteAttendance';
+import { GetAllAttendanceForTeacherService } from '../../../../../service/teacher/attendance';
 
 function Index({ error, user }) {
   const router = useRouter();
@@ -36,7 +37,12 @@ function Index({ error, user }) {
   const [sideMenus, setSideMenus] = useState();
   const attendances = useQuery(
     ['attendance'],
-    () => GetAllAttendance({ classroomId: router.query.classroomId }),
+    () =>
+      user?.schoolUser?.organization === 'school'
+        ? GetAllAttendanceForTeacherService({
+            classroomId: router.query.classroomId,
+          })
+        : GetAllAttendance({ classroomId: router.query.classroomId }),
     {
       enabled: false,
     },
@@ -86,7 +92,7 @@ function Index({ error, user }) {
         <meta charSet="UTF-8" />
         <title>attendance</title>
       </Head>
-      <Layout language={user.language} sideMenus={sideMenus}>
+      <Layout checkUser={user} language={user.language} sideMenus={sideMenus}>
         <div className="w-full h-full mt-10 flex flex-col justify-center items-center pb-10 ">
           <Popover>
             {({ open }) => (

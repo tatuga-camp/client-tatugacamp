@@ -25,109 +25,73 @@ function PendingReviews({ user }) {
   }, [inView]);
 
   return (
-    <ul className="w-full flex flex-col font-Kanit items-center justify-start gap-3">
+    <div className="w-full flex flex-col font-Kanit items-center justify-start gap-3">
+      <h1 className="text-3xl font-semibold">งานรอตรวจทั้งหมด</h1>
       {pendingReview?.data?.length === 0 && (
         <div className="text-2xl w-max h-max p-3 bg-white rounded-md">
           ไม่มีผู้เรียนให้ตรวจงาน 😃
         </div>
       )}
-      {pendingReview.isLoading ? (
-        <Skeleton variant="rectangular" width={400} height={150} />
-      ) : (
-        pendingReview?.data?.pages?.map((list) => {
-          return list?.pendingReview?.map((list) => {
-            return (
-              <li
-                key={list.classroom.id}
-                className="w-full max-w-xl p-5 bg-white rounded-xl drop-shadow-md h-max"
-              >
-                <header className="border-b-2 border-gray-600 pb-3">
-                  <div>ห้องเรียน</div>
-                  <h2 className="text-xl font-semibold text-blue-800">
-                    {list.classroom.title}
-                  </h2>
-                  <div className="text-lg flex gap-2">
-                    <span>{list.classroom.level}</span>
-                    <span>{list.classroom.description}</span>
-                  </div>
-                </header>
-                <ul className="w-full gap-5   mt-5 grid-cols-1 grid">
-                  {list.data.map((assignment, index) => {
-                    const date = new Date(assignment.deadline);
-                    const formattedDate = date.toLocaleDateString(
-                      `${
-                        user.language === 'Thai'
-                          ? 'th-TH'
-                          : user.language === 'English' && 'en-US'
-                      }`,
-                      {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                      },
-                    );
-                    return (
-                      <li
-                        className=" ml-5  p-5 ring-2 ring-blue-500 rounded-lg"
-                        key={assignment.id}
-                      >
-                        <div className="font-semibold text-lg">
-                          {assignment.title}
-                        </div>
-                        <div className="flex gap-3 flex-wrap">
-                          <div className="p-1 rounded-md text-white bg-orange-600 w-max h-max">
-                            คะแนนเต็ม {assignment.maxScore}
-                          </div>
-                          <div className="p-1 rounded-md text-white bg-red-600 w-max h-max">
-                            กำหนดส่ง {formattedDate}
-                          </div>
-                        </div>
-                        <ul className="grid mt-5 gap-5 place-items-center">
-                          {assignment.students.map((student, index) => {
-                            return (
-                              <Link
-                                href={`/classroom/teacher/${list.classroom.id}/assignment/${assignment.id}`}
-                                className="w-full no-underline text-black hover:bg-slate-200 transition duration-100 items-center justify-between border-b-2 border-black  p-2 flex"
-                                key={index}
-                              >
-                                <div className="w-max flex items-center gap-3">
-                                  <span>{student.number}</span>
-                                  <span>{student.firstName}</span>
-                                  <span>{student.lastName}</span>
-                                  <div className="w-10 h-10 ring-2 ring-black relative rounded-md overflow-hidden">
-                                    <Image
-                                      fill
-                                      className="object-cover"
-                                      src={student.picture}
-                                      sizes="(max-width: 768px) 100vw"
-                                      quality={60}
-                                    />
-                                  </div>
-                                </div>
-                                <Link
-                                  className="no-underline hover:scale-110 transition duration-150
-                                 w-max h-max bg-yellow-400 text-white font-semibold p-2"
-                                  href={`/classroom/teacher/${list.classroom.id}/assignment/${assignment.id}`}
-                                >
-                                  <span>
-                                    {user.language === 'Thai'
-                                      ? 'รอตรวจ'
-                                      : 'pending review'}
-                                  </span>
-                                </Link>
-                              </Link>
-                            );
-                          })}
-                        </ul>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </li>
-            );
-          });
-        })
-      )}
+      <table className="w-max  bg-white rounded-md p-10 pt-0 px-0 gap-2 flex flex-col">
+        <thead>
+          <tr className="w-full bg-white h-14 px-10 py-5  drop-shadow-md sticky top-0 flex gap-4">
+            <th className="w-40">ชื่องาน</th>
+            <th className="w-40">กำหนดส่ง</th>
+            <th className="w-20">คะแนนเต็ม</th>
+            <th className="w-20">เลขที่</th>
+            <th className="w-60">ชื่อนักเรียน</th>
+            <th className="w-24">สถานนะ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pendingReview.isLoading ? (
+            <Skeleton variant="rectangular" width={400} height={150} />
+          ) : (
+            pendingReview?.data?.pages?.map((list) => {
+              return list?.pendingReview?.map((list) => {
+                const date = new Date(list.assignment.deadline);
+                const deadline = date.toLocaleDateString('th-TH', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                });
+                return (
+                  <Link
+                    target="_blank"
+                    href={`/classroom/teacher/${list.classroom.id}/assignment/${list.assignment.id}`}
+                    className="no-underline border-b-2 border-stone-100 hover:scale-105 transition duration-75 cursor-pointer
+                     bg-white hover:bg-blue-50 px-1 py-2
+                     flex gap-4 text-black"
+                    key={list.student.id}
+                  >
+                    <td className="w-40 text-center">
+                      {list.assignment.title}
+                    </td>
+                    <td className="w-40 h-max bg-red-500 text-white rounded-md p-1 text-center">
+                      {deadline}
+                    </td>
+                    <td className="w-20 text-center">
+                      {list.assignment.maxScore}
+                    </td>
+                    <td className="w-20 text-center truncate">
+                      {list.student.number}
+                    </td>
+                    <td className="w-60 truncate text-center">
+                      {list.student.firstName}
+                    </td>
+                    <td
+                      className="w-24 text-center flex items-center rounded-md p-2 font-semibold text-white
+                     bg-yellow-500 "
+                    >
+                      รอการตรวจ
+                    </td>
+                  </Link>
+                );
+              });
+            })
+          )}
+        </tbody>
+      </table>
       <button
         ref={ref}
         onClick={() => pendingReview.fetchNextPage()}
@@ -141,7 +105,7 @@ function PendingReviews({ user }) {
           ? 'Load Newer'
           : 'Nothing more to load'}
       </button>
-    </ul>
+    </div>
   );
 }
 
