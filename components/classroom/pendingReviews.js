@@ -49,7 +49,7 @@ function PendingReviews({ user }) {
           ) : (
             pendingReview?.data?.pages?.map((list) => {
               return list?.pendingReview?.map((list) => {
-                const date = new Date(list.assignment.deadline);
+                const date = new Date(list?.assignment?.deadline);
                 const deadline = date.toLocaleDateString('th-TH', {
                   day: '2-digit',
                   month: 'short',
@@ -58,26 +58,26 @@ function PendingReviews({ user }) {
                 return (
                   <Link
                     target="_blank"
-                    href={`/classroom/teacher/${list.classroom.id}/assignment/${list.assignment.id}`}
+                    href={`/classroom/teacher/${list?.classroom?.id}/assignment/${list?.assignment?.id}`}
                     className="no-underline border-b-2 border-stone-100 hover:scale-105 transition duration-75 cursor-pointer
                      bg-white hover:bg-blue-50 px-1 py-2
                      flex gap-4 text-black"
-                    key={list.student.id}
+                    key={list?.student?.id}
                   >
                     <td className="w-40 text-center">
-                      {list.assignment.title}
+                      {list?.assignment?.title}
                     </td>
                     <td className="w-40 h-max bg-red-500 text-white rounded-md p-1 text-center">
                       {deadline}
                     </td>
                     <td className="w-20 text-center">
-                      {list.assignment.maxScore}
+                      {list?.assignment?.maxScore}
                     </td>
                     <td className="w-20 text-center truncate">
-                      {list.student.number}
+                      {list?.student?.number}
                     </td>
                     <td className="w-60 truncate text-center">
-                      {list.student.firstName}
+                      {list?.student?.firstName}
                     </td>
                     <td
                       className="w-24 text-center flex items-center rounded-md p-2 font-semibold text-white
