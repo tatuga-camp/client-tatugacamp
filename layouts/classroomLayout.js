@@ -35,8 +35,9 @@ import RouletteRandomStudent from '../components/random/rouletteRandomStudent';
 import RandomTools from '../components/form/randomTools';
 import { RiNotification2Fill } from 'react-icons/ri';
 import CheckAttendanceByQrCode from '../components/form/checkAttendanceByQrCode';
+import { GetAllStudentsInClassroomForTeacherService } from '../service/teacher/student';
 
-function Layout({ children, sideMenus, language, groups }) {
+function Layout({ children, sideMenus, language, groups, checkUser }) {
   const router = useRouter();
   const [triggerRandomStudent, setTriggerRandomStudent] = useState(false);
   const [triggerRandomTools, setTriggerRandomTools] = useState(false);
@@ -54,7 +55,12 @@ function Layout({ children, sideMenus, language, groups }) {
   );
   const students = useQuery(
     ['students'],
-    () => GetAllStudents({ classroomId: router.query.classroomId }),
+    () =>
+      checkUser?.schoolUser?.organization === 'school'
+        ? GetAllStudentsInClassroomForTeacherService({
+            classroomId: router.query.classroomId,
+          })
+        : GetAllStudents({ classroomId: router.query.classroomId }),
     {
       enabled: false,
     },
@@ -355,14 +361,14 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
       {triggerAttendance &&
         (user?.data?.data?.schoolUser?.organization === 'immigration' ? (
           <AttendanceCheckerForSchool
-            user={user}
+            user={checkUser}
             language={language}
             setTriggerAttendance={setTriggerAttendance}
             students={students}
           />
         ) : (
           <AttendanceChecker
-            user={user}
+            user={checkUser}
             language={language}
             setTriggerAttendance={setTriggerAttendance}
             students={students}
@@ -382,40 +388,43 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
         <div className="md:flex hidden flex-col gap-3 lg:mt-0 md:pl-5 lg:pl-0 lg:w-3/4 md:w-11/12 items-center justify-center md:items-start">
           <div className="tracking-wide flex flex-wrap mt-5 md:mt-0 items-center gap-5 pl-5 md:pl-0 text-gray-400">
             <span>Overview</span>
-            <Popover className="relative ">
-              {({ open }) => (
-                <>
-                  <Popover.Button
-                    onClick={() => students.refetch()}
-                    className="bg-transparen  border-none"
-                  >
-                    <div
-                      aria-label="สร้างผู้เรียนของคุณ"
-                      className={`
+            {checkUser?.schoolUser?.organization !== 'school' && (
+              <Popover className="relative ">
+                {({ open }) => (
+                  <>
+                    <Popover.Button
+                      onClick={() => students.refetch()}
+                      className="bg-transparen  border-none"
+                    >
+                      <div
+                        aria-label="สร้างผู้เรียนของคุณ"
+                        className={`
                       w-max p-3 bg-[#2C7CD1]  cursor-pointer  gap-2
              hover:scale-110 rounded-md  transition duration-200 ease-in-out h-12 flex items-center justify-center`}
-                    >
-                      <div className="text-white flex items-center justify-center ">
-                        <IoPersonAdd />
+                      >
+                        <div className="text-white flex items-center justify-center ">
+                          <IoPersonAdd />
+                        </div>
+                        <span className="font-Kanit font-semibold text-lg text-white">
+                          {language === 'Thai' && 'สร้างนักเรียน'}
+                          {language === 'English' && 'Create students'}
+                        </span>
                       </div>
-                      <span className="font-Kanit font-semibold text-lg text-white">
-                        {language === 'Thai' && 'สร้างนักเรียน'}
-                        {language === 'English' && 'Create students'}
-                      </span>
-                    </div>
-                  </Popover.Button>
-                  <Popover.Panel>
-                    {({ close }) => (
-                      <CreateStudent
-                        language={language}
-                        students={students}
-                        close={close}
-                      />
-                    )}
-                  </Popover.Panel>
-                </>
-              )}
-            </Popover>
+                    </Popover.Button>
+                    <Popover.Panel>
+                      {({ close }) => (
+                        <CreateStudent
+                          language={language}
+                          students={students}
+                          user={user}
+                          close={close}
+                        />
+                      )}
+                    </Popover.Panel>
+                  </>
+                )}
+              </Popover>
+            )}
             <div
               onClick={() =>
                 router.push({
@@ -541,6 +550,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
             <div>
               {triggerAttendanceQrCode && (
                 <CheckAttendanceByQrCode
+                  user={checkUser}
                   setTriggerAttendanceQrCode={setTriggerAttendanceQrCode}
                   language={language}
                   classroomId={classroom?.data?.data?.id}

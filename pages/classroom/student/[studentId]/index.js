@@ -249,7 +249,7 @@ function Index() {
                     sizes="(max-width: 768px) 100vw"
                     priority={true}
                     src={student?.data?.data?.picture}
-                    layout="fill"
+                    fill
                     className="object-cover  "
                   />
                 )}
@@ -274,7 +274,7 @@ function Index() {
               <div className="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-40 flex flex-col justify-center items-center gap-5">
                 <div className="w-28 h-28 relative">
                   <Image
-                    layout="fill"
+                    fill
                     sizes="(max-width: 768px) 100vw"
                     src={selectedImage}
                     alt="Selected Image"

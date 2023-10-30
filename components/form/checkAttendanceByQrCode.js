@@ -13,12 +13,16 @@ import Error from 'next/error';
 import { Alert, Skeleton, Snackbar } from '@mui/material';
 import Loading from '../loading/loading';
 import { MdOutlineUpdate } from 'react-icons/md';
+import { GetAllAttendanceForTeacherService } from '../../service/teacher/attendance';
+import { useRouter } from 'next/router';
 const numberSketion = [1, 2, 3, 4];
 function CheckAttendanceByQrCode({
   setTriggerAttendanceQrCode,
   language,
   classroomId,
+  user,
 }) {
+  const router = useRouter();
   const [triggerShowQrCode, setTriggerShowQrCode] = useState(false);
   const [notification, setNotification] = useState({
     message: '',
@@ -43,7 +47,12 @@ function CheckAttendanceByQrCode({
   );
   const attendances = useQuery(
     ['attendance'],
-    () => GetAllAttendance({ classroomId: classroomId }),
+    () =>
+      user?.schoolUser?.organization === 'school'
+        ? GetAllAttendanceForTeacherService({
+            classroomId: router.query.classroomId,
+          })
+        : GetAllAttendance({ classroomId: router.query.classroomId }),
     {
       enabled: false,
     },

@@ -65,6 +65,7 @@ function CreateAccount({ user, error }) {
       </Head>
       <div
         className="flex  w-full h-screen flex-col justify-start items-center relative font-Kanit
+        bg-stone-50
          "
       >
         <div className="flex flex-col w-11/12 gap-5 mt-2  h-5/6">
@@ -73,7 +74,8 @@ function CreateAccount({ user, error }) {
               onClick={() => {
                 setTriggerCreateUser(() => true);
               }}
-              className="flex gap-3 hover:scale-110 transition duration-100 drop-shadow-md hover:bg-blue-400 group  w-max p-5 bg-white ring-blue-400 ring-2 rounded-xl py-3"
+              className="flex gap-3 hover:scale-110 transition duration-100
+               drop-shadow-md hover:bg-blue-400 group  w-max p-10 bg-white ring-blue-400 ring-2 rounded-xl py-3"
             >
               <div className="flex justify-center items-center text-lg group-hover:text-white">
                 <AiOutlineUserAdd />
@@ -89,12 +91,12 @@ function CreateAccount({ user, error }) {
             >
               <table
                 className="w-full h-[33rem]  flex flex-col 
-            justify-start items-center gap-5 overflow-y-auto overflow-x-auto  relative "
+            justify-start items-center  overflow-y-auto overflow-x-auto  relative "
               >
                 <thead className="w-full sticky top-0 z-20">
                   <tr
                     className="flex self-start	
-                   justify-start px-5 py-10   gap-5 items-center w-full 
+                   justify-start px-5 py-5   gap-5 items-center w-full 
                     bg-white  drop-shadow-md"
                   >
                     <th className="w-20 flex justify-center">รูป</th>
@@ -105,7 +107,7 @@ function CreateAccount({ user, error }) {
                     <th className="w-32 flex justify-center">สร้างเมื่อ</th>
                   </tr>
                 </thead>
-                <tbody className="flex w-full flex-col gap-5 ">
+                <tbody className="flex w-full flex-col gap-5 bg-white ">
                   {teachers.isLoading ? (
                     <tr className="flex flex-col gap-5 ">
                       {loadingElements.map((list, index) => {
