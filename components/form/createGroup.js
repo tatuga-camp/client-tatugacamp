@@ -7,7 +7,7 @@ import { CreateGroupApi } from '../../service/group';
 import Loading from '../../components/loading/loading';
 import { MdGroup } from 'react-icons/md';
 
-function CreateGroup({ close, language, groups }) {
+function CreateGroup({ close, language, groups, user }) {
   const router = useRouter();
   const [groupData, setGroupData] = useState({
     title: '',

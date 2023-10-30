@@ -537,6 +537,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                     <Popover.Panel>
                       {({ close }) => (
                         <CreateGroup
+                          user={checkUser}
                           close={close}
                           language={language}
                           groups={groups}
