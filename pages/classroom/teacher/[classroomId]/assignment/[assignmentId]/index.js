@@ -24,7 +24,6 @@ import 'lightbox.js-react/dist/index.css';
 import { SlideshowLightbox, initLightboxJS } from 'lightbox.js-react';
 import { GetAssignment } from '../../../../../../service/assignment';
 import { useRouter } from 'next/router';
-import { GetAllStudents } from '../../../../../../service/students';
 import UpdateAssignment from '../../../../../../components/form/updateAssignment.js';
 import Unauthorized from '../../../../../../components/error/unauthorized.js';
 import { GetUser, GetUserCookie } from '../../../../../../service/user.js';
@@ -45,7 +44,6 @@ import { AiFillEdit, AiOutlineComment } from 'react-icons/ai';
 import { HiOutlineNewspaper, HiPaperClip } from 'react-icons/hi2';
 import Link from 'next/link.js';
 import Loading from '../../../../../../components/loading/loading.js';
-import { GetAllStudentsInClassroomForTeacherService } from '../../../../../../service/teacher/student.js';
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -79,20 +77,11 @@ function Index({ error, user }) {
   const [comfirmDeleteComment, setComfirmDeleteComment] = useState(false);
   const assignment = useQuery(
     ['assignment'],
-    () => GetAssignment({ assignmentId: router.query.assignmentId }),
-    {
-      enabled: false,
-    },
-  );
-  const students = useQuery(
-    ['students'],
-    () => {
-      user?.data?.data?.schoolUser?.organization === 'school'
-        ? GetAllStudentsInClassroomForTeacherService({
-            classroomId: router.query.classroomId,
-          })
-        : GetAllStudents({ classroomId: router.query.classroomId });
-    },
+    () =>
+      GetAssignment({
+        assignmentId: router.query.assignmentId,
+        classroomId: router.query.classroomId,
+      }),
     {
       enabled: false,
     },
@@ -134,7 +123,6 @@ function Index({ error, user }) {
   // refetch studentOnAssinment when  there is new assignment?.data?.data?
   useEffect(() => {
     if (router.isReady) {
-      students.refetch();
       studentOnAssignments.refetch();
       assignment.refetch();
     }
@@ -162,7 +150,6 @@ function Index({ error, user }) {
 
   //handle show update assignmnet compponent
   const handleClickUpdateAssignment = () => {
-    students.refetch();
     studentOnAssignments.refetch();
     setTriggerAssignMultipleClassroom(() => false);
     setTriggerUpdateAssignment(true);
@@ -231,7 +218,6 @@ function Index({ error, user }) {
       setTriggerAssignMultipleClassroom(() => false);
     }
     if (index === 1) {
-      students.refetch();
       studentOnAssignments.refetch();
     }
     setActiveMenu(index);
@@ -550,7 +536,6 @@ function Index({ error, user }) {
       {triggerUpdateAssignment ? (
         <UpdateAssignment
           language={user.language}
-          students={students}
           assignment={assignment}
           setTriggerUpdateAssignment={setTriggerUpdateAssignment}
           studentOnAssignments={studentOnAssignments}
@@ -991,7 +976,7 @@ function Index({ error, user }) {
                         <div className="lg:w-10 lg:h-10 md:w-8 md:h-8 bg-orange-500 rounded-full overflow-hidden relative">
                           <Image
                             src={currentStudentWork?.picture}
-                            layout="fill"
+                            fill
                             sizes="(max-width: 768px) 100vw"
                             className="object-cover"
                           />
@@ -1162,7 +1147,7 @@ function Index({ error, user }) {
                                     <Image
                                       src={image.src}
                                       alt="student's work"
-                                      layout="fill"
+                                      fill
                                       className="object-cover hover:scale-125 transition duration-150"
                                       data-lightboxjs="lightbox1"
                                       quality={60}
@@ -1286,7 +1271,7 @@ function Index({ error, user }) {
                                       <Image
                                         src={comment.user.picture}
                                         alt="profile"
-                                        layout="fill"
+                                        fill
                                         sizes="(max-width: 768px) 100vw"
                                         className="object-cover"
                                       />
@@ -1359,7 +1344,7 @@ function Index({ error, user }) {
                                       <Image
                                         src={comment.student.picture}
                                         alt="profile"
-                                        layout="fill"
+                                        fill
                                         sizes="(max-width: 768px) 100vw"
                                         className="object-cover"
                                       />

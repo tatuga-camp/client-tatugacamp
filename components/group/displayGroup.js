@@ -417,6 +417,7 @@ function DisplayGroup({
                             language={user.language}
                             scores={scores.data}
                             groupScore={true}
+                            user={user}
                             groupId={group?.data.group.id}
                             miniGroupId={miniGroup.data.id}
                             classroomScore={true}

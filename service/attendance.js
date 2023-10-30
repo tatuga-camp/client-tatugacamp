@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Error from 'next/error';
 import { parseCookies } from 'nookies';
-import { v4 as uuidv4 } from 'uuid';
 
 export async function CreateAttendance({
   classroomId,
@@ -18,7 +17,6 @@ export async function CreateAttendance({
 
     const endAttendanceDateFormat = new Date(endAttendanceDate).toISOString();
 
-    const uniqueId = uuidv4();
     if (imagesBase64.length > 0) {
       const formData = new FormData();
       for (const imageBase64 of imagesBase64) {
@@ -55,7 +53,6 @@ export async function CreateAttendance({
         `${process.env.Server_Url}/user/attendance/head-attendance/upload-signUrl`,
         {
           files,
-          groupId: uniqueId,
           classroomId,
         },
         {
@@ -94,7 +91,6 @@ export async function CreateAttendance({
         `${process.env.Server_Url}/user/attendance/create`,
         {
           date: formatDate,
-          groupId: uniqueId,
           students: students,
           note: updatedContent,
         },
@@ -122,7 +118,6 @@ export async function CreateAttendance({
         `${process.env.Server_Url}/user/attendance/create`,
         {
           date: formatDate,
-          groupId: uniqueId,
           students: students,
           note,
           endDate: endAttendanceDateFormat,
