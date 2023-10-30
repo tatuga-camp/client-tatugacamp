@@ -64,7 +64,7 @@ export async function CreateAttendance({
       );
 
       for (let i = 0; i < urls.data.urls.length; i++) {
-        const response = await fetch(urls.data.urls[i].SignedURL, {
+        await fetch(urls.data.urls[i].SignedURL, {
           method: 'PUT',
           headers: {
             'Content-Type': `${urls.data.urls[i].contentType}`,

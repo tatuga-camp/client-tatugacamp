@@ -45,7 +45,12 @@ function PendingReviews({ user }) {
         </thead>
         <tbody>
           {pendingReview.isLoading ? (
-            <Skeleton variant="rectangular" width={400} height={150} />
+            <div className="w-full flex flex-col gap-5">
+              <Skeleton variant="rectangular" width="100%" height={50} />
+              <Skeleton variant="rectangular" width="100%" height={50} />
+              <Skeleton variant="rectangular" width="100%" height={50} />
+              <Skeleton variant="rectangular" width="100%" height={50} />
+            </div>
           ) : (
             pendingReview?.data?.pages?.map((list) => {
               return list?.pendingReview?.map((list) => {
