@@ -12,6 +12,7 @@ import { FcCancel } from 'react-icons/fc';
 import { MdSchool } from 'react-icons/md';
 import { TbSchoolOff } from 'react-icons/tb';
 import Swal from 'sweetalert2';
+import { GetAllActiveClassroomInTeacherService } from '../../service/teacher/classroom';
 
 function AchieveClassroomComponent({ user }) {
   const [page, setPage] = useState(1);
@@ -25,7 +26,10 @@ function AchieveClassroomComponent({ user }) {
   );
   const classrooms = useQuery(
     ['classrooms', page],
-    () => GetAllClassrooms({ page: page }),
+    () =>
+      user?.schoolUser?.organization === 'school'
+        ? GetAllActiveClassroomInTeacherService({ page: page })
+        : GetAllClassrooms({ page: page }),
     { keepPreviousData: true },
   );
   useEffect(() => {

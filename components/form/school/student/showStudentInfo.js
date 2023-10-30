@@ -19,7 +19,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
           <div className="w-32 h-32 rounded-md overflow-hidden bg-slate-100 relative drop-shadow-md">
             <Image
               src={currentStudentInfo.student.picture}
-              layout="fill"
+              fill
               sizes="(max-width: 768px) 100vw"
               className="object-cover"
             />
@@ -89,7 +89,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
             {currentStudentInfo.classroom.user.picture ? (
               <Image
                 src={currentStudentInfo.classroom.user.picture}
-                layout="fill"
+                fill
                 sizes="(max-width: 768px) 100vw"
                 className="object-cover"
               />

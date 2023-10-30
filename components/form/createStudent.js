@@ -15,8 +15,9 @@ import Loading from '../loading/loading';
 import ExcelTable from './createManyStudent';
 import { MdError } from 'react-icons/md';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { GetAllStudentsInClassroomForTeacherService } from '../../service/teacher/student';
 
-function CreateStudent({ close, language }) {
+function CreateStudent({ close, language, user }) {
   const router = useRouter();
   const [succesful, setSuccesful] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,11 @@ function CreateStudent({ close, language }) {
   // students' data from excel
   const [tabelData, setTabledata] = useState();
   const students = useQuery(['students'], () =>
-    GetAllStudents({ classroomId: router.query.classroomId }),
+    user?.schoolUser?.organization === 'school'
+      ? GetAllStudentsInClassroomForTeacherService({
+          classroomId: router.query.classroomId,
+        })
+      : GetAllStudents({ classroomId: router.query.classroomId }),
   );
   const [sortedStudents, setSortedStudents] = useState(students?.data?.data);
 

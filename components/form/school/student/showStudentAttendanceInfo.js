@@ -33,7 +33,7 @@ function ShowStudentAttendanceInfo({
           <div className="w-32 h-32 rounded-md overflow-hidden bg-slate-100 relative drop-shadow-md">
             <Image
               src={student.picture}
-              layout="fill"
+              fill
               sizes="(max-width: 768px) 100vw"
               className="object-cover"
             />

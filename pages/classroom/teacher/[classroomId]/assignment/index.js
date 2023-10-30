@@ -23,6 +23,7 @@ import {
 import Link from 'next/link';
 import { IoCreate } from 'react-icons/io5';
 import { AiOutlineSetting } from 'react-icons/ai';
+import { GetAllStudentsInClassroomForTeacherService } from '../../../../../service/teacher/student';
 function Assignment({ error, user }) {
   const router = useRouter();
   const classroom = useQuery(
@@ -41,7 +42,12 @@ function Assignment({ error, user }) {
   );
   const students = useQuery(
     ['students'],
-    () => GetAllStudents({ classroomId: router.query.classroomId }),
+    () =>
+      user?.schoolUser?.organization === 'school'
+        ? GetAllStudentsInClassroomForTeacherService({
+            classroomId: router.query.classroomId,
+          })
+        : GetAllStudents({ classroomId: router.query.classroomId }),
     {
       enabled: false,
     },
@@ -101,7 +107,7 @@ function Assignment({ error, user }) {
         <meta charSet="UTF-8" />
         <title>assignments</title>
       </Head>
-      <Layout sideMenus={sideMenus} language={user.language} />
+      <Layout checkUser={user} sideMenus={sideMenus} language={user.language} />
       <header className="flex w-full border-b-2 border-black/50 py-5 font-Kanit justify-start">
         <section className="pl-20 gap-5 text-xl flex flex-col font-semibold">
           <div className="flex w-max justify-center items-center gap-2">

@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Editor } from '@tinymce/tinymce-react';
 import { IoCaretBackCircleSharp } from 'react-icons/io5';
 import { FaArrowRight } from 'react-icons/fa';
+import { GetAllAttendanceForTeacherService } from '../../service/teacher/attendance';
 
 function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
   const router = useRouter();
@@ -23,7 +24,12 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
   const [triggerAddNote, setTriggerAddNote] = useState(false);
   const attendances = useQuery(
     ['attendance'],
-    () => GetAllAttendance({ classroomId: router.query.classroomId }),
+    () =>
+      user?.schoolUser?.organization === 'school'
+        ? GetAllAttendanceForTeacherService({
+            classroomId: router.query.classroomId,
+          })
+        : GetAllAttendance({ classroomId: router.query.classroomId }),
     {
       enabled: false,
     },

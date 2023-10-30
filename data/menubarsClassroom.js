@@ -1,35 +1,35 @@
-import { FiArrowLeftCircle } from "react-icons/fi";
-import React from "react";
+import { FiArrowLeftCircle } from 'react-icons/fi';
+import React from 'react';
 export function SideMenusThai(router) {
   const sideMenusThai = [
     {
-      title: "โรงเรียน",
-      icon: "🏫",
+      title: 'โรงเรียน',
+      icon: '🏫',
       url: `/classroom/teacher`,
     },
     {
-      title: "ห้องเรียน",
-      icon: "👨‍🏫",
+      title: 'ห้องเรียน',
+      icon: '👨‍🏫',
       url: `#`,
     },
     {
-      title: "มอบหมายงาน",
-      icon: "🎒",
+      title: 'มอบหมายงาน',
+      icon: '🎒',
       url: `/classroom/teacher/${router?.query?.classroomId}/assignment`,
     },
     {
-      title: "ข้อมูลการเข้าเรียน",
-      icon: "🙌",
+      title: 'ข้อมูลการเข้าเรียน',
+      icon: '🙌',
       url: `/classroom/teacher/${router?.query?.classroomId}/attendance`,
     },
     {
-      title: "คะแนนรวม",
-      icon: "🥇",
+      title: 'คะแนนรวม',
+      icon: '🥇',
       url: `/classroom/teacher/${router?.query?.classroomId}/scores`,
     },
 
     {
-      title: "หน้าหลัก",
+      title: 'หน้าหลัก',
       icon: <FiArrowLeftCircle />,
       url: `/`,
     },
@@ -40,33 +40,33 @@ export function SideMenusThai(router) {
 export function sideMenusEnglish(router) {
   const sideMenusEnglish = [
     {
-      title: "school",
-      icon: "🏫",
+      title: 'school',
+      icon: '🏫',
       url: `/classroom/teacher`,
     },
     {
-      title: "classroom",
-      icon: "👨‍🏫",
+      title: 'classroom',
+      icon: '👨‍🏫',
       url: `#`,
     },
     {
-      title: "assignments",
-      icon: "🎒",
+      title: 'assignments',
+      icon: '🎒',
       url: `/classroom/teacher/${router?.query?.classroomId}/assignment`,
     },
     {
-      title: "attendances",
-      icon: "🙌",
+      title: 'attendances',
+      icon: '🙌',
       url: `/classroom/teacher/${router?.query?.classroomId}/attendance`,
     },
     {
-      title: "scores",
-      icon: "🥇",
+      title: 'scores',
+      icon: '🥇',
       url: `/classroom/teacher/${router?.query?.classroomId}/scores`,
     },
 
     {
-      title: "homepage",
+      title: 'homepage',
       icon: <FiArrowLeftCircle />,
       url: `/`,
     },

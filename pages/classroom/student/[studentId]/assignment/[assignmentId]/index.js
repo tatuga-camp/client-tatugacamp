@@ -462,7 +462,7 @@ function Index() {
                 <Image
                   sizes="(max-width: 768px) 100vw"
                   src={student?.data?.data?.picture}
-                  layout="fill"
+                  fill
                   objectFit="cover"
                 />
               </div>
@@ -1069,7 +1069,7 @@ application/pdf,
                                 src={comment.user.picture}
                                 alt="profile"
                                 sizes="(max-width: 768px) 100vw"
-                                layout="fill"
+                                fill
                                 className="object-cover"
                               />
                             </div>
@@ -1113,7 +1113,7 @@ application/pdf,
                                 sizes="(max-width: 768px) 100vw"
                                 src={comment.student.picture}
                                 alt="profile"
-                                layout="fill"
+                                fill
                                 className="object-cover"
                               />
                             </div>

@@ -1,17 +1,18 @@
 import React from 'react';
-import { CreateClassroom } from '../../service/classroom';
 import { FcBusinessContact, FcLineChart, FcViewDetails } from 'react-icons/fc';
 import Swal from 'sweetalert2';
+import { CreateClassroomService } from '../../service/classroom';
 
-function CreateClass({ close, refetch, language }) {
+function CreateClassroom({ setTriggerCreateClassroom, refetch, language }) {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
       const formData = new FormData(e.target);
       const inputObject = Object.fromEntries(formData);
-      const classroom = await CreateClassroom(inputObject);
+      await CreateClassroomService(inputObject);
       refetch();
-      close();
+      document.body.style.overflow = 'auto';
+      setTriggerCreateClassroom(() => false);
       Swal.fire('success', 'create classroom success', 'success');
     } catch (err) {
       console.log('err', err);
@@ -24,13 +25,13 @@ function CreateClass({ close, refetch, language }) {
   };
 
   return (
-    <div>
+    <div className="fixed z-50 top-0 bottom-0 right-0 left-0 m-auto flex items-center justify-center">
       <div
         className="flex w-max h-max font-Kanit bg-white border-2 border-solid rounded-lg drop-shadow-xl p-5 z-20 
         top-0 right-0 left-0 bottom-0 m-auto fixed"
       >
         <form
-          className=" w-80 flex flex-col justify-center items-center "
+          className=" w-80 flex flex-col gap-5 justify-center items-center "
           onSubmit={handleSubmit}
         >
           <span className="text-xl font-semibold text-[#2C7CD1]">
@@ -133,11 +134,14 @@ function CreateClass({ close, refetch, language }) {
         </form>
       </div>
       <div
-        onClick={() => close()}
+        onClick={() => {
+          document.body.style.overflow = 'auto';
+          setTriggerCreateClassroom(() => false);
+        }}
         className="w-screen h-screen fixed right-0 left-0 top-0 bottom-0 m-auto -z-10 bg-black/30 "
       ></div>
     </div>
   );
 }
 
-export default CreateClass;
+export default CreateClassroom;

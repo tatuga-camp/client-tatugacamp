@@ -143,7 +143,7 @@ function Index({ user, error }) {
         <meta charSet="UTF-8" />
         <title>overall score</title>
       </Head>
-      <Layout language={user.language} sideMenus={sideMenus} />
+      <Layout checkUser={user} language={user.language} sideMenus={sideMenus} />
       <div className=" w-full flex flex-col items-center justify-start mt-10">
         <header className="flex gap-4">
           <button
