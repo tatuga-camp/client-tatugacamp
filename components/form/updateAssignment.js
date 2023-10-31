@@ -14,7 +14,8 @@ import {
   UpdateAssignmentApi,
 } from '../../service/assignment';
 import Swal from 'sweetalert2';
-import { Box, TextField } from '@mui/material';
+import { Box, Skeleton, TextField } from '@mui/material';
+import { loadingCount } from '../../data/loadingCount';
 
 function UpdateAssignment({
   assignment,
@@ -30,7 +31,7 @@ function UpdateAssignment({
   const [isAssignStudent, setIsAssignmentStdent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActivetab] = useState(0);
-  const loadingItems = useRef(new Set());
+  const [loadingItems, setLoadingItems] = useState([]);
   const [tabs, setTabs] = useState([
     {
       titleEnglish: 'assignment',
@@ -117,7 +118,6 @@ function UpdateAssignment({
   //handle click to assign student work
   const onClickAssignWork = async () => {
     try {
-      loadingItems.current = new Set();
       setLoading(true);
       const assign = await AssignWorkToSTudent({
         isChecked,
@@ -173,15 +173,27 @@ function UpdateAssignment({
 
   const handleUnDoAssignmentOnStudent = async ({ studentId }) => {
     try {
-      loadingItems.current.add(studentId);
+      setLoadingItems((prev) => {
+        return [...prev, studentId];
+      });
       await UnAssignWorkStudentService({
         studentId: studentId,
         assignmentId: assignmentData.id,
       });
-      studentOnAssignments.refetch();
-      // loadingItems.current.delete(studentId);
+      await studentOnAssignments.refetch();
+      setLoadingItems((prev) => {
+        const filterOut = prev.filter(
+          (oldstudentId) => oldstudentId !== studentId,
+        );
+        return [...filterOut];
+      });
     } catch (err) {
-      // loadingItems.current.delete(studentId);
+      setLoadingItems((prev) => {
+        const filterOut = prev.filter(
+          (oldstudentId) => oldstudentId !== studentId,
+        );
+        return [...filterOut];
+      });
       console.log(err);
     }
   };
@@ -389,92 +401,92 @@ function UpdateAssignment({
             className="w-11/12 h-full lg:max-h-[25rem] xl:max-h-[28rem] flex relative items-center
            justify-start overflow-auto scrollbar  flex-col "
           >
-            {loading ? (
-              <div className="absolute w-full  h-full flex items-center justify-center">
-                <Loading />
-              </div>
-            ) : (
-              isChecked?.map((student, index) => {
-                const oddNumber = index % 2;
-                return (
-                  <div
-                    key={student.id}
-                    className={`grid grid-cols-4  w-full relative items-center justify-center ${
-                      oddNumber === 0 ? 'bg-white' : 'bg-orange-100'
-                    } py-2 
+            {loading || studentOnAssignments.isLoading
+              ? loadingCount.map((list, index) => {
+                  return <Skeleton key={index} width="100%" height={80} />;
+                })
+              : isChecked?.map((student, index) => {
+                  const oddNumber = index % 2;
+                  return (
+                    <div
+                      key={student.id}
+                      className={`grid grid-cols-4  w-full relative items-center justify-center ${
+                        oddNumber === 0 ? 'bg-white' : 'bg-orange-100'
+                      } py-2 
               text-lg font-Kanit `}
-                  >
-                    {student.status === 201 && (
-                      <div className="flex items-center justify-center left-3  absolute text-green-500">
-                        <AiOutlineCheckCircle />
-                      </div>
-                    )}
-                    {student.status?.error && (
-                      <div className="flex items-center justify-center left-3 absolute text-red-600">
-                        <MdError />
-                      </div>
-                    )}
-                    <div className="flex items-center justify-start">
-                      {student.number}
-                    </div>
-                    <div className="flex items-center justify-start">
-                      {student.firstName}
-                    </div>
-                    <div className="flex items-center justify-start">
-                      {student?.lastName}
-                    </div>
-                    {student.status === 'no-assign' ? (
-                      <div className="flex items-center gap-5 justify-start ">
-                        <div
-                          className="w-max px-5 text-sm py-1 bg-gray-500  rounded-lg text-white
-                      flex items-center justify-center"
-                        >
-                          {language === 'Thai' && 'ไม่ได้มอบหมาย'}
-                          {language === 'English' && 'Already assigned'}
+                    >
+                      {student.status === 201 && (
+                        <div className="flex items-center justify-center left-3  absolute text-green-500">
+                          <AiOutlineCheckCircle />
                         </div>
-                        <input
-                          checked={student?.[student.id]}
-                          onChange={() =>
-                            handleChangeCheck({ studentId: student.id })
-                          }
-                          type="checkbox"
-                          className="w-6 h-6 ring-2  text-blue-600 bg-gray-100 border-gray-300 rounded
+                      )}
+                      {student.status?.error && (
+                        <div className="flex items-center justify-center left-3 absolute text-red-600">
+                          <MdError />
+                        </div>
+                      )}
+                      <div className="flex items-center justify-start">
+                        {student.number}
+                      </div>
+                      <div className="flex items-center justify-start">
+                        {student.firstName}
+                      </div>
+                      <div className="flex items-center justify-start">
+                        {student?.lastName}
+                      </div>
+                      {student.status === 'no-assign' ? (
+                        <div className="flex items-center gap-5 justify-start ">
+                          <div
+                            className="w-max px-5 text-sm py-1 bg-gray-500  rounded-lg text-white
+                      flex items-center justify-center"
+                          >
+                            {language === 'Thai' && 'ไม่ได้มอบหมาย'}
+                            {language === 'English' && 'Already assigned'}
+                          </div>
+                          <input
+                            checked={student?.[student.id]}
+                            onChange={() =>
+                              handleChangeCheck({ studentId: student.id })
+                            }
+                            type="checkbox"
+                            className="w-6 h-6 ring-2  text-blue-600 bg-gray-100 border-gray-300 rounded
                    focus:ring-blue-500 dark:focus:ring-blue-600
                    dark:ring-offset-gray-800 focus:ring-2 ring-black dark:bg-gray-700 dark:border-gray-600"
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex justify-start gap-5 items-center">
-                        <div
-                          className="w-max px-5 text-sm py-1 bg-green-500  rounded-lg text-white
-                      flex items-center justify-center"
-                        >
-                          {language === 'Thai' && 'มอบหมายแล้ว'}
-                          {language === 'English' && 'Already assigned'}
+                          />
                         </div>
-                        {loadingItems.current.has(student.id) ? (
-                          <Loading />
-                        ) : (
-                          <button
-                            onClick={() =>
-                              handleUnDoAssignmentOnStudent({
-                                studentId: student.id,
-                              })
-                            }
-                            type="button"
-                            className="w-max select-none px-2 hover:bg-red-400 transition duration-100 active:scale-105
-                         h-10 gap-2 bg-red-300 rounded-md flex items-center justify-center text-red-600"
+                      ) : (
+                        <div className="flex justify-start gap-5 items-center">
+                          <div
+                            className="w-max px-5 text-sm py-1 bg-green-500  rounded-lg text-white
+                      flex items-center justify-center"
                           >
-                            <TiUserDelete />
-                            <span className="text-xs">ยกเลิก</span>
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })
-            )}
+                            {language === 'Thai' && 'มอบหมายแล้ว'}
+                            {language === 'English' && 'Already assigned'}
+                          </div>
+                          {loadingItems.find(
+                            (loadingItem) => loadingItem === student.id,
+                          ) ? (
+                            <Loading />
+                          ) : (
+                            <button
+                              onClick={() =>
+                                handleUnDoAssignmentOnStudent({
+                                  studentId: student.id,
+                                })
+                              }
+                              type="button"
+                              className="w-max select-none px-2 hover:bg-red-400 transition duration-100 active:scale-105
+                         h-10 gap-2 bg-red-300 rounded-md flex items-center justify-center text-red-600"
+                            >
+                              <TiUserDelete />
+                              <span className="text-xs">ยกเลิก</span>
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
           </div>
           <div className="flex gap-5 mt-4">
             <button
