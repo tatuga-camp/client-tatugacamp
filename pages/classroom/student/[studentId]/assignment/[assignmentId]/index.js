@@ -351,10 +351,11 @@ function Index() {
 
   const handleDeleteStudentWork = async ({ studentWorkId }) => {
     const name = student?.data?.data?.firstName;
+    const replacedText = name.replace(/ /g, '_');
     let content = document.createElement('div');
     content.innerHTML =
       '<div>กรุณาพิมพ์ข้อความนี้</div> <strong>' +
-      name +
+      replacedText +
       '</strong> <div>เพื่อลบงาน</div>';
     const { value } = await Swal.fire({
       title: 'ยืนยันการลบชิ้นงาน',
@@ -362,7 +363,7 @@ function Index() {
       html: content,
       showCancelButton: true,
       inputValidator: (value) => {
-        if (value !== name) {
+        if (value !== replacedText) {
           return 'กรุณาพิมพ์ข้อความยืนยันให้ถูกต้อง';
         }
       },
