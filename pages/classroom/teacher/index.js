@@ -662,8 +662,7 @@ h-20 group ${
               <div className="flex  flex-col gap-10 justify-start items-center w-11/12 h-max">
                 <main
                   className={`w-full   mx-10 h-max grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-8  
-                  gap-10
-            ${classroomState?.[0] ? 'flex' : 'hidden'} `}
+                  gap-10  `}
                 >
                   {classrooms.isFetching
                     ? loadingNumbers.map((list, index) => {
