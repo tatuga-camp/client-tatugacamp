@@ -70,12 +70,25 @@ function Index({ error, user }) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const deleteAttendance = await DeleteAttendance({ groupId });
+          Swal.fire({
+            title: 'กำลังลบ...',
+            html: 'รอสักครู่นะครับ...',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          await DeleteAttendance({ groupId });
+          await attendances.refetch();
           Swal.fire('Deleted!', groupId, 'success');
-          attendances.refetch();
         } catch (err) {
           console.log(err);
-          Swal.fire('Error!', 'something went wrong', 'error');
+          Swal.fire(
+            'Error!',
+            err?.props?.response?.data?.message?.toString(),
+            'error',
+          );
         }
       }
     });

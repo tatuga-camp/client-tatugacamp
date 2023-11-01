@@ -180,12 +180,28 @@ function CreateAccount({ user, error }) {
                             </div>
                           </td>
                           <td className="w-60 flex justify-start truncate">
-                            {teacher.email}
+                            {teachers.isFetching ? (
+                              <Skeleton
+                                variant="rectangular"
+                                width={300}
+                                height={30}
+                              />
+                            ) : (
+                              teacher.email
+                            )}
                           </td>
                           <td className="w-60 text-sm  flex justify-start truncate">
-                            <div className="truncate">
-                              {teacher.firstName} {teacher?.lastName}
-                            </div>
+                            {teachers.isFetching ? (
+                              <Skeleton
+                                variant="rectangular"
+                                width={300}
+                                height={30}
+                              />
+                            ) : (
+                              <div className="truncate">
+                                {teacher.firstName} {teacher?.lastName}
+                              </div>
+                            )}
                           </td>
                           <td className="w-60 flex justify-start truncate">
                             <div className="truncate">{teacher?.school}</div>
