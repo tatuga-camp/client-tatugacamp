@@ -297,18 +297,19 @@ function Index({ error, user, whatsNews }) {
 
   const handleDeleteClassroom = async ({ classroomId, title }) => {
     let content = document.createElement('div');
+    const replacedText = title.replace(/ /g, '_');
     content.innerHTML =
       '<div>กรุณาพิมพ์ข้อความนี้</div> <strong>' +
-      title +
+      replacedText +
       '</strong> <div>เพื่อห้องเรียน</div>';
     const { value } = await Swal.fire({
-      title: 'ยืนยันการลบชิ้นงาน',
+      title: 'ยืนยันการลบห้องเรียน',
       input: 'text',
       html: content,
       footer: '<strong>หากลบแล้วคุณจะไม่สามารถกู้คืนข้อมูลได้</strong>',
       showCancelButton: true,
       inputValidator: (value) => {
-        if (value !== title) {
+        if (value !== replacedText) {
           return 'กรุณาพิมพ์ข้อความยืนยันให้ถูกต้อง';
         }
       },
