@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { parseCookies } from 'nookies';
-import { Pagination } from '@mui/material';
+import { Pagination, Skeleton } from '@mui/material';
 
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -58,7 +58,9 @@ function Index({ user, error }) {
                   className="w-20 h-20 bg-blue-100 text-blue-500 flex items-center 
                 justify-center absolute right-5 top-0 bottom-2 overflow-hidden rounded-full m-auto "
                 >
-                  {classroom.user.picture ? (
+                  {classrooms.isFetching ? (
+                    <Skeleton />
+                  ) : classroom.user.picture ? (
                     <Image
                       src={classroom.user.picture}
                       className="object-cover"
@@ -73,9 +75,13 @@ function Index({ user, error }) {
                 </div>
                 <div className="w-full h-3/6 bg-blue-400 flex flex-col items-center justify-center">
                   <div className="w-11/12 truncate text-left">
-                    <span className="font-Kanit font-semibold text-2xl text-white">
-                      {classroom.title}
-                    </span>
+                    {classrooms.isFetching ? (
+                      <Skeleton variant="rectangular" width={100} height={30} />
+                    ) : (
+                      <span className="font-Kanit font-semibold text-2xl text-white">
+                        {classroom.title}
+                      </span>
+                    )}
                     <div className="flex flex-col truncate text-white">
                       <span>{classroom.level}</span>
                       <span>{classroom?.description}</span>

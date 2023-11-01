@@ -14,7 +14,6 @@ export async function GetAttendances({ studentId, classroomId }) {
         },
       },
     );
-
     return attendances;
   } catch (err) {
     console.log(err);
