@@ -61,7 +61,7 @@ function Index() {
         <title>{`${
           classroom.isError
             ? 'โปรดกรอกรหัสใหม่'
-            : `ขอตอนรับสู่ห้องเรียน คุณครู${classroom?.data?.data?.teacher?.firstName}`
+            : `ขอต้อนรับสู่ห้องเรียน คุณครู${classroom?.data?.data?.teacher?.firstName}`
         }`}</title>
         <meta
           name="viewport"
