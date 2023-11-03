@@ -63,7 +63,7 @@ function PendingReviews({ user }) {
                 return (
                   <Link
                     target="_blank"
-                    href={`/classroom/teacher/${list?.classroom?.id}/assignment/${list?.assignment?._id}`}
+                    href={`/classroom/teacher/${list?.classroom?.id}/assignment/${list?.assignment?.id}`}
                     className="no-underline border-b-2 border-stone-100 hover:scale-105 transition duration-75 cursor-pointer
                      bg-white hover:bg-blue-50 px-1 py-2
                      flex gap-4 text-black"
