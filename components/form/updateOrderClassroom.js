@@ -47,7 +47,7 @@ function UpdateOrderClassroom({
       );
     }
   };
-  console.log(selectUpdateOrderClassroom.order);
+
   return (
     <div
       className="z-50 w-screen h-screen

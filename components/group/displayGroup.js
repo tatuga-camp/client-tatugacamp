@@ -103,10 +103,19 @@ function DisplayGroup({
         confirmButtonText: 'Yes, delete it!',
       }).then(async (result) => {
         if (result.isConfirmed) {
+          Swal.fire({
+            title: 'กำลังลบ...',
+            html: 'รอสักครู่นะครับ...',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
           const deleteGroup = await DeleteGroup({
             groupId: group?.data.group.id,
           });
-          groups.refetch();
+          await groups.refetch();
           setClassroomGroupActive(() => 'default');
           groupId.current = '';
           Swal.fire('Deleted!', deleteGroup?.data, 'success');
