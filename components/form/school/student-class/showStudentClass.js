@@ -73,6 +73,7 @@ function ShowStudentClass({
 
   const handleDeleteStudentClass = async () => {
     let content = document.createElement('div');
+
     content.innerHTML =
       '<div>กรุณาพิมพ์ข้อความนี้</div> <strong>' +
       'ยืนยันการลบชั้นเรียน' +
@@ -115,11 +116,11 @@ function ShowStudentClass({
     studentId,
     firstName,
   }) => {
-    console.log(firstName);
     let content = document.createElement('div');
+    const replacedText = firstName.replace(/ /g, '_');
     content.innerHTML =
       '<div>กรุณาพิมพ์ข้อความนี้</div> <strong>' +
-      firstName +
+      replacedText +
       '</strong> <div>เพื่อลบข้อมูล</div>';
     const { value } = await Swal.fire({
       title: 'ยืนยันการลบนักเรียน',
@@ -128,7 +129,7 @@ function ShowStudentClass({
       footer: '<strong>คุณจะไม่สามารถกู้คืนข้อมูลได้</strong>',
       showCancelButton: true,
       inputValidator: (value) => {
-        if (value !== firstName) {
+        if (value !== replacedText) {
           return 'กรุณาพิมพ์ข้อความยืนยันให้ถูกต้อง';
         }
       },
