@@ -86,6 +86,7 @@ export async function GetMyWork({ studentId, assignmentId }) {
         },
       },
     );
+
     return myWork;
   } catch (err) {
     console.log(err);

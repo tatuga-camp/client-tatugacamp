@@ -115,6 +115,7 @@ function Index() {
       return formattedDate;
     });
   }, [assignment.data]);
+
   const student = useQuery(
     ['student'],
     () => GetStudent({ studentId: router.query.studentId }),
@@ -123,45 +124,56 @@ function Index() {
     },
   );
 
-  const fetchStudentWork = useQuery(['student-work'], () =>
-    GetMyWork({
-      studentId: router.query.studentId,
-      assignmentId: assignment.data.id,
-    }).then((res) => {
-      setStudnetWork(() => {
-        let pictures = [];
-        let files = [];
-        if (res.data.status === 'have-work') {
-          if (res.data.picture) {
-            const arrayPictures = res.data.picture.split(', ');
-            for (const arrayPicture of arrayPictures) {
-              const fileType = get_url_extension(arrayPicture);
-              if (
-                fileType === 'jpg' ||
-                fileType === 'jpeg' ||
-                fileType === 'png' ||
-                fileType === 'HEIC' ||
-                fileType === 'JPEG' ||
-                fileType === 'PNG' ||
-                fileType === 'JPG' ||
-                fileType === 'heic'
-              ) {
-                pictures.push({ src: arrayPicture, alt: "student's work" });
-              } else {
-                files.push({ fileType: fileType, url: arrayPicture });
-              }
-            }
-            return { ...res.data, picture: pictures, files: files };
-          } else if (!res.data.picture) {
-            return res.data;
-          }
-        } else if (res.data.status === 'no-work') {
-          return res.data;
-        }
-      });
-      return res;
-    }),
+  const fetchStudentWork = useQuery(
+    ['student-work'],
+    () =>
+      GetMyWork({
+        studentId: router.query.studentId,
+        assignmentId: assignment?.data?.id,
+      }),
+    {
+      enabled: assignment.isSuccess,
+    },
   );
+
+  useEffect(() => {
+    setStudnetWork(() => {
+      let pictures = [];
+      let files = [];
+      if (fetchStudentWork?.data?.data.status === 'have-work') {
+        if (fetchStudentWork?.data?.data.picture) {
+          const arrayPictures =
+            fetchStudentWork?.data?.data.picture.split(', ');
+          for (const arrayPicture of arrayPictures) {
+            const fileType = get_url_extension(arrayPicture);
+            if (
+              fileType === 'jpg' ||
+              fileType === 'jpeg' ||
+              fileType === 'png' ||
+              fileType === 'HEIC' ||
+              fileType === 'JPEG' ||
+              fileType === 'PNG' ||
+              fileType === 'JPG' ||
+              fileType === 'heic'
+            ) {
+              pictures.push({ src: arrayPicture, alt: "student's work" });
+            } else {
+              files.push({ fileType: fileType, url: arrayPicture });
+            }
+          }
+          return {
+            ...fetchStudentWork?.data?.data,
+            picture: pictures,
+            files: files,
+          };
+        } else if (!fetchStudentWork?.data?.data.picture) {
+          return fetchStudentWork?.data?.data;
+        }
+      } else if (fetchStudentWork?.data?.data.status === 'no-work') {
+        return fetchStudentWork?.data?.data;
+      }
+    });
+  }, [fetchStudentWork.data]);
 
   const handleSummitWork = async (e) => {
     e.preventDefault();
@@ -279,6 +291,7 @@ function Index() {
 
   useEffect(() => {
     if (router.isReady) {
+      fetchStudentWork.refetch();
       student.refetch();
       comments.refetch();
       assignment.refetch();
@@ -292,10 +305,6 @@ function Index() {
       return JSON.parse(teacher);
     });
     initLightboxJS(process.env.NEXT_PUBLIC_LIGHTBOX_KEY, 'individual');
-
-    setTimeout(() => {
-      fetchStudentWork.refetch();
-    }, 500);
   }, []);
 
   const handleSumitComment = async (e) => {
@@ -1041,8 +1050,8 @@ application/pdf,
                           toolbar: false,
                           selector: 'textarea', // change this value according to your HTML
                         }}
-                        initialValue={fetchStudentWork.data.data.body}
-                        value={fetchStudentWork.data.data.body}
+                        initialValue={fetchStudentWork?.data?.data?.body}
+                        value={fetchStudentWork?.data?.data?.body}
                       />
                     </div>
                   )}
