@@ -34,12 +34,8 @@ function TotalSumScore({ totalScore }) {
           {totalScore?.data?.assignments?.map((assignment, index) => {
             let score = 0;
             let pureMaxScore = '0';
-            if (assignment.studentWorks) {
-              if (assignment.studentWorks.pureScore) {
-                score = assignment.studentWorks.pureScore;
-              } else {
-                score = assignment.studentWorks.score;
-              }
+            if (assignment.studentWork) {
+              score = assignment.studentWork.score;
             }
             if (assignment?.assignment?.percentage) {
               const stringWithoutPercent =
