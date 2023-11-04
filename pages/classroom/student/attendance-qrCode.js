@@ -52,6 +52,8 @@ function AttendanceQrCode() {
   const [activeAttendance, setActiveAttendance] = useState(0);
   const [selected, setSelected] = useState(people?.[0]);
   const [chooseStudent, setChooseStudent] = useState(false);
+  const [expireAt, setExpireAt] = useState();
+  const [timeLeft, setTimeLeft] = useState();
   const [progress, setProgress] = useState(-1);
   const classroom = useQuery(
     ['classroom'],
@@ -71,6 +73,46 @@ function AttendanceQrCode() {
       enabled: false,
     },
   );
+  useEffect(() => {
+    setExpireAt(() => qrCode?.data?.qrCodeAttendance?.exipreAt);
+  }, [qrCode.data]);
+  console.log(expireAt);
+  function countdownTimer(expireAt) {
+    const targetDate = new Date(expireAt).getTime(); // Convert the expiration time to milliseconds
+    const now = new Date().getTime(); // Get the current time in milliseconds
+    const timeDifference = targetDate - now;
+
+    // Check if the target date has already passed
+    if (timeDifference <= 0) {
+      return 'Expired'; // Return a message indicating expiration
+    }
+
+    // Calculate time units
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+    );
+    const minutes = Math.floor(
+      (timeDifference % (1000 * 60 * 60)) / (1000 * 60),
+    );
+    const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    return { days, hours, minutes, seconds };
+  }
+
+  useEffect(() => {
+    if (expireAt) {
+      setTimeLeft(countdownTimer(expireAt));
+
+      // Update time left every second
+      const interval = setInterval(() => {
+        setTimeLeft(countdownTimer(expireAt));
+      }, 1000);
+
+      // Clear interval when the countdown reaches 0
+      return () => clearInterval(interval);
+    }
+  }, [expireAt]);
 
   const date = new Date(qrCode?.data?.qrCodeAttendance?.date);
   const formattedDate = date.toLocaleDateString('th-TH', {
@@ -430,6 +472,23 @@ function AttendanceQrCode() {
               <AiFillCheckCircle />
             </button>
           ))}
+        <div className="mt-5">
+          <h2 className="font-bold text-lg text-red-500">เหลือเวลาอีก</h2>
+          <ul className="flex justify-start items-center gap-2">
+            <li>
+              <span className="font-bold">{timeLeft?.days}</span> วัน
+            </li>
+            <li>
+              <span className="font-bold">{timeLeft?.hours}</span> ชั่วโมง
+            </li>
+            <li>
+              <span className="font-bold">{timeLeft?.minutes}</span> นาที
+            </li>
+            <li>
+              <span className="font-bold">{timeLeft?.seconds}</span> วินาที
+            </li>
+          </ul>
+        </div>
       </footer>
     </div>
   );

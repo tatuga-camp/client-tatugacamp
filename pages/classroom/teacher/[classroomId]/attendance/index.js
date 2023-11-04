@@ -34,6 +34,7 @@ function Index({ error, user }) {
   const [triggerUpdateAttendance, setTriggerUpdateAttendance] = useState(false);
   const [triggerShowNote, setTriggerShowNote] = useState(false);
   const [selectNote, setSelectNote] = useState();
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [sideMenus, setSideMenus] = useState();
   const attendances = useQuery(
     ['attendance'],
@@ -184,6 +185,7 @@ function Index({ error, user }) {
                             : user.language === 'English' && 'en-US'
                         }`,
                         {
+                          timeZone: userTimeZone,
                           day: '2-digit',
                           month: 'short',
                           year: 'numeric',

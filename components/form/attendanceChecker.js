@@ -9,16 +9,25 @@ import { Editor } from '@tinymce/tinymce-react';
 import { IoCaretBackCircleSharp } from 'react-icons/io5';
 import { FaArrowRight } from 'react-icons/fa';
 import { GetAllAttendanceForTeacherService } from '../../service/teacher/attendance';
+import moment from 'moment-timezone';
 
 function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
   const router = useRouter();
   const [isCheckStudent, setIsCheckStudent] = useState();
-  const currentDate = new Date().toISOString().slice(0, 16); // get current date in "yyyy-mm-dd" format
-  const [attendanceDate, setAttendanceDate] = useState(currentDate);
-  const [endAttendanceDate, setEndAttendanceDate] = useState(currentDate);
+
+  const [attendanceDate, setAttendanceDate] = useState();
+  const [endAttendanceDate, setEndAttendanceDate] = useState();
   const [note, setNote] = useState({
     body: '',
   });
+
+  useEffect(() => {
+    const timeZone = 'Asia/Bangkok';
+    // Get the current date and time in the specified time zone
+    const currentTime = moment().tz(timeZone).format('YYYY-MM-DDTHH:mm');
+    setEndAttendanceDate(() => currentTime);
+    setAttendanceDate(() => currentTime);
+  }, []);
 
   const [loading, setLoading] = useState(false);
   const [triggerAddNote, setTriggerAddNote] = useState(false);
@@ -300,7 +309,6 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                     })
                   }
                   value={attendanceDate}
-                  defaultValue={currentDate}
                   className="w-28 md:w-40 lg:w-max  appearance-none outline-none border-none ring-2  rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black "
                   type="datetime-local"
@@ -323,7 +331,6 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                     })
                   }
                   value={endAttendanceDate}
-                  defaultValue={currentDate}
                   className="w-28 md:w-40  lg:w-max appearance-none outline-none border-none ring-2  rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black "
                   type="datetime-local"

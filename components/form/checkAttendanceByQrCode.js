@@ -15,6 +15,7 @@ import Loading from '../loading/loading';
 import { MdOutlineUpdate } from 'react-icons/md';
 import { GetAllAttendanceForTeacherService } from '../../service/teacher/attendance';
 import { useRouter } from 'next/router';
+import moment from 'moment-timezone';
 const numberSketion = [1, 2, 3, 4];
 function CheckAttendanceByQrCode({
   setTriggerAttendanceQrCode,
@@ -22,6 +23,7 @@ function CheckAttendanceByQrCode({
   classroomId,
   user,
 }) {
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const router = useRouter();
   const [triggerShowQrCode, setTriggerShowQrCode] = useState(false);
   const [notification, setNotification] = useState({
@@ -197,7 +199,7 @@ function CheckAttendanceByQrCode({
           />{' '}
         </div>
       ) : (
-        <main className="min-w-[50rem] p-5 w-max max-w-3xl h-max lg:max-h-[32rem] xl:max-h-[40rem] rounded-md bg-white flex flex-col justify-start items-center">
+        <main className="min-w-[50rem] ring-2 ring-blue-400 p-5 w-max max-w-3xl h-max lg:max-h-[32rem] xl:max-h-[40rem] rounded-md bg-white flex flex-col justify-start items-center">
           <header className="w-full p-3 flex justify-between border-b-2 border-green-600">
             <div className="flex flex-col">
               <div className="text-xl flex gap-2 justify-start items-center">
@@ -482,23 +484,15 @@ function CheckAttendanceByQrCode({
                                     }
                                   });
                                   setAttendanceQrData(() => {
-                                    const inputDate = new Date(qrCode.exipreAt);
+                                    const exipreAt = new Date(qrCode.exipreAt);
+                                    const exipreAtFormat = moment(exipreAt)
+                                      .tz(userTimeZone)
+                                      .format('YYYY-MM-DDTHH:mm');
 
-                                    // Get the year, month, and day from the input date
-                                    const year = inputDate.getFullYear();
-                                    const month = String(
-                                      inputDate.getMonth() + 1,
-                                    ).padStart(2, '0'); // Adding 1 to the month because it is zero-based
-                                    const day = String(
-                                      inputDate.getDate(),
-                                    ).padStart(2, '0');
-
-                                    // Create a new date string in the desired format
-                                    const newDateStr = `${year}-${month}-${day}T00:14`;
                                     return {
                                       isLimitOneBrowser:
                                         qrCode.isLimitOneBrowser,
-                                      expireAt: newDateStr,
+                                      expireAt: exipreAtFormat,
                                     };
                                   });
                                   setSelectUpdate(() => {
