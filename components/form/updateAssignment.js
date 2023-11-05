@@ -222,11 +222,12 @@ function UpdateAssignment({
                 key={index}
                 role="button"
                 onClick={() => handleActiveTab(index)}
-                className={`w-28 px-4 select-none ring-2 ring-black flex items-center justify-center cursor-pointer h-full rounded-xl ${
-                  activeTab === index
-                    ? 'text-white bg-orange-600'
-                    : 'text-black bg-transparent'
-                }`}
+                className={`w-28 px-4 select-none ring-2 appearance-none ring-black
+                 flex items-center justify-center cursor-pointer h-full rounded-xl ${
+                   activeTab === index
+                     ? 'text-white bg-orange-600'
+                     : 'text-black bg-transparent'
+                 }`}
               >
                 {language === 'Thai' && tab.titleThai}
                 {language === 'English' && tab.titleEnglish}
@@ -344,7 +345,7 @@ function UpdateAssignment({
                   value={formattedDate}
                   onChange={handleChange}
                   name="deadline"
-                  className="w-max appearance-none outline-none border-none ring-2 rounded-md px-5 
+                  className="w-max appearance-none outline-none border-none ring-2  rounded-md px-5 
             py-2 text-lg ring-gray-200 focus:ring-black "
                   type="date"
                   placeholder="Please select a date"
@@ -449,7 +450,7 @@ function UpdateAssignment({
                               handleChangeCheck({ studentId: student.id })
                             }
                             type="checkbox"
-                            className="w-6 h-6 ring-2  text-blue-600 bg-gray-100 border-gray-300 rounded
+                            className="w-6 h-6 ring-2  appearance-none text-blue-600 bg-gray-100 border-gray-300 rounded
                    focus:ring-blue-500 dark:focus:ring-blue-600
                    dark:ring-offset-gray-800 focus:ring-2 ring-black dark:bg-gray-700 dark:border-gray-600"
                           />

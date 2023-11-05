@@ -683,18 +683,14 @@ h-20 group ${
                             style={{
                               border: `${
                                 selectedColor.index === index
-                                  ? `2px solid ${selectedColor.color}`
-                                  : `2px solid ${classroom.color}`
+                                  ? `5px solid ${selectedColor.color}`
+                                  : `5px solid ${classroom.color}`
                               }`,
-                              outline: `${
-                                selectedColor.index === index
-                                  ? `4px solid ${selectedColor.color}`
-                                  : `4px solid  ${classroom.color}`
-                              }`,
+
                               padding: '10px',
                             }}
                             key={index}
-                            className={` border-2    border-solid col-span-2 h-max min-h-[12rem]
+                            className={`    border-solid col-span-2 h-max min-h-[12rem]
                       rounded-3xl p-3  overflow-hidden relative  bg-white `}
                           >
                             <div className="text-right w-full">

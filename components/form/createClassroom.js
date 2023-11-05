@@ -53,7 +53,8 @@ function CreateClassroom({ setTriggerCreateClassroom, refetch, language }) {
               {language === 'English' && 'Title'}
             </label>
             <input
-              className="w-60 h-7  ring-2 ring-black  rounded-md   pl-10 
+              className="w-60 h-7  ring-2 ring-black appearance-none
+                rounded-md   pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="title"
@@ -78,7 +79,7 @@ function CreateClassroom({ setTriggerCreateClassroom, refetch, language }) {
               {language === 'English' && 'level'}
             </label>
             <input
-              className="w-60 h-7 ring-2 ring-black rounded-md   pl-10 
+              className="w-60 h-7 ring-2 ring-black rounded-md   pl-10 appearance-none
                 placeholder:italic placeholder:font-light"
               type="text"
               name="level"
@@ -102,7 +103,8 @@ function CreateClassroom({ setTriggerCreateClassroom, refetch, language }) {
               {language === 'English' && 'description (optional)'}
             </label>
             <input
-              className="w-60 h-7  ring-2 ring-black  rounded-md   pl-10 
+              className="w-60 h-7  ring-2 ring-black appearance-none
+                rounded-md   pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="description"

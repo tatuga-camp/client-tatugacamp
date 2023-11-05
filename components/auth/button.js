@@ -44,7 +44,8 @@ function AuthButton() {
       <div>
         <button
           onClick={() => router.push('/auth/signIn')}
-          className="flex gap-x-2 justify-center items-center focus:outline-none text-base font-Inter font-normal border-0 w-max h-auto bg-white  text-black hover:ring-2 ring-black  transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
+          className="flex gap-x-2 justify-center items-center focus:outline-none text-base font-Inter appearance-none
+           font-normal border-0 w-max h-auto bg-white  text-black hover:ring-2 ring-black  transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
         >
           <span>Login</span>
           <div className="flex items-center justify-center text-[#FFC800]">

@@ -192,7 +192,8 @@ function CreateGrade({ setTriggerCreateGrade, studentsScores }) {
         ) : (
           <button
             onClick={handleCreateGrade}
-            className="w-28 py-2 active:ring-2 ring-black hover:bg-blue-700 transition duration-150 bg-blue-500 text-white font-semibold rounded-lg"
+            className="w-28 py-2 active:ring-2 ring-black appearance-none hover:bg-blue-700 transition
+             duration-150 bg-blue-500 text-white font-semibold rounded-lg"
           >
             update
           </button>

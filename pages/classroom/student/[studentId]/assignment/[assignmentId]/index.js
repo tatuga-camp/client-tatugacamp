@@ -721,7 +721,7 @@ application/pdf,
     application/vnd.openxmlformats-officedocument.wordprocessingml.document,
     video/mp4,
     audio/mpeg"
-                        className="text-sm text-grey-500 hidden  ring-2
+                        className="text-sm text-grey-500 hidden  ring-2 appearance-none
             file:mr-5 md:file:w-40 file:w-40 w-max file:py-2
             file:rounded-full file:border-0
             file:text-sm file:font-Kanit file:font-normal file:text-white

@@ -496,7 +496,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                       </label>
                       <input
                         onChange={handleOnChange}
-                        className="w-40 h-7 rounded-md  ring-2 ring-black pl-10 
+                        className="w-40 h-7 rounded-md  ring-2 appearance-none ring-black pl-10 
                 placeholder:italic placeholder:font-light"
                         type="text"
                         name="lastName"
@@ -518,7 +518,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                       </label>
                       <input
                         onChange={handleOnChange}
-                        className="w-40 h-7 rounded-md ring-2 ring-black   pl-10 
+                        className="w-40 h-7 rounded-md ring-2 appearance-none ring-black   pl-10 
                 placeholder:italic placeholder:font-light"
                         type="text"
                         name="number"
@@ -677,7 +677,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                         {score.score > 0 && (
                           <div
                             className="w-max h-max px-2 bg-blue-500 rounded-full absolute
-                          z-40 ring-2 ring-black text-xs font-medium left-2  top-2"
+                          z-40 ring-2 ring-black text-xs font-medium left-2  top-2 "
                           >
                             {score.score}
                           </div>

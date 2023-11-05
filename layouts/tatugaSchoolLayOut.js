@@ -117,7 +117,7 @@ function Layout({
               type="file"
               onChange={handleFileInputChange}
               accept="/jpeg,image/png"
-              className="text-sm text-grey-500 hidden  ring-2
+              className="text-sm text-grey-500 hidden  ring-2 appearance-none
               file:mr-5 md:file:w-40 file:w-40 w-max file:py-2
               file:rounded-full file:border-0
               file:text-sm file:font-Kanit file:font-normal file:text-white
@@ -184,7 +184,7 @@ function Layout({
         >
           <Link
             href={'/school/dashboard'}
-            className={`ring-2 no-underline ring-black row-span-1 col-span-2 transition duration-150
+            className={`ring-2 no-underline  ring-black row-span-1 col-span-2 transition duration-150
             ${lastRoute === 'dashboard' ? 'bg-pink-400' : 'bg-white'}
             hover:bg-pink-400 group  rounded-lg
            flex justify-center lg:gap-1 xl:gap-10 items-center relative `}

@@ -73,7 +73,7 @@ function DowloadExcelAttendacne({ close, language, teacherId, user }) {
             </label>
             <input
               onChange={handleChangeExcelData}
-              className="w-60 h-7 rounded-md ring-2 ring-black  pl-10 
+              className="w-60 h-7 rounded-md ring-2 appearance-none ring-black  pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="present"
@@ -95,7 +95,7 @@ function DowloadExcelAttendacne({ close, language, teacherId, user }) {
             </label>
             <input
               onChange={handleChangeExcelData}
-              className="w-60 h-7 rounded-md ring-2 ring-black  pl-10 
+              className="w-60 h-7 rounded-md ring-2 appearance-none ring-black  pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="sick"
@@ -117,7 +117,7 @@ function DowloadExcelAttendacne({ close, language, teacherId, user }) {
             </label>
             <input
               onChange={handleChangeExcelData}
-              className="w-60 h-7 rounded-md  ring-2 ring-black pl-10 
+              className="w-60 h-7 rounded-md  ring-2 appearance-none ring-black pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="absent"
@@ -139,7 +139,7 @@ function DowloadExcelAttendacne({ close, language, teacherId, user }) {
             </label>
             <input
               onChange={handleChangeExcelData}
-              className="w-60 h-7 rounded-md  ring-2 ring-black  pl-10 
+              className="w-60 h-7 rounded-md  ring-2 appearance-none ring-black  pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="holiday"
@@ -161,7 +161,7 @@ function DowloadExcelAttendacne({ close, language, teacherId, user }) {
             </label>
             <input
               onChange={handleChangeExcelData}
-              className="w-60 h-7 rounded-md ring-2 ring-black  pl-10 
+              className="w-60 h-7 rounded-md ring-2 appearance-none ring-black  pl-10 
                 placeholder:italic placeholder:font-light"
               type="text"
               name="late"
@@ -183,7 +183,7 @@ function DowloadExcelAttendacne({ close, language, teacherId, user }) {
               </label>
               <input
                 onChange={handleChangeExcelData}
-                className="w-60 h-7 rounded-md ring-2 ring-black  pl-10 
+                className="w-60 h-7 rounded-md ring-2 appearance-none ring-black  pl-10 
                 placeholder:italic placeholder:font-light"
                 type="text"
                 name="warn"
