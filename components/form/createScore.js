@@ -79,7 +79,7 @@ function CreateScore({
       <div className="flex flex-col relative mt-2">
         <label className="font-sans font-normal">title</label>
         <input
-          className="w-18 h-7 ring-2 ring-black rounded-md  pl-2 
+          className="w-18 h-7 ring-2 appearance-none ring-black rounded-md  pl-2 
         placeholder:italic placeholder:font-light"
           type="text"
           onChange={handleChange}

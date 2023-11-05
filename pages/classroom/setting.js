@@ -260,7 +260,7 @@ function Setting({ userServerSide, error }) {
                   name="firstName"
                   className="appearance-none block w-60 md:w-40 lg:w-full bg-[#EDBA02]
                  text-black font-bold font-sans focus:bg-[#e7c95c] placeholder:text-whit  border-none
-                  border-red-500 rounded py-3 px-4 mb-3 leading-tight ring-2 ring-black 
+                  border-red-500 rounded py-3 px-4 mb-3 leading-tight ring-2 ring-black  
                  focus:outline-none e"
                   id="grid-first-name"
                   type="text"

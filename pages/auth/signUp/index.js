@@ -211,7 +211,7 @@ function Index() {
               <input
                 required
                 className="w-60 h-7 rounded-md border-none bg-[#FFC800] focus:bg-[#FFC800] active:bg-[#FFC800]  pl-10 
-                placeholder:italic ring-2 ring-black placeholder:font-light"
+                placeholder:italic ring-2 appearance-none ring-black placeholder:font-light"
                 type="text"
                 name="email"
                 placeholder="type your email"
@@ -236,7 +236,7 @@ function Index() {
                 <label className="font-sans font-normal">first name</label>
                 <input
                   required
-                  className="w-32 h-7 ring-2 ring-black rounded-md border-none bg-[#FFC800] 
+                  className="w-32 h-7 ring-2 appearance-none ring-black rounded-md border-none bg-[#FFC800] 
                 placeholder:italic placeholder:font-light pl-4 "
                   type="text"
                   name="firstName"
@@ -256,7 +256,7 @@ function Index() {
                 <label className="font-sans font-normal">last name</label>
                 <input
                   required
-                  className=" h-7 w-32 ring-2 ring-black rounded-md border-none bg-[#FFC800] 
+                  className=" h-7 w-32 ring-2 appearance-none ring-black rounded-md border-none bg-[#FFC800] 
                 placeholder:italic placeholder:font-light pl-4 "
                   type="text"
                   name="lastName"
@@ -277,7 +277,7 @@ function Index() {
               <label className="font-sans font-normal">Password</label>
               <input
                 required
-                className="w-60 h-7 ring-2 ring-black rounded-md border-none bg-[#FFC800] pl-10 
+                className="w-60 h-7  appearance-none ring-black rounded-md border-none bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"
                 type="password"
                 name="password"

@@ -309,7 +309,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
                     })
                   }
                   value={attendanceDate}
-                  className="w-28 md:w-40 lg:w-max  appearance-none outline-none border-none ring-2  rounded-md px-5 
+                  className="w-28 md:w-40 lg:w-max  appearance-none outline-none border-none ring-2   rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black "
                   type="datetime-local"
                   placeholder="Please select a date"
