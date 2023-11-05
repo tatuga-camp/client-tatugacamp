@@ -410,28 +410,44 @@ function Index({ user, error }) {
                             gap-5 i w-full rounded-md  hover:bg-slate-100 items-center"
                       >
                         <td className="w-60 text-sm  flex justify-start truncate">
-                          <div className="truncate">
-                            {teacher.firstName} {teacher?.lastName}
-                          </div>
+                          {teachers.isFetching ? (
+                            <Skeleton
+                              variant="rectangular"
+                              width={100}
+                              height={30}
+                            />
+                          ) : (
+                            <div className="truncate">
+                              {teacher.firstName} {teacher?.lastName}
+                            </div>
+                          )}
                         </td>
                         <td className="w-20 flex justify-center">
-                          <div
-                            className="w-10 h-10 bg-blue-300 text-white rounded-md 
+                          {teachers.isFetching ? (
+                            <Skeleton
+                              variant="rectangular"
+                              width={100}
+                              height={30}
+                            />
+                          ) : (
+                            <div
+                              className="w-10 h-10 bg-blue-300 text-white rounded-md 
                             relative flex justify-center items-center overflow-hidden"
-                          >
-                            {teacher.picture ? (
-                              <Image
-                                src={teacher.picture}
-                                className="object-cover"
-                                fill
-                                sizes="(max-width: 768px) 100vw"
-                              />
-                            ) : (
-                              <span className="font-bold text-2xl uppercase">
-                                {teacher.firstName.charAt(0)}
-                              </span>
-                            )}
-                          </div>
+                            >
+                              {teacher.picture ? (
+                                <Image
+                                  src={teacher.picture}
+                                  className="object-cover"
+                                  fill
+                                  sizes="(max-width: 768px) 100vw"
+                                />
+                              ) : (
+                                <span className="font-bold text-2xl uppercase">
+                                  {teacher.firstName.charAt(0)}
+                                </span>
+                              )}
+                            </div>
+                          )}
                         </td>
                         <td className="w-60 text-sm flex justify-start truncate">
                           {teacher.email}
