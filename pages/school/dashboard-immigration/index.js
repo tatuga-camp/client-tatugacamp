@@ -10,15 +10,7 @@ import {
 } from '../../../data/school/menubarsHomepage';
 import Head from 'next/head';
 import Image from 'next/image';
-import { AiOutlineUserAdd } from 'react-icons/ai';
-import { SiGoogleclassroom } from 'react-icons/si';
-import {
-  BsFillPeopleFill,
-  BsPersonFillCheck,
-  BsPersonFillX,
-  BsTable,
-} from 'react-icons/bs';
-import { FaUserCheck } from 'react-icons/fa';
+import { BsPersonFillCheck, BsPersonFillX, BsTable } from 'react-icons/bs';
 import {
   GetAllTeachers,
   GetAllTeachersNumber,
@@ -38,7 +30,6 @@ import {
   GetAllStudentsByNationlity,
   GetAllStudentsNumber,
 } from '../../../service/school/student';
-import ShowTeacherOverviewInfo from '../../../components/form/school/teacher/showTeacherOverviewInfo';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -51,7 +42,7 @@ import {
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { formattedColorCodesArray } from '../../../data/chart/color';
 import ShowTeacherOverviewInfoImmigration from '../../../components/form/school/teacher/showTeacherOverviewInfo-immigration';
-
+import { useInView } from 'react-intersection-observer';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -86,6 +77,9 @@ const labels = ['จำนวนทั้งหมด'];
 const loadingElements = [1, 2, 3, 4, 5];
 
 function Index({ user, error }) {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+  });
   const router = useRouter();
   const [currentDate, setCurrentDate] = useState();
   const [currentTime, setCurrentTime] = useState();
@@ -195,10 +189,12 @@ function Index({ user, error }) {
   });
 
   useEffect(() => {
-    topTenAbsent.refetch();
-    topTenSick.refetch();
-    topTenHoliday.refetch();
-  }, []);
+    if (inView) {
+      topTenAbsent.refetch();
+      topTenSick.refetch();
+      topTenHoliday.refetch();
+    }
+  }, [inView]);
 
   const handleTriggerStudentInfo = ({ student }) => {
     document.body.style.overflow = 'hidden';
@@ -252,33 +248,6 @@ function Index({ user, error }) {
         </Head>
 
         <main className="w-full py-10 gap-10  h-max flex flex-col justify-center items-center font-Poppins  ">
-          <div className="w-11/12 items-center flex flex-col gap-2 justify-center">
-            <span className="text-blue-600 font-semibold text-4xl font-Kanit">
-              ยินดีต้อนรับ😃
-            </span>
-            <div className="text-blue-600 font-semibold text-7xl font-Kanit">
-              {user.school ? user.school : user.firstName}
-            </div>
-            <div
-              className={`w-24 h-24 ${
-                user?.picture ? 'bg-transparent' : 'bg-gray-500'
-              } rounded-full relative flex justify-center items-center overflow-hidden ring-4 ring-blue-400 `}
-            >
-              {user?.picture ? (
-                <Image
-                  src={user?.picture}
-                  className="object-cover"
-                  alt={`profile of ${user?.firstName}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw"
-                />
-              ) : (
-                <span className="text-3xl font-Kanit font-semibold text-white">
-                  {user?.firstName?.charAt(0)}
-                </span>
-              )}
-            </div>
-          </div>
           <div className="w-11/12 h-[35rem] bg-white pb-3 items-center rounded-lg flex flex-col ring-2 overflow-hidden ring-black">
             <div className="w-full bg-white h-28 flex justify-between">
               <div className="p-5 gap-2 flex flex-col">
@@ -561,7 +530,7 @@ function Index({ user, error }) {
               currentStudentInfo={currentStudentInfo}
             />
           )}
-          <div className=" flex w-11/12 gap-5 justify-center ">
+          <div ref={ref} className=" flex w-11/12 gap-5 justify-center ">
             <div
               className="bg-white w-96 ring-2 overflow-hidden ring-black  p-5 rounded-lg
            flex flex-col justify-start items-center"
@@ -651,7 +620,7 @@ function Index({ user, error }) {
                       >
                         <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
                           <Image
-                            src={list.student.picture}
+                            src={list?.student?.picture}
                             className="object-cover"
                             fill
                             sizes="(max-width: 768px) 100vw"

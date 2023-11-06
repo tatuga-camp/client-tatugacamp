@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { GetAllStudentsInTeacherByNationlity } from '../../../../service/school/student';
 import { formattedColorCodesArray } from '../../../../data/chart/color';
 import Link from 'next/link';
+import { loadingCount } from '../../../../data/loadingCount';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 const options = {
@@ -246,43 +247,47 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
           ห้องเรียนทั้งหมด
         </span>
         <div className="grid grid-cols-1 gap-2 p-5 w-full overflow-auto place-items-center">
-          {classrooms?.data?.classrooms?.map((classroom) => {
-            return (
-              <div
-                style={{
-                  border: `2px solid ${classroom.color}`,
-                  border: `4px solid ${classroom.color}`,
-                  padding: '10px',
-                }}
-                className="w-full h-max p-5 bg-white rounded-2xl flex flex-col 
-                justify-center items-center font-Kanit relative "
-                key={classroom.id}
-              >
-                <span className="font-semibold">{classroom.title}</span>
-                <span className="font-normal">{classroom.level}</span>
-                <span className="font-normal text-slate-500">
-                  {classroom.description}
-                </span>
-                <div className="flex gap-2 items-center">
-                  <Link
-                    href={`/school/dashboard/classrooms/teacher/${selectTeacher.id}/classroom/${classroom.id}`}
-                    onClick={() => {
-                      document.body.style.overflow = 'auto';
+          {classrooms.isFetching
+            ? loadingCount.map((list) => {
+                return <Skeleton key={list} width="100%" height={200} />;
+              })
+            : classrooms?.data?.classrooms?.map((classroom) => {
+                return (
+                  <div
+                    style={{
+                      border: `2px solid ${classroom.color}`,
+                      border: `4px solid ${classroom.color}`,
+                      padding: '10px',
                     }}
-                    className="p-3 no-underline transition duration-150 hover:bg-green-200 hover:text-green-600 bg-blue-200 text-blue-600 rounded-full flex items-center gap-2 py-2"
+                    className="w-full h-max p-5 bg-white rounded-2xl flex flex-col 
+                justify-center items-center font-Kanit relative "
+                    key={classroom.id}
                   >
-                    <div className="">
-                      <SiGoogleclassroom />
+                    <span className="font-semibold">{classroom.title}</span>
+                    <span className="font-normal">{classroom.level}</span>
+                    <span className="font-normal text-slate-500">
+                      {classroom.description}
+                    </span>
+                    <div className="flex gap-2 items-center">
+                      <Link
+                        href={`/school/dashboard/classrooms/teacher/${selectTeacher.id}/classroom/${classroom.id}`}
+                        onClick={() => {
+                          document.body.style.overflow = 'auto';
+                        }}
+                        className="p-3 no-underline transition duration-150 hover:bg-green-200 hover:text-green-600 bg-blue-200 text-blue-600 rounded-full flex items-center gap-2 py-2"
+                      >
+                        <div className="">
+                          <SiGoogleclassroom />
+                        </div>
+                        <span>สำรวจห้องเรียน</span>
+                      </Link>
+                      <div className="w-max h-max text-xs text-white bg-orange-500 rounded-md p-2">
+                        {classroom.student} คน คน
+                      </div>
                     </div>
-                    <span>สำรวจห้องเรียน</span>
-                  </Link>
-                  <div className="w-max h-max text-xs text-white bg-orange-500 rounded-md p-2">
-                    {classroom.student} คน คน
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                );
+              })}
         </div>
         <Pagination
           count={classrooms?.data?.totalPages}
