@@ -285,9 +285,7 @@ function Index({ user, error }) {
                   <th className="w-32 flex font-semibold font-Kanit text-slate-500 justify-center">
                     สร้างเมื่อ
                   </th>
-                  <th className="w-32 flex font-semibold font-Kanit text-slate-500 justify-center">
-                    จำนวนนักเรียน
-                  </th>
+
                   <th className="w-32 flex font-semibold font-Kanit text-slate-500 justify-center">
                     จำนวนห้องเรียน
                   </th>
@@ -429,11 +427,7 @@ function Index({ user, error }) {
                         <td className="w-32 flex justify-center">
                           {formattedDate}
                         </td>
-                        <td className="w-32  flex justify-center">
-                          <div className="font-Poppins font-semibold text-blue-600">
-                            {teacher.students}
-                          </div>
-                        </td>
+
                         <td className="w-32  flex justify-center">
                           <div className="font-Poppins font-semibold text-blue-600">
                             {teacher.classrooms}
