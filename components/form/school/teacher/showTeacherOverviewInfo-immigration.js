@@ -277,7 +277,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed gap-5 flex justify-center items-cente
                     <span>สำรวจห้องเรียน</span>
                   </Link>
                   <div className="w-max h-max text-xs text-white bg-orange-500 rounded-md p-2">
-                    {classroom.students.length} คน
+                    {classroom.student} คน คน
                   </div>
                 </div>
               </div>
