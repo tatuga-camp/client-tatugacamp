@@ -6,6 +6,7 @@ import { SiGoogleclassroom } from 'react-icons/si';
 
 function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
   const router = useRouter();
+
   return (
     <div
       className="z-30 
@@ -61,7 +62,7 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
           </div>
         </div>
         <Link
-          href={`/school/dashboard/classrooms/teacher/${currentStudentInfo.classroom.user.id}/classroom/${currentStudentInfo.classroom.id}`}
+          href={`/school/dashboard/classrooms/teacher/${currentStudentInfo.teacher.id}/classroom/${currentStudentInfo.classroom.id}`}
           onClick={() => {
             document.body.style.overflow = 'auto';
           }}
@@ -86,31 +87,31 @@ function ShowStudentInfo({ setTriggerStudentInfo, currentStudentInfo }) {
             className="text-3xl w-10 h-10 bg-pink-200 text-pink-600 p-3 flex overflow-hidden
            items-center justify-center relative rounded-xl"
           >
-            {currentStudentInfo.classroom.user.picture ? (
+            {currentStudentInfo.teacher.picture ? (
               <Image
-                src={currentStudentInfo.classroom.user.picture}
+                src={currentStudentInfo.teacher.picture}
                 fill
                 sizes="(max-width: 768px) 100vw"
                 className="object-cover"
               />
             ) : (
               <span className="font-bold text-2xl uppercase">
-                {currentStudentInfo.classroom.user.firstName.charAt(0)}
+                {currentStudentInfo.teacher.firstName.charAt(0)}
               </span>
             )}
           </div>
           <div className="flex flex-col">
             <span className="font-semibold">
-              Teacher: {currentStudentInfo.classroom.user.firstName}
+              Teacher: {currentStudentInfo.teacher.firstName}
               {'  '}
-              {currentStudentInfo.classroom.user?.lastName}
+              {currentStudentInfo.teacher?.lastName}
             </span>
             <div className="flex gap-2">
-              <span>Email: {currentStudentInfo.classroom.user.email}</span>
+              <span>Email: {currentStudentInfo.teacher.email}</span>
             </div>
             <div className="flex gap-2">
-              <span>School: {currentStudentInfo.classroom.user.school}</span>
-              <span>Phone: {currentStudentInfo.classroom.user.phone}</span>
+              <span>School: {currentStudentInfo.teacher.school}</span>
+              <span>Phone: {currentStudentInfo.teacher.phone}</span>
             </div>
           </div>
         </div>

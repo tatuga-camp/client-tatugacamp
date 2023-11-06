@@ -89,10 +89,7 @@ function Index({ user, error }) {
   const router = useRouter();
   const [currentDate, setCurrentDate] = useState();
   const [currentTime, setCurrentTime] = useState();
-  const [triggerStudentInfo, setTriggerStudentInfo] = useState(false);
-  const [currentStudentInfo, setCurrentStudentInfo] = useState();
   const [selectTeacher, setSelectTeacher] = useState();
-  const [triggerTableNationality, setTriggerTableNationality] = useState(false);
   const [triggerShowTeacherInfo, setTriggerShowTeacherInfo] = useState(false);
   const [page, setPage] = useState(1);
 
@@ -455,12 +452,6 @@ function Index({ user, error }) {
             </div>
           </div>
 
-          {triggerStudentInfo && (
-            <ShowStudentInfo
-              setTriggerStudentInfo={setTriggerStudentInfo}
-              currentStudentInfo={currentStudentInfo}
-            />
-          )}
           <div className=" flex w-11/12 gap-5 justify-center ">
             <div
               className="bg-white w-96 ring-2 overflow-hidden ring-black  p-5 rounded-lg
@@ -482,10 +473,7 @@ function Index({ user, error }) {
                   topTenAbsent.data?.map((list, index) => {
                     return (
                       <li
-                        onClick={() =>
-                          handleTriggerStudentInfo({ student: list })
-                        }
-                        className="w-full transition p-2 duration-0  cursor-pointer
+                        className="w-full transition p-2 duration-0 
                        hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
                         key={index}
                       >
@@ -543,10 +531,7 @@ function Index({ user, error }) {
                   topTenSick.data?.map((list, index) => {
                     return (
                       <li
-                        onClick={() =>
-                          handleTriggerStudentInfo({ student: list })
-                        }
-                        className="w-full transition p-2 duration-0  cursor-pointer hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
+                        className="w-full transition p-2 duration-0  hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
                         key={index}
                       >
                         <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">
@@ -606,10 +591,7 @@ function Index({ user, error }) {
                   topTenHoliday.data?.map((list, index) => {
                     return (
                       <li
-                        onClick={() =>
-                          handleTriggerStudentInfo({ student: list })
-                        }
-                        className="w-full transition p-2 duration-0  cursor-pointer hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
+                        className="w-full transition p-2 duration-0   hover:bg-blue-50 relative h-max   flex justify-start gap-2 items-center"
                         key={index}
                       >
                         <div className="w-10 h-10 bg-white-400 rounded-full relative overflow-hidden">

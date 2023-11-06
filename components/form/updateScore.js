@@ -254,7 +254,6 @@ function UpdateScore({
           }
 
           // Code here will execute once group.isFetching is false
-          console.log('group.isFetching is now false!');
         }
 
         waitForFalse();

@@ -35,7 +35,7 @@ export async function UpdateStudent({ formData, studentId }) {
         },
       },
     );
-    console.log(updateStudent);
+
     return updateStudent;
   } catch (err) {
     console.log(err);
