@@ -76,6 +76,28 @@ export async function CreateAccount({
   }
 }
 
+export async function DeleteTeacherService({ teacherId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const teacher = await axios.delete(
+      `${process.env.Server_Url}/user/school/teacher/delete`,
+      {
+        params: {
+          teacherId,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return teacher.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 export async function UpdateTeacherAccount({
   email,
   firstName,
