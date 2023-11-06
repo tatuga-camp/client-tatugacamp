@@ -151,12 +151,30 @@ function Index() {
 
   //handle login from thrid party google auth
   const GetAccesTokenGoogle = async () => {
+    Swal.fire({
+      title: 'กำลังเข้าสู่ระบบ...',
+      html: 'รอสักครู่นะครับ...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
     router.push(`${process.env.Server_Url}/auth/google/redirect`, undefined, {
       shallow: true,
     });
   };
 
   const GetAccesTokenFacebook = async () => {
+    Swal.fire({
+      title: 'กำลังเข้าสู่ระบบ...',
+      html: 'รอสักครู่นะครับ...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
     router.push(`${process.env.Server_Url}/auth/facebook/redirect`, undefined, {
       shallow: true,
     });

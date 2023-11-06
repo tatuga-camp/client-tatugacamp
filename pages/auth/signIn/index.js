@@ -90,12 +90,30 @@ function Index() {
 
   //handle login from thrid party google auth
   const GetAccesTokenGoogle = async () => {
+    Swal.fire({
+      title: 'กำลังเข้าสู่ระบบ...',
+      html: 'รอสักครู่นะครับ...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
     router.push(`${process.env.Server_Url}/auth/google/redirect`, undefined, {
       shallow: true,
     });
   };
 
   const GetAccesTokenFacebook = async () => {
+    Swal.fire({
+      title: 'กำลังเข้าสู่ระบบ...',
+      html: 'รอสักครู่นะครับ...',
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
     router.push(`${process.env.Server_Url}/auth/facebook/redirect`, undefined, {
       shallow: true,
     });
@@ -249,7 +267,7 @@ function Index() {
 
             <button
               onClick={GetAccesTokenFacebook}
-              className="w-11/12   h-9 mt-2 rounded-full bg-white text-black font-sans font-bold cursor-pointer
+              className="w-11/12   h-9 mt-2 relative rounded-full bg-white text-black font-sans font-bold cursor-pointer
               text-md cursor-pointer:border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
                active:border-2 active:text-black active:border-gray-300
                active:border-solid  focus:border-2 border-2
