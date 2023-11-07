@@ -10,8 +10,9 @@ function ShowNoteAttendance({
   classroomId,
 }) {
   const [note, setNote] = useState({
-    id: selectNote.id,
-    body: selectNote.note,
+    id: selectNote?.headAttendance?.id,
+    body: selectNote?.headAttendance?.note,
+    groupId: selectNote?.groupId,
   });
   const handleEditorChange = (content, editor) => {
     setNote((prev) => {
@@ -25,7 +26,7 @@ function ShowNoteAttendance({
   const handleSummitUpdate = async () => {
     try {
       Swal.fire({
-        title: 'กำลังลบ...',
+        title: 'กำลังโหลด...',
         html: 'รอสักครู่นะครับ...',
         allowEscapeKey: false,
         allowOutsideClick: false,
@@ -53,8 +54,11 @@ function ShowNoteAttendance({
         note: note.body,
         headAttendanceId: note.id,
         classroomId: classroomId,
+        groupId: note.groupId,
       });
       await attendances.refetch();
+      setTriggerShowNote(() => false);
+      document.body.style.overflow = 'auto';
       Swal.fire('success', 'assignment has been updated', 'success');
     } catch (err) {
       console.log(err);
