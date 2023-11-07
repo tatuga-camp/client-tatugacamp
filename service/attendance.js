@@ -279,35 +279,20 @@ export async function UpdateAttendnaceAPI({
       );
       return update;
     } else {
-      if (note) {
-        const update = await axios.put(
-          `${process.env.Server_Url}/user/attendance/update`,
-          { absent, present, holiday, sick, late, note, warn },
-          {
-            params: {
-              attendanceId: attendanceId,
-            },
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
+      console.log(note);
+      const update = await axios.put(
+        `${process.env.Server_Url}/user/attendance/update`,
+        { absent, present, holiday, sick, late, warn, note },
+        {
+          params: {
+            attendanceId: attendanceId,
           },
-        );
-        return update;
-      } else if (!note) {
-        const update = await axios.put(
-          `${process.env.Server_Url}/user/attendance/update`,
-          { absent, present, holiday, sick, late, warn },
-          {
-            params: {
-              attendanceId: attendanceId,
-            },
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
+          headers: {
+            Authorization: `Bearer ${access_token}`,
           },
-        );
-        return update;
-      }
+        },
+      );
+      return update;
     }
   } catch (err) {
     console.log(err);
