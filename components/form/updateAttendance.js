@@ -47,9 +47,7 @@ function UpdateAttendance({
   user,
 }) {
   const [activeAttendance, setActiveAttendance] = useState();
-  const [note, setNote] = useState({
-    body: '',
-  });
+  const [note, setNote] = useState(attendanceData?.note);
 
   const [loading, setLoading] = useState(false);
   const [reCheck, setReCheck] = useState();
@@ -59,8 +57,8 @@ function UpdateAttendance({
     month: 'short',
     year: 'numeric',
   });
-
   useEffect(() => {
+    setNote((prev) => attendanceData?.note);
     if (attendanceData?.present) {
       setActiveAttendance(0);
     }
@@ -91,23 +89,77 @@ function UpdateAttendance({
     });
   }, []);
 
-  const handleEditorChange = (content, editor) => {
-    setNote((prev) => {
-      return {
-        ...prev,
-        body: content,
-      };
+  const handleDeleteNote = async () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          Swal.fire({
+            title: 'กำลังลบ...',
+            html: 'รอสักครู่นะครับ...',
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          setLoading(() => true);
+          await DeleteNote({ attendanceId: attendanceData.id });
+          await attendances.refetch();
+          setLoading(() => false);
+          document.body.style.overflow = 'auto';
+          setTriggerUpdateAttendance(() => false);
+          Swal.fire('success', 'Note has been updated', 'success');
+        } catch (err) {
+          console.log(err);
+          Swal.fire(
+            'Error!',
+            err?.props?.response?.data?.message?.toString(),
+            'error',
+          );
+        }
+      }
     });
+  };
+
+  const handleEditorChange = (content, editor) => {
+    setNote(() => content);
   };
 
   const handleUpdateAttendance = async () => {
     try {
       setLoading(() => true);
+      Swal.fire({
+        title: 'กำลังลบ...',
+        html: 'รอสักครู่นะครับ...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       const parser = new DOMParser();
-      const doc = parser.parseFromString(note.body, 'text/html');
+      const doc = parser.parseFromString(note, 'text/html');
       const imageElements = doc.getElementsByTagName('img');
-      const imageUrls = Array.from(imageElements).map((img) => img.src);
-      const update = await UpdateAttendnaceAPI({
+      const imageUrls = Array.from(imageElements)
+        .map((img) => {
+          const src = img.src;
+          if (src.startsWith('data:image')) {
+            // Check if the src attribute starts with "data:image" (base64 image)
+            return src;
+          } else {
+            return null; // Skip images with actual URLs
+          }
+        })
+        .filter(Boolean); // Filter out null values (i.e., actual URLs)
+      await UpdateAttendnaceAPI({
         attendanceId: attendanceData.id,
         studentId: student.id,
         absent: reCheck.absent,
@@ -117,10 +169,10 @@ function UpdateAttendance({
         late: reCheck.late,
         warn: reCheck.warn,
         imagesBase64: imageUrls,
-        note: note.body,
+        note: note,
       });
       setLoading(() => false);
-      attendances.refetch();
+      await attendances.refetch();
       Swal.fire('success', 'attendance has been updated', 'success');
       document.body.style.overflow = 'auto';
       setTriggerUpdateAttendance(() => false);
@@ -175,14 +227,7 @@ function UpdateAttendance({
                 <Loading />
               ) : (
                 <button
-                  onClick={async () => {
-                    setLoading(() => true);
-                    await DeleteNote({ attendanceId: attendanceData.id });
-                    attendances.refetch();
-                    setLoading(() => false);
-                    document.body.style.overflow = 'auto';
-                    setTriggerUpdateAttendance(() => false);
-                  }}
+                  onClick={handleDeleteNote}
                   className="flex gap-2 hover:bg-red-500 hover:text-red-200 transition duration-100  justify-center rounded-lg 
                items-center w-max p-2 bg-red-200 text-red-500"
                 >
@@ -190,94 +235,80 @@ function UpdateAttendance({
                   delete note
                 </button>
               ))}
-            {attendanceData?.note ? (
-              <Editor
-                disabled={true}
-                apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
-                init={{
-                  height: '100%',
-                  width: '100%',
-                  menubar: false,
-                  toolbar: false,
-                  selector: 'textarea', // change this value according to your HTML
-                }}
-                initialValue={attendanceData?.note}
-                value={attendanceData?.note}
-              />
-            ) : (
-              <Editor
-                apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
-                textareaName="note"
-                init={{
-                  selector: 'textarea',
-                  link_context_toolbar: true,
-                  height: '100%',
-                  width: '100%',
-                  menubar: true,
-                  image_title: true,
-                  automatic_uploads: true,
-                  file_picker_types: 'image',
-                  file_picker_types: 'image',
-                  file_picker_callback: (cb, value, meta) => {
-                    const input = document.createElement('input');
-                    input.setAttribute('type', 'file');
-                    input.setAttribute('accept', 'image/*');
 
-                    input.addEventListener('change', (e) => {
-                      const file = e.target.files[0];
+            <Editor
+              apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+              textareaName="note"
+              init={{
+                selector: 'textarea',
+                link_context_toolbar: true,
+                height: '100%',
+                width: '100%',
+                menubar: true,
+                image_title: true,
+                automatic_uploads: true,
+                file_picker_types: 'image',
+                file_picker_types: 'image',
+                file_picker_callback: (cb, value, meta) => {
+                  const input = document.createElement('input');
+                  input.setAttribute('type', 'file');
+                  input.setAttribute('accept', 'image/*');
 
-                      const reader = new FileReader();
-                      reader.addEventListener('load', () => {
-                        /*
+                  input.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+
+                    const reader = new FileReader();
+                    reader.addEventListener('load', () => {
+                      /*
                           Note: Now we need to register the blob in TinyMCEs image blob
                           registry. In the next release this part hopefully won't be
                           necessary, as we are looking to handle it internally.
                         */
-                        const id = 'blobid' + new Date().getTime();
-                        const blobCache =
-                          tinymce.activeEditor.editorUpload.blobCache;
-                        const base64 = reader.result.split(',')[1];
-                        const blobInfo = blobCache.create(id, file, base64);
-                        blobCache.add(blobInfo);
+                      const id = 'blobid' + new Date().getTime();
+                      const blobCache =
+                        tinymce.activeEditor.editorUpload.blobCache;
+                      const base64 = reader.result.split(',')[1];
+                      const blobInfo = blobCache.create(id, file, base64);
+                      blobCache.add(blobInfo);
 
-                        /* call the callback and populate the Title field with the file name */
-                        cb(blobInfo.blobUri(), { title: file.name });
-                      });
-                      reader.readAsDataURL(file);
+                      /* call the callback and populate the Title field with the file name */
+                      cb(blobInfo.blobUri(), { title: file.name });
                     });
+                    reader.readAsDataURL(file);
+                  });
 
-                    input.click();
-                  },
-                  plugins: [
-                    'advlist',
-                    'autolink',
-                    'lists',
-                    'link',
-                    'image',
-                    'charmap',
-                    'preview',
-                    'anchor',
-                    'searchreplace',
-                    'visualblocks',
-                    'code',
-                    'fullscreen',
-                    'insertdatetime',
-                    'media',
-                    'table',
-                    'help',
-                    'wordcount',
-                  ],
-                  toolbar:
-                    'undo redo | formatselect | blocks | ' +
-                    'bold italic backcolor | alignleft aligncenter ' +
-                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                    'link | image',
-                  content_style:
-                    'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                }}
-                onEditorChange={handleEditorChange}
-              />
-            )}
+                  input.click();
+                },
+                plugins: [
+                  'advlist',
+                  'autolink',
+                  'lists',
+                  'link',
+                  'image',
+                  'charmap',
+                  'preview',
+                  'anchor',
+                  'searchreplace',
+                  'visualblocks',
+                  'code',
+                  'fullscreen',
+                  'insertdatetime',
+                  'media',
+                  'table',
+                  'help',
+                  'wordcount',
+                ],
+                toolbar:
+                  'undo redo | formatselect | blocks | ' +
+                  'bold italic backcolor | alignleft aligncenter ' +
+                  'alignright alignjustify | bullist numlist outdent indent | ' +
+                  'link | image',
+                content_style:
+                  'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+              }}
+              value={note}
+              onEditorChange={handleEditorChange}
+            />
           </div>
 
           <div className="flex  flex-col items-center">
