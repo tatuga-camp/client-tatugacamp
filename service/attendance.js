@@ -169,6 +169,7 @@ export async function UpdateHeadAttendance({
   note,
   headAttendanceId,
   classroomId,
+  groupId,
 }) {
   try {
     const cookies = parseCookies();
@@ -238,7 +239,7 @@ export async function UpdateHeadAttendance({
 
       const update = await axios.put(
         `${process.env.Server_Url}/user/attendance/head-attendance/update`,
-        { headAttendanceId, note: updatedContent },
+        { headAttendanceId, note: updatedContent, groupId },
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -249,7 +250,7 @@ export async function UpdateHeadAttendance({
     } else {
       const update = await axios.put(
         `${process.env.Server_Url}/user/attendance/head-attendance/update`,
-        { headAttendanceId, note },
+        { headAttendanceId, note, groupId },
         {
           headers: {
             Authorization: `Bearer ${access_token}`,

@@ -219,7 +219,12 @@ function Index({ error, user }) {
                           <div
                             onClick={() => {
                               document.body.style.overflow = 'hidden';
-                              setSelectNote(() => status.headData);
+                              setSelectNote(() => {
+                                return {
+                                  headAttendance: status.headData,
+                                  groupId: status.groupId,
+                                };
+                              });
                               setTriggerShowNote(() => true);
                             }}
                             className="group-hover:visible invisible h-0 w-0 flex items-center
