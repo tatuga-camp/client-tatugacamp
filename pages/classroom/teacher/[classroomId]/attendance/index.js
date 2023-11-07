@@ -148,6 +148,8 @@ function Index({ error, user }) {
             <ShowNoteAttendance
               setTriggerShowNote={setTriggerShowNote}
               selectNote={selectNote}
+              attendances={attendances}
+              classroomId={router.query.classroomId}
             />
           )}
 
@@ -214,20 +216,19 @@ function Index({ error, user }) {
                           <span className="block group-hover:hidden">
                             {formattedDate}
                           </span>
-                          {status.headData?.note && (
-                            <div
-                              onClick={() => {
-                                setSelectNote(() => status.headData?.note);
-                                setTriggerShowNote(() => true);
-                              }}
-                              className="group-hover:visible invisible h-0 w-0 flex items-center
+                          <div
+                            onClick={() => {
+                              document.body.style.overflow = 'hidden';
+                              setSelectNote(() => status.headData);
+                              setTriggerShowNote(() => true);
+                            }}
+                            className="group-hover:visible invisible h-0 w-0 flex items-center
                              text-black group-hover:text-green-500 
                                 justify-center group-hover:w-5 group-hover:h-5 bg-green-100 rounded-full group-hover:scale-150 transition
                                  duration-150"
-                            >
-                              <BiNotepad />
-                            </div>
-                          )}
+                          >
+                            <BiNotepad />
+                          </div>
                           <div
                             onClick={() =>
                               handleDeleteAttendance({

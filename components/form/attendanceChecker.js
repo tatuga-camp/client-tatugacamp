@@ -242,7 +242,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
       const imageElements = doc.getElementsByTagName('img');
       const imageUrls = Array.from(imageElements).map((img) => img.src);
 
-      const createAttendace = await CreateAttendance({
+      await CreateAttendance({
         isChecks: isCheckStudent,
         note: note.body,
         imagesBase64: imageUrls,
