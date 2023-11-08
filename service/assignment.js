@@ -28,6 +28,75 @@ export async function CreateAssignmentToAnotherClassroom({
     throw new Error(err);
   }
 }
+export async function CreateFileOnAssignment({ formFiles, assignmentId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const heic2any = (await import('heic2any')).default;
+    const filesOld = await formFiles.getAll('files');
+    const files = await Promise.all(
+      filesOld.map(async (file) => {
+        if (file.type === '') {
+          const blob = await heic2any({
+            blob: file,
+            toType: 'image/jpeg',
+          });
+          file = new File([blob], file.name, { type: 'image/jpeg' });
+          return {
+            file: file,
+            fileName: file.name,
+            fileType: file.type,
+          };
+        } else {
+          return {
+            file: file,
+            fileName: file.name,
+            fileType: file.type,
+          };
+        }
+      }),
+    );
+
+    const urls = await axios.post(
+      `${process.env.Server_Url}/user/assignment/fileOnAssignment/upload-signurl`,
+      { files, assignmentId },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+
+    for (let i = 0; i < urls.data.signurls.length; i++) {
+      await fetch(urls.data.signurls[i].signurl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': `${urls.data.signurls[i].contentType}`,
+        },
+        body: files[i].file,
+      });
+      await axios.post(
+        `${process.env.Server_Url}/user/assignment/fileOnAssignment/create`,
+        {
+          assignmentId: assignmentId,
+          file: urls.data.urlAdress[i],
+          type: urls.data.signurls[i].contentType,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${access_token}`,
+          },
+        },
+      );
+    }
+
+    return urls;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
 
 export async function CreateAssignmentApi({
   classroomId,
@@ -123,7 +192,7 @@ export async function CreateAssignmentApi({
         },
       },
     );
-    return updateAssignment;
+    return updateAssignment.data;
   } catch (err) {
     throw new Error(err);
   }
