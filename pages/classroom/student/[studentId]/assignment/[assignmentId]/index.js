@@ -242,7 +242,7 @@ function Index() {
             });
             formFiles.append('body', studentSummit.body);
             formFiles.getAll('body');
-            const summitWork = await SummitWork({
+            await SummitWork({
               formFiles,
               studentId: router.query.studentId,
               assignmentId: assignment.data.id,
