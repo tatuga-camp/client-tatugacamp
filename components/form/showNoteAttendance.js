@@ -59,7 +59,7 @@ function ShowNoteAttendance({
       await attendances.refetch();
       setTriggerShowNote(() => false);
       document.body.style.overflow = 'auto';
-      Swal.fire('success', 'assignment has been updated', 'success');
+      Swal.fire('success', 'Note has been updated', 'success');
     } catch (err) {
       console.log(err);
       Swal.fire(

@@ -173,7 +173,7 @@ function UpdateAttendance({
       });
       setLoading(() => false);
       await attendances.refetch();
-      Swal.fire('success', 'attendance has been updated', 'success');
+      Swal.fire('success', 'Attendance has been updated', 'success');
       document.body.style.overflow = 'auto';
       setTriggerUpdateAttendance(() => false);
     } catch (err) {
