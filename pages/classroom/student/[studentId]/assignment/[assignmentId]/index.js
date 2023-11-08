@@ -56,7 +56,6 @@ function Index() {
   const [deadline, setDeadline] = useState();
   const [fileSize, setFilesSize] = useState(0);
   const [isDue, setIsDue] = useState(false);
-  const [classroomCode, setClassroomCode] = useState();
   const currentTime = new Date();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [studentSummit, setStudentSummit] = useState({
@@ -69,9 +68,9 @@ function Index() {
 
   const classroom = useQuery(
     ['classroom'],
-    () => StudentGetClassroom({ classroomId: router.query.classroomId }),
+    () => StudentGetClassroom({ classroomId: router?.query?.classroomId }),
     {
-      enabled: false,
+      enabled: router.isReady,
     },
   );
   const assignment = useQuery(
@@ -129,10 +128,10 @@ function Index() {
     () =>
       GetMyWork({
         studentId: router.query.studentId,
-        assignmentId: assignment?.data?.id,
+        assignmentId: router.query.assignmentId,
       }),
     {
-      enabled: assignment.isSuccess,
+      enabled: false,
     },
   );
 
@@ -195,13 +194,13 @@ function Index() {
             });
             formFiles.append('body', studentSummit.body);
             formFiles.getAll('body');
-            const summitWork = await SummitWork({
+            await SummitWork({
               formFiles,
               studentId: router.query.studentId,
               assignmentId: assignment.data.id,
             });
 
-            fetchStudentWork.refetch();
+            await fetchStudentWork.refetch();
             Swal.fire('success', 'ส่งงานแล้ว', 'success');
           } catch (err) {
             if (
@@ -291,11 +290,10 @@ function Index() {
 
   useEffect(() => {
     if (router.isReady) {
-      fetchStudentWork.refetch();
       student.refetch();
+      fetchStudentWork.refetch();
       comments.refetch();
       assignment.refetch();
-      classroom.refetch();
     }
   }, [router.isReady]);
 
@@ -515,7 +513,7 @@ function Index() {
               <tr>
                 <td className="w-20 text-center">คะแนน</td>
                 <td>
-                  {fetchStudentWork.isLoading || loading ? (
+                  {fetchStudentWork.isFetching || loading ? (
                     <Skeleton variant="rounded" width="100%" height={20} />
                   ) : (
                     <div className="text-lg">
@@ -528,58 +526,64 @@ function Index() {
               </tr>
               <tr>
                 <td className="w-20 text-center">สถานะ</td>
-                <td>
-                  {studentWork?.status === 'no-work' && isDue && (
-                    <div
-                      className="w-max px-2 h-4 bg-red-500 py-1 rounded-lg border-2 border-solid border-white
-          flex items-center justify-center"
-                    >
-                      <span className="flex items-center justify-center font-Kanit text-white flex-col">
-                        <div className="text-sm">
-                          <span>เลยกำหนดส่ง</span>
-                        </div>
-                      </span>
-                    </div>
-                  )}
-                  {studentWork?.status === 'no-work' && !isDue && (
-                    <div
-                      className="w-max px-2 h-4 bg-orange-500 py-1 rounded-lg border-2 border-solid border-white
-          flex items-center justify-center"
-                    >
-                      <span className="flex items-center justify-center font-Kanit text-white flex-col">
-                        <div className="text-sm">
-                          <span>ไม่ส่งงาน</span>
-                        </div>
-                      </span>
-                    </div>
-                  )}
-                  {studentWork?.status === 'have-work' &&
-                    studentWork.isSummited === false && (
+                {fetchStudentWork.isFetching ? (
+                  <td>
+                    <Skeleton width="100%" />
+                  </td>
+                ) : (
+                  <td>
+                    {studentWork?.status === 'no-work' && isDue && (
                       <div
-                        className="w-max px-2 h-4 bg-yellow-500 py-1 rounded-lg border-2 border-solid border-white
+                        className="w-max px-2 h-4 bg-red-500 py-1 rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
                       >
                         <span className="flex items-center justify-center font-Kanit text-white flex-col">
                           <div className="text-sm">
-                            <span>รอตรวจ</span>
+                            <span>เลยกำหนดส่ง</span>
                           </div>
                         </span>
                       </div>
                     )}
-                  {studentWork?.status === 'have-work' &&
-                    studentWork.isSummited === true && (
+                    {studentWork?.status === 'no-work' && !isDue && (
                       <div
-                        className="w-max px-2 h-4 bg-green-500 py-1 rounded-lg border-2 border-solid border-white
+                        className="w-max px-2 h-4 bg-orange-500 py-1 rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
                       >
                         <span className="flex items-center justify-center font-Kanit text-white flex-col">
                           <div className="text-sm">
-                            <span>ตรวจแล้ว</span>
+                            <span>ไม่ส่งงาน</span>
                           </div>
                         </span>
                       </div>
                     )}
-                </td>
+                    {studentWork?.status === 'have-work' &&
+                      studentWork.isSummited === false && (
+                        <div
+                          className="w-max px-2 h-4 bg-yellow-500 py-1 rounded-lg border-2 border-solid border-white
+          flex items-center justify-center"
+                        >
+                          <span className="flex items-center justify-center font-Kanit text-white flex-col">
+                            <div className="text-sm">
+                              <span>รอตรวจ</span>
+                            </div>
+                          </span>
+                        </div>
+                      )}
+                    {studentWork?.status === 'have-work' &&
+                      studentWork.isSummited === true && (
+                        <div
+                          className="w-max px-2 h-4 bg-green-500 py-1 rounded-lg border-2 border-solid border-white
+          flex items-center justify-center"
+                        >
+                          <span className="flex items-center justify-center font-Kanit text-white flex-col">
+                            <div className="text-sm">
+                              <span>ตรวจแล้ว</span>
+                            </div>
+                          </span>
+                        </div>
+                      )}
+                  </td>
+                )}
               </tr>
             </tbody>
           </table>

@@ -26,6 +26,7 @@ import Attendance from '../../../../components/student/attendance';
 import { StudentGetAllScore } from '../../../../service/student/score';
 
 function Index() {
+  const router = useRouter();
   const [classroomCode, setClassroomCode] = useState();
   const [activeMenu, setActiveMenu] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -44,12 +45,12 @@ function Index() {
   );
   const classroom = useQuery(
     ['classroom'],
-    () => StudentGetClassroom({ classroomId: router.query.classroomId }),
+    () => StudentGetClassroom({ classroomId: router?.query?.classroomId }),
     {
-      enabled: false,
+      enabled: router.isReady,
     },
   );
-  const router = useRouter();
+
   const student = useQuery(
     ['student'],
     () => GetStudent({ studentId: router.query.studentId }),
@@ -129,7 +130,6 @@ function Index() {
       student.refetch();
       assignments.refetch();
       attendances.refetch();
-      classroom.refetch();
     }
   }, [router.isReady]);
 
