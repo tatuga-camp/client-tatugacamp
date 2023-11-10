@@ -23,7 +23,12 @@ import {
 import Head from 'next/head';
 import { GetStudent } from '../../../../../../service/student/student';
 import Loading from '../../../../../../components/loading/loading';
-import { BsFileEarmark, BsFillChatDotsFill, BsImageFill } from 'react-icons/bs';
+import {
+  BsFileEarmark,
+  BsFileEarmarkCode,
+  BsFillChatDotsFill,
+  BsImageFill,
+} from 'react-icons/bs';
 import { FcVideoFile } from 'react-icons/fc';
 import { FaFileAudio, FaRegFilePdf } from 'react-icons/fa';
 import { RiArrowGoBackFill } from 'react-icons/ri';

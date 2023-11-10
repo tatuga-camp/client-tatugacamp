@@ -457,7 +457,10 @@ export default function CreateAssignment({
                     file.type === 'video/quicktime'
                   ) {
                     return (
-                      <div className="w-full relative  px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-red-500 rounded-xl">
+                      <div
+                        key={index}
+                        className="w-full relative  px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-red-500 rounded-xl"
+                      >
                         <div className="flex items-center justify-center text-red-700">
                           <FcVideoFile />
                         </div>
@@ -478,7 +481,10 @@ export default function CreateAssignment({
                     file.type === 'audio/mp3'
                   ) {
                     return (
-                      <div className="w-full relative px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
+                      <div
+                        key={index}
+                        className="w-full relative px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl"
+                      >
                         <div className="flex items-center justify-center text-red-700">
                           <FaFileAudio />
                         </div>
@@ -496,7 +502,10 @@ export default function CreateAssignment({
                     );
                   } else if (file.type === 'application/pdf') {
                     return (
-                      <div className="w-full px-1 relative flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-gray-500 rounded-xl">
+                      <div
+                        key={index}
+                        className="w-full px-1 relative flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-gray-500 rounded-xl"
+                      >
                         <div className="flex items-center justify-center text-gray-700">
                           <FaRegFilePdf />
                         </div>
@@ -517,7 +526,10 @@ export default function CreateAssignment({
                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                   ) {
                     return (
-                      <div className="w-full px-1 relative flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl">
+                      <div
+                        key={index}
+                        className="w-full px-1 relative flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-blue-500 rounded-xl"
+                      >
                         <div className="flex items-center justify-center text-blue-700">
                           <IoDocumentText />
                         </div>
@@ -535,7 +547,10 @@ export default function CreateAssignment({
                     );
                   } else {
                     return (
-                      <div className="w-full relative px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-slate-500 rounded-xl">
+                      <div
+                        key={index}
+                        className="w-full relative px-1 flex justify-center items-center gap-2 h-10 bg-white ring-2 ring-slate-500 rounded-xl"
+                      >
                         <div className="flex items-center justify-center text-slate-700">
                           <BsFileEarmarkCode />
                         </div>
