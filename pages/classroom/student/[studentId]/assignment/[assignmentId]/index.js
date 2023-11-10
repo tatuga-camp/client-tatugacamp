@@ -23,7 +23,7 @@ import {
 import Head from 'next/head';
 import { GetStudent } from '../../../../../../service/student/student';
 import Loading from '../../../../../../components/loading/loading';
-import { BsFillChatDotsFill, BsImageFill } from 'react-icons/bs';
+import { BsFileEarmark, BsFillChatDotsFill, BsImageFill } from 'react-icons/bs';
 import { FcVideoFile } from 'react-icons/fc';
 import { FaFileAudio, FaRegFilePdf } from 'react-icons/fa';
 import { RiArrowGoBackFill } from 'react-icons/ri';
@@ -39,6 +39,7 @@ import ReactPlayer from 'react-player';
 import { HiOutlineNewspaper } from 'react-icons/hi2';
 import CreateStudentWork from '../../../../../../components/form/createStudentWork';
 import { StudentGetClassroom } from '../../../../../../service/student/classroom';
+import ShowSelectFile from '../../../../../../components/assignment/showSelectFile';
 
 function Index() {
   const router = useRouter();
@@ -65,7 +66,8 @@ function Index() {
   const [triggerShowWorksheet, setTriggerShowWorksheet] = useState(false);
   const [triggerMenu, setTriggerMenu] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [triggerShowFile, setTriggerShowFile] = useState(false);
+  const [selectFile, setSelectFile] = useState();
   const classroom = useQuery(
     ['classroom'],
     () => StudentGetClassroom({ classroomId: router?.query?.classroomId }),
@@ -134,6 +136,12 @@ function Index() {
       enabled: false,
     },
   );
+
+  const handleSelectFile = ({ file }) => {
+    document.body.style.overflow = 'hidden';
+    setSelectFile(() => file);
+    setTriggerShowFile(() => true);
+  };
 
   useEffect(() => {
     setStudnetWork(() => {
@@ -411,6 +419,12 @@ function Index() {
         />
         <meta charSet="UTF-8" />
       </Head>
+      {triggerShowFile && (
+        <ShowSelectFile
+          setTriggerShowFile={setTriggerShowFile}
+          file={selectFile}
+        />
+      )}
       {triggerCreateStudentWork && (
         <CreateStudentWork
           fetchStudentWork={fetchStudentWork}
@@ -490,29 +504,29 @@ function Index() {
               {student?.data?.data?.firstName} {student?.data?.data?.lastName}
             </div>
           </div>
-          <table className="">
-            <tbody>
-              <tr>
-                <td className="w-40 text-center">มอบหมายโดย</td>
-                <td className="flex gap-2 justify-start items-center">
+          <div className="flex justify-center">
+            <div className="w-80">
+              <div className="flex gap-4 w-full justify-start items-center ">
+                <div className="text-right">มอบหมายโดย</div>
+                <div className="flex gap-2 justify-start items-center">
                   <span className="font-semibold text-blue-500 text-lg">
                     {teacher?.firstName} {teacher?.lastName}
                   </span>
-                </td>
-              </tr>
-              <tr>
-                <td className="w-20 text-center">กำหนดส่ง</td>
-                <td>
+                </div>
+              </div>
+              <div className="flex gap-4 w-full justify-start items-center ">
+                <div className="text-right">กำหนดส่ง</div>
+                <div>
                   {fetchStudentWork.isLoading || loading ? (
                     <Skeleton variant="rounded" width="100%" height={20} />
                   ) : (
                     <div className="col-span-2 font-semibold">{deadline}</div>
                   )}
-                </td>
-              </tr>
-              <tr>
-                <td className="w-20 text-center">คะแนน</td>
-                <td>
+                </div>
+              </div>
+              <div className="flex gap-4 w-full justify-start items-center ">
+                <div className="text-right">คะแนน</div>
+                <div>
                   {fetchStudentWork.isFetching || loading ? (
                     <Skeleton variant="rounded" width="100%" height={20} />
                   ) : (
@@ -522,19 +536,19 @@ function Index() {
                       <span>{assignment?.data?.maxScore}</span>
                     </div>
                   )}
-                </td>
-              </tr>
-              <tr>
-                <td className="w-20 text-center">สถานะ</td>
+                </div>
+              </div>
+              <div className="flex gap-4 w-full justify-start items-center ">
+                <div className="text-right">สถานะ</div>
                 {fetchStudentWork.isFetching ? (
-                  <td>
+                  <div>
                     <Skeleton width="100%" />
-                  </td>
+                  </div>
                 ) : (
-                  <td>
+                  <div className="flex items-center justify-center">
                     {studentWork?.status === 'no-work' && isDue && (
                       <div
-                        className="w-max px-2 h-4 bg-red-500 py-1 rounded-lg border-2 border-solid border-white
+                        className="w-max px-2 py-1 bg-red-500  rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
                       >
                         <span className="flex items-center justify-center font-Kanit text-white flex-col">
@@ -546,7 +560,7 @@ function Index() {
                     )}
                     {studentWork?.status === 'no-work' && !isDue && (
                       <div
-                        className="w-max px-2 h-4 bg-orange-500 py-1 rounded-lg border-2 border-solid border-white
+                        className="w-max px-2 py-1 bg-orange-500  rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
                       >
                         <span className="flex items-center justify-center font-Kanit text-white flex-col">
@@ -559,7 +573,7 @@ function Index() {
                     {studentWork?.status === 'have-work' &&
                       studentWork.isSummited === false && (
                         <div
-                          className="w-max px-2 h-4 bg-yellow-500 py-1 rounded-lg border-2 border-solid border-white
+                          className="w-max px-2 bg-yellow-500 py-1 rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
                         >
                           <span className="flex items-center justify-center font-Kanit text-white flex-col">
@@ -572,7 +586,7 @@ function Index() {
                     {studentWork?.status === 'have-work' &&
                       studentWork.isSummited === true && (
                         <div
-                          className="w-max px-2 h-4 bg-green-500 py-1 rounded-lg border-2 border-solid border-white
+                          className="w-max px-2 bg-green-500 py-1 rounded-lg border-2 border-solid border-white
           flex items-center justify-center"
                         >
                           <span className="flex items-center justify-center font-Kanit text-white flex-col">
@@ -582,11 +596,142 @@ function Index() {
                           </span>
                         </div>
                       )}
-                  </td>
+                  </div>
                 )}
-              </tr>
-            </tbody>
-          </table>
+              </div>
+            </div>
+          </div>
+          <div className="w-full border-t-2 boder-black my-4">
+            <div className="text-xl flex items-center gap-2">
+              <span>ไฟล์แนบ</span>
+              <BsFileEarmark />
+            </div>
+            <ul className="w-full h-max max-h-[20rem] grid p-5 gap-5 overflow-auto ">
+              {assignment?.data?.files.map((file, index) => {
+                if (
+                  file.type === 'image/jpeg' ||
+                  file.type === '' ||
+                  file.type === 'image/png'
+                ) {
+                  return (
+                    <div
+                      onClick={() => handleSelectFile({ file: file })}
+                      key={index}
+                      className="w-full  select-none relative flex justify-start px-5 drop-shadow-sm 
+                                  cursor-pointer  items-center gap-2 h-10 bg-sky-100 hover:scale-105 transition duration-75
+                                 ring-2 ring-sky-500 rounded-xl"
+                    >
+                      <div className="flex items-center justify-center text-sky-700">
+                        <BsImageFill />
+                      </div>
+                      <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                        {file.name}
+                      </span>
+                    </div>
+                  );
+                } else if (
+                  file.type === 'video/mp4' ||
+                  file.type === 'video/quicktime'
+                ) {
+                  return (
+                    <div
+                      onClick={() => handleSelectFile({ file: file })}
+                      key={index}
+                      className="w-full select-none relative flex justify-start px-5
+                                  drop-shadow-sm cursor-pointer  items-center gap-2 h-10 bg-red-100 
+                                  hover:scale-105 transition duration-75
+                               ring-2 ring-red-500 rounded-xl"
+                    >
+                      <div className="flex items-center justify-center text-red-700">
+                        <FcVideoFile />
+                      </div>
+                      <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                        {file.name}
+                      </span>
+                    </div>
+                  );
+                } else if (
+                  file.type === 'audio/mpeg' ||
+                  file.type === 'audio/mp3'
+                ) {
+                  return (
+                    <div
+                      onClick={() => handleSelectFile({ file: file })}
+                      key={index}
+                      className="w-full select-none relative flex justify-start px-5
+                                drop-shadow-sm cursor-pointer  items-center gap-2 h-10 bg-pink-100 
+                                hover:scale-105 transition duration-75
+                             ring-2 ring-pink-500 rounded-xl"
+                    >
+                      <div className="flex items-center justify-center text-pink-700">
+                        <FaFileAudio />
+                      </div>
+                      <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                        {file.name}
+                      </span>
+                    </div>
+                  );
+                } else if (file.type === 'application/pdf') {
+                  return (
+                    <div
+                      onClick={() => handleSelectFile({ file: file })}
+                      key={index}
+                      className="w-full select-none relative flex justify-start px-5 
+                                  drop-shadow-sm cursor-pointer  
+                                  items-center gap-2 h-10 bg-sky-100 hover:scale-105 transition duration-75
+                                 ring-2 ring-green-500 rounded-xl"
+                    >
+                      <div className="flex items-center justify-center text-green-700">
+                        <FaRegFilePdf />
+                      </div>
+                      <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                        {file.name}
+                      </span>
+                    </div>
+                  );
+                } else if (
+                  file.type ===
+                  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                ) {
+                  return (
+                    <div
+                      onClick={() => handleSelectFile({ file: file })}
+                      key={index}
+                      className="w-full  select-none relative flex justify-start px-5
+                              drop-shadow-sm cursor-pointer  items-center gap-2 h-10 bg-blue-100 
+                              hover:scale-105 transition duration-75
+                           ring-2 ring-blue-500 rounded-xl"
+                    >
+                      <div className="flex items-center justify-center text-blue-700">
+                        <IoDocumentText />
+                      </div>
+                      <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                        {file.name}
+                      </span>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div
+                      onClick={() => handleSelectFile({ file: file })}
+                      key={index}
+                      className="w-full select-none relative flex justify-start px-5
+                              drop-shadow-sm cursor-pointer  items-center gap-2 h-10 bg-purple-100 
+                              hover:scale-105 transition duration-75
+                           ring-2 ring-purple-500 rounded-xl"
+                    >
+                      <div className="flex items-center justify-center text-purple-700">
+                        <BsFileEarmarkCode />
+                      </div>
+                      <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                        {file.name}
+                      </span>
+                    </div>
+                  );
+                }
+              })}
+            </ul>
+          </div>
           <div
             className={` ${
               loadingTiny
@@ -955,7 +1100,7 @@ application/pdf,
                                 data-lightboxjs="lightbox1"
                                 quality={80}
                                 placeholder="blur"
-                                blurDataURL="/logo/TaTuga camp.png"
+                                blurDataURL="data:image/png;base64,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"
                               />
                             );
                           })}
