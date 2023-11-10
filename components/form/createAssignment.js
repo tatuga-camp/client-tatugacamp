@@ -166,7 +166,7 @@ export default function CreateAssignment({
         deadline: assignmentData.deadline,
         imagesBase64: imageUrls,
       });
-      console.log(createAssignment);
+
       await CreateFileOnAssignment({
         formFiles: formFiles,
         assignmentId: createAssignment.id,
@@ -218,9 +218,12 @@ export default function CreateAssignment({
     top-0 right-0 left-0 bottom-0 m-auto fixed items-start justify-center"
       >
         {isAssignStudent === false ? (
-          <div className="md:w-10/12 lg:w-11/12 xl:w-8/12 h-screen bg-white px-4  overflow-auto gap-6 flex-col  justify-start items-center flex ">
-            <div className="flex-col w-full h-max flex gap-4 mt-2  ">
-              <div>
+          <div
+            className="md:w-10/12 lg:w-11/12 xl:w-8/12 h-screen bg-white px-4
+            overflow-auto gap-10 flex-col  justify-start items-center flex "
+          >
+            <div className="flex-col mt-5 w-full h-max  ">
+              <div className="w-full flex justify-end mb-3">
                 <button
                   type="button"
                   onClick={() => {
@@ -256,7 +259,7 @@ export default function CreateAssignment({
                   />
                 </Box>
               </div>
-              <div className="h-96">
+              <div className="h-96 mt-5">
                 <label>คำอธิบาย</label>
                 <Editor
                   apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}

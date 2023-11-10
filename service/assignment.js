@@ -82,6 +82,7 @@ export async function CreateFileOnAssignment({ formFiles, assignmentId }) {
           assignmentId: assignmentId,
           file: urls.data.urlAdress[i],
           type: urls.data.signurls[i].contentType,
+          name: urls.data.signurls[i].fileName,
         },
         {
           headers: {
@@ -93,6 +94,28 @@ export async function CreateFileOnAssignment({ formFiles, assignmentId }) {
     }
 
     return urls;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+export async function DeleteFileOnAssignmentService({ fileOnAssignmentId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    await axios.delete(
+      `${process.env.Server_Url}/user/assignment/fileOnAssignment/delete`,
+      {
+        params: {
+          fileOnAssignmentId,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return 'Successfully';
   } catch (err) {
     throw new Error(err);
   }
