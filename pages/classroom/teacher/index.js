@@ -137,11 +137,14 @@ function Index({ error, user, whatsNews }) {
   useEffect(() => {
     setClassroomState(() => classrooms?.data?.classrooms);
   }, [classrooms.isFetching, page, classrooms.data]);
+
   const handleCheckPlan = () => {
     const classroomNumber = classrooms?.data?.classroomsTotal;
     if (user.plan === 'FREE' || user?.subscriptions !== 'active') {
       setCreditClassroom(() => {
-        const credit = 5 - classrooms?.data?.classroomsTotal;
+        let credit = 5 - classrooms?.data?.classroomsTotal;
+
+        credit = credit - achievedClassrooms?.data?.classroomsTotal;
 
         if (credit > 0) {
           setAccessFeature(() => true);
@@ -161,7 +164,8 @@ function Index({ error, user, whatsNews }) {
       user?.subscriptions === 'active'
     ) {
       setCreditClassroom(() => {
-        const credit = 20 - classroomNumber;
+        let credit = 20 - classroomNumber;
+        credit = credit - achievedClassrooms?.data?.classroomsTotal;
         if (credit > 0) {
           setAccessFeature(() => true);
           return credit;
@@ -185,8 +189,8 @@ function Index({ error, user, whatsNews }) {
     if (classrooms?.data?.classroomsTotal > 0) {
       handleCheckPlan();
     } else if (classrooms?.data?.classroomsTotal === 0 && user) {
+      handleCheckPlan();
       if (user.plan === 'FREE' || user.subscriptions !== 'active') {
-        setCreditClassroom(() => 5);
         setAccessFeature(() => true);
       } else if (
         user.plan === 'TATUGA-STARTER' &&
@@ -202,7 +206,8 @@ function Index({ error, user, whatsNews }) {
         setAccessFeature(() => true);
       }
     }
-  }, [classrooms.isFetching, classroomState]);
+  }, [classrooms.data, classroomState]);
+
   //handle open make sure to delete classroom
   const handleOpenClasssDeleted = (index) => {
     const newItems = classroomState.map((item, i) => {
@@ -609,6 +614,18 @@ function Index({ error, user, whatsNews }) {
                           : user.language === 'English' &&
                             `You have ${creditClassroom} credits left to create classroom`}
                       </span>
+                      <span
+                        className={` font-semibold text-red-500 ${
+                          acceessFeature
+                            ? 'text-black'
+                            : 'text-red-500 font-semibold'
+                        }`}
+                      >
+                        {user.language === 'Thai'
+                          ? `จำนวนเครดิตจะนับห้องที่สำเร็จการศึกษาแล้วด้วย`
+                          : user.language === 'English' &&
+                            `Credit also includes achieved classrooms`}
+                      </span>
                       <span>
                         สมัครเป็นสมาชิก Tatuga class{' '}
                         <Link href="/classroom/subscriptions">
@@ -852,11 +869,11 @@ h-20 group ${
                               } flex  flex-col  h-40 justify-between`}
                             >
                               <div className="flex w-full justify-center gap-2 md:gap-10  items-center">
-                                <div className="flex flex-col w-3/4 md:w-40 ">
+                                <div className="flex flex-col h-28 w-3/4 md:w-40 ">
                                   <span className="text-sm md:text-lg text-gray-600 font-light truncate">
                                     {classroom.level}
                                   </span>
-                                  <span className="font-bold break-words text-lg md:text-base text-[#EDBA02]">
+                                  <span className="font-bold break-words text-lg max-h-16 overflow-hidden   md:text-base text-[#EDBA02]">
                                     {classroom.title}
                                   </span>
                                   <span className="text-sm md:text-base truncate">
