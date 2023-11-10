@@ -26,6 +26,7 @@ import ShowStudentAttendanceInfo from '../../../../../../../../components/form/s
 import { SiMicrosoftexcel } from 'react-icons/si';
 import DowloadExcelAttendacne from '../../../../../../../../components/form/dowloadExcelAttendacne';
 import ShowNoteAttendance from '../../../../../../../../components/form/showNoteAttendance';
+import ShowAttendanceNote from '../../../../../../../../components/form/school/attendance/showAttendanceNote';
 
 function Index({ user, error }) {
   const router = useRouter();
@@ -85,7 +86,7 @@ function Index({ user, error }) {
         )}
 
         {triggerShowNote && (
-          <ShowNoteAttendance
+          <ShowAttendanceNote
             setTriggerShowNote={setTriggerShowNote}
             selectNote={selectNote}
           />
