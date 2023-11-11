@@ -340,24 +340,6 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
         </div>
       )}
 
-      <button
-        onClick={() => {
-          setTriggerAttendance(() => true);
-          document.body.style.overflow = 'hidden';
-        }}
-        role="button"
-        className="font-Kanit  md:hidden flex items-center my-5 justify-center gap-2 text-white
-           bg-green-700 w-max p-3 rounded-2xl hover:scale-110 transition duration-150 cursor-pointer"
-      >
-        <div>
-          <MdEmojiPeople />
-        </div>
-        <span className="font-Kanit font-semibold text-lg">
-          {language === 'Thai' && 'เช็กชื่อ'}
-          {language === 'English' && 'Attendance check'}
-        </span>
-      </button>
-
       {triggerAttendance &&
         (user?.data?.data?.schoolUser?.organization === 'immigration' ? (
           <AttendanceCheckerForSchool
@@ -375,19 +357,9 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
           />
         ))}
 
-      <div className="w-10/12 md:hidden text-center  font-Kanit bg-red-500 text-white p-4 rounded-xl">
-        <div className="text-2xl">
-          <IoWarningOutline />
-        </div>
-        {language === 'Thai' &&
-          'กรุณาเข้าใช้งานใน แท็บเล็ตหรือคอมพิวเตอร์ เพื่อการใช้งาน Tatuga Class ได้อย่างมีประสิทธิภาพ'}
-        {language === 'English' &&
-          'Please access tatuga again with tablet or computer for accessing full functionalities'}
-      </div>
       {!user.isError && user?.data?.status === 200 && (
-        <div className="md:flex hidden flex-col gap-3 lg:mt-0 md:pl-5 lg:pl-0 lg:w-3/4 md:w-11/12 items-center justify-center md:items-start">
-          <div className="tracking-wide flex flex-wrap mt-5 md:mt-0 items-center gap-5 pl-5 md:pl-0 text-gray-400">
-            <span>Overview</span>
+        <div className="flex flex-col gap-5 p-5 ">
+          <div className="flex justify-center items-center gap-2 flex-wrap">
             {checkUser?.schoolUser?.organization !== 'school' && (
               <Popover className="relative ">
                 {({ open }) => (
@@ -573,10 +545,10 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 grid-cols-2 w-[95%]  md:w-full gap-2 md:gap-0 ">
+          <div className=" flex gap-2 flex-wrap justify-center ">
             <div
-              className="md:w-5/6 w-full  py-1 h-16 bg-[#F2CC5B] flex items-center 
-                justify-start gap-2  rounded-lg text-white"
+              className="w-10/12 md:w-60  py-1 h-16 bg-[#F2CC5B] flex items-center 
+                justify-center gap-2  rounded-lg text-white"
             >
               <div className="bg-white/40 backdrop-blur-sm p-3 rounded-lg ml-5">
                 <BsPeopleFill size={20} />
@@ -590,14 +562,14 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
             </div>
 
             <div
-              className=" md:w-full lg:w-full w-full col-span-2 md:col-span-1
-                  py-1 h-16 bg-[#EB6297] flex items-center md:justify-start justify-center gap-5  rounded-lg text-white"
+              className=" w-10/12 md:max-w-[18rem]
+                  py-1 h-16 px-2 bg-[#EB6297] flex items-center  justify-center gap-5  rounded-lg text-white"
             >
               <div className="bg-white/40 backdrop-blur-sm p-3 rounded-lg ml-5">
                 🥇
               </div>
               <div className="flex items-start justify-center flex-col font-sans truncate">
-                <span className="font-bold text-md md:text-md lg:text-2xl truncate">
+                <span className="font-bold text-md md:text-md lg:text-2xl w-max max-w-[18rem] truncate">
                   {highestScorePlayer?.firstName}
                 </span>
                 <span className="text-sm font-medium">the highest score</span>

@@ -153,8 +153,8 @@ function UpdateScore({
   };
   //handle sumit to update student data
   const handleSummitEditStudentData = async (e) => {
-    e.preventDefault();
     try {
+      e.preventDefault();
       setLoading(() => true);
       const formData = new FormData();
       formData.append('file', file);
