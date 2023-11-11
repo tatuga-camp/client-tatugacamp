@@ -44,14 +44,26 @@ function Index({ commonQuestions, announcement }) {
   return (
     <div className="md:h-full bg-gradient-to-b  from-white from-20% to-80%   to-blue-500   bg-cover pb-20">
       <Head>
-        <meta property="og:title" content={`TaTuga class`} />
+        <meta
+          property="og:title"
+          content="Tatuga class - เว็บไซต์จัดการชั้นเรียน"
+        />
         <meta
           property="og:description"
-          content="ห้องเรีัยน tatuga จาก tatuga camp"
+          content="จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ สะดวก และ รวดเร็ว - tatuga class"
         />
-        <meta property="og:image" content="/thumnail/thumnail.jpg" />
-        <meta property="og:image:secure_url" content="/thumnail/thumnail.jpg" />
-        <meta name="twitter:image:src" content="/thumnail/thumnail.jpg" />
+        <meta
+          property="og:image"
+          content="https://storage.googleapis.com/tatugacamp.com/thumnail/Word%20cloud%20-%20tatuga%20class.jpg"
+        />
+        <meta
+          property="og:image:secure_url"
+          content="https://storage.googleapis.com/tatugacamp.com/thumnail/Word%20cloud%20-%20tatuga%20class.jpg"
+        />
+        <meta
+          name="twitter:image:src"
+          content="https://storage.googleapis.com/tatugacamp.com/thumnail/Word%20cloud%20-%20tatuga%20class.jpg"
+        />
         <meta
           name="keywords"
           content={`TaTuga camp, tatugacamp, tatuga camp, English, English camp, camp for 
