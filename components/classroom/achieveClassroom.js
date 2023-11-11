@@ -96,13 +96,12 @@ function AchieveClassroomComponent({ user }) {
             return (
               <div
                 style={{
-                  border: `2px solid ${classroom.color}`,
-                  outline: `4px solid ${classroom.color}`,
+                  border: `5px solid ${classroom.color}`,
                   padding: '10px',
                 }}
                 key={index}
-                className=" border-2   border-solid col-span-2 h-48
-        rounded-3xl p-3 overflow-hidden relative ring-4 ring-black bg-white "
+                className={`    border-solid col-span-2 h-max min-h-[12rem]
+        rounded-3xl p-3  overflow-hidden relative  bg-white `}
               >
                 <div className="text-right w-full">
                   {loading ? (

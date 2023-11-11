@@ -186,10 +186,8 @@ function Index({ error, user, whatsNews }) {
   };
 
   useEffect(() => {
-    if (classrooms?.data?.classroomsTotal > 0) {
-      handleCheckPlan();
-    } else if (classrooms?.data?.classroomsTotal === 0 && user) {
-      handleCheckPlan();
+    handleCheckPlan();
+    if (user) {
       if (user.plan === 'FREE' || user.subscriptions !== 'active') {
         setAccessFeature(() => true);
       } else if (
@@ -703,7 +701,6 @@ h-20 group ${
                                   ? `5px solid ${selectedColor.color}`
                                   : `5px solid ${classroom.color}`
                               }`,
-
                               padding: '10px',
                             }}
                             key={index}
