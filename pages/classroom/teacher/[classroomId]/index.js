@@ -23,6 +23,8 @@ import { GetAllGroup, GetGroup } from '../../../../service/group';
 import DisplayGroup from '../../../../components/group/displayGroup';
 import Loading from '../../../../components/loading/loading';
 import { GetAllStudentsInClassroomForTeacherService } from '../../../../service/teacher/student';
+import SelectStudentMultipleScoreUpdate from '../../../../components/form/selectStudentMultipleScoreUpdate';
+import UpdateScoreMultiple from '../../../../components/form/updateScoreMultiple';
 
 function Index({ user, error }) {
   const router = useRouter();
@@ -30,8 +32,15 @@ function Index({ user, error }) {
   const [loading, setLoading] = useState(false);
   const [triggerUpdateStudent, setTriggerUpdateStudent] = useState(false);
   const [selectStudent, setSelectStudent] = useState();
-  const [skeletion, setSkeletion] = useState(['1', '2', '3', '4']);
+  const [skeletion, setSkeletion] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   const [classroomGroupActive, setClassroomGroupActive] = useState('default');
+  const [checkboxStudents, setCheckboxStudents] = useState([]);
+  const [
+    triggerConfirmUpdateScoreMultiple,
+    setTriggerConfirmUpdateScoreMultiple,
+  ] = useState(false);
+  const [triggerUpdateClassroomScore, setTriggerUpdateTriggerClassroom] =
+    useState(false);
   const groupId = useRef();
   const [sideMenus, setSideMenus] = useState(() => {
     if (user?.language === 'Thai') {
@@ -92,6 +101,20 @@ function Index({ user, error }) {
     }
   }, [router.isReady]);
 
+  const handleTriggerUpdateClassroomScore = () => {
+    setTriggerUpdateTriggerClassroom((prev) => !prev);
+  };
+
+  useEffect(() => {
+    setCheckboxStudents(() => {
+      return students?.data?.data?.map((student) => {
+        return {
+          ...student,
+          checkbox: false,
+        };
+      });
+    });
+  }, [students.data]);
   if (!router.isReady) {
     return <FullScreenLoading />;
   }
@@ -198,28 +221,21 @@ function Index({ user, error }) {
                 className=" md:w-11/12 lg:w-10/12 xl:w-11/12 max-w-7xl grid grid-cols-2 gap-4 items-center justify-center md:justify-start
               md:grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 md:gap-5 mt-10 place-items-center	"
               >
-                <Popover>
-                  {({ open }) => (
-                    <>
-                      <Popover.Button>
-                        <Trophy />
-                      </Popover.Button>
-                      <Popover.Panel>
-                        {({ close }) => (
-                          <UpdateScore
-                            close={close}
-                            language={user.language}
-                            classroomScore={true}
-                            scores={scores.data}
-                            students={students}
-                            user={user}
-                            refetchScores={scores.refetch}
-                          />
-                        )}
-                      </Popover.Panel>
-                    </>
-                  )}
-                </Popover>
+                <button onClick={handleTriggerUpdateClassroomScore}>
+                  <Trophy />
+                </button>
+
+                {triggerUpdateClassroomScore && (
+                  <SelectStudentMultipleScoreUpdate
+                    setTriggerUpdateTriggerClassroom={
+                      setTriggerUpdateTriggerClassroom
+                    }
+                    setCheckboxStudents={setCheckboxStudents}
+                    setTriggerConfirmUpdateScoreMultiple={
+                      setTriggerConfirmUpdateScoreMultiple
+                    }
+                  />
+                )}
 
                 {triggerUpdateStudent && (
                   <UpdateScore
@@ -233,29 +249,29 @@ function Index({ user, error }) {
                   />
                 )}
 
+                {triggerConfirmUpdateScoreMultiple && (
+                  <UpdateScoreMultiple
+                    scores={scores.data}
+                    students={students}
+                    checkboxStudents={checkboxStudents}
+                    setTriggerConfirmUpdateScoreMultiple={
+                      setTriggerConfirmUpdateScoreMultiple
+                    }
+                  />
+                )}
+
                 {students.isLoading
                   ? skeletion.map((number) => {
                       return (
-                        <Skeleton key={number} variant="rounded">
-                          <button className="bg-transparent border-none active:border-none appearance-none focus:outline-none">
-                            <div
-                              className="w-40 h-36 cursor-pointer  flex-col items-center justify-start flex hover:drop-shadow-md
-                         duration-200 rounded-2xl bg-white relative hover:bg-orange-100 transition drop-shadow-md"
-                            >
-                              <div
-                                className={`absolute w-10 h-10 rounded-full    ring-2 ring-white
-                        flex justify-center items-center font-sans font-bold text-xl z-10 text-white right-5 top-5`}
-                              ></div>
-                              <div className="w-24 h-24 relative overflow-hidden rounded-full mt-2 bg-white"></div>
-                              <div className="font-Kanit text-xl flex items-center justify-start gap-2">
-                                <div className=" bg-blue-500 font-semibold text-white w-5 h-5 flex items-center justify-center  rounded-md"></div>
-                              </div>
-                            </div>
-                          </button>
-                        </Skeleton>
+                        <Skeleton
+                          key={number}
+                          width="100%"
+                          height={200}
+                          variant="rounded"
+                        ></Skeleton>
                       );
                     })
-                  : students?.data?.data.map((student) => {
+                  : checkboxStudents?.map((student) => {
                       const shortName = student.firstName.replace(
                         /^(นาย|นางสาว|นาง|เด็กชาย|เด็กหญิง|ด\.ช\.|ด\.ญ\.)(.*)$/,
                         '$2',
@@ -265,12 +281,35 @@ function Index({ user, error }) {
                         <button
                           key={student.id}
                           onClick={() => {
-                            setSelectStudent(() => student);
-                            setTriggerUpdateStudent(() => true);
-                            document.body.style.overflow = 'hidden';
+                            if (triggerUpdateClassroomScore === false) {
+                              setSelectStudent(() => student);
+                              setTriggerUpdateStudent(() => true);
+                              document.body.style.overflow = 'hidden';
+                            } else {
+                              setCheckboxStudents((prev) => {
+                                const newMap = prev?.map((check) => {
+                                  if (check.id === student.id) {
+                                    return {
+                                      ...check,
+                                      checkbox: !check.checkbox,
+                                    };
+                                  } else if (check.id !== student.id) {
+                                    return { ...check };
+                                  }
+                                });
+                                return newMap;
+                              });
+                            }
                           }}
                         >
                           <div className="w-40 overflow-hidden rounded-3xl  flex relative justify-center drop-shadow-md">
+                            {triggerUpdateClassroomScore && (
+                              <input
+                                type="checkbox"
+                                checked={student.checkbox}
+                                className="w-5 h-5  absolute top-3 right-3"
+                              />
+                            )}
                             <div
                               className={`w-14 h-10 rounded-r-full absolute left-0  top-4  ${
                                 student.score.totalPoints < 0

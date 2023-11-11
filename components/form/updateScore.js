@@ -31,6 +31,7 @@ import { nationalities } from '../../data/student/nationality';
 import { UpdateScoreOnWholeClassForTeacherService } from '../../service/teacher/score';
 function UpdateScore({
   setTriggerUpdateStudent,
+  close,
   student,
   scores,
   students,
@@ -39,7 +40,6 @@ function UpdateScore({
   language,
   groupScore,
   groupId,
-  close,
   group,
   user,
   miniGroupId,
@@ -109,9 +109,10 @@ function UpdateScore({
   //handle hiden score
   const onClickToHide = async ({ scoreId }) => {
     try {
-      const hideScore = await HideScore({ scoreId });
-      refetchScores();
+      await HideScore({ scoreId });
+      await refetchScores();
     } catch (err) {
+      console.log(err);
       Swal.fire('error', err?.response?.data?.message.toString(), 'error');
     }
   };
@@ -258,7 +259,12 @@ function UpdateScore({
 
         waitForFalse();
       } else if (classroomScore !== true) {
-        await UpdateScoreOnStudent(data, pointsValue);
+        await UpdateScoreOnStudent({
+          scoreId: data.scoreId,
+          studentId: data.studentId,
+          score: data.score,
+          inputValues: pointsValue,
+        });
       }
 
       setData((prev) => {
@@ -724,14 +730,16 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
                               <div className="mt-2">{score.picture}</div>
                               <div>{score.title}</div>
                             </button>
-                            <div
-                              onClick={() =>
-                                onClickToHide({ scoreId: score.id })
-                              }
-                              className="absolute  top-1 right-1 hidden group-hover:block  hover:text-red-600"
-                            >
-                              <MdDelete />
-                            </div>
+                            {!groupScore && (
+                              <div
+                                onClick={() =>
+                                  onClickToHide({ scoreId: score.id })
+                                }
+                                className="absolute  top-1 right-1 hidden group-hover:block  hover:text-red-600"
+                              >
+                                <MdDelete />
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -800,11 +808,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
         onClick={() => {
           document.body.style.overflow = 'auto';
           if (classroomScore === true) {
-            if (classroomScore === true) {
-              close();
-            } else {
-              setTriggerUpdateStudent(() => false);
-            }
+            close();
           } else {
             setTriggerUpdateStudent(() => false);
           }
