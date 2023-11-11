@@ -1,10 +1,9 @@
-import React from "react";
+import React from 'react';
 
 function Trophy() {
   return (
     <svg
       width="135"
-      className="hover:scale-110 transition duration-150"
       height="135"
       viewBox="0 0 135 135"
       fill="none"
@@ -25,7 +24,7 @@ function Trophy() {
       />
       <mask
         id="mask0_118_1554"
-        style={{ maskType: "luminance" }}
+        style={{ maskType: 'luminance' }}
         maskUnits="userSpaceOnUse"
         x="40"
         y="27"
@@ -149,7 +148,7 @@ function Trophy() {
       />
       <mask
         id="mask1_118_1554"
-        style={{ maskType: "luminance" }}
+        style={{ maskType: 'luminance' }}
         maskUnits="userSpaceOnUse"
         x="52"
         y="86"
@@ -221,7 +220,7 @@ function Trophy() {
       />
       <mask
         id="mask2_118_1554"
-        style={{ maskType: "luminance" }}
+        style={{ maskType: 'luminance' }}
         maskUnits="userSpaceOnUse"
         x="91"
         y="78"
@@ -241,7 +240,7 @@ function Trophy() {
       </g>
       <mask
         id="mask3_118_1554"
-        style={{ maskType: "luminance" }}
+        style={{ maskType: 'luminance' }}
         maskUnits="userSpaceOnUse"
         x="46"
         y="62"
@@ -261,7 +260,7 @@ function Trophy() {
       </g>
       <mask
         id="mask4_118_1554"
-        style={{ maskType: "luminance" }}
+        style={{ maskType: 'luminance' }}
         maskUnits="userSpaceOnUse"
         x="35"
         y="36"
@@ -281,7 +280,7 @@ function Trophy() {
       </g>
       <mask
         id="mask5_118_1554"
-        style={{ maskType: "luminance" }}
+        style={{ maskType: 'luminance' }}
         maskUnits="userSpaceOnUse"
         x="111"
         y="53"
@@ -301,7 +300,7 @@ function Trophy() {
       </g>
       <mask
         id="mask6_118_1554"
-        style={{ maskType: "luminance" }}
+        style={{ maskType: 'luminance' }}
         maskUnits="userSpaceOnUse"
         x="88"
         y="57"
@@ -321,7 +320,7 @@ function Trophy() {
       </g>
       <mask
         id="mask7_118_1554"
-        style={{ maskType: "luminance" }}
+        style={{ maskType: 'luminance' }}
         maskUnits="userSpaceOnUse"
         x="16"
         y="73"
@@ -345,7 +344,7 @@ function Trophy() {
       />
       <mask
         id="mask8_118_1554"
-        style={{ maskType: "luminance" }}
+        style={{ maskType: 'luminance' }}
         maskUnits="userSpaceOnUse"
         x="100"
         y="24"

@@ -23,10 +23,12 @@ export async function GetAllScoresClassroom({ classroomId }) {
   }
 }
 
-export async function UpdateScoreOnStudent(
-  { scoreId, studentId, score },
+export async function UpdateScoreOnStudent({
+  scoreId,
+  studentId,
+  score,
   inputValues,
-) {
+}) {
   try {
     let points = 1;
 
