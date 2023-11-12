@@ -732,11 +732,9 @@ export async function getServerSideProps(context) {
 
   if (!accessToken) {
     return {
-      props: {
-        error: {
-          statusCode: 401,
-          message: 'unauthorized',
-        },
+      redirect: {
+        permanent: false,
+        destination: '/auth/signIn',
       },
     };
   } else if (accessToken) {
@@ -776,9 +774,9 @@ export async function getServerSideProps(context) {
       console.log(err);
       return {
         props: {
-          error: {
-            statusCode: 401,
-            message: 'unauthorized',
+          redirect: {
+            permanent: false,
+            destination: '/auth/signIn',
           },
         },
       };
