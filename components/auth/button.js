@@ -33,7 +33,6 @@ function AuthButton() {
       });
       refetch();
     }
-    refetch();
   }, [router.query?.access_token, router.isReady]);
   if (isFetching) {
     return <Loading />;

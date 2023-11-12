@@ -7,6 +7,10 @@ import { MdRestartAlt } from 'react-icons/md';
 import { RiShuffleLine } from 'react-icons/ri';
 import { useWindowSize } from 'react-use';
 import Confetti from 'react-confetti';
+import UpdateScoreAfterRandom from '../form/updateScoreAfterRandom';
+import { useQuery } from '@tanstack/react-query';
+import { GetAllScoresClassroom } from '../../service/scores';
+import { useRouter } from 'next/router';
 
 const to = (i) => ({
   x: 0,
@@ -22,40 +26,38 @@ const trans = (r, s) =>
     r / 10
   }deg) rotateZ(${r}deg) scale(${s})`;
 
-function RandomStudents({
+function CardRandomStudent({
   setTriggerRandomStudent,
   language,
   students,
+  user,
   classroomId,
 }) {
+  const router = useRouter();
   const [gone] = useState(() => new Set()); // The set flags all the students that are flicked out
-  const newStudents = [...students];
-  const [activeShowCard, setActiveShowCard] = useState({
-    active: false,
-    index: '',
-  });
+  const newStudents = [...students?.data?.data];
   const [firstRender, setFirstRender] = useState(false);
   const [isReadyCards, setIsReadyCard] = useState(false);
-  const [confirmDeleteCard, setConfirmDeleteCard] = useState(false);
   const [outCard, setOutCard] = useState([]);
   const [activeCard, setActiveCard] = useState();
   const [shuffledArray, setShuffledArray] = useState([]);
   const { width, height } = useWindowSize();
+  const [selectedStudent, setSelectedStudent] = useState();
   const [activeCongrest, setActiveCongrest] = useState(false);
   const [audioSheer, setAudioSheer] = useState(null);
   const [audioCard, setAudioCard] = useState(null);
   const [audioShuffle, setAudioShuffle] = useState(null);
-
+  const [triggerUpdateStudent, setTriggerUpdateStudent] = useState(false);
   const sound = {
     cards: 'https://storage.googleapis.com/tatugacamp.com/sound/card.mp3',
     sheer: 'https://storage.googleapis.com/tatugacamp.com/sound/sheer.mp3',
     shuffle: 'https://storage.googleapis.com/tatugacamp.com/sound/shuffle.aac',
   };
-  // const [soundResorce, setSoundResorce] = useState(sound.sheer);
-  // const [audio, state, controls, ref] = useAudio({
-  //   src: soundResorce,
-  //   autoPlay: true,
-  // });
+
+  const scores = useQuery(['scores'], () =>
+    GetAllScoresClassroom({ classroomId: router.query.classroomId }),
+  );
+
   function shuffleArray(array) {
     for (let i = array?.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -114,47 +116,13 @@ function RandomStudents({
         (!down && x > window.innerWidth / 10) ||
         (!down && x < (window.innerWidth / 10) * -1)
       ) {
+        setSelectedStudent(() => shuffledArray[index]);
+
         gone.add(index);
         setActiveCongrest(() => true);
         audioSheer.play();
-        Swal.fire({
-          title: `เลขที่ ${shuffledArray[index].number} ${shuffledArray[index].firstName} ${shuffledArray[index]?.lastName}`,
-          text: 'ยินดีด้วยย คุณคือผู้ถูกเลือก',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          width: 'max-content',
-          confirmButtonText: 'remove',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            audioSheer.currentTime = 0;
-            audioSheer.pause();
-            setActiveCongrest(() => false);
-            setOutCard((prev) => {
-              return [
-                ...prev,
-                {
-                  id: shuffledArray[index].id,
-                  firstName: shuffledArray[index].firstName,
-                  lastName: shuffledArray[index]?.lastName,
-                  number: shuffledArray[index].number,
-                  picture: shuffledArray[index].picture,
-                },
-              ];
-            });
-          } else if (result.dismiss) {
-            audioSheer.currentTime = 0;
-            audioSheer.pause();
-            setActiveCongrest(() => false);
-            api.start((i) => {
-              if (i !== index) {
-                return null;
-              }
-              gone.clear();
-              return to(i);
-            });
-          }
-        });
+        audioSheer.volume = 1;
+        handleShowSweetAleart(index);
       } // If button/finger's up and trigger velocity is reached, we flag the card ready to fly out
       api.start((i) => {
         if (index !== i) return; // We're only interested in changing spring-data for the current spring
@@ -172,7 +140,114 @@ function RandomStudents({
       });
     },
   );
+  const handleShowSweetAleart = (index) => {
+    if (index >= 0) {
+      Swal.fire({
+        title: `เลขที่ ${shuffledArray[index]?.number} ${shuffledArray[index]?.firstName} ${shuffledArray[index]?.lastName}`,
+        text: 'ยินดีด้วยย คุณคือผู้ถูกเลือก',
+        showCancelButton: true,
+        showDenyButton: true,
+        denyButtonText: 'ให้คะแนน',
+        cancelButtonText: 'ออก',
+        confirmButtonText: 'ลบชื่อ',
+        confirmButtonColor: '#eb4034',
+        cancelButtonColor: '#1be4f2',
+        denyButtonColor: '#1bf278',
+        width: 'max-content',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          fadeOut(audioSheer, 2000);
+          setActiveCongrest(() => false);
+          setOutCard((prev) => {
+            return [
+              ...prev,
+              {
+                id: shuffledArray[index].id,
+                firstName: shuffledArray[index].firstName,
+                lastName: shuffledArray[index]?.lastName,
+                number: shuffledArray[index].number,
+                picture: shuffledArray[index].picture,
+              },
+            ];
+          });
+        } else if (result.dismiss) {
+          fadeOut(audioSheer, 2000);
+          setActiveCongrest(() => false);
+          api.start((i) => {
+            if (i !== index) {
+              return null;
+            }
+            gone.clear();
+            return to(i);
+          });
+        } else if (result.isDenied) {
+          fadeOut(audioSheer, 2000);
+          setActiveCongrest(() => false);
+          setTriggerUpdateStudent(() => true);
+        }
+      });
+    } else if (index === undefined) {
+      Swal.fire({
+        title: `เลขที่ ${selectedStudent?.number} ${selectedStudent?.firstName} ${selectedStudent?.lastName}`,
+        text: 'ยินดีด้วยย คุณคือผู้ถูกเลือก',
+        showCancelButton: true,
+        showDenyButton: true,
+        denyButtonText: 'ให้คะแนน',
+        cancelButtonText: 'ออก',
+        confirmButtonText: 'ลบชื่อ',
+        confirmButtonColor: '#eb4034',
+        cancelButtonColor: '#1be4f2',
+        denyButtonColor: '#1bf278',
+        width: 'max-content',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          fadeOut(audioSheer, 2000);
+          setActiveCongrest(() => false);
+          setOutCard((prev) => {
+            return [
+              ...prev,
+              {
+                id: selectedStudent.id,
+                firstName: selectedStudent.firstName,
+                lastName: selectedStudent?.lastName,
+                number: selectedStudent.number,
+                picture: selectedStudent.picture,
+              },
+            ];
+          });
+        } else if (result.dismiss) {
+          fadeOut(audioSheer, 2000);
+          setActiveCongrest(() => false);
+          api.start((i) => {
+            if (i !== index) {
+              return null;
+            }
+            gone.clear();
+            return to(i);
+          });
+        } else if (result.isDenied) {
+          fadeOut(audioSheer, 2000);
+          setActiveCongrest(() => false);
+          setTriggerUpdateStudent(() => true);
+        }
+      });
+    }
+  };
 
+  function fadeOut(audioElement, duration) {
+    const initialVolume = audioElement.volume;
+    const volumeStep = initialVolume / (duration / 100); // Adjust the division factor for the desired fade-out duration
+
+    const fadeOutInterval = setInterval(() => {
+      if (audioElement.volume > 0) {
+        audioElement.volume = Math.max(audioElement.volume - volumeStep, 0);
+      } else {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+        clearInterval(fadeOutInterval);
+      }
+    }, 100); // Adjust the interval for smoother fading
+  }
   const restart = () => {
     setTimeout(() => {
       setOutCard(() => []);
@@ -231,6 +306,18 @@ function RandomStudents({
       className="flex  w-screen h-screen font-Kanit bg-transparent  z-40 
     top-0 right-0 left-0 bottom-0 m-auto fixed"
     >
+      {triggerUpdateStudent && (
+        <UpdateScoreAfterRandom
+          handleShowSweetAleart={handleShowSweetAleart}
+          user={user}
+          language={language}
+          student={selectedStudent}
+          scores={scores.data}
+          students={students}
+          setTriggerUpdateStudent={setTriggerUpdateStudent}
+          refetchScores={scores.refetch}
+        />
+      )}
       {activeCongrest && (
         <div>
           <Confetti width={width} height={height} />
@@ -351,7 +438,7 @@ function RandomStudents({
 
         <section className="w-96 h-screen bg-white overflow-auto">
           <h2 className="w-full text-center pt-10">
-            <span className="text-black">
+            <span className="text-black font-semibold text-lg">
               {language === 'Thai' && 'รายชื่อที่ถูกเลือก'}
               {language === 'English' && 'Result'}
             </span>
@@ -380,4 +467,4 @@ function RandomStudents({
   );
 }
 
-export default RandomStudents;
+export default CardRandomStudent;

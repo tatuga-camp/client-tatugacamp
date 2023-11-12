@@ -302,7 +302,10 @@ function Index({ user, error }) {
                             }
                           }}
                         >
-                          <div className="w-40 overflow-hidden rounded-3xl  flex relative justify-center drop-shadow-md">
+                          <div
+                            className="w-40 overflow-hidden rounded-3xl hover:drop-shadow-xl hover:scale-105 transition duration-150
+                            flex relative justify-center ring-2 ring-black "
+                          >
                             {triggerUpdateClassroomScore && (
                               <input
                                 type="checkbox"
