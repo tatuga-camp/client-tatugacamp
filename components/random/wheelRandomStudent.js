@@ -4,6 +4,10 @@ import Swal from 'sweetalert2';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 import Loading from '../loading/loading';
+import UpdateScore from '../form/updateScore';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import UpdateScoreAfterRandom from '../form/updateScoreAfterRandom';
 const Wheel = dynamic(
   () => import('react-custom-roulette').then((mod) => mod.Wheel),
   { ssr: false },
@@ -30,19 +34,28 @@ const fontStyle = 'normal';
 const textDistance = 50;
 const spinDuration = 0.5;
 
-function RouletteRandomStudent({
+function WheelRandomStudent({
   students,
   classroomId,
+  user,
   language,
   setTriggerRouletteRandomStudent,
 }) {
+  const router = useRouter();
   const [firstRender, setFirstRender] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState();
   const [audioSheer, setAudioSheer] = useState(null);
   const { width, height } = useWindowSize();
   const [activeConfetti, setActiveConfetti] = useState(false);
   const [outCard, setOutCard] = useState([]);
+  const [triggerUpdateStudent, setTriggerUpdateStudent] = useState(false);
+
   const [studentList, setStudentList] = useState([{ option: 'loading' }]);
+
+  const scores = useQuery(['scores'], () =>
+    GetAllScoresClassroom({ classroomId: router.query.classroomId }),
+  );
+
   useEffect(() => {
     const shuffledArrayObject = localStorage.getItem(
       `${classroomId}:shuffledArray`,
@@ -66,7 +79,7 @@ function RouletteRandomStudent({
       });
     } else {
       setStudentList(() => {
-        return students.map((student) => {
+        return students?.data?.data?.map((student) => {
           return {
             id: student.id,
             option: `${student.firstName} ${
@@ -132,7 +145,7 @@ function RouletteRandomStudent({
   const handleRestart = () => {
     setOutCard(() => []);
     setStudentList(() => {
-      return students.map((student) => {
+      return students?.data?.data?.map((student) => {
         return {
           id: student.id,
           option: `${student.firstName} ${
@@ -146,16 +159,95 @@ function RouletteRandomStudent({
       });
     });
   };
+
+  function fadeOut(audioElement, duration) {
+    const initialVolume = audioElement.volume;
+    const volumeStep = initialVolume / (duration / 100); // Adjust the division factor for the desired fade-out duration
+
+    const fadeOutInterval = setInterval(() => {
+      if (audioElement.volume > 0) {
+        audioElement.volume = Math.max(audioElement.volume - volumeStep, 0);
+      } else {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+        clearInterval(fadeOutInterval);
+      }
+    }, 100); // Adjust the interval for smoother fading
+  }
+
+  const handleStopSpin = () => {
+    setActiveConfetti(() => true);
+    setLoadingSpin(() => false);
+    audioSheer.volume = 1;
+    audioSheer.play();
+    setMustSpin(false);
+    handleShowSweetAleart();
+  };
+
+  const handleShowSweetAleart = () => {
+    Swal.fire({
+      title: selectedStudent.option,
+      text: 'ยินดีด้วยย คุณคือผู้ถูกเลือก',
+      showCancelButton: true,
+      showDenyButton: true,
+      denyButtonText: 'ให้คะแนน',
+      cancelButtonText: 'ออก',
+      confirmButtonText: 'ลบชื่อ',
+      confirmButtonColor: '#eb4034',
+      cancelButtonColor: '#1be4f2',
+      denyButtonColor: '#1bf278',
+      width: 'max-content',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        audioSheer.currentTime = 0;
+        handleRemoveStudent();
+        setOutCard((prev) => {
+          return [
+            ...prev,
+            {
+              id: selectedStudent.id,
+              firstName: selectedStudent.firstName,
+              lastName: selectedStudent?.lastName,
+              number: selectedStudent.number,
+              picture: selectedStudent.picture,
+            },
+          ];
+        });
+        audioSheer.pause();
+        setActiveConfetti(() => false);
+      } else if (result.dismiss) {
+        fadeOut(audioSheer, 2000);
+
+        setActiveConfetti(() => false);
+      } else if (result.isDenied) {
+        fadeOut(audioSheer, 2000);
+        setActiveConfetti(() => false);
+        setTriggerUpdateStudent(() => true);
+      }
+    });
+  };
   return (
     <div className="fixed z-40 w-screen h-screen flex items-center justify-center  top-0 right-0 left-0 bottom-0 m-auto ">
+      {triggerUpdateStudent && (
+        <UpdateScoreAfterRandom
+          handleShowSweetAleart={handleShowSweetAleart}
+          user={user}
+          language={language}
+          student={selectedStudent}
+          scores={scores.data}
+          students={students}
+          setTriggerUpdateStudent={setTriggerUpdateStudent}
+          refetchScores={scores.refetch}
+        />
+      )}
       {activeConfetti && (
         <div>
           <Confetti width={width} height={height} />
         </div>
       )}
-      <section className="md:w-screen lg:w-96 h-60 lg:h-screen  absolute md:bottom-0 lg:left-0 lg:right-auto  md:right-0 md:left-0 m-auto bg-white overflow-auto">
-        <h2 className="w-full text-center pt-10">
-          <span className="text-black">
+      <section className="md:w-screen lg:w-96 h-60 lg:h-screen font-Kanit  absolute md:bottom-0 lg:left-0 lg:right-auto  md:right-0 md:left-0 m-auto bg-white overflow-auto">
+        <h2 className="w-full text-center pt-10 font-semibold text-lg">
+          <span className="text-black ">
             {language === 'Thai' && 'รายชื่อที่ถูกเลือก'}
             {language === 'English' && 'Result'}
           </span>
@@ -176,65 +268,42 @@ function RouletteRandomStudent({
         </ul>
       </section>
       <div className="w-max z-20 h-max rounded-2xl bg-white p-5 flex flex-col justify-center items-center gap-5">
-        <Wheel
-          mustStartSpinning={mustSpin}
-          prizeNumber={prizeNumber}
-          data={studentList}
-          backgroundColors={backgroundColors}
-          textColors={textColors}
-          fontWeight={fontWeight}
-          fontSize={fontSize}
-          fontStyle={fontStyle}
-          outerBorderColor={outerBorderColor}
-          outerBorderWidth={outerBorderWidth}
-          innerRadius={innerRadius}
-          innerBorderColor={innerBorderColor}
-          innerBorderWidth={innerBorderWidth}
-          radiusLineColor={radiusLineColor}
-          radiusLineWidth={radiusLineWidth}
-          spinDuration={spinDuration}
-          startingOptionIndex={2}
-          // perpendicularText
-          textDistance={textDistance}
-          onStopSpinning={() => {
-            setActiveConfetti(() => true);
-            setLoadingSpin(() => false);
-            audioSheer.play();
-            setMustSpin(false);
-            Swal.fire({
-              title: selectedStudent.option,
-              text: 'ยินดีด้วยย คุณคือผู้ถูกเลือก',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              width: 'max-content',
-              confirmButtonText: 'remove',
-            }).then((result) => {
-              if (result.isConfirmed) {
-                audioSheer.currentTime = 0;
-                handleRemoveStudent();
-                setOutCard((prev) => {
-                  return [
-                    ...prev,
-                    {
-                      id: selectedStudent.id,
-                      firstName: selectedStudent.firstName,
-                      lastName: selectedStudent?.lastName,
-                      number: selectedStudent.number,
-                      picture: selectedStudent.picture,
-                    },
-                  ];
-                });
-                audioSheer.pause();
-                setActiveConfetti(() => false);
-              } else if (result.dismiss) {
-                audioSheer.currentTime = 0;
-                audioSheer.pause();
-                setActiveConfetti(() => false);
-              }
-            });
-          }}
-        />
+        {studentList.length > 0 ? (
+          <Wheel
+            mustStartSpinning={mustSpin}
+            prizeNumber={prizeNumber}
+            data={studentList}
+            backgroundColors={backgroundColors}
+            textColors={textColors}
+            fontWeight={fontWeight}
+            fontSize={fontSize}
+            fontStyle={fontStyle}
+            outerBorderColor={outerBorderColor}
+            outerBorderWidth={outerBorderWidth}
+            innerRadius={innerRadius}
+            innerBorderColor={innerBorderColor}
+            innerBorderWidth={innerBorderWidth}
+            radiusLineColor={radiusLineColor}
+            radiusLineWidth={radiusLineWidth}
+            spinDuration={spinDuration}
+            startingOptionIndex={2}
+            // perpendicularText
+            textDistance={textDistance}
+            onStopSpinning={handleStopSpin}
+          />
+        ) : (
+          <div
+            className="w-96 h-96 rounded-full bg-blue-700 
+          ring-2 flex items-center justify-center ring-white"
+          >
+            <button
+              onClick={handleRestart}
+              className="w-20 h-8 text-center hover:bg-red-700 transition duration-100  rounded-md bg-red-500 text-white font-Poppins font-bold"
+            >
+              restart
+            </button>
+          </div>
+        )}
         <nav className="w-full flex justify-center gap-5">
           {loadingSpin ? (
             <Loading />
@@ -266,4 +335,4 @@ function RouletteRandomStudent({
   );
 }
 
-export default RouletteRandomStudent;
+export default WheelRandomStudent;

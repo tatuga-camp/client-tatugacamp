@@ -24,6 +24,29 @@ export async function GetAllStudents(data) {
     throw new Error(err);
   }
 }
+
+export async function GetOneStudentService({ studentId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const student = await axios.get(
+      `${process.env.Server_Url}/user/student/get`,
+      {
+        params: {
+          studentId,
+        },
+        headers: {
+          Authorization: 'Bearer ' + access_token,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    return student.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
 export async function GetAllStudentScores({ classroomId }) {
   try {
     if (!classroomId) {

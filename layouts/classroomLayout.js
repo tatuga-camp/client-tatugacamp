@@ -1,19 +1,14 @@
 import { Popover, Transition } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
-import { FiChevronsLeft, FiChevronsRight, FiSidebar } from 'react-icons/fi';
+
 import AuthButton from '../components/auth/button';
 import { FiSettings, FiArrowLeftCircle } from 'react-icons/fi';
 import SidebarClassroom from '../components/sidebar/sidebarClassroom';
 import Image from 'next/image';
-import { BsFillPeopleFill, BsPeopleFill, BsQrCodeScan } from 'react-icons/bs';
-import { GiCardRandom } from 'react-icons/gi';
-import { CgMenuBoxed } from 'react-icons/cg';
+import { BsPeopleFill, BsQrCodeScan } from 'react-icons/bs';
 
-import {
-  AiOutlineQrcode,
-  AiOutlineUserAdd,
-  AiTwotoneStar,
-} from 'react-icons/ai';
+import { CgMenuBoxed } from 'react-icons/cg';
+import { AiOutlineQrcode } from 'react-icons/ai';
 import CreateStudent from '../components/form/createStudent';
 import { RxLapTimer } from 'react-icons/rx';
 import { useRouter } from 'next/router';
@@ -24,18 +19,17 @@ import { GetOneClassroom } from '../service/classroom';
 import { GetUser } from '../service/user';
 import { GetAllStudents } from '../service/students';
 import { useQuery } from '@tanstack/react-query';
-import RandomStudents from '../components/random/randomStudents';
-import { IoPersonAdd, IoWarningOutline } from 'react-icons/io5';
+import { IoPersonAdd } from 'react-icons/io5';
 import RandomIcon from '../components/svg/RandomIcon';
 import QRCode from 'react-qr-code';
 import { HiRectangleGroup } from 'react-icons/hi2';
 import CreateGroup from '../components/form/createGroup';
 import AttendanceCheckerForSchool from '../components/form/school/attendance/attendanceChecker';
-import RouletteRandomStudent from '../components/random/rouletteRandomStudent';
 import RandomTools from '../components/form/randomTools';
-import { RiNotification2Fill } from 'react-icons/ri';
 import CheckAttendanceByQrCode from '../components/form/checkAttendanceByQrCode';
 import { GetAllStudentsInClassroomForTeacherService } from '../service/teacher/student';
+import CardRandomStudent from '../components/random/cardRandomStudent';
+import WheelRandomStudent from '../components/random/wheelRandomStudent';
 
 function Layout({ children, sideMenus, language, groups, checkUser }) {
   const router = useRouter();
@@ -465,17 +459,19 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                 />
               )}
               {triggerRandomStudent && (
-                <RandomStudents
+                <CardRandomStudent
                   classroomId={router?.query?.classroomId}
                   setTriggerRandomStudent={setTriggerRandomStudent}
-                  students={students?.data?.data}
+                  students={students}
                   language={language}
+                  user={checkUser}
                 />
               )}
 
               {triggerRouletteRandomStudent && (
-                <RouletteRandomStudent
-                  students={students?.data?.data}
+                <WheelRandomStudent
+                  user={checkUser}
+                  students={students}
                   classroomId={router?.query?.classroomId}
                   language={language}
                   setTriggerRouletteRandomStudent={
