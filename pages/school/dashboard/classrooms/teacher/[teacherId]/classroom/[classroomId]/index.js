@@ -465,11 +465,9 @@ export async function getServerSideProps(context) {
 
   if (!accessToken && !query.access_token) {
     return {
-      props: {
-        error: {
-          statusCode: 401,
-          message: 'unauthorized',
-        },
+      redirect: {
+        permanent: false,
+        destination: '/auth/signIn',
       },
     };
   } else if (query.access_token) {
@@ -497,11 +495,9 @@ export async function getServerSideProps(context) {
       }
     } catch (err) {
       return {
-        props: {
-          error: {
-            statusCode: 401,
-            message: 'unauthorized',
-          },
+        redirect: {
+          permanent: false,
+          destination: '/auth/signIn',
         },
       };
     }
@@ -531,11 +527,9 @@ export async function getServerSideProps(context) {
     } catch (err) {
       console.log(err);
       return {
-        props: {
-          error: {
-            statusCode: 401,
-            message: 'unauthorized',
-          },
+        redirect: {
+          permanent: false,
+          destination: '/auth/signIn',
         },
       };
     }
