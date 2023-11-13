@@ -19,6 +19,7 @@ import {
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Switch } from '@headlessui/react';
+import Image from 'next/image';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -255,6 +256,15 @@ function Subscriptions({ user, error }) {
             </div>
           </Typography>
         </Container>
+        <div className="w-full flex justify-center gap-5">
+          <div className="w-40 h-14 bg-white relative">
+            <Image
+              src="/logo/prompt-pay-logo.png"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
         <div className="w-full flex justify-center py-10 flex-col items-center gap-2 font-Kanit">
           <Switch
             checked={enabled}
@@ -281,8 +291,14 @@ function Subscriptions({ user, error }) {
                 : user?.language === 'English' && 'Monthly'}
             </span>
           )}
+          <span className="font-bold text-xl">
+            {enabled && error ? 'รายปี' : !enabled && error && 'รายเดือน'}
+          </span>
         </div>
-        <section className="w-full flex flex-col items-center pb-10 md:flex-row md:gap-5  justify-center gap-10 font-Kanit">
+        <section
+          className="w-full flex flex-col items-center pb-10 md:px-10 lg:px-0 md:flex-row md:gap-5 
+         justify-center gap-10 font-Kanit"
+        >
           {tiers.map((tire, index) => {
             return (
               <div
@@ -319,6 +335,9 @@ function Subscriptions({ user, error }) {
                     : user?.language === 'Thai'
                     ? 'บาท/เดือน'
                     : user?.language === 'English' && 'monthly'}
+                  {enabled && error
+                    ? 'บาท/ปี'
+                    : !enabled && error && 'บาท/เดือน'}
                 </div>
                 <ul className="pl-0 flex flex-col gap-2 mt-5">
                   {tire.description.map((description, index) => {
