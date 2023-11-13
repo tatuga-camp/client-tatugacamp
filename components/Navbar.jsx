@@ -13,6 +13,7 @@ import { currentBrowser } from '../utils/platforms';
 import AuthButton from './auth/button';
 import { useRouter } from 'next/router';
 import MiniLogo from './svg/miniLogo';
+import { MdSubscriptions } from 'react-icons/md';
 
 function Navbar() {
   const [brower, setBrower] = useState();
@@ -94,14 +95,14 @@ function Navbar() {
               : ` -translate-y-full opacity-50 invisible`
           } `}
         >
-          <ul className="list-none font-medium flex justify-center items-center flex-col gap-y-5 pl-0">
+          <ul className="list-none font-medium grid grid-cols-1 place-items-center gap-2 ">
             <li>
               <AuthButton />
             </li>
             <Link className="no-underline" href="/">
               <li
                 onClick={onClick}
-                className="w-max bg-white text-black rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-60 bg-white text-black rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
                 Home page
               </li>
@@ -109,7 +110,7 @@ function Navbar() {
             <Link className="no-underline" href="/classroom">
               <li
                 onClick={onClick}
-                className="w-max bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-60 bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
                 tatuga class
               </li>
@@ -123,7 +124,7 @@ function Navbar() {
               </div>
               <li
                 onClick={onClick}
-                className="w-max bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-60 bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
                 tatuga school
               </li>
@@ -131,16 +132,28 @@ function Navbar() {
             <Link className="no-underline" href="/about-us">
               <li
                 onClick={onClick}
-                className="w-max bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-60 bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
                 about us
               </li>
             </Link>
+
+            <Link className="no-underline" href="/classroom/subscriptions">
+              <button
+                className="focus:outline-none text-base font-Inter text-black font-semibold 
+               border-0 w-60 h-auto bg-white hover:text-white hover:bg-[#2C7CD1]  flex justify-center items-center gap-2
+               transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
+              >
+                <span>subscriptions</span>
+                🤑
+              </button>
+            </Link>
+
             <div>
-              <li className="mr-2 px-4 py-2 rounded-md bg-[#2C7CD1] flex items-center justify-center gap-x-5 text-[30px] ">
-                <div>
+              <li className=" rounded-md bg-[#2C7CD1] px-5 py-1 flex items-center justify-center gap-x-5 text-[30px] ">
+                <div className="flex items-center justify-center">
                   <a
-                    className="no-underline text-white"
+                    className="no-underline text-white flex items-center justify-center"
                     href={`${
                       brower === 'Safari'
                         ? 'fb://page/?id=107002408742438'
@@ -153,7 +166,7 @@ function Navbar() {
 
                 <div>
                   <a
-                    className="no-underline text-white"
+                    className="no-underline text-white flex items-center justify-center"
                     href="http://instagram.com/_u/tatugacamp/"
                   >
                     <ion-icon name="logo-instagram"></ion-icon>
@@ -194,12 +207,6 @@ function Navbar() {
             </Link>
           </li>
           <li className="relative">
-            <div
-              className="px-1 w-max text-xs animate-bounce absolute top-0 left-0 m-auto 
-             bg-main-color text-white font-Poppins rounded-lg"
-            >
-              update
-            </div>
             <Link className="no-underline" href="/school">
               <button className="focus:outline-none text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga school 🏫</span>
@@ -210,6 +217,18 @@ function Navbar() {
             <Link className="no-underline" href="/classroom">
               <button className="focus:outline-none text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga class 👩‍🏫</span>
+              </button>
+            </Link>
+          </li>
+          <li className="">
+            <Link className="no-underline" href="/classroom/subscriptions">
+              <button
+                className="focus:outline-none text-base font-Inter text-black font-semibold 
+               border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1]  flex justify-center items-center gap-2
+               transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
+              >
+                <span>subscriptions</span>
+                🤑
               </button>
             </Link>
           </li>
