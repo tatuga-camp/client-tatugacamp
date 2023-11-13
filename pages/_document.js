@@ -5,6 +5,17 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <Script
+            id="Adsense-id"
+            onError={(e) => {
+              console.error('Script failed to load', e);
+            }}
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}`}
+            strategy="lazyOnload"
+            crossOrigin="anonymous"
+          />
+
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="icon"
@@ -31,11 +42,6 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
             rel="stylesheet"
           />
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3199986577072071"
-            crossorigin="anonymous"
-          ></script>
         </Head>
         <body>
           <Main />

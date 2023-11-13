@@ -8,9 +8,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { BiError } from 'react-icons/bi';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Skeleton } from '@mui/material';
 import Head from 'next/head';
+import AdBanner from '../../../components/ads/adBanner';
 
 function Index() {
   const [people, setPeople] = useState();
@@ -56,7 +56,12 @@ function Index() {
         );
 
   return (
-    <div className="h-screen md:h-screen bg-slate-100 relative ">
+    <div className="min-h-screen h-max pb-20 md:pb-0 md:h-screen bg-slate-100 relative ">
+      <AdBanner
+        data-ad-slot="6918158379"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
       <Head>
         <title>{`${
           classroom.isError
@@ -76,7 +81,7 @@ function Index() {
          bg-[url('https://storage.googleapis.com/tatugacamp.com/backgroud/sea%20backgroud.png')] "
           ></div>
         )}
-        <div className="h-[40rem] w-full  flex items-center   pt-28 md:pt-0 font-Kanit">
+        <div className="h-[40rem] w-full min-w-[20rem]  flex items-center   pt-28 md:pt-0 font-Kanit">
           <main className="w-full flex justify-center ">
             {classroom.isLoading || loading === true || !rounter.isReady ? (
               <div className="flex items-center justify-center flex-col  w-full">
