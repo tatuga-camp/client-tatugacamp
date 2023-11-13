@@ -389,7 +389,7 @@ function Index({ error, user, whatsNews }) {
           setTiggerUpdateOrderClassroom={setTiggerUpdateOrderClassroom}
           selectUpdateOrderClassroom={selectUpdateOrderClassroom}
           language={user.language}
-          activeClassroomTotal={classrooms.data.activeClassroomTotal}
+          activeClassroomTotal={classrooms?.data?.classroomsTotal}
           classrooms={classrooms}
         />
       )}
