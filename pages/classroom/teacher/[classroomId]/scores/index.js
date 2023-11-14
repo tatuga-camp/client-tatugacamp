@@ -147,7 +147,12 @@ function Index({ user, error }) {
       </Head>
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus} />
       {user.plan === 'FREE' && (
-        <div className=" relative min-w-[19rem]  max-w-full my-5">
+        <div className="w-full">
+          <AdBanner
+            data-ad-slot="9834652674"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          />
           <Link
             href="/classroom/subscriptions"
             className="absolute adsCancel  no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
@@ -155,11 +160,6 @@ function Index({ user, error }) {
           >
             ยกเลิกโฆษณา?
           </Link>
-          <AdBanner
-            data-ad-slot="9834652674"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          />
         </div>
       )}
       <div className=" w-full flex flex-col items-center justify-start mt-2">
