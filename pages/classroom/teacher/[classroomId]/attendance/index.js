@@ -111,10 +111,10 @@ function Index({ error, user }) {
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus}>
         <div className="w-full h-full mt-10 flex flex-col justify-center items-center pb-10 ">
           {user.plan === 'FREE' && (
-            <div className=" relative min-w-[20rem] w-max ring-2 ring-blue-900 my-5 p-3 rounded-md">
+            <div className=" relative">
               <Link
                 href="/classroom/subscriptions"
-                className="absolute no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
+                className="absolute adsCancel  no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
                 drop-shadow-md hover:bg-green-800 text-white rounded-md px-5 py-1"
               >
                 ยกเลิกโฆษณา?
@@ -126,6 +126,7 @@ function Index({ error, user }) {
               />
             </div>
           )}
+
           <Popover>
             {({ open }) => (
               <>
