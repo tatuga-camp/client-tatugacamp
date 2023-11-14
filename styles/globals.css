@@ -8,8 +8,11 @@
 @include xyz-core;
 @include xyz-utilities;
 
-ins.adsbygoogle[data-ad-status='unfilled'],
-.adsCancel {
+ins.adsbygoogle[data-ad-status='unfilled'] {
+  display: none !important;
+}
+
+.adsCancel[data-ad-status='unfilled'] {
   display: none !important;
 }
 * {
