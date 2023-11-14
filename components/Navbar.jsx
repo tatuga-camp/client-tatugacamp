@@ -102,7 +102,7 @@ function Navbar() {
             <Link className="no-underline" href="/">
               <li
                 onClick={onClick}
-                className="w-60 bg-white text-black rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-60 bg-white text-center text-black rounded-md py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
                 Home page
               </li>
@@ -110,7 +110,7 @@ function Navbar() {
             <Link className="no-underline" href="/classroom">
               <li
                 onClick={onClick}
-                className="w-60 bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-60 bg-white text-center rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
                 tatuga class
               </li>
@@ -124,7 +124,7 @@ function Navbar() {
               </div>
               <li
                 onClick={onClick}
-                className="w-60 bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-60 bg-white text-center rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
                 tatuga school
               </li>
@@ -132,7 +132,7 @@ function Navbar() {
             <Link className="no-underline" href="/about-us">
               <li
                 onClick={onClick}
-                className="w-60 bg-white rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+                className="w-60 bg-white text-center rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
               >
                 about us
               </li>
@@ -142,7 +142,7 @@ function Navbar() {
               <button
                 className="focus:outline-none text-base font-Inter text-black font-semibold 
                border-0 w-60 h-auto bg-white hover:text-white hover:bg-[#2C7CD1]  flex justify-center items-center gap-2
-               transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
+               transition duration-150 text-center ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
               >
                 <span>subscriptions</span>
                 🤑
