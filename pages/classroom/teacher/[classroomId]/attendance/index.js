@@ -109,24 +109,24 @@ function Index({ error, user }) {
         <title>attendance</title>
       </Head>
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus}>
-        <div className="w-full h-full mt-10 flex flex-col justify-center items-center pb-10 ">
-          {user.plan === 'FREE' && (
-            <div className=" relative w-full">
-              <Link
-                href="/classroom/subscriptions"
-                className="absolute adsCancel  no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
+        {user.plan === 'FREE' && (
+          <div className=" relative min-w-[19rem]  max-w-full my-5">
+            <Link
+              href="/classroom/subscriptions"
+              className="absolute adsCancel  no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
                 drop-shadow-md hover:bg-green-800 text-white rounded-md px-5 py-1"
-              >
-                ยกเลิกโฆษณา?
-              </Link>
-              <AdBanner
-                data-ad-slot="9577262683"
-                data-ad-format="auto"
-                data-full-width-responsive="true"
-              />
-            </div>
-          )}
+            >
+              ยกเลิกโฆษณา?
+            </Link>
+            <AdBanner
+              data-ad-slot="9577262683"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
+          </div>
+        )}
 
+        <div className="w-full h-full mt-10 flex flex-col justify-center items-center pb-10 ">
           <Popover>
             {({ open }) => (
               <>
