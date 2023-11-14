@@ -103,15 +103,6 @@ function Index({ error, user }) {
 
   return (
     <div className="bg-blue-50 pb-40">
-      {user.plan === 'FREE' && (
-        <Link
-          href="/classroom/subscriptions"
-          className="fixed adsCancel  no-underline z-30 bottom-1 right-1 m-auto w-max bg-green-600 transition duration-150 active:scale-105
-                drop-shadow-md hover:bg-green-800 text-white rounded-md px-5 py-1"
-        >
-          ยกเลิกโฆษณา?
-        </Link>
-      )}
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta charSet="UTF-8" />
@@ -119,13 +110,11 @@ function Index({ error, user }) {
       </Head>
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus}>
         {user.plan === 'FREE' && (
-          <div className="w-full my-5">
-            <AdBanner
-              data-ad-slot="9577262683"
-              data-ad-format="auto"
-              data-full-width-responsive="true"
-            />
-          </div>
+          <AdBanner
+            data-ad-slot="9577262683"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          />
         )}
 
         <div className="w-full h-full mt-10 flex flex-col justify-center items-center pb-10 ">

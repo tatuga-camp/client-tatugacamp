@@ -638,20 +638,11 @@ function Index({ error, user, whatsNews }) {
                 </div>
               </div>
               {user.plan === 'FREE' && (
-                <div className=" relative w-full">
-                  <Link
-                    href="/classroom/subscriptions"
-                    className="absolute adsCancel  no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
-                drop-shadow-md hover:bg-green-800 text-white rounded-md px-5 py-1"
-                  >
-                    ยกเลิกโฆษณา?
-                  </Link>
-                  <AdBanner
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"
-                    data-ad-slot="7501763680"
-                  />
-                </div>
+                <AdBanner
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"
+                  data-ad-slot="7501763680"
+                />
               )}
             </header>
 
