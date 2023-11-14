@@ -51,6 +51,11 @@ function Subscriptions({ user, error }) {
             ? 'สามารถเก็บงานได้อย่างไม่จำกัด'
             : user?.language === 'English' && 'Unlimited storage'
         }`,
+        `${
+          user?.language === 'Thai' || error
+            ? 'มีโฆษณา'
+            : user?.language === 'English' && 'Ads show'
+        }`,
       ],
       buttonText: `${
         user?.language === 'Thai' || error
@@ -89,6 +94,11 @@ function Subscriptions({ user, error }) {
             ? 'ลบห้องเรียนได้'
             : user?.language === 'English' && 'Be able to delete classroom'
         }`,
+        `${
+          user?.language === 'Thai' || error
+            ? 'ไม่มีโฆษณา'
+            : user?.language === 'English' && 'No Ads'
+        }`,
       ],
       buttonText: `${
         user?.language === 'Thai' || error
@@ -125,6 +135,11 @@ function Subscriptions({ user, error }) {
           user?.language === 'Thai' || error
             ? 'ลบห้องเรียนได้'
             : user?.language === 'English' && 'Be able to delete classroom'
+        }`,
+        `${
+          user?.language === 'Thai' || error
+            ? 'ไม่มีโฆษณา'
+            : user?.language === 'English' && 'No Ads'
         }`,
       ],
       buttonText: `${
