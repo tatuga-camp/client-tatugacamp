@@ -44,10 +44,11 @@ import PendingReviews from '../../../components/classroom/pendingReviews';
 import CreateClassroom from '../../../components/form/createClassroom';
 import CreateClassroomTeacher from '../../../components/form/teacher/createClassroom';
 import { GetAllActiveClassroomInTeacherService } from '../../../service/teacher/classroom';
+import AdBanner from '../../../components/ads/adBanner';
 
 const classroomMenus = [
   {
-    title: 'Active classrooms',
+    title: 'Active',
     icon: <SiGoogleclassroom />,
     bgColorMain: 'bg-blue-600',
     bgColorSecond: 'bg-blue-100',
@@ -55,7 +56,7 @@ const classroomMenus = [
     textColorSecond: 'text-blue-100',
   },
   {
-    title: 'Achieved classrooms',
+    title: 'Achieved',
     icon: <MdSchool />,
     color: 'blue',
     bgColorMain: 'bg-green-600',
@@ -482,7 +483,7 @@ function Index({ error, user, whatsNews }) {
           className={`flex justify-center items-center md:items-start    lg:items-center  w-full h-full`}
         >
           <div className="w-full  h-max flex flex-col  justify-center items-center pb-14 ">
-            <header className="mt-28 md:mt-2  rounded-lg  p-0  md:p-5 md:px-10 xl:px-20 w-max  relative     ">
+            <header className="mt-28 md:mt-2 flex flex-col justify-start items-center  rounded-lg  p-0  md:p-5 md:px-10 xl:px-20 w-max  relative     ">
               <div className=" w-full  flex items-center justify-center   bg-transparent">
                 <div
                   className="xl:w-[35rem] w-40    md:w-96 p-20 flex flex-col items-center justify-center
@@ -636,6 +637,18 @@ function Index({ error, user, whatsNews }) {
                   )}
                 </div>
               </div>
+              {user.plan === 'FREE' && (
+                <div className=" relative min-w-[20rem] w-max ring-2 ring-blue-900 my-5 p-3 rounded-md">
+                  <Link
+                    href="/classroom/subscriptions"
+                    className="absolute no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
+                drop-shadow-md hover:bg-green-800 text-white rounded-md px-5 py-1"
+                  >
+                    ยกเลิกโฆษณา?
+                  </Link>
+                  <AdBanner data-ad-slot="7501763680" />
+                </div>
+              )}
             </header>
 
             <ul className="w-full bg-white h-20 my-5 mb-20 flex justify-center gap-2 md:gap-x-20 shadow-md">
@@ -644,7 +657,7 @@ function Index({ error, user, whatsNews }) {
                   <li
                     onClick={() => setActiveMenu(() => index)}
                     key={index}
-                    className={`w-40 md:w-max px-2 cursor-pointer ${
+                    className={`w-32 md:w-40 px-2 cursor-pointer ${
                       activeMenu === index ? list.bgColorMain : 'bg-white'
                     }
 h-20 group ${

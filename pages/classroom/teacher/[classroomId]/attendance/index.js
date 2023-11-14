@@ -27,6 +27,8 @@ import {
 import DowloadExcelAttendacne from '../../../../../components/form/dowloadExcelAttendacne';
 import ShowNoteAttendance from '../../../../../components/form/showNoteAttendance';
 import { GetAllAttendanceForTeacherService } from '../../../../../service/teacher/attendance';
+import Link from 'next/link';
+import AdBanner from '../../../../../components/ads/adBanner';
 
 function Index({ error, user }) {
   const router = useRouter();
@@ -108,6 +110,22 @@ function Index({ error, user }) {
       </Head>
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus}>
         <div className="w-full h-full mt-10 flex flex-col justify-center items-center pb-10 ">
+          {user.plan === 'FREE' && (
+            <div className=" relative min-w-[20rem] w-max ring-2 ring-blue-900 my-5 p-3 rounded-md">
+              <Link
+                href="/classroom/subscriptions"
+                className="absolute no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
+                drop-shadow-md hover:bg-green-800 text-white rounded-md px-5 py-1"
+              >
+                ยกเลิกโฆษณา?
+              </Link>
+              <AdBanner
+                data-ad-slot="9577262683"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+              />
+            </div>
+          )}
           <Popover>
             {({ open }) => (
               <>
