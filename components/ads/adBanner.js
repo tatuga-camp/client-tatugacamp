@@ -11,7 +11,7 @@ const AdBanner = (props) => {
 
   return (
     <ins
-      className="adsbygoogle relative adbanner-customize"
+      className="adsbygoogle adbanner-customize"
       style={{
         display: 'block',
         overflow: 'hidden',
