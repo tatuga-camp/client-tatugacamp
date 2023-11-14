@@ -646,7 +646,11 @@ function Index({ error, user, whatsNews }) {
                   >
                     ยกเลิกโฆษณา?
                   </Link>
-                  <AdBanner data-ad-slot="7501763680" />
+                  <AdBanner
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"
+                    data-ad-slot="7501763680"
+                  />
                 </div>
               )}
             </header>
