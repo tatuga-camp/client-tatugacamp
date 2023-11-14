@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { Skeleton } from '@mui/material';
 import Head from 'next/head';
 import AdBanner from '../../../components/ads/adBanner';
+import AdBannerStudent from '../../../components/ads/adBannerStudent';
 
 function Index() {
   const [people, setPeople] = useState();
@@ -57,7 +58,7 @@ function Index() {
 
   return (
     <div className="min-h-screen h-max pb-20 md:pb-0 md:h-screen bg-slate-100 relative ">
-      <AdBanner
+      <AdBannerStudent
         data-ad-slot="6918158379"
         data-ad-format="auto"
         data-full-width-responsive="true"
