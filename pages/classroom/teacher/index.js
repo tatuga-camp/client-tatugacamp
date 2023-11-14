@@ -638,7 +638,7 @@ function Index({ error, user, whatsNews }) {
                 </div>
               </div>
               {user.plan === 'FREE' && (
-                <div className=" relative">
+                <div className=" relative w-full">
                   <Link
                     href="/classroom/subscriptions"
                     className="absolute adsCancel  no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105

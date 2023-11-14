@@ -148,7 +148,7 @@ function Index({ user, error }) {
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus} />
       <div className=" w-full flex flex-col items-center justify-start mt-10">
         {user.plan === 'FREE' && (
-          <div className=" relative">
+          <div className=" relative w-full">
             <Link
               href="/classroom/subscriptions"
               className="absolute adsCancel  no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
