@@ -57,11 +57,11 @@ function Index() {
 
   return (
     <div className="min-h-screen h-max pb-20 md:pb-0 md:h-screen bg-slate-100 relative ">
-      {/* <AdBanner
+      <AdBanner
         data-ad-slot="6918158379"
         data-ad-format="auto"
         data-full-width-responsive="true"
-      /> */}
+      />
       <Head>
         <title>{`${
           classroom.isError
