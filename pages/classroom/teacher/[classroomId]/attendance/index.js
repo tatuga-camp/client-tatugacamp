@@ -103,13 +103,15 @@ function Index({ error, user }) {
 
   return (
     <div className="bg-blue-50 pb-40">
-      <Link
-        href="/classroom/subscriptions"
-        className="fixed adsCancel  no-underline z-30 bottom-1 right-1 m-auto w-max bg-green-600 transition duration-150 active:scale-105
+      {user.plan === 'FREE' && (
+        <Link
+          href="/classroom/subscriptions"
+          className="fixed adsCancel  no-underline z-30 bottom-1 right-1 m-auto w-max bg-green-600 transition duration-150 active:scale-105
                 drop-shadow-md hover:bg-green-800 text-white rounded-md px-5 py-1"
-      >
-        ยกเลิกโฆษณา?
-      </Link>
+        >
+          ยกเลิกโฆษณา?
+        </Link>
+      )}
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta charSet="UTF-8" />
