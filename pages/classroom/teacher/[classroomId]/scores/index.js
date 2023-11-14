@@ -146,24 +146,23 @@ function Index({ user, error }) {
         <title>overall score</title>
       </Head>
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus} />
-      <div className=" w-full flex flex-col items-center justify-start mt-10">
-        {user.plan === 'FREE' && (
-          <div className=" relative w-full">
-            <Link
-              href="/classroom/subscriptions"
-              className="absolute adsCancel  no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
+      {user.plan === 'FREE' && (
+        <div className=" relative min-w-[19rem]  max-w-full my-5">
+          <Link
+            href="/classroom/subscriptions"
+            className="absolute adsCancel  no-underline z-30 top-0 right-0 w-max bg-green-600 transition duration-150 active:scale-105
                 drop-shadow-md hover:bg-green-800 text-white rounded-md px-5 py-1"
-            >
-              ยกเลิกโฆษณา?
-            </Link>
-            <AdBanner
-              data-ad-slot="9834652674"
-              data-ad-format="auto"
-              data-full-width-responsive="true"
-            />
-          </div>
-        )}
-
+          >
+            ยกเลิกโฆษณา?
+          </Link>
+          <AdBanner
+            data-ad-slot="9834652674"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          />
+        </div>
+      )}
+      <div className=" w-full flex flex-col items-center justify-start mt-2">
         <header className="flex gap-4">
           <button
             className="w-max px-5 flex gap-1 mb-2 hover:scale-105 transition duration-150 active:bg-blue-800 bg-blue-500 font-Poppins font-semibold text-white rounded-lg py-2"
