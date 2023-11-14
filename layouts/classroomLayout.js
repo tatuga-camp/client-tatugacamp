@@ -127,11 +127,18 @@ function Layout({ children, sideMenus, language, groups, checkUser }) {
         <div className="h-96    w-full  relative">
           <div className="w-full h-80  bg-gradient-to-r from-blue-400 to-orange-300  overflow-hidden">
             <div
-              className=" w-full h-80  
-        bg-cover  bg-center bg-no-repeat 
-         bg-[url('https://storage.googleapis.com/tatugacamp.com/backgroud/sea%20backgroud.png')] 
+              className=" w-full h-80  relative 
          flex items-center justify-center	"
-            ></div>
+            >
+              <Image
+                fill
+                quality={40}
+                className="object-cover"
+                src={
+                  'https://storage.googleapis.com/tatugacamp.com/backgroud/sea%20backgroud.png'
+                }
+              />
+            </div>
           </div>
           <div
             className="w-10/12 lg:w-8/12 xl:w-6/12 max-w-6xl md:w-10/12  md:h-80  
@@ -139,7 +146,7 @@ function Layout({ children, sideMenus, language, groups, checkUser }) {
           >
             <header
               className=" w-full h-3/4
-             rounded-3xl drop-shadow-lg mt-0 flex  flex-col-reverse md:flex-row md:gap-x-4 z-10
+             rounded-3xl mt-0 flex  flex-col-reverse md:flex-row md:gap-x-4 z-10
              bg-white 
           items-center md:justify-start  justify-center"
             >
@@ -220,7 +227,8 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
             p-2 "
             >
               <div
-                className="bg-transparent ring-2 ring-black md:bg-white rounded-md px-4 drop-shadow-md flex items-center justify-center
+                className="bg-transparent ring-2 ring-black md:bg-white rounded-md px-4
+                 flex items-center justify-center
               w-60 h-12 relative"
               >
                 <span className="font-Kanit font-semibold text-2xl  text-gray-800">
