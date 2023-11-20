@@ -153,6 +153,14 @@ function Index({ user, error }) {
         <title>{`classroom - ${classroom.data?.data?.title}`}</title>
       </Head>
 
+      {user.plan === 'FREE' && (
+        <AdBanner
+          data-ad-slot="9103492106"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
+      )}
+
       <div className="flex  items-center justify-center ">
         <div className="w-full flex flex-col items-center justify-center  bg gap-10 h-full pb-40">
           {/* header section */}
@@ -404,13 +412,6 @@ function Index({ user, error }) {
           </main>
         </div>
       </div>
-      {user.plan === 'FREE' && (
-        <AdBanner
-          data-ad-slot="9103492106"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
-      )}
     </div>
   );
 }

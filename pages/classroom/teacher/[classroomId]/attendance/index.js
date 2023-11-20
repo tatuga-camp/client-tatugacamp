@@ -109,14 +109,17 @@ function Index({ error, user }) {
         <title>attendance</title>
       </Head>
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus}>
-        {user.plan === 'FREE' && (
-          <AdBanner
-            data-ad-slot="9577262683"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          />
-        )}
-
+        <div className="flex w-full justify-center items-center">
+          <div className="min-w-[25rem] w-max">
+            {user.plan === 'FREE' && (
+              <AdBanner
+                data-ad-slot="9577262683"
+                data-ad-format="auto"
+                data-full-width-responsive="true"
+              />
+            )}
+          </div>
+        </div>
         <div className="w-full h-full mt-10 flex flex-col justify-center items-center pb-10 ">
           <Popover>
             {({ open }) => (

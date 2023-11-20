@@ -24,6 +24,7 @@ import Link from 'next/link';
 import { IoCreate } from 'react-icons/io5';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { GetAllStudentsInClassroomForTeacherService } from '../../../../../service/teacher/student';
+import AdBanner from '../../../../../components/ads/adBanner';
 function Assignment({ error, user }) {
   const router = useRouter();
   const classroom = useQuery(
@@ -108,6 +109,17 @@ function Assignment({ error, user }) {
         <title>assignments</title>
       </Head>
       <Layout checkUser={user} sideMenus={sideMenus} language={user.language} />
+      <div className="flex w-full justify-center items-center">
+        <div className="min-w-[25rem] w-max">
+          {user.plan === 'FREE' && (
+            <AdBanner
+              data-ad-slot="6344379087"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
+          )}
+        </div>
+      </div>
       <header className="flex w-full border-b-2 border-black/50 py-5 font-Kanit justify-start">
         <section className="pl-20 gap-5 text-xl flex flex-col font-semibold">
           <div className="flex w-max justify-center items-center gap-2">

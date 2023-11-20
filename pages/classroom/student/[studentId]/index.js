@@ -24,6 +24,7 @@ import { StudentGetClassroom } from '../../../../service/student/classroom';
 import TotalSumScore from '../../../../components/student/totalSumScore';
 import Attendance from '../../../../components/student/attendance';
 import { StudentGetAllScore } from '../../../../service/student/score';
+import AdBannerStudent from '../../../../components/ads/adBannerStudent';
 
 function Index() {
   const router = useRouter();
@@ -187,6 +188,11 @@ function Index() {
         assignments?.data?.data.length > 2 ? 'h-full min-h-screen' : 'h-screen'
       }  md:h-full md:pb-40 lg:pb-96 lg:h-full`}
     >
+      <AdBannerStudent
+        data-ad-slot="1866874180"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
       <Head>
         <title>student - homepage</title>
         <meta
@@ -195,46 +201,50 @@ function Index() {
         />
         <meta charSet="UTF-8" />
       </Head>
-      <div
-        className=" bg-cover h-60 w-full absolute top-0  bg-center bg-no-repeat 
-         bg-[url('https://storage.googleapis.com/tatugacamp.com/backgroud/sea%20backgroud.png')] "
-      ></div>
-      <nav className="fixed z-20 top-3  flex justify-between md:top-10 items-center w-full ">
-        <div
-          role="button"
-          aria-label="button go back to classroom"
-          onClick={() =>
-            router.push({
-              pathname: `/classroom/student`,
-              query: {
-                classroomCode: classroomCode,
-              },
-            })
-          }
-          className="w-10 ml-5 h-10 md:w-12 md:h-12 bg-orange-500 border-2 border-solid border-white cursor-pointer rounded-lg 
+      <header className="relative h-60">
+        <Image
+          fill
+          className="object-cover"
+          src="https://storage.googleapis.com/tatugacamp.com/backgroud/sea%20backgroud.png"
+        />
+
+        <nav className="fixed z-20 top-3  flex justify-between md:top-10 items-center w-full ">
+          <div
+            role="button"
+            aria-label="button go back to classroom"
+            onClick={() =>
+              router.push({
+                pathname: `/classroom/student`,
+                query: {
+                  classroomCode: classroomCode,
+                },
+              })
+            }
+            className="w-10 ml-5 h-10 md:w-12 md:h-12 bg-orange-500 border-2 border-solid border-white cursor-pointer rounded-lg 
         flex items-center justify-center active:bg-orange-500 hover:scale-110 transition duration-150"
-        >
-          <div className="text-2xl text-white flex items-center justify-center ">
-            <IoHome />
+          >
+            <div className="text-2xl text-white flex items-center justify-center ">
+              <IoHome />
+            </div>
           </div>
-        </div>
-        <div
-          className="w-40 md:w-60 bg-white md:h-20 border-b-2 border-t-2 border-r-0
+          <div
+            className="w-40 md:w-60 bg-white md:h-20 border-b-2 border-t-2 border-r-0
          border-blue-500 rounded-l-2xl flex flex-col py-2 pl-2 md:pl-10 gap-0 
          truncate font-Kanit h-max  border-l-2 border-solid"
-        >
-          <span className="font-semibold  text-blue-500 md:text-2xl truncate">
-            {classroom?.data?.title}
-          </span>
-          <span className="text-xs md:text-sm truncate">
-            {classroom?.data?.level}
-          </span>
-          <span className="text-xs md:text-sm  truncate">
-            {classroom?.data?.description}
-          </span>
-        </div>
-      </nav>
-      <main className="w-full h-max flex   items-center justify-start flex-col  mt-40 gap-3 relative">
+          >
+            <span className="font-semibold  text-blue-500 md:text-2xl truncate">
+              {classroom?.data?.title}
+            </span>
+            <span className="text-xs md:text-sm truncate">
+              {classroom?.data?.level}
+            </span>
+            <span className="text-xs md:text-sm  truncate">
+              {classroom?.data?.description}
+            </span>
+          </div>
+        </nav>
+      </header>
+      <main className="w-full h-max flex   items-center justify-start flex-col  gap-3 relative">
         <header className="flex flex-col justify-center items-center gap-5 md:w-96">
           <div className=" flex items-center justify-center relative">
             {student?.data?.data?.picture && (
