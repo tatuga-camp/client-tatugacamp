@@ -146,13 +146,18 @@ function Index({ user, error }) {
         <title>overall score</title>
       </Head>
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus} />
-      {user.plan === 'FREE' && (
-        <AdBanner
-          data-ad-slot="9834652674"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
-      )}
+      <div className="flex w-full justify-center items-center">
+        <div className="min-w-[25rem] w-max">
+          {user.plan === 'FREE' && (
+            <AdBanner
+              data-ad-slot="9834652674"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
+          )}
+        </div>
+      </div>
+
       <div className=" w-full flex flex-col items-center justify-start mt-2">
         <header className="flex gap-4">
           <button

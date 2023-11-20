@@ -29,6 +29,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { nationalities } from '../../data/student/nationality';
 import { UpdateScoreOnWholeClassForTeacherService } from '../../service/teacher/score';
+import AdBannerFixed from '../ads/adBannerFixed';
 function UpdateScore({
   setTriggerUpdateStudent,
   close,
@@ -334,12 +335,13 @@ function UpdateScore({
   };
   return (
     <div
-      className=" md:w-full h-full font-Kanit  z-40 
-top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
+      className="w-screen h-screen font-Kanit  z-40 
+top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center flex-col"
       key={student?.id}
     >
       <div
-        className="flex md:flex-row flex-col w-full h-full md:h-max rounded-none md:w-[42rem] lg:w-[45rem]  font-Kanit bg-white border-2 border-solid
+        className="flex md:flex-row flex-col w-full h-full md:h-max rounded-none md:w-[42rem] lg:w-[45rem]  
+        font-Kanit bg-white border-2 border-solid
     md:rounded-lg drop-shadow-xl md:p-5 md:px-0 relative items-center justify-center"
       >
         <div className="w-full block md:hidden">
@@ -803,6 +805,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center"
           </div>
         )}
       </div>
+      {user.plan === 'FREE' && <AdBannerFixed data-ad-slot="1164204596" />}
 
       <div
         onClick={() => {

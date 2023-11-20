@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-const AdBanner = (props) => {
+const AdBannerFixed = (props) => {
   const [isUnfilled, setIsUnfilled] = useState(false); // Set to true initially
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const AdBanner = (props) => {
   }, []);
 
   return (
-    <div className="w-full  ">
+    <div className="w-full flex justify-center  ">
       {isUnfilled === true && (
         <Link
           href="/classroom/subscriptions"
@@ -46,10 +46,7 @@ const AdBanner = (props) => {
       )}
       <ins
         className="adsbygoogle adbanner-customize"
-        style={{
-          display: 'block',
-          overflow: 'hidden',
-        }}
+        style={{ display: 'inline-block', width: '728px', height: '90px' }}
         data-ad-client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}
         {...props}
       />
@@ -57,4 +54,4 @@ const AdBanner = (props) => {
   );
 };
 
-export default AdBanner;
+export default AdBannerFixed;

@@ -483,7 +483,10 @@ function Index({ error, user, whatsNews }) {
           className={`flex justify-center items-center md:items-start    lg:items-center  w-full h-full`}
         >
           <div className="w-full  h-max flex flex-col  justify-center items-center pb-14 ">
-            <header className="mt-28 md:mt-2 flex flex-col justify-start items-center  rounded-lg  p-0  md:p-5 md:px-10 xl:px-20 w-max  relative     ">
+            <header
+              className="mt-28  md:mt-2 flex flex-col justify-start items-center  rounded-lg  p-0 
+             md:p-5 md:px-10 xl:px-20 w-max  relative    "
+            >
               <div className=" w-full  flex items-center justify-center   bg-transparent">
                 <div
                   className="xl:w-[35rem] w-40    md:w-96 p-20 flex flex-col items-center justify-center
