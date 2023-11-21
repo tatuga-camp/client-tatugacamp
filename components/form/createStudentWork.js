@@ -111,21 +111,11 @@ function CreateStudentWork({
   };
 
   return (
-    <div className="w-screen fixed z-50 flex flex-col justify-start items-center h-screen bg-white">
-      <div className="w-full justify-start items-center py-1 flex">
-        <button
-          onClick={() => {
-            setTriggerCreateStudentWork(() => false);
-          }}
-          className="flex items-center justify-center gap-3 px-2 w-max m-2 h-8 bg-blue-500 rounded-xl drop-shadow-md text-white text-3xl"
-        >
-          <span className="text-sm uppercase">ย้อนกลับ</span>
-        </button>
-      </div>
-      <div className="h-4/6 w-full md:w-11/12 ">
+    <div className="w-screen fixed z-50 flex flex-col justify-center  items-center h-screen bg-white">
+      <div className="h-4/6  w-11/12 md:w-7/12 ">
         {loadingTiny ? (
           <Skeleton width="100%" height="100%" />
-        ) : fetchStudentWork?.data?.status === 'no-work' ? (
+        ) : fetchStudentWork?.data?.data?.status === 'no-work' ? (
           <Editor
             apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
             textareaName="body"
@@ -136,6 +126,7 @@ function CreateStudentWork({
                   setLoadingTiny(() => false);
                 });
               },
+              placeholder: 'no work',
               height: '100%',
               width: '100%',
               toolbar_location: 'top',
@@ -183,6 +174,7 @@ function CreateStudentWork({
                   setLoadingTiny(() => false);
                 });
               },
+              placeholder: 'have work',
               height: '100%',
               width: '100%',
               toolbar_location: 'top',
@@ -221,31 +213,38 @@ function CreateStudentWork({
           />
         )}
       </div>
-      {fetchStudentWork?.data?.data?.status !== 'no-work' ? (
+      <div className="flex justify-center mt-2 items-center gap-3">
         <button
-          onClick={handleUpdateStudentWork}
-          className="px-5 mt-2 py-2 flex justify-center items-center gap-4 rounded-lg bg-green-600 text-green-200 font-semibold "
+          onClick={() => {
+            setTriggerCreateStudentWork(() => false);
+          }}
+          className="w-28 bg-red-400 text-red-900 hover:bg-red-500 transition duration-150 active:ring-2 ring-black
+          font-medium rounded-md flex items-center justify-center h-10"
         >
-          ตกลง
-          <div>
-            <AiOutlineSend />
-          </div>
+          <span className="text-sm uppercase">ยกเลิก</span>
         </button>
-      ) : loading ? (
-        <div className="mt-2">
-          <Loading />
-        </div>
-      ) : (
-        <button
-          onClick={handleSummitWork}
-          className="px-5 mt-2 py-2 flex justify-center items-center gap-4 rounded-lg bg-green-600 text-green-200 font-semibold "
-        >
-          ตกลง
-          <div>
-            <AiOutlineSend />
+        {fetchStudentWork?.data?.data?.status !== 'no-work' ? (
+          <button
+            onClick={handleUpdateStudentWork}
+            className="w-28 bg-green-400 text-green-900 hover:bg-green-500 transition duration-150 active:ring-2 ring-black
+            font-medium rounded-md flex items-center justify-center h-10"
+          >
+            ตกลง
+          </button>
+        ) : loading ? (
+          <div className="mt-2">
+            <Loading />
           </div>
-        </button>
-      )}
+        ) : (
+          <button
+            onClick={handleSummitWork}
+            className="w-28 bg-green-400 text-green-900 hover:bg-green-500 transition duration-150 active:ring-2 ring-black
+             font-medium rounded-md flex items-center justify-center h-10"
+          >
+            ตกลง
+          </button>
+        )}
+      </div>
     </div>
   );
 }
