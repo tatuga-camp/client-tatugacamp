@@ -122,11 +122,10 @@ function CreateStudentWork({
           <span className="text-sm uppercase">ย้อนกลับ</span>
         </button>
       </div>
-      <div className="h-5/6 w-full md:w-11/12 ">
+      <div className="h-4/6 w-full md:w-11/12 ">
         {loadingTiny ? (
           <Skeleton width="100%" height="100%" />
-        ) : fetchStudentWork?.data?.status === 'no-work' ||
-          !fetchStudentWork?.data?.data?.body ? (
+        ) : fetchStudentWork?.data?.status === 'no-work' ? (
           <Editor
             apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
             textareaName="body"
