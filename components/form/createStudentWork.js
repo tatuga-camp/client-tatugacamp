@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import Loading from '../loading/loading';
 import { SummitWorkWithWorkSheet } from '../../service/student/assignment';
 import { Skeleton } from '@mui/material';
+import { UpdateStudentWorkSheetService } from '../../service/student/studentWork';
 
 function CreateStudentWork({
   body,
@@ -17,8 +18,10 @@ function CreateStudentWork({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [assignmentBody, setAssignmentBody] = useState(body);
+  const [updateAssignmentBody, setUpdateAssignmentBody] = useState();
   const [loadingTiny, setLoadingTiny] = useState(false);
   useEffect(() => {
+    setUpdateAssignmentBody(() => fetchStudentWork?.data?.data?.body);
     setAssignmentBody(() => body);
   }, [body]);
 
@@ -40,19 +43,26 @@ function CreateStudentWork({
   const handleSummitWork = async (e) => {
     try {
       e.preventDefault();
-      setLoading(() => true);
-      const studentWorkSheetCreate = await SummitWorkWithWorkSheet({
+      Swal.fire({
+        title: 'กำลังส่งงาน...',
+        html: 'รอสักครู่นะครับ...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      await SummitWorkWithWorkSheet({
         body: assignmentBody,
         assignmentId: router.query.assignmentId,
         studentId: router.query.studentId,
       });
-      fetchStudentWork.refetch();
-      setLoading(() => false);
+      await fetchStudentWork.refetch();
+
       setTriggerCreateStudentWork(() => false);
 
-      Swal.fire('success', 'summit work successfully', 'success');
+      Swal.fire('success', 'Sucessfully Summited Work', 'success');
     } catch (err) {
-      setLoading(() => false);
       if (
         err?.props?.response?.data?.message ===
         "student's already summit their work"
@@ -69,6 +79,37 @@ function CreateStudentWork({
     }
   };
 
+  const handleUpdateStudentWork = async () => {
+    try {
+      Swal.fire({
+        title: 'กำลังอัพเดทงาน...',
+        html: 'รอสักครู่นะครับ...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      await UpdateStudentWorkSheetService({
+        body: updateAssignmentBody,
+        studentWorkId: fetchStudentWork?.data?.data?.id,
+      });
+      await fetchStudentWork.refetch();
+
+      setTriggerCreateStudentWork(() => false);
+
+      Swal.fire('success', 'Sucessfully Updated Work', 'success');
+    } catch (err) {
+      console.log(err);
+
+      Swal.fire(
+        'error',
+        err?.props?.response?.data?.message.toString(),
+        'error',
+      );
+    }
+  };
+
   return (
     <div className="w-screen fixed z-50 flex flex-col justify-start items-center h-screen bg-white">
       <div className="w-full justify-start items-center py-1 flex">
@@ -78,8 +119,7 @@ function CreateStudentWork({
           }}
           className="flex items-center justify-center gap-3 px-2 w-max m-2 h-8 bg-blue-500 rounded-xl drop-shadow-md text-white text-3xl"
         >
-          <span className="text-sm uppercase">go back</span>
-          <BiChevronsLeft />
+          <span className="text-sm uppercase">ย้อนกลับ</span>
         </button>
       </div>
       <div className="h-5/6 w-full md:w-11/12 ">
@@ -135,9 +175,10 @@ function CreateStudentWork({
           />
         ) : (
           <Editor
-            disabled={true}
             apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+            textareaName="body"
             init={{
+              link_context_toolbar: true,
               setup: function (editor) {
                 editor.on('init', function () {
                   setLoadingTiny(() => false);
@@ -145,22 +186,52 @@ function CreateStudentWork({
               },
               height: '100%',
               width: '100%',
-              menubar: false,
-              toolbar: false,
-              selector: 'textarea', // change this value according to your HTML
+              toolbar_location: 'top',
+              menubar: true,
+              paste_data_images: false,
+              plugins: [
+                'advlist',
+                'autolink',
+                'lists',
+                'link',
+                'charmap',
+                'preview',
+                'anchor',
+                'searchreplace',
+                'visualblocks',
+                'code',
+                'fullscreen',
+                'insertdatetime',
+                'media',
+                'table',
+                'help',
+                'wordcount',
+              ],
+              toolbar:
+                'undo redo | formatselect | blocks | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help | link ',
+              content_style:
+                'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
             }}
-            initialValue={fetchStudentWork.data.data.body}
-            value={fetchStudentWork.data.data.body}
+            value={updateAssignmentBody}
+            onEditorChange={(newText) => {
+              setUpdateAssignmentBody(() => newText);
+            }}
           />
         )}
       </div>
       {fetchStudentWork?.data?.data?.status !== 'no-work' ? (
-        <div className="px-5 mt-2 py-2 flex justify-center items-center gap-4 rounded-lg bg-gray-600 text-gray-200 font-semibold ">
-          คุณส่งงานแล้ว
+        <button
+          onClick={handleUpdateStudentWork}
+          className="px-5 mt-2 py-2 flex justify-center items-center gap-4 rounded-lg bg-green-600 text-green-200 font-semibold "
+        >
+          ตกลง
           <div>
             <AiOutlineSend />
           </div>
-        </div>
+        </button>
       ) : loading ? (
         <div className="mt-2">
           <Loading />
@@ -170,7 +241,7 @@ function CreateStudentWork({
           onClick={handleSummitWork}
           className="px-5 mt-2 py-2 flex justify-center items-center gap-4 rounded-lg bg-green-600 text-green-200 font-semibold "
         >
-          ส่งงาน
+          ตกลง
           <div>
             <AiOutlineSend />
           </div>
