@@ -376,15 +376,15 @@ function Index({ user, error }) {
                         >
                           {!studentWork.studentWork
                             ? '0'
-                            : studentWork.studentWork.score.toFixed(2)}
+                            : studentWork?.studentWork?.score?.toFixed(2)}
                         </td>
                       );
                     })}
                     <td className=" w-40 text-center  flex items-center justify-center">
-                      {student.score.totalPoints.toFixed(2)}
+                      {student?.score?.totalPoints?.toFixed(2)}
                     </td>
                     <td className=" w-40 text-center  flex items-center justify-center">
-                      {totalScore.toFixed(2)}
+                      {totalScore?.toFixed(2)}
                     </td>
                     <td className=" w-40 text-center  flex items-center justify-center">
                       {student.grade}
