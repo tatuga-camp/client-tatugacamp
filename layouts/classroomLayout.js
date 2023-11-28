@@ -30,6 +30,8 @@ import CheckAttendanceByQrCode from '../components/form/checkAttendanceByQrCode'
 import { GetAllStudentsInClassroomForTeacherService } from '../service/teacher/student';
 import CardRandomStudent from '../components/random/cardRandomStudent';
 import WheelRandomStudent from '../components/random/wheelRandomStudent';
+import { RiLockPasswordFill } from 'react-icons/ri';
+import StudentPasswordManagement from '../components/form/studentPasswordManagement';
 
 function Layout({ children, sideMenus, language, groups, checkUser }) {
   const router = useRouter();
@@ -37,6 +39,10 @@ function Layout({ children, sideMenus, language, groups, checkUser }) {
   const [triggerRandomTools, setTriggerRandomTools] = useState(false);
   const [triggerAttendance, setTriggerAttendance] = useState(false);
   const [triggerAttendanceQrCode, setTriggerAttendanceQrCode] = useState(false);
+  const [
+    triggerStudentPasswordManangement,
+    setTriggerStudentPasswordManagement,
+  ] = useState(false);
   const [triggerRouletteRandomStudent, setTriggerRouletteRandomStudent] =
     useState(false);
   const user = useQuery(['user'], () => GetUser());
@@ -359,6 +365,14 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
           />
         ))}
 
+      {triggerStudentPasswordManangement && (
+        <StudentPasswordManagement
+          setTriggerStudentPasswordManagement={
+            setTriggerStudentPasswordManagement
+          }
+        />
+      )}
+
       {!user.isError && user?.data?.status === 200 && (
         <div className="flex flex-col gap-5 p-5 ">
           <div className="flex justify-center items-center gap-2 flex-wrap">
@@ -544,6 +558,30 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                 เช็กชื่อด้วย
                 <div>
                   <AiOutlineQrcode />
+                </div>
+              </button>
+            </div>
+
+            <div>
+              {triggerAttendanceQrCode && (
+                <CheckAttendanceByQrCode
+                  user={checkUser}
+                  setTriggerAttendanceQrCode={setTriggerAttendanceQrCode}
+                  language={language}
+                  classroomId={classroom?.data?.data?.id}
+                />
+              )}
+              <button
+                onClick={() => {
+                  setTriggerStudentPasswordManagement(() => true);
+                  document.body.style.overflow = 'hidden';
+                }}
+                className="font-Kanit select-none font-semibold flex items-center justify-center gap-2 text-white
+           bg-sky-500 w-max p-3 rounded-md hover:scale-110 relative transition duration-150 cursor-pointer h-12"
+              >
+                รหัสผ่านผู้เรียน
+                <div>
+                  <RiLockPasswordFill />
                 </div>
               </button>
             </div>
