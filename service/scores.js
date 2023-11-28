@@ -155,7 +155,7 @@ export async function ResetSpecialScorePercentage({ classroomId }) {
     const access_token = cookies.access_token;
 
     const reset = await axios.put(
-      `${process.env.Server_Url}/user/score/resent-percertage`,
+      `${process.env.Server_Url}/user/score/reset-percertage`,
       {
         classroomId,
       },

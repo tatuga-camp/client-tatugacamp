@@ -36,8 +36,8 @@ function AddPercentageOnSpecialScore({
         classroomId: router.query.classroomId,
         maxScore: fullScore,
       });
-      studentsScores.refetch();
-      classroom.refetch();
+      await studentsScores.refetch();
+      await classroom.refetch();
       setTriggerAddPercentageOnSpecialScore(() => false);
       document.body.style.overflow = 'auto';
       Swal.fire('Success', '', 'success');
@@ -108,6 +108,7 @@ function AddPercentageOnSpecialScore({
           label="คะแนนเต็ม"
           type="number"
           value={fullScore}
+          required
           onChange={(e) => setFullScore(() => e.target.value)}
           InputLabelProps={{
             shrink: true,
