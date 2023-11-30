@@ -305,7 +305,7 @@ function Index({ error, user, whatsNews }) {
     content.innerHTML =
       '<div>กรุณาพิมพ์ข้อความนี้</div> <strong>' +
       replacedText +
-      '</strong> <div>เพื่อห้องเรียน</div>';
+      '</strong> <div>เพื่อลบห้องเรียน</div>';
     const { value } = await Swal.fire({
       title: 'ยืนยันการลบห้องเรียน',
       input: 'text',
