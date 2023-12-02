@@ -251,9 +251,10 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
         endAttendanceDate: endAttendanceDate,
       });
       setLoading(false);
+      await attendances.refetch();
       Swal.fire('success', 'check attendacne completed', 'success');
       document.body.style.overflow = 'auto';
-      attendances.refetch();
+
       setTriggerAttendance(() => false);
     } catch (err) {
       setLoading(false);

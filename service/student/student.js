@@ -42,3 +42,50 @@ export async function UpdateStudent({ formData, studentId }) {
     throw new Error(err);
   }
 }
+
+export async function setStudentPasswordForStudentService({
+  password,
+  studentId,
+  confirmPassword,
+}) {
+  try {
+    const updateStudent = await axios.put(
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/set-password`,
+      { password, studentId, confirmPassword },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    return updateStudent.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}
+export async function VeriflyPasswordForStudentService({
+  password,
+  studentId,
+}) {
+  try {
+    const verifly = await axios.get(
+      `${process.env.NEXT_PUBLIC_SERVER_STUDENT_URL}/student/verifly-student`,
+      {
+        params: {
+          password,
+          studentId,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    return verifly.data;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
+}

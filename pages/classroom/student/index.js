@@ -12,6 +12,10 @@ import { Skeleton } from '@mui/material';
 import Head from 'next/head';
 import AdBanner from '../../../components/ads/adBanner';
 import AdBannerStudent from '../../../components/ads/adBannerStudent';
+import StudentSetPassword from '../../../components/form/student/studentSetPassword';
+import Swal from 'sweetalert2';
+import { GetStudent } from '../../../service/student/student';
+import StudentEnterPassword from '../../../components/form/student/studentEnterPassword';
 
 function Index() {
   const [people, setPeople] = useState();
@@ -19,6 +23,8 @@ function Index() {
   const [query, setQuery] = useState('');
   const rounter = useRouter();
   const [loading, setLoading] = useState(false);
+  const [triggerNewPassword, setTriggerNewPassword] = useState(false);
+  const [triggerEnterPassword, setTriggerEnterPassword] = useState(false);
   const classroom = useQuery(
     ['classroom-student'],
     () =>
@@ -56,8 +62,54 @@ function Index() {
             .includes(query.toLowerCase().replace(/\s+/g, '')),
         );
 
+  const handleStudentJoinClassroom = async () => {
+    try {
+      Swal.fire({
+        title: 'กำลังเข้าชั้นเรียน...',
+        html: 'รอสักครู่นะครับ...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+      const res = await GetStudent({ studentId: selected?.id });
+      const student = res.data;
+      if (student.resetPassword === true) {
+        setTriggerNewPassword(() => true);
+        Swal.fire({
+          title: 'โปรดตั้งรหัสผ่านของคุณ',
+          text: 'คุณครูเปิดระบบรหัสผ่านให้แก่คุณ',
+          icon: 'info',
+        });
+      } else if (student.resetPassword === false && student.password) {
+        setTriggerEnterPassword(() => true);
+        Swal.fire('โปรดกรอกรหัสผ่าน', 'คุณได้ตั้งรหัสผ่านของคุณแล้ว', 'info');
+      } else if (student.resetPassword === false && !student.password) {
+        setLoading(true);
+        const serializedClassroomCode = JSON.stringify(
+          rounter.query.classroomCode,
+        );
+        localStorage.setItem('classroomCode', serializedClassroomCode);
+        rounter.push({
+          pathname: `/classroom/student/${selected?.id}`,
+          query: {
+            classroomId: classroom?.data?.data?.classroom?.id,
+          },
+        });
+        Swal.fire('สำเร็จ', '', 'success');
+      }
+    } catch (err) {
+      Swal.fire(
+        'Error!',
+        err?.props?.response?.data?.message?.toString(),
+        'error',
+      );
+    }
+  };
+
   return (
-    <div className="min-h-screen h-max pb-20 md:pb-0 md:h-screen bg-slate-100 relative ">
+    <div className=" h-full bg-slate-100 relative ">
       <AdBannerStudent
         data-ad-slot="6918158379"
         data-ad-format="auto"
@@ -76,13 +128,29 @@ function Index() {
         <meta charSet="UTF-8" />
       </Head>
       <Layout unLoading={true}>
+        {triggerNewPassword && (
+          <StudentSetPassword
+            setTriggerNewPassword={setTriggerNewPassword}
+            studentId={selected?.id}
+            setLoading={setLoading}
+            classroom={classroom}
+          />
+        )}
+        {triggerEnterPassword && (
+          <StudentEnterPassword
+            setTriggerEnterPassword={setTriggerEnterPassword}
+            studentId={selected?.id}
+            setLoading={setLoading}
+            classroom={classroom}
+          />
+        )}
         {!classroom.isError && (
           <div
             className=" bg-cover h-60 w-full absolute  bg-center bg-no-repeat 
          bg-[url('https://storage.googleapis.com/tatugacamp.com/backgroud/sea%20backgroud.png')] "
           ></div>
         )}
-        <div className="h-[40rem] w-full min-w-[20rem]  flex items-center   pt-28 md:pt-0 font-Kanit">
+        <div className="h-screen w-full min-w-[20rem]  flex items-center   pt-28 md:pt-0 font-Kanit">
           <main className="w-full flex justify-center ">
             {classroom.isLoading || loading === true || !rounter.isReady ? (
               <div className="flex items-center justify-center flex-col  w-full">
@@ -143,7 +211,6 @@ function Index() {
                       </span>
                     </div>
                   </div>
-                  <div></div>
                 </div>
 
                 <div className="w-10/12 md:w-96 ring-2 ring-blue-500 rounded-2xl relative z-20 bg-white p-4">
@@ -248,22 +315,7 @@ function Index() {
                   <div className="w-full flex items-center justify-center">
                     {selected ? (
                       <button
-                        onClick={() => {
-                          setLoading(true);
-                          const serializedClassroomCode = JSON.stringify(
-                            rounter.query.classroomCode,
-                          );
-                          localStorage.setItem(
-                            'classroomCode',
-                            serializedClassroomCode,
-                          );
-                          rounter.push({
-                            pathname: `/classroom/student/${selected?.id}`,
-                            query: {
-                              classroomId: classroom?.data?.data?.classroom?.id,
-                            },
-                          });
-                        }}
+                        onClick={handleStudentJoinClassroom}
                         type="button"
                         className=" text-white bg-blue-500 mt-6
                        hover:bg-[#EDBA02] hover:scale-110 transition duration-150
