@@ -25,6 +25,47 @@ export async function GetAllStudents(data) {
   }
 }
 
+export async function setStudentPasswordService({ studentId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const student = await axios.put(
+      `${process.env.Server_Url}/user/student/set-password`,
+      { studentId },
+      {
+        headers: {
+          Authorization: 'Bearer ' + access_token,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    return student.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+export async function resetStudentPasswordService({ studentId }) {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const student = await axios.put(
+      `${process.env.Server_Url}/user/student/reset-password`,
+      { studentId },
+      {
+        headers: {
+          Authorization: 'Bearer ' + access_token,
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    return student.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
 export async function GetOneStudentService({ studentId }) {
   try {
     const cookies = parseCookies();
