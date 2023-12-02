@@ -367,6 +367,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
 
       {triggerStudentPasswordManangement && (
         <StudentPasswordManagement
+          students={students}
           setTriggerStudentPasswordManagement={
             setTriggerStudentPasswordManagement
           }
