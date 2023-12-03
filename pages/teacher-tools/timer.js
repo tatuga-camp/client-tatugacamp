@@ -122,12 +122,7 @@ const Timer = () => {
     <>
       <Head>
         <title>Timer🕛 - เครื่องจับเวลา</title>
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/TaTuga camp.png"
-        />
+
         <meta name="google" content="nositelinkssearchbox" key="sitelinks" />
         <meta name="google" content="notranslate" key="notranslate" />
         <meta
