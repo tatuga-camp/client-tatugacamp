@@ -305,7 +305,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                                 maxWidth: '100%',
                                 width: '100%',
                               }}
-                              value={`${process.env.NEXT_PUBLIC_CLIENT_URL}/classroom/student?classroomCode=${classroomCode}`}
+                              value={`${process.env.NEXT_PUBLIC_CLIENT_STUDENT_URL}/classroom/student?classroomCode=${classroomCode}`}
                               viewBox={`0 0 256 256`}
                             />
                           </div>

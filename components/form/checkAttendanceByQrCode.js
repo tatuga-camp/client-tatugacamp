@@ -194,7 +194,7 @@ function CheckAttendanceByQrCode({
               maxWidth: '100%',
               width: '100%',
             }}
-            value={`${process.env.NEXT_PUBLIC_CLIENT_URL}/classroom/student/attendance-qrCode/?classroomId=${classroomId}&attendanceQRCodeId=${selectQrCodeId}`}
+            value={`${process.env.NEXT_PUBLIC_CLIENT_STUDENT_URL}/classroom/student/attendance-qrCode/?classroomId=${classroomId}&attendanceQRCodeId=${selectQrCodeId}`}
             viewBox={`0 0 256 256`}
           />{' '}
         </div>
