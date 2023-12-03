@@ -129,7 +129,7 @@ function Index({ commonQuestions, announcement }) {
               <button
                 onClick={() =>
                   router.push({
-                    pathname: '/classroom/student',
+                    pathname: `${process.env.NEXT_PUBLIC_CLIENT_STUDENT_URL}/classroom/student`,
                     query: {
                       classroomCode: classroomCode,
                     },

@@ -4,7 +4,6 @@ import Logo from './svg/Logo';
 import { Button } from '@mui/material';
 import Listmenu from './svg/Listmenu';
 import Script from 'next/script';
-import TaTugaLogo from '../public/logo/TaTuga camp.png';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -71,7 +70,7 @@ function Navbar() {
                   return null;
                 } else if (classroomCode) {
                   router.push({
-                    pathname: '/classroom/student',
+                    pathname: `${process.env.NEXT_PUBLIC_CLIENT_STUDENT_URL}/classroom/student`,
                     query: {
                       classroomCode: classroomCode,
                     },

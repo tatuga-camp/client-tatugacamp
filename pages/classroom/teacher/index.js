@@ -363,27 +363,42 @@ function Index({ error, user, whatsNews }) {
     <div className="w-full bg-gradient-to-t relative from-blue-400 to-blue-50  lg:w-full pb-40  lg:h-full md:h-full  font-Kanit">
       <div className="md:w-60 lg:w-5/12 absolute z-20 top-0 right-0 left-0 m-auto"></div>
       <Head>
-        <meta property="og:title" content={`TaTuga class`} />
+        <meta
+          property="og:title"
+          content="Tatuga class - เว็บไซต์จัดการชั้นเรียน"
+        />
         <meta
           property="og:description"
-          content="ห้องเรีัยน tatuga จาก tatuga camp"
+          content="จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ สะดวก และ รวดเร็ว - tatuga class"
         />
-        <meta property="og:image" content="/thumnail/thumnail.jpg" />
-        <meta property="og:image:secure_url" content="/thumnail/thumnail.jpg" />
-        <meta name="twitter:image:src" content="/thumnail/thumnail.jpg" />
+        <meta
+          property="og:image"
+          content="https://storage.googleapis.com/tatugacamp.com/thumnail/Word%20cloud%20-%20tatuga%20class.jpg"
+        />
+        <meta
+          property="og:image:secure_url"
+          content="https://storage.googleapis.com/tatugacamp.com/thumnail/Word%20cloud%20-%20tatuga%20class.jpg"
+        />
+        <meta
+          name="twitter:image:src"
+          content="https://storage.googleapis.com/tatugacamp.com/thumnail/Word%20cloud%20-%20tatuga%20class.jpg"
+        />
         <meta
           name="keywords"
           content={`TaTuga camp, tatugacamp, tatuga camp, English, English camp, camp for 
             learning English, card game, activities in classroom, กิจกรรมค่ายภาษาอังกฤษ,
              การ์ดเกมเพื่อการเรียนรู้, การ์ดเกม, `}
         />
-        <meta charSet="UTF-8" />
         <meta
           name="description"
-          content="ห้องเรียนจาก Tatuga camp ที่จะพาคุณครูไปสู่การบริหารห้องเรียนอย่างสะดวกและสนุก กับ tatuga class"
+          content="จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ สะดวก และ รวดเร็ว - tatuga class"
         />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{`Teacher class`}</title>
+        <title>Tatuga class - เว็บไซต์จัดการชั้นเรียน</title>
+        <meta
+          name="viewport"
+          content="width=device-width; initial-scale=1.0;"
+        />
+        <meta charSet="UTF-8" />
       </Head>
       {triggerUpdateOrderClassroom && (
         <UpdateOrderClassroom
