@@ -10,7 +10,7 @@ function Custom404() {
 
 export default Custom404;
 
-export async function getStaticProps(ctx) {
+export async function getServerSideProps(ctx) {
   return {
     redirect: {
       permanent: false,
