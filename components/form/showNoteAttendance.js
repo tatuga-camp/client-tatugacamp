@@ -61,7 +61,7 @@ function ShowNoteAttendance({
       document.body.style.overflow = 'auto';
       Swal.fire('success', 'Note has been updated', 'success');
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.message.toString(),

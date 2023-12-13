@@ -7,7 +7,7 @@ export async function CreateGradeApi({ classroomId, grandeRanges }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const gradeRange = await axios.post(
-      `${process.env.Server_Url}/user/grade/create`,
+      `${process.env.MAIN_SERVER_URL}/user/grade/create`,
       { classroomId, grandeRanges },
       {
         headers: {
@@ -28,7 +28,7 @@ export async function GetAllGrade({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const grades = await axios.get(
-      `${process.env.Server_Url}/user/grade/get-all`,
+      `${process.env.MAIN_SERVER_URL}/user/grade/get-all`,
       {
         params: {
           classroomId: classroomId,

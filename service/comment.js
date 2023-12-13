@@ -1,6 +1,6 @@
-import axios from "axios";
-import Error from "next/error";
-import { parseCookies } from "nookies";
+import axios from 'axios';
+import Error from 'next/error';
+import { parseCookies } from 'nookies';
 
 export async function GetComments({ assignmentId, studentId }) {
   try {
@@ -10,22 +10,22 @@ export async function GetComments({ assignmentId, studentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const comments = await axios.get(
-      `${process.env.Server_Url}/user/comment/get-comment`,
+      `${process.env.MAIN_SERVER_URL}/user/comment/get-comment`,
       {
         params: {
           assignmentId: assignmentId,
           studentId: studentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     return comments;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -38,7 +38,7 @@ export async function PostComment({ assignmentId, studentId, body }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const comments = await axios.post(
-      `${process.env.Server_Url}/user/comment/post-comment`,
+      `${process.env.MAIN_SERVER_URL}/user/comment/post-comment`,
       {
         body: body,
       },
@@ -48,15 +48,15 @@ export async function PostComment({ assignmentId, studentId, body }) {
           studentId: studentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     return comments;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -69,21 +69,21 @@ export async function DeleteStudentComment({ studentCommentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const deleteComment = await axios.delete(
-      `${process.env.Server_Url}/user/comment/delete-comment-student`,
+      `${process.env.MAIN_SERVER_URL}/user/comment/delete-comment-student`,
       {
         params: {
           studentCommentId: studentCommentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     return deleteComment;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -96,21 +96,21 @@ export async function DeleteTeachertComment({ teacherCommentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const deleteComment = await axios.delete(
-      `${process.env.Server_Url}/user/comment/delete-comment-teacher`,
+      `${process.env.MAIN_SERVER_URL}/user/comment/delete-comment-teacher`,
       {
         params: {
           teacherCommentId: teacherCommentId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     return deleteComment;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

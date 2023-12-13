@@ -87,7 +87,7 @@ function Assignment({ error, user }) {
       });
       setTriggerAllowStudentDeleteWork(() => update.allowStudentToDeleteWork);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

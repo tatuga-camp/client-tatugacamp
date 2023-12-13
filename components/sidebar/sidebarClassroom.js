@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-function SidebarClassroom({ user, sideMenus, triggersidebar, close }) {
+function SidebarClassroom({ user, sideMenus, close }) {
   const router = useRouter();
   const pathname = router.pathname; // e.g. "/classroom/setting"
 

@@ -12,7 +12,7 @@ export async function CreateClassroomForTeacherService({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.post(
-      `${process.env.Server_Url}/teacher/classroom/create`,
+      `${process.env.MAIN_SERVER_URL}/teacher/classroom/create`,
       { title, level, description, studentClassId },
       {
         headers: {
@@ -23,7 +23,7 @@ export async function CreateClassroomForTeacherService({
     );
     return classroom.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -33,7 +33,7 @@ export async function GetAllActiveClassroomInTeacherService({ page }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.get(
-      `${process.env.Server_Url}/teacher/classroom/active/get-all`,
+      `${process.env.MAIN_SERVER_URL}/teacher/classroom/active/get-all`,
       {
         params: {
           page,
@@ -46,7 +46,7 @@ export async function GetAllActiveClassroomInTeacherService({ page }) {
     );
     return classroom.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

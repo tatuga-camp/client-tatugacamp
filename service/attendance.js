@@ -50,7 +50,7 @@ export async function CreateAttendance({
       );
 
       const urls = await axios.post(
-        `${process.env.Server_Url}/user/attendance/head-attendance/upload-signUrl`,
+        `${process.env.MAIN_SERVER_URL}/user/attendance/head-attendance/upload-signUrl`,
         {
           files,
           classroomId,
@@ -70,7 +70,7 @@ export async function CreateAttendance({
             'Content-Type': `${urls.data.urls[i].contentType}`,
           },
           body: files[i].file,
-        }).catch((err) => console.log(err));
+        }).catch((err) => console.error(err));
       }
 
       let updatedContent = note;
@@ -88,7 +88,7 @@ export async function CreateAttendance({
       });
 
       const attendacne = await axios.post(
-        `${process.env.Server_Url}/user/attendance/create`,
+        `${process.env.MAIN_SERVER_URL}/user/attendance/create`,
         {
           date: formatDate,
           students: students,
@@ -115,7 +115,7 @@ export async function CreateAttendance({
       });
 
       const attendacne = await axios.post(
-        `${process.env.Server_Url}/user/attendance/create`,
+        `${process.env.MAIN_SERVER_URL}/user/attendance/create`,
         {
           date: formatDate,
           students: students,
@@ -136,7 +136,7 @@ export async function CreateAttendance({
       return attendacne;
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -146,7 +146,7 @@ export async function GetAllAttendance({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const GetAllAttendacne = await axios.get(
-      `${process.env.Server_Url}/user/attendance/get-all`,
+      `${process.env.MAIN_SERVER_URL}/user/attendance/get-all`,
       {
         params: {
           classroomId: classroomId,
@@ -159,7 +159,7 @@ export async function GetAllAttendance({ classroomId }) {
     );
     return GetAllAttendacne;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -208,7 +208,7 @@ export async function UpdateHeadAttendance({
       );
 
       const urls = await axios.post(
-        `${process.env.Server_Url}/user/attendance/head-attendance/upload-signUrl`,
+        `${process.env.MAIN_SERVER_URL}/user/attendance/head-attendance/upload-signUrl`,
         {
           files,
           classroomId,
@@ -227,7 +227,7 @@ export async function UpdateHeadAttendance({
             'Content-Type': `${urls.data.urls[i].contentType}`,
           },
           body: files[i].file,
-        }).catch((err) => console.log(err));
+        }).catch((err) => console.error(err));
       }
 
       let updatedContent = note;
@@ -238,7 +238,7 @@ export async function UpdateHeadAttendance({
       }
 
       const update = await axios.put(
-        `${process.env.Server_Url}/user/attendance/head-attendance/update`,
+        `${process.env.MAIN_SERVER_URL}/user/attendance/head-attendance/update`,
         { headAttendanceId, note: updatedContent, groupId },
         {
           headers: {
@@ -249,7 +249,7 @@ export async function UpdateHeadAttendance({
       return update;
     } else {
       const update = await axios.put(
-        `${process.env.Server_Url}/user/attendance/head-attendance/update`,
+        `${process.env.MAIN_SERVER_URL}/user/attendance/head-attendance/update`,
         { headAttendanceId, note, groupId },
         {
           headers: {
@@ -260,7 +260,7 @@ export async function UpdateHeadAttendance({
       return update;
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -270,7 +270,7 @@ export async function DeleteAttendance({ groupId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const deleteAttendance = await axios.delete(
-      `${process.env.Server_Url}/user/attendance/delete`,
+      `${process.env.MAIN_SERVER_URL}/user/attendance/delete`,
       {
         params: {
           groupId: groupId,
@@ -282,7 +282,7 @@ export async function DeleteAttendance({ groupId }) {
     );
     return deleteAttendance;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -336,7 +336,7 @@ export async function UpdateAttendnaceAPI({
       );
 
       const urls = await axios.post(
-        `${process.env.Server_Url}/user/attendance/upload-signUrl`,
+        `${process.env.MAIN_SERVER_URL}/user/attendance/upload-signUrl`,
         {
           files,
           studentId,
@@ -356,7 +356,7 @@ export async function UpdateAttendnaceAPI({
             'Content-Type': `${urls.data.urls[i].contentType}`,
           },
           body: files[i].file,
-        }).catch((err) => console.log(err));
+        }).catch((err) => console.error(err));
       }
 
       let updatedContent = note;
@@ -367,7 +367,7 @@ export async function UpdateAttendnaceAPI({
       }
 
       const update = await axios.put(
-        `${process.env.Server_Url}/user/attendance/update`,
+        `${process.env.MAIN_SERVER_URL}/user/attendance/update`,
         { absent, present, holiday, sick, warn, late, note: updatedContent },
         {
           params: {
@@ -382,7 +382,7 @@ export async function UpdateAttendnaceAPI({
     } else {
       console.log(note);
       const update = await axios.put(
-        `${process.env.Server_Url}/user/attendance/update`,
+        `${process.env.MAIN_SERVER_URL}/user/attendance/update`,
         { absent, present, holiday, sick, late, warn, note },
         {
           params: {
@@ -396,7 +396,7 @@ export async function UpdateAttendnaceAPI({
       return update;
     }
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -406,7 +406,7 @@ export async function GetAllQrAttendances({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const qrAttendances = await axios.get(
-      `${process.env.Server_Url}/user/attendance/get-all/qr-code`,
+      `${process.env.MAIN_SERVER_URL}/user/attendance/get-all/qr-code`,
       {
         params: {
           classroomId: classroomId,
@@ -418,7 +418,7 @@ export async function GetAllQrAttendances({ classroomId }) {
     );
     return qrAttendances.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -434,7 +434,7 @@ export async function CreateQrAttendance({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const create = await axios.post(
-      `${process.env.Server_Url}/user/attendance/create/qr-code`,
+      `${process.env.MAIN_SERVER_URL}/user/attendance/create/qr-code`,
       { date, endDate, expireAt, classroomId, isLimitOneBrowser },
       {
         headers: {
@@ -444,7 +444,7 @@ export async function CreateQrAttendance({
     );
     return create.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -458,7 +458,7 @@ export async function UpdateQrCodeAttendance({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const update = await axios.put(
-      `${process.env.Server_Url}/user/attendance/update/qr-code`,
+      `${process.env.MAIN_SERVER_URL}/user/attendance/update/qr-code`,
       { expireAt, qrCodeAttendanceId, isLimitOneBrowser },
       {
         headers: {
@@ -468,7 +468,7 @@ export async function UpdateQrCodeAttendance({
     );
     return update.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -478,7 +478,7 @@ export async function DeleteNote({ attendanceId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const update = await axios.put(
-      `${process.env.Server_Url}/user/attendance/delete-note`,
+      `${process.env.MAIN_SERVER_URL}/user/attendance/delete-note`,
       {},
       {
         params: {
@@ -491,7 +491,7 @@ export async function DeleteNote({ attendanceId }) {
     );
     return update;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

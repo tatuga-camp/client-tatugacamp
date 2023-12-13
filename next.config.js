@@ -2,7 +2,7 @@
 
 const nextConfig = {
   env: {
-    Server_Url: process.env.Server_Url,
+    MAIN_SERVER_URL: process.env.MAIN_SERVER_URL,
   },
   webpack(config, options) {
     const { isServer } = options;
@@ -30,7 +30,7 @@ const nextConfig = {
     //largePageDataBytes: 128 * 1000, // 128KB by default
     largePageDataBytes: 200 * 1000,
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
   images: {
     domains: [
       'source.unsplash.com',

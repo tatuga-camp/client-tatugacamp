@@ -126,7 +126,7 @@ function AuthButton() {
                   onClick={() => {
                     if (data?.data?.role === 'SCHOOL') {
                       router.push({
-                        pathname: '/school/dashboard/setting',
+                        pathname: `${process.env.NEXT_PUBLIC_URL_SCHOOL}/school/dashboard/setting`,
                       });
                     } else if (data?.data?.role === 'TEACHER') {
                       router.push({

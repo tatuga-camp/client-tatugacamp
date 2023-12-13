@@ -82,7 +82,7 @@ function DisplayGroup({
       Swal.fire('Deleted!', '', 'success');
     } catch (err) {
       setLoadingDelete(() => false);
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.message?.toString(),
@@ -126,7 +126,7 @@ function DisplayGroup({
         title: 'error',
         icon: 'error',
       });
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -161,7 +161,7 @@ function DisplayGroup({
       setLoading(() => false);
     } catch (err) {
       setLoading(() => false);
-      console.log(err);
+      console.error(err);
       setIsAddGroup(() => false);
       setStudentToAdd(() => null);
       Swal.fire(
@@ -192,7 +192,7 @@ function DisplayGroup({
         title: 'error',
         icon: 'error',
       });
-      console.log(err);
+      console.error(err);
     }
   }
   return (

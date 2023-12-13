@@ -9,7 +9,7 @@ export async function GetUser() {
     if (!access_token) {
       throw new Error('Unauthorized');
     }
-    const user = await axios.get(`${process.env.Server_Url}/users/me`, {
+    const user = await axios.get(`${process.env.MAIN_SERVER_URL}/users/me`, {
       headers: {
         Authorization: 'Bearer ' + access_token,
       },
@@ -26,7 +26,7 @@ export async function GetUser() {
 }
 export async function GetUserCookie({ access_token }) {
   try {
-    const user = await axios.get(`${process.env.Server_Url}/users/me`, {
+    const user = await axios.get(`${process.env.MAIN_SERVER_URL}/users/me`, {
       headers: {
         Authorization: 'Bearer ' + access_token,
       },
@@ -46,7 +46,7 @@ export async function UploadProfilePicture({ formData }) {
       throw new Error('Unauthorized');
     }
     const profile = await axios.post(
-      `${process.env.Server_Url}/users/upload`,
+      `${process.env.MAIN_SERVER_URL}/users/upload`,
       formData,
       {
         headers: {
@@ -68,7 +68,7 @@ export async function UpdateUserData(updateddata) {
     const access_token = cookies.access_token;
 
     const updateData = await axios.put(
-      `${process.env.Server_Url}/users/update-user`,
+      `${process.env.MAIN_SERVER_URL}/users/update-user`,
       {
         firstName: updateddata.firstName,
         lastName: updateddata?.lastName,

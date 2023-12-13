@@ -240,7 +240,7 @@ function UpdateScoreAfterRandom({
       }, 1500);
       document.body.style.overflow = 'auto';
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   const style = {

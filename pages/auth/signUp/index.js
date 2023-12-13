@@ -105,7 +105,7 @@ function Index() {
     try {
       const data = await axios
         .post(
-          `${process.env.Server_Url}/auth/sign-up/`,
+          `${process.env.MAIN_SERVER_URL}/auth/sign-up/`,
           {
             email: inputObject.email,
             password: inputObject.password,
@@ -144,7 +144,7 @@ function Index() {
         });
       } else {
         setLoading(false);
-        console.log(err);
+        console.error(err);
       }
     }
   };
@@ -160,9 +160,13 @@ function Index() {
         Swal.showLoading();
       },
     });
-    router.push(`${process.env.Server_Url}/auth/google/redirect`, undefined, {
-      shallow: true,
-    });
+    router.push(
+      `${process.env.MAIN_SERVER_URL}/auth/google/redirect`,
+      undefined,
+      {
+        shallow: true,
+      },
+    );
   };
 
   const GetAccesTokenFacebook = async () => {
@@ -175,9 +179,13 @@ function Index() {
         Swal.showLoading();
       },
     });
-    router.push(`${process.env.Server_Url}/auth/facebook/redirect`, undefined, {
-      shallow: true,
-    });
+    router.push(
+      `${process.env.MAIN_SERVER_URL}/auth/facebook/redirect`,
+      undefined,
+      {
+        shallow: true,
+      },
+    );
   };
 
   return (

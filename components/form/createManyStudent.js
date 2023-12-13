@@ -106,15 +106,15 @@ function ExcelTable({ getExcelData, students, language }) {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={generateTable}
         >
-          {language === 'Thai' && 'นำเข้ารายชื่อผู้เรียน'}
-          {language === 'English' && 'Load students'}
+          {language === 'Thai' && ' 1 ตรวจสอบความถูกต้อง'}
+          {language === 'English' && ' 1 Check the correction'}
         </button>
         <button
           onClick={handleCreateMany}
           className="bg-red-500 hover:bg-red-700 cursor-pointer text-white font-bold py-2 px-4 rounded"
         >
-          {language === 'Thai' && 'สร้างผู้เรียน'}
-          {language === 'English' && 'Create students'}
+          {language === 'Thai' && '2 สร้างผู้เรียน'}
+          {language === 'English' && '2 Create students'}
         </button>
       </div>
     </div>
