@@ -94,7 +94,7 @@ function Setting({ userServerSide, error }) {
       }
     } catch (err) {
       setLoading((prev) => (prev = false));
-      console.log(err);
+      console.error(err);
       if (err.props.response.data.statusCode === 413) {
         Swal.fire(
           'error',
@@ -120,7 +120,7 @@ function Setting({ userServerSide, error }) {
       const url = await ProtalSession();
       window.location.href = url.data;
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   //handle summit user's data

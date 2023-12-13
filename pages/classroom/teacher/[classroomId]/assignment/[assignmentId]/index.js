@@ -151,7 +151,7 @@ function Index({ error, user }) {
           setIsLoading(() => false);
         } catch (err) {
           setIsLoading(() => false);
-          console.log(err);
+          console.error(err);
           Swal.fire(
             'Error!',
             err?.props?.response?.data?.message?.toString(),

@@ -17,7 +17,7 @@ export async function DownloadExcelAttendance({
     const access_token = cookies.access_token;
     axios
       .post(
-        `${process.env.Server_Url}/excel/download/attendance`,
+        `${process.env.MAIN_SERVER_URL}/excel/download/attendance`,
         {
           absent,
           present,
@@ -46,7 +46,7 @@ export async function DownloadExcelAttendance({
         link.click();
       });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -56,7 +56,7 @@ export async function DownloadExcelScore({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     axios
-      .get(`${process.env.Server_Url}/excel/download/scores`, {
+      .get(`${process.env.MAIN_SERVER_URL}/excel/download/scores`, {
         params: {
           classroomId: classroomId,
         },
@@ -74,7 +74,7 @@ export async function DownloadExcelScore({ classroomId }) {
         link.click();
       });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

@@ -7,7 +7,7 @@ export async function GetAllScoresClassroom({ classroomId }) {
     const access_token = cookies.access_token;
 
     const allScore = await axios.get(
-      `${process.env.Server_Url}/user/score/get-class-all-score`,
+      `${process.env.MAIN_SERVER_URL}/user/score/get-class-all-score`,
       {
         params: {
           classroomId: classroomId,
@@ -45,7 +45,7 @@ export async function UpdateScoreOnStudent({
     const access_token = cookies.access_token;
 
     const updateScore = await axios.put(
-      `${process.env.Server_Url}/user/score/individual/update`,
+      `${process.env.MAIN_SERVER_URL}/user/score/individual/update`,
       {
         points: points,
       },
@@ -87,7 +87,7 @@ export async function UpdateScoreOnWholeClass(
     const access_token = cookies.access_token;
 
     const updateScore = await axios.put(
-      `${process.env.Server_Url}/user/score/update/score/students`,
+      `${process.env.MAIN_SERVER_URL}/user/score/update/score/students`,
       {
         points: points,
       },
@@ -131,7 +131,7 @@ export async function UpdateScoreOnWholeGroup({
     const access_token = cookies.access_token;
 
     const updateScore = await axios.put(
-      `${process.env.Server_Url}/user/score/update/group-students`,
+      `${process.env.MAIN_SERVER_URL}/user/score/update/group-students`,
       {
         points,
         miniGroupId,
@@ -155,7 +155,7 @@ export async function ResetSpecialScorePercentage({ classroomId }) {
     const access_token = cookies.access_token;
 
     const reset = await axios.put(
-      `${process.env.Server_Url}/user/score/reset-percertage`,
+      `${process.env.MAIN_SERVER_URL}/user/score/reset-percertage`,
       {
         classroomId,
       },
@@ -177,7 +177,7 @@ export async function ResetAassignmentPercentage({ assignmentId }) {
     const access_token = cookies.access_token;
 
     const reset = await axios.put(
-      `${process.env.Server_Url}/user/score/reset-assignment-percentage`,
+      `${process.env.MAIN_SERVER_URL}/user/score/reset-assignment-percentage`,
       {
         assignmentId,
       },
@@ -198,7 +198,7 @@ export async function AllowStudentViewScore({ classroomId, allow }) {
     const access_token = cookies.access_token;
 
     const allowStudent = await axios.put(
-      `${process.env.Server_Url}/user/score/allow-score-view`,
+      `${process.env.MAIN_SERVER_URL}/user/score/allow-score-view`,
       {
         classroomId,
         allow,
@@ -221,7 +221,7 @@ export async function CreateScoreOnClass({ title, emoji, classroomId, score }) {
     const access_token = cookies.access_token;
 
     const createScore = await axios.post(
-      `${process.env.Server_Url}/user/score/create`,
+      `${process.env.MAIN_SERVER_URL}/user/score/create`,
       {
         title: title,
         picture: emoji,
@@ -238,7 +238,7 @@ export async function CreateScoreOnClass({ title, emoji, classroomId, score }) {
     );
     return createScore;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -249,7 +249,7 @@ export async function HideScore({ scoreId }) {
     const access_token = cookies.access_token;
 
     const score = await axios.put(
-      `${process.env.Server_Url}/user/score/hide-score`,
+      `${process.env.MAIN_SERVER_URL}/user/score/hide-score`,
       {},
       {
         params: {
@@ -262,7 +262,7 @@ export async function HideScore({ scoreId }) {
     );
     return score;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

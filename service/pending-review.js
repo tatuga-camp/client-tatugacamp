@@ -8,7 +8,7 @@ export async function GetAllPendingReviews({ nextId }) {
     const access_token = cookies.access_token;
     if (nextId) {
       const pendingReviews = await axios.get(
-        `${process.env.Server_Url}/user/pending-review/get-all`,
+        `${process.env.MAIN_SERVER_URL}/user/pending-review/get-all`,
         {
           params: {
             cursor: nextId,
@@ -22,7 +22,7 @@ export async function GetAllPendingReviews({ nextId }) {
       return pendingReviews.data;
     } else {
       const pendingReviews = await axios.get(
-        `${process.env.Server_Url}/user/pending-review/get-all`,
+        `${process.env.MAIN_SERVER_URL}/user/pending-review/get-all`,
         {
           headers: {
             'Content-Type': 'application/json',

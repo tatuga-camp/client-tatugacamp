@@ -24,7 +24,6 @@ import RandomIcon from '../components/svg/RandomIcon';
 import QRCode from 'react-qr-code';
 import { HiRectangleGroup } from 'react-icons/hi2';
 import CreateGroup from '../components/form/createGroup';
-import AttendanceCheckerForSchool from '../components/form/school/attendance/attendanceChecker';
 import RandomTools from '../components/form/randomTools';
 import CheckAttendanceByQrCode from '../components/form/checkAttendanceByQrCode';
 import { GetAllStudentsInClassroomForTeacherService } from '../service/teacher/student';
@@ -348,22 +347,14 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
         </div>
       )}
 
-      {triggerAttendance &&
-        (user?.data?.data?.schoolUser?.organization === 'immigration' ? (
-          <AttendanceCheckerForSchool
-            user={checkUser}
-            language={language}
-            setTriggerAttendance={setTriggerAttendance}
-            students={students}
-          />
-        ) : (
-          <AttendanceChecker
-            user={checkUser}
-            language={language}
-            setTriggerAttendance={setTriggerAttendance}
-            students={students}
-          />
-        ))}
+      {triggerAttendance && (
+        <AttendanceChecker
+          user={checkUser}
+          language={language}
+          setTriggerAttendance={setTriggerAttendance}
+          students={students}
+        />
+      )}
 
       {triggerStudentPasswordManangement && (
         <StudentPasswordManagement

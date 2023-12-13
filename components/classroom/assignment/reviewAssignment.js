@@ -159,7 +159,7 @@ function ReviewAssignment({
       });
       setComment(() => comment.data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   const handleReviewWork = async (e) => {
@@ -208,7 +208,7 @@ function ReviewAssignment({
         handleSelectWork(nextStudent);
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.error?.message?.toString(),
@@ -252,7 +252,7 @@ function ReviewAssignment({
       await studentOnAssignments.refetch();
       Swal.fire('success', 'ตรวจงานเรียบร้อย', 'success');
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.error?.message?.toString(),
@@ -273,7 +273,7 @@ function ReviewAssignment({
       setComment(() => comment.data);
       Swal.fire('success', 'ลบคอมเมนต์เรียบร้อย', 'success');
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.error?.message?.toString(),
@@ -294,7 +294,7 @@ function ReviewAssignment({
       setComment(() => comment.data);
       Swal.fire('success', 'ลบคอมเมนต์เรียบร้อย', 'success');
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.error?.message?.toString(),
@@ -349,7 +349,7 @@ function ReviewAssignment({
       });
       setComment(() => comment.data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.error?.message?.toString(),
@@ -430,7 +430,7 @@ function ReviewAssignment({
       Swal.fire('success', 'update successfully', 'success');
     } catch (err) {
       setLoadingReviewStudentWorksheet(() => false);
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.error?.message?.toString(),

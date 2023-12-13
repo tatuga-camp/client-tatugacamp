@@ -95,7 +95,7 @@ function UpdateAssignment({
           await assignment.refetch();
           Swal.fire('Deleted!', '', 'success');
         } catch (err) {
-          console.log(err);
+          console.error(err);
           Swal.fire(
             'Error!',
             err?.props?.response?.data?.message?.toString(),
@@ -200,7 +200,7 @@ function UpdateAssignment({
       setIsChecked(assign);
       setLoading(false);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -246,7 +246,7 @@ function UpdateAssignment({
       setTriggerUpdateAssignment(false);
     } catch (err) {
       setLoading(() => false);
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.message.toString(),
@@ -278,7 +278,7 @@ function UpdateAssignment({
         );
         return [...filterOut];
       });
-      console.log(err);
+      console.error(err);
     }
   };
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import Layout from '../../layouts/tatugaSchoolLayOut';
 import Head from 'next/head';
 import { IoWarning } from 'react-icons/io5';
 import { useRouter } from 'next/router';

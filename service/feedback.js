@@ -8,7 +8,7 @@ export async function CreateFeedbackApi({ body, checkAuth, tag }) {
     if (checkAuth.auth === true) {
       const user = await GetUser();
       const feedback = await axios.post(
-        `${process.env.Server_Url}/feedback/post-feedback`,
+        `${process.env.MAIN_SERVER_URL}/feedback/post-feedback`,
         {
           body: body,
           tag: tag,
@@ -25,7 +25,7 @@ export async function CreateFeedbackApi({ body, checkAuth, tag }) {
       return feedback;
     } else if (checkAuth.unAuth === true) {
       const feedback = await axios.post(
-        `${process.env.Server_Url}/feedback/post-feedback`,
+        `${process.env.MAIN_SERVER_URL}/feedback/post-feedback`,
         {
           body: body,
           tag: tag,

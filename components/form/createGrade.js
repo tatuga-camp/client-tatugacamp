@@ -88,7 +88,7 @@ function CreateGrade({ setTriggerCreateGrade, studentsScores }) {
         'error',
       );
       setLoading(() => false);
-      console.log(err);
+      console.error(err);
     }
   };
   const displayInputGradeRanges = inputGradeRange?.map((list) => {

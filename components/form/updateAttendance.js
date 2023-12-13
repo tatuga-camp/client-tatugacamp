@@ -118,7 +118,7 @@ function UpdateAttendance({
           setTriggerUpdateAttendance(() => false);
           Swal.fire('success', 'Note has been updated', 'success');
         } catch (err) {
-          console.log(err);
+          console.error(err);
           Swal.fire(
             'Error!',
             err?.props?.response?.data?.message?.toString(),
@@ -178,7 +178,7 @@ function UpdateAttendance({
       setTriggerUpdateAttendance(() => false);
     } catch (err) {
       setLoading(() => false);
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.message.toString(),

@@ -86,7 +86,7 @@ function Index({ error, user }) {
           await attendances.refetch();
           Swal.fire('Deleted!', groupId, 'success');
         } catch (err) {
-          console.log(err);
+          console.error(err);
           Swal.fire(
             'Error!',
             err?.props?.response?.data?.message?.toString(),

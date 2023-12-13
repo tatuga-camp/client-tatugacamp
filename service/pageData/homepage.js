@@ -17,7 +17,7 @@ export async function fetchThanksSchool() {
 
     return thanksSchools;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
