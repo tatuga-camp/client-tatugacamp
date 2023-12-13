@@ -258,7 +258,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
       setTriggerAttendance(() => false);
     } catch (err) {
       setLoading(false);
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.message.toString(),

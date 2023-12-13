@@ -7,19 +7,6 @@ import Layout from '../../components/layout';
 import { returnProps } from '../../utils/imageMetadata';
 
 function Index({ members }) {
-  const { height, width } = useWindowDimensions();
-  const [checked, setChecked] = useState(1);
-
-  useEffect(() => {
-    if (width < 767) {
-      setChecked(1);
-    } else if (width > 768 && width < 1000) {
-      setChecked(2);
-    } else if (width > 1000) {
-      setChecked(3);
-    }
-  }, [width]);
-
   return (
     <Layout>
       <div className="flex flex-col items-center justify-center">

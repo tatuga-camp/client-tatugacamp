@@ -7,7 +7,7 @@ export async function GetAllAttendanceForTeacherService({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const res = await axios.get(
-      `${process.env.Server_Url}/teacher/attendance/get-all`,
+      `${process.env.MAIN_SERVER_URL}/teacher/attendance/get-all`,
       {
         params: {
           classroomId,
@@ -20,7 +20,7 @@ export async function GetAllAttendanceForTeacherService({ classroomId }) {
     );
     return res;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

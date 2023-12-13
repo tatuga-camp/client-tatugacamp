@@ -10,7 +10,7 @@ export async function GetAllStudents(data) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const student = await axios.get(
-      `${process.env.Server_Url}/user/student/get-all-student?classroomId=${data.classroomId}`,
+      `${process.env.MAIN_SERVER_URL}/user/student/get-all-student?classroomId=${data.classroomId}`,
       {
         headers: {
           Authorization: 'Bearer ' + access_token,
@@ -30,7 +30,7 @@ export async function setStudentPasswordService({ studentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const student = await axios.put(
-      `${process.env.Server_Url}/user/student/set-password`,
+      `${process.env.MAIN_SERVER_URL}/user/student/set-password`,
       { studentId },
       {
         headers: {
@@ -50,7 +50,7 @@ export async function resetStudentPasswordService({ studentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const student = await axios.put(
-      `${process.env.Server_Url}/user/student/reset-password`,
+      `${process.env.MAIN_SERVER_URL}/user/student/reset-password`,
       { studentId },
       {
         headers: {
@@ -71,7 +71,7 @@ export async function GetOneStudentService({ studentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const student = await axios.get(
-      `${process.env.Server_Url}/user/student/get`,
+      `${process.env.MAIN_SERVER_URL}/user/student/get`,
       {
         params: {
           studentId,
@@ -96,7 +96,7 @@ export async function GetAllStudentScores({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const students = await axios.get(
-      `${process.env.Server_Url}/user/assignment/get-allStudentScores`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/get-allStudentScores`,
       {
         params: {
           classroomId: classroomId,
@@ -146,7 +146,7 @@ export async function CreateStudentApi({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const student = await axios.post(
-      `${process.env.Server_Url}/user/student/create?classroomId=${classroomId}`,
+      `${process.env.MAIN_SERVER_URL}/user/student/create?classroomId=${classroomId}`,
       {
         firstName: firstName,
         lastName: lastName,
@@ -172,7 +172,7 @@ export async function UpdateStudent({ formData, studentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const updateStudent = await axios.put(
-      `${process.env.Server_Url}/user/student/update`,
+      `${process.env.MAIN_SERVER_URL}/user/student/update`,
       formData,
       {
         params: {
@@ -187,7 +187,7 @@ export async function UpdateStudent({ formData, studentId }) {
 
     return updateStudent;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -198,7 +198,7 @@ export async function DelteStudent({ studentId }) {
     const access_token = cookies.access_token;
 
     const deleteStudent = await axios.delete(
-      `${process.env.Server_Url}/user/student/delete`,
+      `${process.env.MAIN_SERVER_URL}/user/student/delete`,
       {
         params: {
           studentId: studentId,
@@ -211,7 +211,7 @@ export async function DelteStudent({ studentId }) {
 
     return deleteStudent;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

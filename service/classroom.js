@@ -7,7 +7,7 @@ export async function CreateClassroomService(inputObject) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.post(
-      `${process.env.Server_Url}/user/classroom/create`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/create`,
       {
         title: inputObject.title,
         description: inputObject.description,
@@ -33,7 +33,7 @@ export async function DuplicateClassroom({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.post(
-      `${process.env.Server_Url}/user/classroom/create-duplicate`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/create-duplicate`,
       {},
       {
         params: {
@@ -47,7 +47,7 @@ export async function DuplicateClassroom({ classroomId }) {
     );
     return classroom;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -56,7 +56,7 @@ export async function DeleteClassroom({ classroomId }) {
   const access_token = cookies.access_token;
   try {
     const deleteClassroom = await axios.delete(
-      `${process.env.Server_Url}/user/classroom/delete`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/delete`,
       {
         params: {
           classroomId: classroomId,
@@ -81,7 +81,7 @@ export async function AllowStudentDeleteWorkService({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classrooms = await axios.put(
-      `${process.env.Server_Url}/user/classroom/isAllowStudentDeleteWork`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/isAllowStudentDeleteWork`,
       {
         classroomId,
         allowStudentToDeleteWork,
@@ -104,7 +104,7 @@ export async function GetAllClassrooms({ page, getAll }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classrooms = await axios.get(
-      `${process.env.Server_Url}/user/classroom/get-all-classroom`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/get-all-classroom`,
       {
         params: {
           page: page,
@@ -127,7 +127,7 @@ export async function GetAllAchievedClassrooms({ page }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classrooms = await axios.get(
-      `${process.env.Server_Url}/user/classroom/get-all-achieved-classroom`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/get-all-achieved-classroom`,
       {
         params: {
           page: page,
@@ -152,7 +152,7 @@ export async function GetOneClassroom({ params }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.get(
-      `${process.env.Server_Url}/user/classroom/get-a-classroom/${params}`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/get-a-classroom/${params}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ export async function AchieveClassroom({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.put(
-      `${process.env.Server_Url}/user/classroom/achieve-classroom`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/achieve-classroom`,
       {
         isAchieve: true,
         classroomId,
@@ -195,7 +195,7 @@ export async function UnAchieveClassroom({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.put(
-      `${process.env.Server_Url}/user/classroom/unachieve-classroom`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/unachieve-classroom`,
       {
         isUnachieve: false,
         classroomId,
@@ -218,7 +218,7 @@ export async function UpdateClassroomColor({ classroomId, color }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.put(
-      `${process.env.Server_Url}/user/classroom/update-color`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/update-color`,
       {
         color: color,
         classroomId: classroomId,
@@ -242,7 +242,7 @@ export async function UpdateClassroomOrder({ classroomId, order }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.put(
-      `${process.env.Server_Url}/user/classroom/update-order`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/update-order`,
       {
         order: order,
         classroomId: classroomId,
@@ -266,7 +266,7 @@ export async function UpdateClassroom({ classroomState }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.put(
-      `${process.env.Server_Url}/user/classroom/update`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/update`,
       {
         title: classroomState.title,
         level: classroomState.level,
@@ -298,7 +298,7 @@ export async function UpdatePercentageClassroom({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classroom = await axios.put(
-      `${process.env.Server_Url}/user/assignment/update/classroom/speical-score/percentage`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/update/classroom/speical-score/percentage`,
       {
         classroomId,
         maxScore,

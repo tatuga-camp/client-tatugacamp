@@ -23,7 +23,7 @@ export async function UpdateScoreOnWholeClassForTeacherService({
     const access_token = cookies.access_token;
     console.log(access_token);
     const res = await axios.put(
-      `${process.env.Server_Url}/teacher/score/update/students`,
+      `${process.env.MAIN_SERVER_URL}/teacher/score/update/students`,
       { points, classroomId, scoreId },
       {
         headers: {
@@ -34,7 +34,7 @@ export async function UpdateScoreOnWholeClassForTeacherService({
     );
     return res.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

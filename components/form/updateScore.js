@@ -113,7 +113,7 @@ function UpdateScore({
       await HideScore({ scoreId });
       await refetchScores();
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire('error', err?.response?.data?.message.toString(), 'error');
     }
   };
@@ -322,7 +322,7 @@ function UpdateScore({
       document.body.style.overflow = 'auto';
       students?.refetch();
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   const style = {

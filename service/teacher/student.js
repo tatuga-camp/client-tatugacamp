@@ -9,7 +9,7 @@ export async function GetAllStudentsInClassroomForTeacherService({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const students = await axios.get(
-      `${process.env.Server_Url}/teacher/student/get-all`,
+      `${process.env.MAIN_SERVER_URL}/teacher/student/get-all`,
       {
         params: {
           classroomId,
@@ -22,7 +22,7 @@ export async function GetAllStudentsInClassroomForTeacherService({
     );
     return students;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

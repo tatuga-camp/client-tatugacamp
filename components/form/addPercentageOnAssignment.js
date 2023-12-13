@@ -37,7 +37,7 @@ function AddPercentageOnAssignment({
         'error',
       );
       setLoading(() => false);
-      console.log(err);
+      console.error(err);
     }
   };
   const handleResetAssignmentPercentage = async () => {
@@ -58,7 +58,7 @@ function AddPercentageOnAssignment({
         'error',
       );
       setLoadingReset(() => false);
-      console.log(err);
+      console.error(err);
     }
   };
   return (

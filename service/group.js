@@ -1,6 +1,6 @@
-import axios from "axios";
-import Error from "next/error";
-import { parseCookies } from "nookies";
+import axios from 'axios';
+import Error from 'next/error';
+import { parseCookies } from 'nookies';
 
 export async function CreateGroupApi({ title, classroomId, groupNumber }) {
   try {
@@ -9,7 +9,7 @@ export async function CreateGroupApi({ title, classroomId, groupNumber }) {
     const access_token = cookies.access_token;
     console.log(title);
     const group = await axios.post(
-      `${process.env.Server_Url}/user/group/create-group`,
+      `${process.env.MAIN_SERVER_URL}/user/group/create-group`,
       {
         title,
         classroomId,
@@ -17,10 +17,10 @@ export async function CreateGroupApi({ title, classroomId, groupNumber }) {
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return group.data;
   } catch (err) {
@@ -37,7 +37,7 @@ export async function AddStudentToGroupApi({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const group = await axios.post(
-      `${process.env.Server_Url}/user/group/add-student-to-group`,
+      `${process.env.MAIN_SERVER_URL}/user/group/add-student-to-group`,
       {
         studentId,
         groupId,
@@ -45,10 +45,10 @@ export async function AddStudentToGroupApi({
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return group.data;
   } catch (err) {
@@ -61,17 +61,17 @@ export async function RandomGroup({ classroomId, groupId }) {
     const access_token = cookies.access_token;
 
     const group = await axios.put(
-      `${process.env.Server_Url}/user/group/random-group`,
+      `${process.env.MAIN_SERVER_URL}/user/group/random-group`,
       {
         groupId,
         classroomId,
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return group.data;
   } catch (err) {
@@ -86,16 +86,16 @@ export async function GetGroup({ groupId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const group = await axios.get(
-      `${process.env.Server_Url}/user/group/get-group`,
+      `${process.env.MAIN_SERVER_URL}/user/group/get-group`,
       {
         params: {
           groupId: groupId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return group.data;
   } catch (err) {
@@ -106,22 +106,22 @@ export async function GetGroup({ groupId }) {
 export async function GetUnGroupStudent({ groupId, classroomId }) {
   try {
     if (!groupId || !classroomId) {
-      throw new Error("Either groupId or classroomId not found");
+      throw new Error('Either groupId or classroomId not found');
     }
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const ungroupStudents = await axios.get(
-      `${process.env.Server_Url}/user/group/get-unGroup-students`,
+      `${process.env.MAIN_SERVER_URL}/user/group/get-unGroup-students`,
       {
         params: {
           groupId,
           classroomId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return ungroupStudents.data;
   } catch (err) {
@@ -133,16 +133,16 @@ export async function GetAllGroup({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const groups = await axios.get(
-      `${process.env.Server_Url}/user/group/get-all-group`,
+      `${process.env.MAIN_SERVER_URL}/user/group/get-all-group`,
       {
         params: {
           classroomId: classroomId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return groups.data;
   } catch (err) {
@@ -152,21 +152,21 @@ export async function GetAllGroup({ classroomId }) {
 export async function DeleteGroup({ groupId }) {
   try {
     if (!groupId) {
-      throw new Error("GroupId not found");
+      throw new Error('GroupId not found');
     }
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const group = await axios.delete(
-      `${process.env.Server_Url}/user/group/delete-group`,
+      `${process.env.MAIN_SERVER_URL}/user/group/delete-group`,
       {
         params: {
           groupId: groupId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return group.data;
   } catch (err) {
@@ -177,12 +177,12 @@ export async function DeleteGroup({ groupId }) {
 export async function RemoveStudent({ groupId, studentId, miniGroupId }) {
   try {
     if (!groupId || !studentId || !miniGroupId) {
-      throw new Error("Either groupId, studentId or miniGroupId not found");
+      throw new Error('Either groupId, studentId or miniGroupId not found');
     }
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const group = await axios.delete(
-      `${process.env.Server_Url}/user/group/remove-student`,
+      `${process.env.MAIN_SERVER_URL}/user/group/remove-student`,
       {
         params: {
           studentId,
@@ -190,10 +190,10 @@ export async function RemoveStudent({ groupId, studentId, miniGroupId }) {
           groupId,
         },
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
     return group.data;
   } catch (err) {

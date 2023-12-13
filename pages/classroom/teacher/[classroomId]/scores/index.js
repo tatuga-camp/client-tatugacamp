@@ -88,7 +88,7 @@ function Index({ user, error }) {
         err?.props?.response?.data?.message.toString(),
         'error',
       );
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -107,7 +107,7 @@ function Index({ user, error }) {
         () => fetchTriggerAllow.allowStudentsToViewScores,
       );
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   if (error?.statusCode === 401) {
