@@ -6,8 +6,6 @@ import AuthButton from '../components/auth/button';
 import SidebarClassroom from '../components/sidebar/sidebarClassroom';
 
 function Layout({ children, user, sideMenus }) {
-  const [triggersidebar, setTriggerSidebar] = useState(true);
-
   return (
     <main className="">
       <div className="absolute top-0 right-0 mr-5 mt-5">
@@ -37,7 +35,6 @@ function Layout({ children, user, sideMenus }) {
                   <SidebarClassroom
                     sideMenus={sideMenus}
                     user={user}
-                    triggersidebar={triggersidebar}
                     close={close}
                   />
                 )}

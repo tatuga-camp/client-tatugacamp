@@ -109,7 +109,7 @@ function Index({ tatugaSchoolPosts }) {
             />
 
             <Link
-              href="/school/dashboard"
+              href={`${process.env.NEXT_PUBLIC_URL_SCHOOL}/school/dashboard`}
               className="font-Kanit uppercase no-underline text-black hover:ring-2 ring-black active:scale-110 transition duration-100
                w-max text-lg font-semibold bg-third-color px-5 py-2 rounded-md"
             >

@@ -39,7 +39,7 @@ function Index({ user, error }) {
         });
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire(
         'error',
         err?.props?.response?.data?.message.toString(),

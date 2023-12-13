@@ -109,7 +109,7 @@ function CheckAttendanceByQrCode({
           severity: 'error',
         };
       });
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -165,7 +165,7 @@ function CheckAttendanceByQrCode({
           severity: 'error',
         };
       });
-      console.log(err);
+      console.error(err);
     }
   };
 

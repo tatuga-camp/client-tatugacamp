@@ -175,7 +175,7 @@ function UpdateScoreMultiple({
       }, 1500);
       document.body.style.overflow = 'auto';
     } catch (err) {
-      console.log(err);
+      console.error(err);
       Swal.fire('error', err?.response?.data?.message.toString(), 'error');
     }
   };

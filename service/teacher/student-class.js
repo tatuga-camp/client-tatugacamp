@@ -7,7 +7,7 @@ export async function GetAllStudentClassService() {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const studentClass = await axios.get(
-      `${process.env.Server_Url}/teacher/student-class/get-all`,
+      `${process.env.MAIN_SERVER_URL}/teacher/student-class/get-all`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ export async function GetAllStudentClassService() {
     );
     return studentClass.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

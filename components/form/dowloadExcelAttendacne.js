@@ -49,7 +49,7 @@ function DowloadExcelAttendacne({ close, language, teacherId, user }) {
         err?.props?.response?.data?.message.toString(),
         'error',
       );
-      console.log(err);
+      console.error(err);
     }
   };
   return (

@@ -132,7 +132,7 @@ export default function CreateAssignment({
       setTriggerAssignment(false);
     } catch (err) {
       Swal.fire('error', 'error', 'success');
-      console.log(err);
+      console.error(err);
     }
   };
   const handleSubmit = async (e) => {

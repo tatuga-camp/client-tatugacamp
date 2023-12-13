@@ -10,7 +10,7 @@ export async function CreateAssignmentToAnotherClassroom({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const assign = await axios.post(
-      `${process.env.Server_Url}/user/assignment/assign-assignment-to-multiple-classroom`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/assign-assignment-to-multiple-classroom`,
       {
         classrooms,
         assignmentId,
@@ -24,7 +24,7 @@ export async function CreateAssignmentToAnotherClassroom({
     );
     return assign;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -58,7 +58,7 @@ export async function CreateFileOnAssignment({ formFiles, assignmentId }) {
     );
 
     const urls = await axios.post(
-      `${process.env.Server_Url}/user/assignment/fileOnAssignment/upload-signurl`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/fileOnAssignment/upload-signurl`,
       { files, assignmentId },
       {
         headers: {
@@ -77,7 +77,7 @@ export async function CreateFileOnAssignment({ formFiles, assignmentId }) {
         body: files[i].file,
       });
       await axios.post(
-        `${process.env.Server_Url}/user/assignment/fileOnAssignment/create`,
+        `${process.env.MAIN_SERVER_URL}/user/assignment/fileOnAssignment/create`,
         {
           assignmentId: assignmentId,
           file: urls.data.urlAdress[i],
@@ -104,7 +104,7 @@ export async function DeleteFileOnAssignmentService({ fileOnAssignmentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     await axios.delete(
-      `${process.env.Server_Url}/user/assignment/fileOnAssignment/delete`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/fileOnAssignment/delete`,
       {
         params: {
           fileOnAssignmentId,
@@ -167,7 +167,7 @@ export async function CreateAssignmentApi({
     );
 
     const urls = await axios.post(
-      `${process.env.Server_Url}/user/assignment/upload-signUrl`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/upload-signUrl`,
       {
         files,
         title: title,
@@ -190,7 +190,7 @@ export async function CreateAssignmentApi({
           'Content-Type': `${urls.data.urls[i].contentType}`,
         },
         body: files[i].file,
-      }).catch((err) => console.log(err));
+      }).catch((err) => console.error(err));
     }
 
     let updatedContent = description;
@@ -201,7 +201,7 @@ export async function CreateAssignmentApi({
     }
 
     const updateAssignment = await axios.put(
-      `${process.env.Server_Url}/user/assignment/update`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/update`,
       {
         description: updatedContent,
       },
@@ -226,7 +226,7 @@ export async function GetAllAssignments({ classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const assignments = await axios.get(
-      `${process.env.Server_Url}/user/assignment/get-all-assignment`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/get-all-assignment`,
 
       {
         params: {
@@ -245,7 +245,7 @@ export async function GetAllAssignments({ classroomId }) {
         const access_token = cookies.access_token;
 
         const progress = await axios.get(
-          `${process.env.Server_Url}/user/assignment/progress-assignment`,
+          `${process.env.MAIN_SERVER_URL}/user/assignment/progress-assignment`,
           {
             params: {
               assignmentId: assignment.id,
@@ -258,13 +258,13 @@ export async function GetAllAssignments({ classroomId }) {
         );
         progresses.push({ ...assignment, progress: progress.data });
       } catch (err) {
-        console.log(err);
+        console.error(err);
         throw new Error(err);
       }
     }
     return progresses;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -277,7 +277,7 @@ export async function GetAssignment({ assignmentId, classroomId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const assignment = await axios.get(
-      `${process.env.Server_Url}/user/assignment/get-a-assignment`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/get-a-assignment`,
       {
         params: {
           assignmentId: assignmentId,
@@ -291,7 +291,7 @@ export async function GetAssignment({ assignmentId, classroomId }) {
     );
     return assignment;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -304,7 +304,7 @@ export async function GetAssignmentProgress({ assignments }) {
       const access_token = cookies.access_token;
 
       const progress = await axios.get(
-        `${process.env.Server_Url}/user/assignment/progress-assignment`,
+        `${process.env.MAIN_SERVER_URL}/user/assignment/progress-assignment`,
 
         {
           params: {
@@ -318,7 +318,7 @@ export async function GetAssignmentProgress({ assignments }) {
       );
       progresses.push({ ...assignment, progress: progress.data });
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw new Error(err);
     }
   }
@@ -333,7 +333,7 @@ export async function AssignWorkToSTudent({ isChecked, assignmentCreated }) {
         const cookies = parseCookies();
         const access_token = cookies.access_token;
         const assign = await axios.post(
-          `${process.env.Server_Url}/user/assignment/assign-work-to-student`,
+          `${process.env.MAIN_SERVER_URL}/user/assignment/assign-work-to-student`,
           {},
           {
             params: {
@@ -348,7 +348,7 @@ export async function AssignWorkToSTudent({ isChecked, assignmentCreated }) {
         );
         stduentOnAssignment.push({ ...student, status: 201, assign: assign });
       } catch (err) {
-        console.log(err);
+        console.error(err);
         stduentOnAssignment.push({ ...student, status: { error: err } });
       }
     } else if (student[student.id] === false) {
@@ -363,7 +363,7 @@ export async function UnAssignWorkStudentService({ studentId, assignmentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const assign = await axios.delete(
-      `${process.env.Server_Url}/user/assignment/unAssign-work-to-student`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/unAssign-work-to-student`,
       {
         params: {
           studentId,
@@ -376,7 +376,7 @@ export async function UnAssignWorkStudentService({ studentId, assignmentId }) {
       },
     );
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -386,7 +386,7 @@ export async function ViewAllAssignOnStudent({ classroomId, assignmentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const studentWorks = await axios.get(
-      `${process.env.Server_Url}/user/assignment/view-all-assign-on-student`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/view-all-assign-on-student`,
       {
         params: {
           classroomId: classroomId,
@@ -400,7 +400,7 @@ export async function ViewAllAssignOnStudent({ classroomId, assignmentId }) {
     );
     return studentWorks;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -410,7 +410,7 @@ export async function DeleteAssignment({ assignmentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const deleteAssignment = await axios.delete(
-      `${process.env.Server_Url}/user/assignment/delete`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/delete`,
       {
         params: {
           assignmentId: assignmentId,
@@ -423,7 +423,7 @@ export async function DeleteAssignment({ assignmentId }) {
     );
     return deleteAssignment;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -473,7 +473,7 @@ export async function UpdateAssignmentApi({
     );
 
     const urls = await axios.post(
-      `${process.env.Server_Url}/user/assignment/upload-signUrl`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/upload-signUrl`,
       {
         assignmentId: assignmentId,
         files,
@@ -495,7 +495,7 @@ export async function UpdateAssignmentApi({
           'Content-Type': `${urls.data.urls[i].contentType}`,
         },
         body: files[i].file,
-      }).catch((err) => console.log(err));
+      }).catch((err) => console.error(err));
     }
 
     let updatedContent = description;
@@ -506,7 +506,7 @@ export async function UpdateAssignmentApi({
     }
 
     const updatedAssignment = await axios.put(
-      `${process.env.Server_Url}/user/assignment/update`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/update`,
       {
         title: title,
         deadline: dateFormat,
@@ -540,7 +540,7 @@ export async function ReviewStudentWork({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const review = await axios.put(
-      `${process.env.Server_Url}/user/assignment/review-student-work`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/review-student-work`,
       {
         comment: comment,
         score: scoreNum,
@@ -574,7 +574,7 @@ export async function ReviewStudentWorkNoWork({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const review = await axios.post(
-      `${process.env.Server_Url}/user/assignment/review-student-no-work`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/review-student-no-work`,
       {
         comment: comment,
         score: scoreNum,
@@ -602,7 +602,7 @@ export async function DeleteStudentWork({ assignmentId, studentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const deleteStudent = await axios.delete(
-      `${process.env.Server_Url}/user/assignment/student-work/delete`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/student-work/delete`,
       {
         params: {
           assignmentId: assignmentId,
@@ -616,7 +616,7 @@ export async function DeleteStudentWork({ assignmentId, studentId }) {
     );
     return deleteStudent;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -626,7 +626,7 @@ export async function ReviewStudentWorksheetApi({ body, studentWorkId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const updateStudentWork = await axios.put(
-      `${process.env.Server_Url}/user/assignment/review/student-worksheet`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/review/student-worksheet`,
       { body, studentWorkId },
       {
         headers: {
@@ -637,7 +637,7 @@ export async function ReviewStudentWorksheetApi({ body, studentWorkId }) {
     );
     return updateStudentWork;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }
@@ -647,7 +647,7 @@ export async function UpdatePercentAssignment({ percentage, assignmentId }) {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const update = await axios.put(
-      `${process.env.Server_Url}/user/assignment/update/percentage`,
+      `${process.env.MAIN_SERVER_URL}/user/assignment/update/percentage`,
       { percentage, assignmentId },
       {
         headers: {
@@ -658,7 +658,7 @@ export async function UpdatePercentAssignment({ percentage, assignmentId }) {
     );
     return update.data;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw new Error(err);
   }
 }

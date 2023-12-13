@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { currentBrowser } from '../../../utils/platforms';
 import Loading from '../../../components/loading/loading';
 import Head from 'next/head';
+import { setCookie } from 'nookies';
 
 function Index() {
   const [brower, setBrower] = useState();
@@ -30,9 +31,9 @@ function Index() {
     const inputObject = Object.fromEntries(formData);
 
     try {
-      const data = await axios
+      const res = await axios
         .post(
-          `${process.env.Server_Url}/auth/sign-in/`,
+          `${process.env.MAIN_SERVER_URL}/auth/sign-in/`,
           {
             email: inputObject.username,
             password: inputObject.password,
@@ -46,32 +47,51 @@ function Index() {
         )
         .then(setLoading(true));
 
-      if (data.data.token.access_token) {
-        setLoading(false);
-        Swal.fire({
-          icon: 'success',
-          title: 'Login success',
-        });
-        if (data.data.user.IsResetPassword === true) {
-          router.push(
-            `/auth/new-password?access_token=${data.data.token.access_token}`,
-            undefined,
-            {
-              shallow: true,
-            },
-          );
-        } else if (data.data.user.IsResetPassword === false) {
-          router.push(
-            `/classroom/?access_token=${data.data.token.access_token}`,
-            undefined,
-            {
-              shallow: true,
-            },
-          );
-        }
+      setLoading(false);
+      Swal.fire({
+        icon: 'success',
+        title: 'Login success',
+      });
+
+      setCookie(null, 'access_token', res.data.token.access_token, {
+        maxAge: 30 * 24 * 60 * 60, // Cookie expiration time in seconds (e.g., 30 days)
+        path: '/', // Cookie path (can be adjusted based on your needs)
+      });
+
+      if (res.data.user.IsResetPassword === true) {
+        router.push(
+          `/auth/new-password?access_token=${res.data.token.access_token}`,
+          undefined,
+          {
+            shallow: true,
+          },
+        );
+      } else if (
+        res.data.user.IsResetPassword === false &&
+        res.data.schoolUser
+      ) {
+        router.push(
+          `${process.env.NEXT_PUBLIC_URL_SCHOOL}/school/dashboard?access_token=${res.data.token.access_token}`,
+          undefined,
+          {
+            shallow: true,
+          },
+        );
+      } else if (
+        res.data.user.IsResetPassword === false &&
+        !res.data.schoolUser
+      ) {
+        router.push(
+          `/classroom/?access_token=${res.data.token.access_token}`,
+          undefined,
+          {
+            shallow: true,
+          },
+        );
       }
     } catch (err) {
       setLoading(false);
+      console.error(err);
       if (err.code === 'ERR_BAD_REQUEST') {
         Swal.fire({
           icon: 'error',
@@ -99,9 +119,13 @@ function Index() {
         Swal.showLoading();
       },
     });
-    router.push(`${process.env.Server_Url}/auth/google/redirect`, undefined, {
-      shallow: true,
-    });
+    router.push(
+      `${process.env.MAIN_SERVER_URL}/auth/google/redirect`,
+      undefined,
+      {
+        shallow: true,
+      },
+    );
   };
 
   const GetAccesTokenFacebook = async () => {
@@ -114,9 +138,13 @@ function Index() {
         Swal.showLoading();
       },
     });
-    router.push(`${process.env.Server_Url}/auth/facebook/redirect`, undefined, {
-      shallow: true,
-    });
+    router.push(
+      `${process.env.MAIN_SERVER_URL}/auth/facebook/redirect`,
+      undefined,
+      {
+        shallow: true,
+      },
+    );
   };
 
   return (

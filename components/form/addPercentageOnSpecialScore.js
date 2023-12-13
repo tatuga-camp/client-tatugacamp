@@ -49,7 +49,7 @@ function AddPercentageOnSpecialScore({
         'error',
       );
       setLoading(() => false);
-      console.log(err);
+      console.error(err);
     }
   };
   const handleResetPercentage = async () => {
@@ -71,7 +71,7 @@ function AddPercentageOnSpecialScore({
         'error',
       );
       setLoadingReset(() => false);
-      console.log(err);
+      console.error(err);
     }
   };
 
