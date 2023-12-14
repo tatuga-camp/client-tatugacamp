@@ -24,7 +24,7 @@ const Timer = () => {
   const [counter, setCounter] = useState('wait');
   const handle = useFullScreenHandle();
   const [classroomId, setClassroomId] = useState();
-
+  const [tartgetDateTime, setTargetDateTime] = useState();
   const timeChoices = [
     {
       seconds: 10,
@@ -34,7 +34,6 @@ const Timer = () => {
       seconds: 30,
       miliseconds: 30000,
     },
-
     {
       minutes: 1,
       miliseconds: 60000,
@@ -45,6 +44,7 @@ const Timer = () => {
       miliseconds: 120000,
     },
   ];
+
   //prepare sound for the last 3 sec
   useEffect(() => {
     setAudio(new Audio(sound));
@@ -52,72 +52,72 @@ const Timer = () => {
   }, []);
 
   //set miliseconds to seconds and minutes
-  const getTime = () => {
-    setMinutes(Math.floor((counter / 1000 / 60) % 60));
-    setSeconds(Math.floor((counter / 1000) % 60));
-
-    //if time is up play sound
-    if (counter === 0) {
-      audio.play();
-      setStart(false);
-    }
-  };
 
   // reduce every 1 sec
   useEffect(() => {
-    if (counter === 'wait') {
+    if (counter === 'wait' || start === false) {
+      return () => {};
     } else {
       const timer =
         counter >= 0 &&
         setInterval(() => {
           if (start === true) {
-            setCounter((counter) => counter - 1000);
-            getTime();
+            setCounter(() => {
+              const timeLeft = calculateRemainingTime();
+              return timeLeft * 1000;
+            });
+            setMinutes(Math.floor((counter / 1000 / 60) % 60));
+            setSeconds(Math.floor((counter / 1000) % 60));
+            if (counter <= 0) {
+              audio.play();
+              setStart(false);
+            }
           }
         }, 1000);
       return () => clearInterval(timer);
     }
   }, [counter, start]);
 
+  function calculateRemainingTime() {
+    return Math.max(0, Math.floor((tartgetDateTime - Date.now()) / 1000));
+  }
+
   //handle sumit put time
   function handleSumit(event) {
     event.preventDefault();
-    setCounter((prev) => {
-      const milisecond = secondInput * 1000;
-      const miliminute = minutesInput * 60000;
-      return (prev = milisecond + miliminute);
-    });
-    setInitalTime((prev) => {
-      const milisecond = secondInput * 1000;
-      const miliminute = minutesInput * 60000;
-      return (prev = milisecond + miliminute);
-    });
+    const milisecond = secondInput * 1000;
+    const miliminute = minutesInput * 60000;
+    const sumTime = miliminute + milisecond;
+    setCounter(() => sumTime);
+    setTargetDateTime(() => Date.now() + sumTime);
+    setInitalTime(() => sumTime);
     setStart(true);
   }
 
-  const sideMenus = [
-    {
-      title: 'โรงเรียน',
-      icon: '🏫',
-      url: `/classroom/teacher`,
-    },
-    {
-      title: 'ห้องเรียน',
-      icon: '👨‍🏫',
-      url: `/classroom/teacher/${classroomId}`,
-    },
-    {
-      title: 'timer',
-      icon: '⏲️',
-      url: `/teacher-tools/timer`,
-    },
+  const handlePickUpTimer = ({ time }) => {
+    setMinutesInput(() => (time.minutes > 0 ? time.minutes : 0));
+    setTargetDateTime(() => Date.now() + time.miliseconds);
+    setSecondInput(() => (time.seconds > 0 ? time.seconds : 0));
+    setCounter(() => time.miliseconds);
+    setInitalTime(() => time.miliseconds);
+    setStart(() => true);
+  };
 
-    {
-      title: 'Go back',
-      icon: <FiArrowLeftCircle />,
-      url: `/classroom/${classroomId}`,
-    },
-  ];
+  const handlePauseTimmer = () => {
+    setStart((prev) => !prev);
+    setTargetDateTime(() => Date.now() + counter);
+  };
+
+  const handleRestartTimmer = () => {
+    const milisecond = secondInput * 1000;
+    const miliminute = minutesInput * 60000;
+    const sumTime = miliminute + milisecond;
+    console.log(sumTime);
+    setCounter(() => sumTime);
+    setTargetDateTime(() => Date.now() + sumTime);
+    setInitalTime(() => sumTime);
+    setStart(true);
+  };
   return (
     <>
       <Head>
@@ -209,9 +209,7 @@ const Timer = () => {
               <button
                 className="w-max p-0 bg flex items-center justify-center bg-transparent rounded-full
                  text-white m-0  border-0 cursor-pointer"
-                onClick={() => {
-                  setStart((prev) => (prev = !prev));
-                }}
+                onClick={handlePauseTimmer}
               >
                 {counter > -1000 ? (
                   <div>
@@ -228,10 +226,7 @@ const Timer = () => {
               <button
                 className="w-max p-0 bg flex items-center justify-center bg-transparent rounded-full
                  text-white m-0  border-0 cursor-pointer"
-                onClick={() => {
-                  setStart(true);
-                  setCounter((prev) => (prev = initalTime));
-                }}
+                onClick={handleRestartTimmer}
               >
                 <VscDebugRestart size={30} />
               </button>
@@ -245,20 +240,21 @@ const Timer = () => {
               <label>
                 <span className="mr-2">minute :</span>
                 <input
-                  className="bg-white  appearance-none border-2 border-gray-200 rounded-md w-20 py-2 px-4
+                  className="bg-white   appearance-none border-2 border-gray-200 rounded-md w-32 py-2 px-4
                        text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500
                        text-base font-Kanit font-medium"
                   id="inline-full-name"
                   placeholder="minute"
                   type="number"
+                  inputMode="numeric"
                   name="minute"
                   value={minutesInput}
                   onChange={(e) => {
-                    if (e.target.value > 0 && e.target.value < 60) {
+                    if (e.target.value >= 0 && e.target.value < 60) {
                       const typeNumber = parseFloat(e.target.value);
                       setMinutesInput(typeNumber);
-                    } else {
-                      setMinutesInput(0);
+                    } else if (e.target.value > 59) {
+                      setMinutesInput(59);
                     }
                   }}
                 />
@@ -266,32 +262,28 @@ const Timer = () => {
               <label>
                 <span className="mr-2">second :</span>
                 <input
-                  className="bg-white appearance-none border-2 border-gray-200 rounded-md w-20 py-2 px-4
+                  className="bg-white appearance-none border-2 border-gray-200 rounded-md w-32 py-2 px-4
                        text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500
                        text-base font-Kanit font-medium"
                   id="inline-full-name"
                   type="number"
                   name="second"
+                  inputMode="numeric"
                   value={secondInput}
                   placeholder="second"
                   onChange={(e) => {
-                    if (e.target.value > 0 && e.target.value < 60) {
+                    if (e.target.value >= 0 && e.target.value < 60) {
                       const typeNumber = parseFloat(e.target.value);
                       setSecondInput(typeNumber);
-                    } else {
-                      setSecondInput(0);
+                    } else if (e.target.value > 59) {
+                      setSecondInput(59);
                     }
                   }}
                 />
               </label>
-              <input
-                className="bg-white  border-none hover:ring-4 ring-black border-gray-200 rounded-md w-20 
-                       text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500
-                       hover:bg-red-900 hover:text-white
-                       text-base font-Kanit font-medium cursor-pointer"
-                type="submit"
-                value="Submit"
-              />
+              <button className="w-max px-10 py-2 bg-white text-black rounded-md hover:bg-green-400 transition duration-100 active:scale-110">
+                ตกลง
+              </button>
             </form>
           </div>
           <div className="flex gap-x-5">
@@ -300,11 +292,7 @@ const Timer = () => {
                 <button
                   key={index}
                   className="border-0 ring-2  hover:scale-125 transition duration-200 ease-out text-white ring-white font-Inter font-extrabold bg-transparent rounded-md p-2 cursor-pointer"
-                  onClick={() => {
-                    setCounter(time.miliseconds);
-                    setStart(true);
-                    setInitalTime(time.miliseconds);
-                  }}
+                  onClick={() => handlePickUpTimer({ time: time })}
                 >
                   {time.minutes && (
                     <span>
