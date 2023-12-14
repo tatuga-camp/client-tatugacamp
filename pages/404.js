@@ -4,10 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 function Custom404() {
-  const router = useRouter();
-  //   useEffect(() => {
-  //     router.push('/');
-  //   }, []);
   return (
     <div className="w-screen h-screen bg-main-color gap-5 flex flex-col items-center justify-center relative font-Kanit text-3xl">
       <header>
