@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Link from 'next/link';
-import Logo from './svg/Logo';
 import { Button } from '@mui/material';
 import Listmenu from './svg/Listmenu';
 import Script from 'next/script';

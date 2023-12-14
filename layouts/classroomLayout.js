@@ -204,9 +204,9 @@ function Layout({ children, sideMenus, language, groups, checkUser }) {
                     className="absolute top-24  z-20 left-3 text-2xl text-gray-500 cursor-pointer
 border-none flex  items-center justify-center hover:scale-110 transition duration-100 bg-transparent	"
                   >
-                    <div className="flex text-base bg-blue-400 p-1 rounded-xl text-white gap-2 items-center justify-center">
-                      <FiSettings />{' '}
-                      <span className="text-sm font-Kanit">
+                    <div className="flex md:text-base text-2xl   md:w-max bg-blue-400 p-1 rounded-xl text-white gap-2 items-center justify-center">
+                      <FiSettings />
+                      <span className="text-sm hidden md:block font-Kanit">
                         {language === 'Thai'
                           ? 'แก้ไขห้องเรียน'
                           : 'classroom setting'}
