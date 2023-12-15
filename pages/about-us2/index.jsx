@@ -63,10 +63,11 @@ const index = () => {
             quote:'Education never ends, It is a series of lessons, with the greatest for the last.', 
         }
             
+        
             
     ]
 
-    
+    const test = "Testtt"
     
   return (
     <Layout>
