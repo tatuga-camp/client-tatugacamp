@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 const AdBanner = (props) => {
   const [isUnfilled, setIsUnfilled] = useState(false); // Set to true initially
 
-  useEffect(() => {
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     (window.adsbygoogle = window.adsbygoogle || []).push({});
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // }, []);
 
   useEffect(() => {
     const adsInterval = setInterval(() => {
