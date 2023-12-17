@@ -58,7 +58,6 @@ function ReviewAssignment({
     deadline: '',
   });
   const [teacherReview, setTeacherReview] = useState({
-    comment: '',
     score: '',
   });
   const [comment, setComment] = useState();
@@ -186,10 +185,9 @@ function ReviewAssignment({
 
         handleSelectWork(nextStudent);
       } else if (currentStudentWork.status === 'no-work') {
-        const reviewWork = await ReviewStudentWorkNoWork({
+        await ReviewStudentWorkNoWork({
           studentId: currentStudentWork.id,
           assignmentId: assignment?.data?.data?.id,
-          comment: teacherReview.comment,
           score: teacherReview.score,
         });
         Swal.fire('success', 'ตรวจงานเรียบร้อย', 'success');

@@ -90,12 +90,10 @@ export async function UpdateScoreOnWholeClass(
       `${process.env.MAIN_SERVER_URL}/user/score/update/score/students`,
       {
         points: points,
+        scoreId: scoreId,
+        classroomId: classroomId,
       },
       {
-        params: {
-          scoreId: scoreId,
-          classroomId: classroomId,
-        },
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
