@@ -93,11 +93,9 @@ export async function CreateAttendance({
           date: formatDate,
           students: students,
           note: updatedContent,
+          classroomId: classroomId,
         },
         {
-          params: {
-            classroomId: classroomId,
-          },
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${access_token}`,
@@ -121,11 +119,9 @@ export async function CreateAttendance({
           students: students,
           note,
           endDate: endAttendanceDateFormat,
+          classroomId: classroomId,
         },
         {
-          params: {
-            classroomId: classroomId,
-          },
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${access_token}`,
@@ -368,11 +364,17 @@ export async function UpdateAttendnaceAPI({
 
       const update = await axios.put(
         `${process.env.MAIN_SERVER_URL}/user/attendance/update`,
-        { absent, present, holiday, sick, warn, late, note: updatedContent },
         {
-          params: {
-            attendanceId: attendanceId,
-          },
+          absent,
+          present,
+          holiday,
+          sick,
+          warn,
+          late,
+          note: updatedContent,
+          attendanceId: attendanceId,
+        },
+        {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
@@ -380,14 +382,19 @@ export async function UpdateAttendnaceAPI({
       );
       return update;
     } else {
-      console.log(note);
       const update = await axios.put(
         `${process.env.MAIN_SERVER_URL}/user/attendance/update`,
-        { absent, present, holiday, sick, late, warn, note },
         {
-          params: {
-            attendanceId: attendanceId,
-          },
+          absent,
+          present,
+          holiday,
+          sick,
+          late,
+          warn,
+          note,
+          attendanceId: attendanceId,
+        },
+        {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },

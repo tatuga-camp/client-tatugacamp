@@ -525,12 +525,7 @@ export async function UpdateAssignmentApi({
   }
 }
 
-export async function ReviewStudentWork({
-  studentId,
-  assignmentId,
-  comment,
-  score,
-}) {
+export async function ReviewStudentWork({ studentId, assignmentId, score }) {
   try {
     const scoreNum = Number(score);
     const cookies = parseCookies();
@@ -538,9 +533,7 @@ export async function ReviewStudentWork({
     const review = await axios.put(
       `${process.env.MAIN_SERVER_URL}/user/assignment/review-student-work`,
       {
-        comment: comment,
         score: scoreNum,
-        isSummited: true,
         assignmentId: assignmentId,
         studentId: studentId,
       },
@@ -560,7 +553,6 @@ export async function ReviewStudentWork({
 export async function ReviewStudentWorkNoWork({
   studentId,
   assignmentId,
-  comment,
   score,
 }) {
   try {
@@ -570,15 +562,11 @@ export async function ReviewStudentWorkNoWork({
     const review = await axios.post(
       `${process.env.MAIN_SERVER_URL}/user/assignment/review-student-no-work`,
       {
-        comment: comment,
         score: scoreNum,
-        isSummited: true,
+        assignmentId: assignmentId,
+        studentId: studentId,
       },
       {
-        params: {
-          assignmentId: assignmentId,
-          studentId: studentId,
-        },
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,

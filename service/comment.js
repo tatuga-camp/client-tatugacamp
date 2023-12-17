@@ -41,12 +41,10 @@ export async function PostComment({ assignmentId, studentId, body }) {
       `${process.env.MAIN_SERVER_URL}/user/comment/post-comment`,
       {
         body: body,
+        assignmentId: assignmentId,
+        studentId: studentId,
       },
       {
-        params: {
-          assignmentId: assignmentId,
-          studentId: studentId,
-        },
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
