@@ -344,7 +344,7 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center flex
         font-Kanit bg-white border-2 border-solid
     md:rounded-lg drop-shadow-xl md:p-5 md:px-0 relative items-center justify-center"
       >
-        <div className="w-full block md:hidden">
+        <div className=" md:hidden absolute top-5 left-5">
           <button
             onClick={() => {
               if (classroomScore === true) {
@@ -354,9 +354,13 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center flex
               }
               document.body.style.overflow = 'auto';
             }}
-            className="ml-3 text-2xl flex justify-center items-center"
+            className="ml-3 text-2xl gap-2  flex justify-center items-center"
           >
             <AiOutlineCloseCircle />
+            <span className="text-sm">
+              {language === 'Thai' && 'ออก'}
+              {language === 'English' && 'exit'}
+            </span>
           </button>
         </div>
         {classroomScore !== true && (
@@ -805,7 +809,11 @@ top-0 right-0 left-0 bottom-0 m-auto fixed flex items-center justify-center flex
           </div>
         )}
       </div>
-      {user.plan === 'FREE' && <AdBannerFixed data-ad-slot="1164204596" />}
+      {user.plan === 'FREE' && (
+        <div className="hidden md:block">
+          <AdBannerFixed data-ad-slot="1164204596" />
+        </div>
+      )}
 
       <div
         onClick={() => {
