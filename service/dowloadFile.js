@@ -26,11 +26,9 @@ export async function DownloadExcelAttendance({
           late,
           warn,
           teacherId,
+          classroomId: classroomId,
         },
         {
-          params: {
-            classroomId: classroomId,
-          },
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
