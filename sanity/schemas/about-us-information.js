@@ -1,6 +1,6 @@
 export default {
-  name: 'about-us-infomation',
-  title: 'About Us - infomation',
+  name: 'about-us-information',
+  title: 'About Us - information',
   type: 'document',
   fields: [
     {
