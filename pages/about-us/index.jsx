@@ -29,14 +29,9 @@ const Index = ({ members, information }) => {
     email: 'tatugacamp@gmail.com',
   };
 
-  
   const contactCSS =
     'text-[0.7rem] md:text-[0.8rem] lg:text-xl mb-2 md:mb-4 flex items-center gap-1 md:gap-3 font-medium';
 
-    useEffect(() => {
-        // Update the document title using the browser API
-        
-      },[]);
   return (
     <Layout>
       {/* Banner */}
@@ -45,9 +40,7 @@ const Index = ({ members, information }) => {
         <Head>
           <title>about us</title>
         </Head>
-        <header >
-         
-        </header>
+        <header></header>
         <main className="font-Poppins w-full max-w-7xl h-max flex flex-col justify-start items-center relative md:mt-0 mt-10 px-4 md:px-10 mb-10 ">
           {/* Contact */}
           <div className="w-full  flex items-start my-30 mx-20 mt-20">
@@ -111,12 +104,12 @@ const Index = ({ members, information }) => {
 
           {/* Introduction  */}
           <section className='w-[90%] h-full md:mt-10 lg:mt-15 md:gap-3 xl:gap-5 flex justify-center items-center"'>
-            <div className='w-[300px] h-[150px] md:w-[500px] md:h-[300px] lg:w-[500px] lg:h-[500px] overflow-hidden relative'>
+            <div className="w-[300px] h-[150px] md:w-[500px] md:h-[300px] lg:w-[500px] lg:h-[500px] overflow-hidden relative">
               <Image
-                 src='https://storage.googleapis.com/tatugacamp.com/logo%20/tatugacamp%20facebook.jpg'
-                 fill
-                 className="object-contain"
-                 alt={`picture of tatugacamp-logo`}
+                src="https://storage.googleapis.com/tatugacamp.com/logo%20/tatugacamp%20facebook.jpg"
+                fill
+                className="object-contain"
+                alt={`picture of tatugacamp-logo`}
               />
             </div>
             <div className="flex flex-col justify-center mr-5">
@@ -225,13 +218,10 @@ export async function getStaticProps(content) {
   const members = await sanityClient.fetch(queryMembers);
   const information = await sanityClient.fetch(queryInformation);
 
-  console.log(members)
   return {
     props: {
       members,
       information,
     },
   };
-
-
 }
