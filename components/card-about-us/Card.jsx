@@ -43,18 +43,22 @@ function Card({ title, subTitle, info, button, index, image }) {
       </div>
 
       {/* Image */}
-      <div className="w-40 h-40 md:w-60  md:h-60 lg:w-80 lg:h-72 bg-transparent  relative ">
-        <Image
-          onDragStart={handlePreventDragHandler}
-          src={image?.asset?.url}
-          fill
-          className="object-contain"
-          placeholder="blur"
-          blurDataURL={image?.asset?.metadata?.lqip}
-          alt={`picture of ${title}`}
-          sizes="(max-width: 350px),33vw"
-        />
+      <div className='flex justify-center items-center'>
+          <div className="mt-5 w-[20rem] h-[15rem] md:mt-10 md:w-[35rem]  md:h-[25rem] lg:w-[30rem] lg:h-[25rem] bg-transparent  relative overflow-hidden 
+          hover:scale-110 transition duration-150 ">
+            <Image
+              onDragStart={handlePreventDragHandler}
+              src={image?.asset?.url}
+              fill
+              className="object-contain"
+              placeholder="blur"
+              blurDataURL={image?.asset?.metadata?.lqip}
+              alt={`picture of ${title}`}
+              sizes="(max-width: 350px),33vw"
+            />
+          </div>
       </div>
+      
     </section>
   );
 }

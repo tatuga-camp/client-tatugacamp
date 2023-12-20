@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../../components/layout';
 import Head from 'next/head';
 import Card from '../../components/card-about-us/Card';
@@ -20,6 +20,7 @@ import 'swiper/css/grid';
 
 import { Pagination, Autoplay, Grid } from 'swiper/modules';
 import { sanityClient } from '../../sanity';
+import Google from '../../components/svg/social_logo/Google';
 
 const Index = ({ members, information }) => {
   const contacts = {
@@ -28,11 +29,14 @@ const Index = ({ members, information }) => {
     email: 'tatugacamp@gmail.com',
   };
 
-  console.log(information);
-
+  
   const contactCSS =
     'text-[0.7rem] md:text-[0.8rem] lg:text-xl mb-2 md:mb-4 flex items-center gap-1 md:gap-3 font-medium';
 
+    useEffect(() => {
+        // Update the document title using the browser API
+        
+      },[]);
   return (
     <Layout>
       {/* Banner */}
@@ -41,13 +45,8 @@ const Index = ({ members, information }) => {
         <Head>
           <title>about us</title>
         </Head>
-        <header className="relative w-full h-72">
-          <Image
-            src="/about-us-banner/about-us-banner.png"
-            alt="Picture of the author"
-            fill
-            className="object-cover"
-          />
+        <header >
+         
         </header>
         <main className="font-Poppins w-full max-w-7xl h-max flex flex-col justify-start items-center relative md:mt-0 mt-10 px-4 md:px-10 mb-10 ">
           {/* Contact */}
@@ -87,7 +86,7 @@ const Index = ({ members, information }) => {
                     {contacts.email}
                   </li>
                   <li className={contactCSS}>
-                    <Instagram />
+                    <Google />
                     {contacts.name}
                   </li>
                 </ul>
@@ -112,11 +111,19 @@ const Index = ({ members, information }) => {
 
           {/* Introduction  */}
           <section className='w-[90%] h-full md:mt-10 lg:mt-15 md:gap-3 xl:gap-5 flex justify-center items-center"'>
+            <div className='w-[300px] h-[150px] md:w-[500px] md:h-[300px] lg:w-[500px] lg:h-[500px] overflow-hidden relative'>
+              <Image
+                 src='https://storage.googleapis.com/tatugacamp.com/logo%20/tatugacamp%20facebook.jpg'
+                 fill
+                 className="object-contain"
+                 alt={`picture of tatugacamp-logo`}
+              />
+            </div>
             <div className="flex flex-col justify-center mr-5">
               <h2 className="text-main-color font-Poppins md:text-4xl lg:text-5xl xl:text-7xl font-bold ">
                 Introducing our exceptional team
               </h2>
-              <span className="mt-2 md:mt-5 text-xs md:text-xl font-semibold">
+              <span className="mt-2 md:mt-5 text-[0.5rem] sm:text-xs md:text-xl font-semibold">
                 wholeheartedly devoted to crafting enchanting and inspiring
                 educational journeys.
               </span>
@@ -217,10 +224,14 @@ export async function getStaticProps(content) {
 
   const members = await sanityClient.fetch(queryMembers);
   const information = await sanityClient.fetch(queryInformation);
+
+  console.log(members)
   return {
     props: {
       members,
       information,
     },
   };
+
+
 }
