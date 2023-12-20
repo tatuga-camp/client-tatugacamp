@@ -5,7 +5,7 @@ import Link from 'next/link';
 import ReactPlayer from 'react-player';
 import { BsFillPlayCircleFill } from 'react-icons/bs';
 import { Skeleton } from '@mui/material';
-import Blob1 from '../../components/svg/blobs/blob1';
+import BlobSmall1 from '../../components/svg/blobs/blob-small1';
 import { sanityClient } from '../../sanity';
 import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
@@ -236,7 +236,7 @@ function Index({ tatugaSchoolPosts }) {
                 </svg>
               </div>
               <div className="w-96 h-96 -z-40 relative">
-                <Blob1 />
+                <BlobSmall1 />
               </div>
             </div>
           </section>
