@@ -2,6 +2,7 @@ import React from 'react';
 import DoubleQuote from '../svg/social_logo/doubleQuote';
 import Image from 'next/image';
 import BlobSmall1 from '../svg/blobs/blob-small1';
+import BlobSmall2 from '../svg/blobs/blob-small2';
 
 function CardProfile({ index, name, subTitle, info, image }) {
   const isOdd = index % 2 !== 0;
@@ -22,8 +23,10 @@ function CardProfile({ index, name, subTitle, info, image }) {
           alt={`picture of ${name}`}
           sizes="(max-width: 350px),33vw"
         />
-
-        <BlobSmall1 />
+        <div className='pt-[2rem] md:pt-[3rem] md:pl-[1.5rem]'>
+            <BlobSmall2 />
+        </div>
+        
       </div>
       <div className="flex flex-col  justify-center mx-3 md:mx-10">
         <h2 className="text-main-color text-start font-Poppins text-base md:text-3xl lg:text-4xl font-semibold">
