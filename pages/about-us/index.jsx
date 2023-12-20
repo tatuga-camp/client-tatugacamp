@@ -58,39 +58,11 @@ const Index = ({ members }) => {
   const svgString = renderToString(Blob3());
   const svgDataURL = `data:image/svg+xml;base64,${btoa(svgString)}`;
 
-  const MaskText = {
-    position: 'absolute',
-    right: 0,
-    width: '7/12',
-    background: `url("${svgDataURL}")`,
-    backgroundSize: 'cover',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-  };
-
   return (
     <Layout>
       {/* Banner */}
-      <div
-        className="w-full h-[250px] md:h-[400px] my-0 relative bg-cover bg-center z-20"
-        style={{
-          backgroundImage: 'url("http://www.color-hex.com/palettes/26323.png")',
-        }}
-      >
-        <h2
-          className="font-Poppins text-5xl sm:text-7xl md:text-9xl  lg:text-[9rem] leading-none font-semibold
-                    absolute left-[10%] bottom-0 top-[83%] md:top-[275px]  z-10"
-          style={MaskText}
-        >
-          About us
-        </h2>
-
-        <h2
-          className="font-Poppins text-5xl sm:text-7xl md:text-9xl  lg:text-[9rem] leading-none font-semibold
-                    absolute left-[10%] bottom-0 top-[83%] md:top-[275px] text-white"
-        >
-          About us
-        </h2>
+      <div className="w-full mt-20 md:mt-0 relative bg-cover z-20">
+        <AboutusBanner />
       </div>
 
       <div className="flex flex-col items-center justify-center z-10 relative">
