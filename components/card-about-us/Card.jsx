@@ -1,13 +1,20 @@
 import React from 'react';
 import Empertise from '../svg/social_logo/empertise';
-
-function Card({ title, subTitle, info, button, index }) {
+import Image from 'next/image';
+import Link from 'next/link';
+function Card({ title, subTitle, info, button, index, image }) {
   const isOdd = index % 2 !== 0;
+
+  //prevent draging image
+  const handlePreventDragHandler = (e) => {
+    e.preventDefault();
+  };
   return (
-    <div className="max-w-[1240px] mx-auto py-10 grid lg:grid-cols-2 ">
+    <section className="max-w-[1240px] mx-auto py-10 grid lg:grid-cols-2 ">
       {/* Text */}
+
       <div className={`${isOdd ? 'lg:order-2' : ''}`}>
-        <div className="relative">
+        <div className="relative flex flex-col gap-1">
           <div className="absolute left-3 top-[-30px]">
             <Empertise />
           </div>
@@ -24,20 +31,31 @@ function Card({ title, subTitle, info, button, index }) {
           </div>
 
           {button && (
-            <button className="my-8 ml-10 bg-[#2C7CD1] text-white hover:bg-[#629ede] font-bold py-2 px-8 md:px-12 rounded-xl">
+            <Link
+              href={button}
+              className="my-8 ml-10 no-underline bg-[#2C7CD1] w-max
+               text-white hover:bg-[#629ede] font-bold py-2 px-8 md:px-12 rounded-xl"
+            >
               {'SEE MORE >>'}
-            </button>
+            </Link>
           )}
         </div>
       </div>
 
       {/* Image */}
-      <div
-        className={`my-6 flex justify-center items-center ${
-          isOdd ? 'lg:order-1' : ''
-        } `}
-      ></div>
-    </div>
+      <div className="w-40 h-40 md:w-60  md:h-60 lg:w-80 lg:h-72 bg-transparent  relative ">
+        <Image
+          onDragStart={handlePreventDragHandler}
+          src={image?.asset?.url}
+          fill
+          className="object-contain"
+          placeholder="blur"
+          blurDataURL={image?.asset?.metadata?.lqip}
+          alt={`picture of ${title}`}
+          sizes="(max-width: 350px),33vw"
+        />
+      </div>
+    </section>
   );
 }
 

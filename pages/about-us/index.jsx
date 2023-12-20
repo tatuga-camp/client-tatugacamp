@@ -9,11 +9,9 @@ import Phone from '../../components/svg/social_logo/Phone';
 import Tiktok from '../../components/svg/social_logo/Tiktok';
 import Instagram from '../../components/svg/social_logo/Instagram';
 import CardProfile from '../../components/card-about-us/CardProfile';
-
 import Blob3 from '../../components/svg/blobs/blob3';
 import Blob4 from '../../components/svg/blobs/blob4';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { renderToString } from 'react-dom/server';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -23,53 +21,34 @@ import 'swiper/css/grid';
 import { Pagination, Autoplay, Grid } from 'swiper/modules';
 import { sanityClient } from '../../sanity';
 
-const Index = ({ members }) => {
+const Index = ({ members, information }) => {
   const contacts = {
     name: 'Tatuga Camp',
     phone: '061-027-7960',
     email: 'tatugacamp@gmail.com',
   };
 
-  const information = [
-    {
-      title: 'Who are we?',
-      subTitle: 'พวกเราคือใคร',
-      info: 'พวกเราคือกลุ่มเพื่อนนักศึกษาครูที่เริ่มต้นจากการจัดกิจกรรมค่าย ภาษาอังกฤษ ในระหว่างเรียนมหาวิทยาลัย ด้วยความเชื่อเดียวกันที่ว่า “การเรียนอย่างมีความสุขคือการเรียนที่ดีที่สุด” พวกเราจึงรวมกลุ่มกัน ภายใต้ชื่อ “Tatuga Camp” เพื่อจัดค่ายภาษาอังกฤษผ่านรูปแบบกิจกรรม และเกมที่สนุกสนานมุ่งเน้นให้ผู้เรียนได้ใช้ทักษะจริง ด้วยความตั้งใจ ที่จะสร้างแรงบันดาลใจและจุดประกายไฟแห่งการเรียนรู้ให้แก่ผู้เรียน',
-      button: true,
-    },
-    {
-      title: 'Not just an English Camp',
-      subTitle: 'ไม่ใช่แค่ค่ายภาษาอังกฤษ',
-      info: 'พวกเราเติบโตขึ้นและเริ่มต้นการเป็น Tatuga Camp ด้วยค่ายภาษาอังกฤษ แต่พวกเรายังคงมีแนวคิดที่จะพัฒนาและมีความต้องการที่จะสร้างนวัตกรรมใหม่ ๆ ให้กับการศึกษา เพื่อตอบสนองความต้องการของ “ครู” และ “นักเรียน” เราจึงเริ่มพัฒนาสื่อการเรียนรู้ เช่น บอร์ดเกม การ์ดเกม “Array Around” และอื่น ๆ อีกมากมาย เพื่อเป็นสื่อการเรียนรู้ทั้งในห้องเรียนและนอกห้องเรียน ตลอดจนการพัฒนาเว็บไซต์เพื่อจัดการชั้นเรียนออนไลน์ “Tatuga Class” และ “Tatuga School” ด้วยความหวังที่จะพัฒนาแพลตฟอร์มการจัดการชั้นเรียน ที่เข้าใจบริบทการเรียนของประเทศไทย เพื่อความสะดวก รวดเร็ว และง่ายดาย ต่อครูผู้สอนและโรงเรียน ในการบริหารจัดการชั้นเรียนและข้อมูลต่าง ๆ อย่างครบครัน',
-      button: false,
-    },
-    {
-      title: 'Our goals',
-      subTitle: 'เป้าหมายของเรา',
-      info: 'พวกเรายังคงมุ่งมั่นที่จะพัฒนาแพลตฟอร์มของเราให้เป็นพื้นที่แห่งการเรียนรู้ และการแบ่งปันสำหรับทุกคน ในขณะเดียวกันเรายังต้องการเป็นหนึ่งในตัวช่วย ที่จะทำให้ครูและโรงเรียนทำงานได้อย่างสะดวกสบาย และง่ายดายขึ้น ผ่านพวกเรา Tatuga Camp และด้วยความตั้งใจที่จะสร้างแรงบันดาลใจ แห่งการเรียนรู้และเติมเต็มการเรียนรู้ของทุกคนให้เต็มไปด้วยความสุข และความสนุกสนาน เปรียบเสมือนดั่งการผจญภัย Tatuga Camp - where learning becomes an adventures',
-      button: false,
-    },
-  ];
-  console.log(members);
+  console.log(information);
 
   const contactCSS =
     'text-[0.7rem] md:text-[0.8rem] lg:text-xl mb-2 md:mb-4 flex items-center gap-1 md:gap-3 font-medium';
 
-  const svgString = renderToString(Blob3());
-  const svgDataURL = `data:image/svg+xml;base64,${btoa(svgString)}`;
-
   return (
     <Layout>
       {/* Banner */}
-      <div className="w-full mt-20 md:mt-0 relative bg-cover z-20">
-        <AboutusBanner />
-      </div>
 
       <div className="flex flex-col items-center justify-center z-10 relative">
         <Head>
           <title>about us</title>
         </Head>
-        <header></header>
+        <header className="relative w-full h-72">
+          <Image
+            src="/about-us-banner/about-us-banner.png"
+            alt="Picture of the author"
+            fill
+            className="object-cover"
+          />
+        </header>
         <main className="font-Poppins w-full max-w-7xl h-max flex flex-col justify-start items-center relative md:mt-0 mt-10 px-4 md:px-10 mb-10 ">
           {/* Contact */}
           <div className="w-full  flex items-start my-30 mx-20 mt-20">
@@ -122,9 +101,10 @@ const Index = ({ members }) => {
               <Card
                 key={index}
                 title={item.title}
-                subTitle={item.subTitle}
-                info={item.info}
-                button={item.button}
+                subTitle={item.subtitle}
+                info={item.description}
+                image={item.mainImage}
+                button={item.link}
                 index={index}
               />
             ))}
@@ -146,14 +126,13 @@ const Index = ({ members }) => {
           {/* upper 1024px show-all-component */}
           <div className="hidden lg:block lg:w-full lg:my-10 lg:mx-20 lg:px-10">
             {members.map((profile, index) => {
-              const isOdd = index % 2 !== 0;
               return (
                 <CardProfile
                   key={index}
                   name={profile.name}
                   subTitle={profile.position}
                   info={profile.quote}
-                  isOdd={isOdd}
+                  index={index}
                   image={profile.mainImage}
                 />
               );
@@ -174,8 +153,6 @@ const Index = ({ members }) => {
             modules={[Pagination, Autoplay]}
           >
             {members.map((profile, index) => {
-              const isOdd = index % 2 !== 0;
-
               return (
                 <SwiperSlide key={index}>
                   <div className="lg:hidden mt-10">
@@ -184,7 +161,6 @@ const Index = ({ members }) => {
                       subTitle={profile.position}
                       info={profile.quote}
                       index={index}
-                      isOdd={isOdd}
                       image={profile.mainImage}
                     />
                   </div>
@@ -226,10 +202,25 @@ export async function getStaticProps(content) {
       quote,
   }`;
 
+  const queryInformation = `*[_type == "about-us-information"]{
+    mainImage{
+        asset->{
+                url,
+                metadata
+              }
+        },
+    title,
+    subtitle,
+    description,
+    link,
+  }`;
+
   const members = await sanityClient.fetch(queryMembers);
+  const information = await sanityClient.fetch(queryInformation);
   return {
     props: {
       members,
+      information,
     },
   };
 }

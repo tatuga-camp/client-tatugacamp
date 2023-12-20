@@ -13,7 +13,6 @@ import Loading from '../components/loading/loading';
 import Layout from '../components/layout';
 import ReactPlayer from 'react-player';
 import BlobSmall1 from '../components/svg/blobs/blob-small1';
-import { Skeleton } from '@mui/material';
 import { BsFillPlayCircleFill } from 'react-icons/bs';
 import { PortableText } from '@portabletext/react';
 import { myPortableTextComponents } from '../data/portableContent';

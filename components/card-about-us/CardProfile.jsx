@@ -3,7 +3,9 @@ import DoubleQuote from '../svg/social_logo/doubleQuote';
 import Image from 'next/image';
 import BlobSmall1 from '../svg/blobs/blob-small1';
 
-function CardProfile({ isOdd, name, subTitle, info, image }) {
+function CardProfile({ index, name, subTitle, info, image }) {
+  const isOdd = index % 2 !== 0;
+
   return (
     <div
       className={`flex ${
