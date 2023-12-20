@@ -3,7 +3,6 @@ import category from './category';
 import post from './post';
 import author from './author';
 import HeroImages from './HeroImages';
-import grammar from './grammar';
 import taboo from './taboo';
 import categoryTaboo from './categoryTaboo';
 import members from './members';
@@ -15,6 +14,7 @@ import serviceCard from './serviceCard';
 import whatWeGotCards from './whatWeGotCards';
 import thanksSchools from './thanksSchools';
 import tatugaSchoolPosts from './tatugaSchoolPosts';
+import aboutUsInformaion from './about-us-information';
 export const schemaTypes = [
   post,
   author,
@@ -27,6 +27,7 @@ export const schemaTypes = [
   commonQuestions,
   whatsNews,
   announcement,
+  aboutUsInformaion,
   homepagePosts,
   serviceCard,
   whatWeGotCards,
