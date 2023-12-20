@@ -51,6 +51,7 @@ function UpdateAttendance({
 
   const [loading, setLoading] = useState(false);
   const [reCheck, setReCheck] = useState();
+
   const date = new Date(attendanceData?.date);
   const formattedDate = date.toLocaleDateString('th-TH', {
     day: '2-digit',
@@ -135,9 +136,10 @@ function UpdateAttendance({
 
   const handleUpdateAttendance = async () => {
     try {
+      console.log(reCheck);
       setLoading(() => true);
       Swal.fire({
-        title: 'กำลังลบ...',
+        title: 'กำลังโหลด',
         html: 'รอสักครู่นะครับ...',
         allowEscapeKey: false,
         allowOutsideClick: false,

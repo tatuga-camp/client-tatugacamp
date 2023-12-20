@@ -77,11 +77,10 @@ function Index({ user, error }) {
   const handleDownloadFile = async () => {
     try {
       await DownloadExcelScore({ classroomId: router.query.classroomId });
-      Swal.fire(
-        'ดาวโหลดสำเร็จ',
-        'ดาวโหลดไฟล์รายงานผลคะแนนเรียบร้อย',
-        'success',
-      );
+      Swal.fire({
+        title: 'ดาวโหลดสำเร็จ',
+        icon: 'success',
+      });
     } catch (err) {
       Swal.fire(
         'error',

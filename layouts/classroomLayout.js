@@ -31,6 +31,7 @@ import CardRandomStudent from '../components/random/cardRandomStudent';
 import WheelRandomStudent from '../components/random/wheelRandomStudent';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import StudentPasswordManagement from '../components/form/studentPasswordManagement';
+import Swal from 'sweetalert2';
 
 function Layout({ children, sideMenus, language, groups, checkUser }) {
   const router = useRouter();
@@ -89,6 +90,17 @@ function Layout({ children, sideMenus, language, groups, checkUser }) {
   const highestScorePlayer = coppyStudentsData?.sort(
     (a, b) => b.score.totalPoints - a.score.totalPoints,
   )[0];
+
+  useEffect(() => {
+    if (classroom.isError) {
+      Swal.fire({
+        title: 'เกิดข้อผิดพลาด',
+        html: 'คุณไม่มีสิทธิเข้าถึงข้อมูลของบัญชีอื่น',
+        icon: 'error',
+      });
+      router.push('/classroom/teacher');
+    }
+  }, [classroom.isError]);
 
   return (
     <main className="flex justify-center items-center flex-col md:gap-5 lg:gap-10 ">
