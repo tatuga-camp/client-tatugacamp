@@ -43,6 +43,7 @@ function AttendanceChecker({ setTriggerAttendance, students, language, user }) {
       enabled: false,
     },
   );
+
   useEffect(() => {
     setIsCheckStudent(() =>
       students?.data?.data?.map((student) => {

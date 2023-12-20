@@ -15,6 +15,7 @@ import {
   UnAssignWorkStudentService,
   UpdateAssignmentApi,
 } from '../../service/assignment';
+
 import Swal from 'sweetalert2';
 import { Box, Skeleton, TextField } from '@mui/material';
 import { loadingCount } from '../../data/loadingCount';
@@ -27,8 +28,6 @@ function UpdateAssignment({
   assignment,
   setTriggerUpdateAssignment,
   studentOnAssignments,
-  setShowAssignment,
-
   language,
 }) {
   const rounter = useRouter();
