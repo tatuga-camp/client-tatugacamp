@@ -22,6 +22,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/grid';
 
 import { Pagination, Autoplay, Grid } from 'swiper/modules';
+import AboutusBanner from '../../data/about-us-banner';
 
 const index = () => {
     const contacts = 
@@ -100,33 +101,12 @@ const index = () => {
 
     const contactCSS = 'text-[0.7rem] md:text-[0.8rem] lg:text-xl mb-2 md:mb-4 flex items-center gap-1 md:gap-3 font-medium'
 
-    const svgString = renderToString(Blob3());
-    const svgDataURL = `data:image/svg+xml;base64,${btoa(svgString)}`;
-
-    const MaskText =  {
-        position: 'absolute',
-        right: 0,
-        width: '7/12',
-        background: `url("${svgDataURL}")`,
-        backgroundSize: 'cover',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        
-      };
-    
     
   return (
     <Layout>
         {/* Banner */}
-        <div className='w-full h-[250px] md:h-[400px] my-0 relative bg-cover bg-center z-20' style={{ backgroundImage: 'url("http://www.color-hex.com/palettes/26323.png")' }} > 
-
-                    <h2 className='font-Poppins text-5xl sm:text-7xl md:text-9xl  lg:text-[9rem] leading-none font-semibold
-                    absolute left-[10%] bottom-0 top-[83%] md:top-[275px]  z-10' style={MaskText}  >About us</h2>
-                    
-                
-                    <h2 className='font-Poppins text-5xl sm:text-7xl md:text-9xl  lg:text-[9rem] leading-none font-semibold
-                    absolute left-[10%] bottom-0 top-[83%] md:top-[275px] text-white'>About us</h2>
-                
+        <div className='w-full mt-20 md:mt-0 relative bg-cover z-20' > 
+            <AboutusBanner/>
         </div>
                     
 
@@ -141,7 +121,7 @@ const index = () => {
                 
 
                 {/* Contact */}
-                <div className='w-full  flex items-start my-30 mx-20 mt-20'>
+                <div className='w-full  flex items-start mx-20 mt-5 md:mt-20'>
                     <section className='flex flex-col relative  md:w-[600px] lg:w-[800px] xl:w-max px-10 md:px-20 '>
                         <span className="text-4xl md:text-5xl lg:text-7xl  font-semibold text-[#2C7CD1] leading-tight ">
                             Contact Us
@@ -159,7 +139,7 @@ const index = () => {
                             <ul className='flex flex-col'>
                                 <li className= {contactCSS}><Phone/>{contacts.phone}</li>
                                 <li className= {contactCSS}><Mail/>{contacts.email}</li>
-                                <li className={contactCSS}><Instagram/>{contacts.name}</li>
+                                <li className={contactCSS}><Google/>{contacts.name}</li>
                             </ul>
                                 
                         </div>
