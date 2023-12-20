@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Blob1() {
+function BlobSmall1() {
   return (
     <svg
       width="100%"
@@ -20,4 +20,4 @@ function Blob1() {
   );
 }
 
-export default Blob1;
+export default BlobSmall1;

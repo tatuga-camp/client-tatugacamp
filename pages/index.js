@@ -12,7 +12,7 @@ import SearchAutoComplete from '../components/search/searchAutoComplete';
 import Loading from '../components/loading/loading';
 import Layout from '../components/layout';
 import ReactPlayer from 'react-player';
-import Blob1 from '../components/svg/blobs/blob1';
+import BlobSmall1 from '../components/svg/blobs/blob-small1';
 import { Skeleton } from '@mui/material';
 import { BsFillPlayCircleFill } from 'react-icons/bs';
 import { PortableText } from '@portabletext/react';
@@ -298,7 +298,7 @@ export default function Home({
                 </svg>
               </div>
               <div className="w-96 h-96 -z-40 relative">
-                <Blob1 />
+                <BlobSmall1 />
               </div>
             </div>
           </div>
