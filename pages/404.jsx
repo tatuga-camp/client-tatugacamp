@@ -12,7 +12,7 @@ function Custom404() {
         {/*Large screen */}
         <div className='md:flex md:items-center md:text-[20rem] md:font-bold md:text-[#2C7CD1] md:dark:text-white md:leading-none hidden'>
             <h2>4</h2>
-            <div className='relative w-[300px] h-[300px]'>
+            <div className='relative w-[18.75rem] h-[18.75rem]'>
               <Image
                   src={Logo404}
                   fill
@@ -25,7 +25,7 @@ function Custom404() {
 
         {/*Large screen */}
         <div className='flex flex-col items-center text-[8rem] font-bold text-[#2C7CD1] dark:text-white leading-none md:hidden'>
-            <div className='relative w-[240px] h-[240px]'>
+            <div className='relative w-[15rem] h-[15rem]'>
               <Image
                   src={Logo404}
                   fill
