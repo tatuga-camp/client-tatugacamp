@@ -38,7 +38,7 @@ const Index = ({ members, information }) => {
 
       <div className="flex flex-col items-center justify-center z-10 relative">
         <Head>
-          <title>about us</title>
+          <title>about us!</title>
         </Head>
         <header></header>
         <main className="font-Poppins w-full max-w-7xl h-max flex flex-col justify-start items-center relative md:mt-0 mt-10 px-4 md:px-10 mb-10 ">
