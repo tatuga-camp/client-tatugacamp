@@ -38,7 +38,46 @@ const Index = ({ members, information }) => {
 
       <div className="flex flex-col items-center justify-center z-10 relative">
         <Head>
-          <title>about us!</title>
+          <title>About us</title>
+            {/* metatag for SEO */}
+          <meta name="title" content="tatugacamp About us - เกี่ยวกับเรา" />
+          <meta name="description" content="จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ ด้วยเว็บไซต์จัดการชั้นเรียนTatuga Class - มากประสบการณ์ด้วยการจัดค่ายภาษาอังกฤษมากกว่า 30 โรงเรียน ผ่านเกมและกิจกรรม นวัตกรรมที่ทันสมัย" />
+    
+          {/* Facebook */}
+          <meta name="facebook-domain-verification" content="1ssqit5qo60k2zi8809tm53bag9t3y"
+          />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content="tatugacamp About us - เกี่ยวกับเรา" />
+          <meta property="og:description" content="จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ ด้วยเว็บไซต์จัดการชั้นเรียนTatuga Class - มากประสบการณ์ด้วยการจัดค่ายภาษาอังกฤษมากกว่า 30 โรงเรียน ผ่านเกมและกิจกรรม นวัตกรรมที่ทันสมัย" />
+          <meta property="og:image" content="https://storage.googleapis.com/tatugacamp.com/thumnail/WordCloud.app.jpg"/>
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="600" />
+
+          {/* <Twitter*/}
+          <meta property="twitter:title" content="tatugacamp About us - เกี่ยวกับเรา" />
+          <meta property="twitter:description" content="จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ ด้วยเว็บไซต์จัดการชั้นเรียนTatuga Class - มากประสบการณ์ด้วยการจัดค่ายภาษาอังกฤษมากกว่า 30 โรงเรียน ผ่านเกมและกิจกรรม นวัตกรรมที่ทันสมัย" />
+          <meta
+            property="og:image:secure_url"
+            content="https://storage.googleapis.com/tatugacamp.com/thumnail/WordCloud.app.jpg"
+          />
+          <meta
+            name="twitter:image:src"
+            content="https://storage.googleapis.com/tatugacamp.com/thumnail/WordCloud.app.jpg"
+          />
+
+          <meta name="google" content="nositelinkssearchbox" key="sitelinks" />
+          <meta name="google" content="notranslate" key="notranslate" />
+
+          <meta
+            name="keywords"
+            content="TaTuga camp, tatugacamp, tatuga camp, English, English camp, camp for learning English, card game, activities in classroom, กิจกรรมค่ายภาษาอังกฤษ, การ์ดเกมเพื่อการเรียนรู้, การ์ดเกม"
+          />
+          <meta
+            name="viewport"
+            content="width=device-width; initial-scale=1.0;"
+          />
+          <meta charSet="UTF-8" />
+
         </Head>
         <header></header>
         <main className="font-Poppins w-full max-w-7xl h-max flex flex-col justify-start items-center relative md:mt-0 mt-10 px-4 md:px-10 mb-10 ">
