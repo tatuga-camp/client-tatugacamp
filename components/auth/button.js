@@ -10,6 +10,7 @@ import { BsChevronCompactDown, BsChevronDoubleDown } from 'react-icons/bs';
 import { GetUser } from '../../service/user';
 import { setCookie, destroyCookie } from 'nookies';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import Link from 'next/link';
 
 function AuthButton() {
   const [dropDown, setDropDown] = useState(false);
@@ -42,16 +43,16 @@ function AuthButton() {
   if (!data?.data || data === 'Unauthorized' || isError) {
     return (
       <div>
-        <button
-          onClick={() => router.push('/auth/signIn')}
-          className="flex gap-x-2 justify-center items-center focus:outline-none text-base font-Inter appearance-none
+        <Link
+          href="/auth/signIn"
+          className="flex gap-x-2 no-underline justify-center items-center focus:outline-none text-base font-Inter appearance-none
            font-normal border-0 w-max h-auto bg-white  text-black hover:ring-2 ring-black  transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
         >
           <span>Login</span>
           <div className="flex items-center justify-center text-[#FFC800]">
             <FaUser size={23} />
           </div>
-        </button>
+        </Link>
       </div>
     );
   }
