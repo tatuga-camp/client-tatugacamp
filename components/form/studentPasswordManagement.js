@@ -8,7 +8,7 @@ import {
   setStudentPasswordService,
 } from '../../service/students';
 import Settings from '../svg/Setting';
-import { IoMdClose } from "react-icons/io";
+import { IoMdClose } from 'react-icons/io';
 
 function StudentPasswordManagement({
   setTriggerStudentPasswordManagement,
@@ -16,7 +16,6 @@ function StudentPasswordManagement({
 }) {
   const [studentsCheckbox, setStudentCheckbox] = useState();
   const [checkAll, setCheckAll] = useState(false);
-  console.log(studentsCheckbox);
   const handleCheckboxToStudent = () => {
     setStudentCheckbox(() => {
       return students?.data?.data?.map((student) => {
@@ -42,8 +41,8 @@ function StudentPasswordManagement({
     setStudentCheckbox((prev) => {
       return prev.map((student) => {
         if (student.id === studentId) {
-          student.checkbox = !student.checkbox;
-          return student;
+          // ensure that you handle the checkbox state correctly by using spread operator
+          return { ...student, checkbox: !student.checkbox };
         } else {
           return student;
         }
@@ -51,6 +50,7 @@ function StudentPasswordManagement({
     });
   };
 
+  // function นี้ยังไม่ได้ถูก call
   const handleStudentSummitSetPassword = async () => {
     try {
       Swal.fire({
@@ -70,7 +70,7 @@ function StudentPasswordManagement({
         await setStudentPasswordService({ studentId: student.id });
       }
       await students.refetch();
-      Swal.fire('สำเร็จ', '', 'success');
+      Swal.fire({ icon: 'success', timer: 500 });
     } catch (err) {
       Swal.fire(
         'Error!',
@@ -95,7 +95,7 @@ function StudentPasswordManagement({
       await resetStudentPasswordService({ studentId });
 
       await students.refetch();
-      Swal.fire('สำเร็จ', '', 'success');
+      Swal.fire({ icon: 'success', timer: 500 });
     } catch (err) {
       Swal.fire(
         'Error!',
@@ -139,18 +139,17 @@ function StudentPasswordManagement({
         <header className="p-3 pb-6  w-[90%]  flex justify-between items-center gap-2">
           <section className="flex justify-center items-center gap-3">
             <h1 className="text-2xl font-medium">จัดการรหัสผ่านนักเรียน</h1>
-            <div className='w-7 h-7'>
-              <Settings/>
+            <div className="w-7 h-7">
+              <Settings />
             </div>
-            
           </section>
-
-          <div className='flex gap-2'>
-              <button
+          <div className="flex gap-2">
+            <button
+              onClick={handleStudentSummitSetPassword}
               className="w-max px-10 py-2 rounded-md text-white hover:bg-green-600
               transition duration-100  active:scale-110 hover:drop-shadow-md
             bg-[#7CDB8C] font-Kanit text-lg"
-              >
+            >
               ยืนยัน
             </button>
 
@@ -158,16 +157,15 @@ function StudentPasswordManagement({
               className="w-max px-6 py-2 border-solid border-[1.5px] rounded-md text-[#989898] hover:bg-[#989898]
               transition duration-100  active:scale-110 hover:drop-shadow-md hover:text-white hover:border-gray-400
              font-Kanit text-lg flex flex-row items-center justify-between gap-3"
-             onClick={() => {
-              document.body.style.overflow = 'auto';
-              setTriggerStudentPasswordManagement(() => false);
-            }}
+              onClick={() => {
+                document.body.style.overflow = 'auto';
+                setTriggerStudentPasswordManagement(() => false);
+              }}
             >
               <IoMdClose />
               ปิด
             </button>
           </div>
-          
         </header>
         <main className="w-full h-full overflow-auto flex justify-center ">
           <table className="w-[90%]">
@@ -203,6 +201,7 @@ function StudentPasswordManagement({
                         <Image
                           src={student?.picture}
                           fill
+                          alt="student picture"
                           className="object-cover "
                           sizes="(max-width: 768px) 100vw, 33vw"
                           blurDataURL={blurDataURL}
@@ -210,8 +209,10 @@ function StudentPasswordManagement({
                       </div>
                       {student.firstName + ' ' + student?.lastName}
                     </td>
-                    
-                    <td className="w-40 text-center text-[#F55E00]">{student?.score?.totalPoints || 0}</td>
+
+                    <td className="w-40 text-center text-[#F55E00]">
+                      {student?.score?.totalPoints || 0}
+                    </td>
                     <td className="w-52 flex items-center justify-center">
                       {student?.password || student.resetPassword ? (
                         <button
@@ -245,9 +246,11 @@ function StudentPasswordManagement({
         </main>
       </section>
       {/* Backdrop effect */}
-      <div className='w-[77%] h-[79%] backdrop-blur-sm bg-white/30 flex p-5 rounded-3xl flex-col justify-center items-center 
-      absolute z-10 drop-shadow-lg'>
-      </div>
+      {/* พี่ลบ backdrop-blur ออกเนื่องจากมันทำให้ perfomance ของตัวbrowser ลดลง */}
+      <div
+        className="w-[77%] h-[79%] bg-white/30 flex p-5 rounded-3xl flex-col justify-center items-center 
+      absolute z-10 drop-shadow-lg"
+      ></div>
       <footer
         onClick={() => {
           document.body.style.overflow = 'auto';
