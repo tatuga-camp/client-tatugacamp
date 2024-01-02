@@ -7,6 +7,8 @@ import {
   resetStudentPasswordService,
   setStudentPasswordService,
 } from '../../service/students';
+import Settings from '../svg/Setting';
+import { IoMdClose } from "react-icons/io";
 
 function StudentPasswordManagement({
   setTriggerStudentPasswordManagement,
@@ -133,30 +135,47 @@ function StudentPasswordManagement({
 
   return (
     <div className="w-screen font-Kanit h-screen fixed z-50 top-0 bottom-0 right-0 left-0 flex items-center justify-center">
-      <section className="w-9/12 h-4/6 bg-white flex p-5 rounded-2xl flex-col justify-start items-start">
-        <header className="p-3 border-b-2 border-slate-500 w-full  flex justify-between items-center gap-2">
-          <section className="flex justify-center items-center gap-2">
+      <section className="w-[75%] h-[75%] bg-white flex p-5 rounded-2xl flex-col justify-center items-center z-20">
+        <header className="p-3 pb-6  w-[90%]  flex justify-between items-center gap-2">
+          <section className="flex justify-center items-center gap-3">
             <h1 className="text-2xl font-medium">จัดการรหัสผ่านนักเรียน</h1>
-            <div className="flex text-3xl justify-center item-center">
-              <MdManageAccounts />
+            <div className='w-7 h-7'>
+              <Settings/>
             </div>
+            
           </section>
-          <button
-            onClick={handleStudentSummitSetPassword}
-            className="w-max px-10 py-1 rounded-full text-white hover:bg-green-600
-             transition duration-100  active:scale-110 hover:drop-shadow-md
-          bg-green-500 font-Kanit text-lg"
-          >
-            ยืนยัน
-          </button>
+
+          <div className='flex gap-2'>
+              <button
+              className="w-max px-10 py-2 rounded-md text-white hover:bg-green-600
+              transition duration-100  active:scale-110 hover:drop-shadow-md
+            bg-[#7CDB8C] font-Kanit text-lg"
+              >
+              ยืนยัน
+            </button>
+
+            <button
+              className="w-max px-6 py-2 border-solid border-[1.5px] rounded-md text-[#989898] hover:bg-[#989898]
+              transition duration-100  active:scale-110 hover:drop-shadow-md hover:text-white hover:border-gray-400
+             font-Kanit text-lg flex flex-row items-center justify-between gap-3"
+             onClick={() => {
+              document.body.style.overflow = 'auto';
+              setTriggerStudentPasswordManagement(() => false);
+            }}
+            >
+              <IoMdClose />
+              ปิด
+            </button>
+          </div>
+          
         </header>
-        <main className="w-full h-full overflow-auto ">
-          <table className="w-full">
+        <main className="w-full h-full overflow-auto flex justify-center ">
+          <table className="w-[90%]">
             <thead className="sticky top-0 z-20 ">
-              <tr className="flex text-base font-normal gap-2 px-5 items-center w-full bg-slate-100 py-1 ">
-                <td className="w-96 text-left">ชื่อ</td>
-                <td className="w-32">เลขที่</td>
-                <td className="w-32">คะแนนพิเศษ</td>
+              <tr className="flex text-sm font-normal gap-2 px-5 items-center w-full bg-[#EAF3FF] py-3 text-[#2C7CD1]">
+                <td className="w-20 text-center ">เลขที่</td>
+                <td className="w-72 text-center">ชื่อ</td>
+                <td className="w-40 text-center">คะแนนพิเศษ</td>
                 <td
                   onClick={() => {
                     if (checkAll === false) {
@@ -165,7 +184,7 @@ function StudentPasswordManagement({
                       handleCheckboxAllFalse();
                     }
                   }}
-                  className="w-32 active:font-semibold select-none text-center hover:scale-105 transition duration-100 cursor-pointer"
+                  className="w-52 active:font-semibold select-none text-center hover:scale-105 transition duration-100 cursor-pointer"
                 >
                   อนุญาตรหัสผ่าน / เลือกทั้งหมด
                 </td>
@@ -175,24 +194,25 @@ function StudentPasswordManagement({
               {studentsCheckbox?.map((student) => {
                 return (
                   <tr
-                    className="flex gap-2 my-2 px-5 text-base font-Kanit items-center w-full h-12"
+                    className="flex gap-2 my-2 px-5 text-base font-Kanit items-center w-full h-14 text-center "
                     key={student?.id}
                   >
-                    <td className="w-96 text-left flex justify-start items-center gap-2">
-                      <div className="w-10 h-10 rounded-lg ring-2 ring-black relative">
+                    <td className="w-20 text-[#989898]">{student?.number}</td>
+                    <td className="w-72 pl-5 text-left flex justify-start items-center gap-4">
+                      <div className="w-12 h-12 rounded-full border-solid border-2 relative">
                         <Image
                           src={student?.picture}
                           fill
-                          className="object-cover"
+                          className="object-cover "
                           sizes="(max-width: 768px) 100vw, 33vw"
                           blurDataURL={blurDataURL}
                         />
                       </div>
                       {student.firstName + ' ' + student?.lastName}
                     </td>
-                    <td className="w-32">{student?.number}</td>
-                    <td className="w-32">{student?.score?.totalPoints || 0}</td>
-                    <td className="w-32 flex items-center justify-center">
+                    
+                    <td className="w-40 text-center text-[#F55E00]">{student?.score?.totalPoints || 0}</td>
+                    <td className="w-52 flex items-center justify-center">
                       {student?.password || student.resetPassword ? (
                         <button
                           onClick={() =>
@@ -200,8 +220,9 @@ function StudentPasswordManagement({
                               studentId: student.id,
                             })
                           }
-                          className="w-full p-2 bg-red-500 text-white rounded-md hover:bg-red-600
-                         transition duration-100"
+                          className="w-[70%] p-2 text-[#B00000] rounded-md border-[1.5px] border-solid border-[#B00000] bg-[#B00000] bg-opacity-20 
+                          hover:bg-red-600 hover:text-white
+                          transition duration-100"
                         >
                           ยกเลิก
                         </button>
@@ -223,6 +244,10 @@ function StudentPasswordManagement({
           </table>
         </main>
       </section>
+      {/* Backdrop effect */}
+      <div className='w-[77%] h-[79%] backdrop-blur-sm bg-white/30 flex p-5 rounded-3xl flex-col justify-center items-center 
+      absolute z-10 drop-shadow-lg'>
+      </div>
       <footer
         onClick={() => {
           document.body.style.overflow = 'auto';
