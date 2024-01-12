@@ -21,8 +21,8 @@ import Link from 'next/link';
 
 function Index({ commonQuestions, announcement }) {
   const router = useRouter();
-  const usersNumber = 12.1;
-  const studentNumber = 394;
+  const usersNumber = 17.4;
+  const studentNumber = 571;
   const [loading, setLoading] = useState(true);
   const footerData = `ห้องเรียนจาก Tatuga class หรือ ทาทูก้าคลาส ที่จะพาคุณครูไปสู่การบริหารห้องเรียนอย่างสะดวกและสนุก กับ tatuga class TaTuga Class Classroom Management for Everyone จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ สะดวก และ รวดเร็ว - tatuga class`;
   const [domLoaded, setDomLoaded] = useState(false);
