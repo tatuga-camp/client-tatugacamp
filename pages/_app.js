@@ -8,6 +8,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import NextTopLoader from 'nextjs-toploader';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
 
       <Elements stripe={stripePromise}>
         <NextTopLoader showSpinner={false} />
+
         <Component {...pageProps} />
       </Elements>
       <ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
