@@ -12,10 +12,12 @@ import Swal from 'sweetalert2';
 import { currentBrowser } from '../../../utils/platforms';
 import Loading from '../../../components/loading/loading';
 import Head from 'next/head';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 function Index() {
   const [brower, setBrower] = useState();
   const router = useRouter();
+  const [allowByCAPTCHA, setAllowByCAPTCHA] = useState(false);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setBrower(currentBrowser(window));
@@ -188,6 +190,10 @@ function Index() {
     );
   };
 
+  const handleOnChangeCAPTCHA = (value) => {
+    setAllowByCAPTCHA(() => true);
+  };
+
   return (
     <Layout>
       <Head>
@@ -205,11 +211,11 @@ function Index() {
         <meta charSet="UTF-8" />
       </Head>
       <div
-        className="font-sans h-full md:h-screen py-40 w-full bg-[url('/background-Auth.svg')] bg-no-repeat bg-cover
+        className="font-sans h-full min-h-screen md:h-max w-full bg-[url('/background-Auth.svg')] bg-no-repeat bg-cover
      flex flex-col justify-center items-center"
       >
         <div
-          className="w-11/12 p-2 md:p-0 md:w-96  md:h-max md:pb-20 border-2 bg-white border-black flex flex-col justify-start items-center 
+          className="w-11/12 p-2 md:p-0 md:w-96 my-20 pb-5  md:h-max md:pb-10 border-2 bg-white border-black flex flex-col justify-start items-center 
         md:border-solid broder-black relative rounded-xl bg-transparent md:bg-white  "
         >
           <div
@@ -225,15 +231,15 @@ function Index() {
           </div>
           <div className="mt-20">
             <span className="font-sans font-bold text-2xl  tracking-widest">
-              sign up
+              Create Account
             </span>
           </div>
           <form
             onSubmit={handleSubmit}
             className=" w-80 flex flex-col justify-center items-center"
           >
-            <div className="flex flex-col relative">
-              <label className="font-sans font-normal">email</label>
+            <div className="flex flex-col  relative">
+              <label className="font-sans font-normal">Email</label>
               <input
                 required
                 className="w-60 h-7 rounded-md border-none bg-[#FFC800] focus:bg-[#FFC800] active:bg-[#FFC800]  pl-10 
@@ -257,53 +263,52 @@ function Index() {
                 <FaUserCircle />
               </div>
             </div>
-            <div className="grid grid-flow-col  justify-center items-center gap-x-2 w-full ">
-              <div className="flex flex-col relative">
-                <label className="font-sans font-normal">first name</label>
-                <input
-                  required
-                  className="w-32 h-7 ring-2 appearance-none ring-black rounded-md border-none bg-[#FFC800] 
-                placeholder:italic placeholder:font-light pl-4 "
-                  type="text"
-                  name="firstName"
-                  placeholder="type your first"
-                  value={input.firstName}
-                  onChange={onInputChange}
-                  onBlur={validateInput}
-                />
-                {error.firstName && (
-                  <span className=" absolute right-0 top-1 text-red-400 font-light text-xs ">
-                    {error.firstName}
-                  </span>
-                )}
-              </div>
 
-              <div className="grid flex-col relative">
-                <label className="font-sans font-normal">last name</label>
-                <input
-                  required
-                  className=" h-7 w-32 ring-2 appearance-none ring-black rounded-md border-none bg-[#FFC800] 
-                placeholder:italic placeholder:font-light pl-4 "
-                  type="text"
-                  name="lastName"
-                  placeholder="type your last name"
-                  value={input.lastName}
-                  onChange={onInputChange}
-                  onBlur={validateInput}
-                />
-                {error?.lastName && (
-                  <span className=" absolute right-0 top-1 text-red-400 font-light text-xs">
-                    {error?.lastName}
-                  </span>
-                )}
-              </div>
+            <div className="flex flex-col relative">
+              <label className="font-sans font-normal">First name</label>
+              <input
+                required
+                className="w-60 h-7 ring-2 ring-black rounded-md border-none bg-[#FFC800] pl-10 
+                placeholder:italic placeholder:font-light"
+                type="text"
+                name="firstName"
+                placeholder="type your first"
+                value={input.firstName}
+                onChange={onInputChange}
+                onBlur={validateInput}
+              />
+              {error.firstName && (
+                <span className=" absolute right-0 top-1 text-red-400 font-light text-xs ">
+                  {error.firstName}
+                </span>
+              )}
+            </div>
+
+            <div className="flex flex-col relative mt-2">
+              <label className="font-sans font-normal">Last name</label>
+              <input
+                required
+                className="w-60 h-7 ring-2 ring-black rounded-md border-none bg-[#FFC800] pl-10 
+                placeholder:italic placeholder:font-light"
+                type="text"
+                name="lastName"
+                placeholder="type your last name"
+                value={input.lastName}
+                onChange={onInputChange}
+                onBlur={validateInput}
+              />
+              {error?.lastName && (
+                <span className=" absolute right-0 top-1 text-red-400 font-light text-xs">
+                  {error?.lastName}
+                </span>
+              )}
             </div>
 
             <div className="flex flex-col relative mt-2">
               <label className="font-sans font-normal">Password</label>
               <input
                 required
-                className="w-60 h-7  appearance-none ring-black rounded-md border-none bg-[#FFC800] pl-10 
+                className="w-60 h-7 ring-2 ring-black rounded-md border-none bg-[#FFC800] pl-10 
                 placeholder:italic placeholder:font-light"
                 type="password"
                 name="password"
@@ -349,6 +354,12 @@ function Index() {
                 <HiLockClosed />
               </div>
             </div>
+            <div className="mt-10">
+              <ReCAPTCHA
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY}
+                onChange={handleOnChangeCAPTCHA}
+              />
+            </div>
             <div className="w-full text-right my-3">
               <Link href="/auth/signIn">
                 <span
@@ -359,8 +370,12 @@ function Index() {
                 </span>
               </Link>
             </div>
-            {!error.confirmPassword && !error.password && !error.email ? (
+            {!error.confirmPassword &&
+            !error.password &&
+            !error.email &&
+            allowByCAPTCHA ? (
               <button
+                disabled={!allowByCAPTCHA}
                 className="w-full border-none h-9 mt-2 font-Kanit rounded-full bg-[#2C7CD1] hover:text-black text-white font-bold
               text-md cursor-pointer hover:bg-[#FFC800] active:border-2 active:text-black active:border-gray-300
                active:border-solid  focus:border-2 
@@ -382,7 +397,7 @@ function Index() {
             {brower !== 'scoial media browser' ? (
               <a
                 onClick={GetAccesTokenGoogle}
-                className="w-full  h-9 mt-2 rounded-full bg-white border-black text-black font-sans font-bold
+                className="w-full no-underline  h-9 mt-2 rounded-full bg-white border-black text-black font-sans font-bold
               text-md cursor-pointer border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
                 active:border-2 active:text-black active:border-gray-300
                active:border-solid  focus:border-2 
@@ -395,7 +410,7 @@ function Index() {
               </a>
             ) : (
               <a
-                className="w-full  h-9 mt-2 rounded-full bg-gray-200 text-black font-sans font-bold
+                className="w-full no-underline  h-9 mt-2 rounded-full bg-gray-200 text-black font-sans font-bold
             text-md cursor-pointer border-2 border-solid hover:scale-110 transition duration-200  ease-in-out
               active:border-2 active:text-black active:border-gray-300
              active:border-solid  focus:border-2 
