@@ -1,7 +1,7 @@
 import axios from "axios";
 import Error from "next/error";
 import { parseCookies } from "nookies";
-import { Classroom } from "../models";
+import { Classroom, Student } from "../models";
 
 type InputCreateClassroomService = {
   title: string;
@@ -132,8 +132,8 @@ export async function AllowStudentDeleteWorkService({
 type InputGetAllClassroomsService = {
   page: number;
 };
-type ResponseGetAllClassroomsService = {
-  classrooms: Classroom[] | null;
+export type ResponseGetAllClassroomsService = {
+  classrooms: (Classroom & { students: Student[] | [] })[] | null;
   classroomsTotal: number;
   currentPage: number;
   totalPages: number;
@@ -162,18 +162,18 @@ export async function GetAllClassroomsService({
   }
 }
 
-type InputGetAllAchievedClassrooms = {
+type InputGetAllAchievedClassroomsService = {
   page: number;
 };
-type ResponseGetAllAchievedClassrooms = {
+type ResponseGetAllAchievedClassroomsService = {
   classrooms: Classroom[] | null;
   classroomsTotal: number;
   currentPage: number;
   totalPages: number;
 };
-export async function GetAllAchievedClassrooms({
+export async function GetAllAchievedClassroomsService({
   page,
-}: InputGetAllAchievedClassrooms): Promise<ResponseGetAllAchievedClassrooms> {
+}: InputGetAllAchievedClassroomsService): Promise<ResponseGetAllAchievedClassroomsService> {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
@@ -254,13 +254,13 @@ export async function AchieveClassroomService({
   }
 }
 
-type InputUnAchieveClassroom = {
+type InputUnAchieveClassroomService = {
   classroomId: string;
 };
-type ResponseUnAchieveClassroom = Classroom;
-export async function UnAchieveClassroom({
+type ResponseUnAchieveClassroomService = Classroom;
+export async function UnAchieveClassroomService({
   classroomId,
-}: InputUnAchieveClassroom): Promise<ResponseUnAchieveClassroom> {
+}: InputUnAchieveClassroomService): Promise<ResponseUnAchieveClassroomService> {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;

@@ -5,3 +5,5 @@ export * from "./whatWeGotCards.model";
 export * from "./thanksSchools.model";
 export * from "./tatugaSchoolPost.model";
 export * from "./taboo.model";
+export * from "./commonQuestion.model";
+export * from "./announcement.model";

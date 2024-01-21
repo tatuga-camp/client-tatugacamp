@@ -1,0 +1,14 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Apply the animation to a specific element */
+.element-to-fade-in {
+  animation-name: fadeIn;
+  animation-duration: 2s; /* Adjust the time for slower or faster fade-in */
+}

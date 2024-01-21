@@ -7,6 +7,7 @@ import { FaGamepad, FaShoppingCart } from "react-icons/fa";
 import Heart from "../svgs/Heart";
 import { urlForImage } from "../../sanity/lib/image";
 import { Image as ImageSanity } from "sanity";
+import { blurDataURL } from "../../data/student/blurDataURL";
 
 type ActivityCardProps = {
   price: number;
@@ -60,12 +61,12 @@ function ActivityCard({
         before:whitespace-pre before:flex before:justify-center before:items-center "
         >
           <Image
-            src={urlForImage(image)}
+            src={urlForImage(image).url()}
             alt={title}
             className=" w-full h-full object-contain z-10 group-hover:scale-125  ease-in-out transition duration-300"
             placeholder="blur"
             quality={40}
-            blurDataURL="LURfXxtP.8RRtRoLofWq?^aMMxo|"
+            blurDataURL={blurDataURL}
             fill
             sizes="(max-width: 768px) 100vw"
           />

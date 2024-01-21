@@ -15,7 +15,7 @@ export type User = {
   IsResetPassword: boolean;
   isSchoolAccount: boolean;
   lastActiveAt: string;
-  language: "Thai" | "English";
+  language: Language;
   plan: "FREE" | "TATUGA-STARTER" | "TATUGA-PREMIUM";
   role: "TEACHER" | "SCHOOL";
   isDisabled: boolean;
@@ -27,6 +27,8 @@ export type User = {
   subscriptions: string;
   schoolUser: SchoolUser | null;
 };
+
+export type Language = "Thai" | "English";
 
 export type SchoolUser = {
   id: string;

@@ -10,7 +10,7 @@ type InputCreateFeedbackService = {
     unAuth?: boolean;
   };
   tag: string;
-  userId: string;
+  userId?: string;
 };
 type ResponseCreateFeedbackService = Feedback;
 export async function CreateFeedbackService({

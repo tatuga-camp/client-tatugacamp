@@ -3,10 +3,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "@animxyz/core";
-@include xyz-all;
-@include xyz-core;
-@include xyz-utilities;
 
 ins.adsbygoogle[data-ad-status="unfilled"] {
   display: none !important;

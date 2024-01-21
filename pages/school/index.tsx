@@ -13,7 +13,7 @@ import MainFooter from "../../components/footers/mainFooter";
 import {
   GetAllTatugaSchoolPostsSanityService,
   ResponseGetAllTatugaSchoolPostsSanityService,
-} from "../../sanity/services/tatugaSchoolPosts.service";
+} from "../../sanity/services/tatugaSchoolPosts";
 import { GetStaticProps } from "next";
 
 const tags = [

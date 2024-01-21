@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import "../styles/taboo.css";
 import "../styles/auth.css";
 import "../styles/card.css";
+import "../styles/animation.css";
 import Script from "next/script";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";

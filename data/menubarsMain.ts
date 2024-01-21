@@ -1,27 +1,22 @@
+import { FaSchool } from "react-icons/fa";
 import { FiSettings, FiArrowLeftCircle } from "react-icons/fi";
 import { IconType } from "react-icons/lib";
+import { MdSubscriptions } from "react-icons/md";
 
-export type MenubarsMain = (
-  | {
-      title: string;
-      icon: string;
-      url: string;
-    }
-  | {
-      title: string;
-      icon: IconType;
-      url: string;
-    }
-)[];
+export type MenubarsMain = {
+  title: string;
+  icon: IconType;
+  url: string;
+}[];
 export const sideMenusThai = [
   {
     title: "โรงเรียน",
-    icon: "🏫",
+    icon: FaSchool,
     url: "/classroom/teacher",
   },
   {
     title: "สมัครสมาชิก",
-    icon: "🥰",
+    icon: MdSubscriptions,
     url: "/classroom/subscriptions",
   },
   {
@@ -38,12 +33,12 @@ export const sideMenusThai = [
 export const sideMenusEnglish = [
   {
     title: "school",
-    icon: "🏫",
+    icon: FaSchool,
     url: "/classroom/teacher",
   },
   {
     title: "subscriptions",
-    icon: "🥰",
+    icon: MdSubscriptions,
     url: "/classroom/subscriptions",
   },
   {
