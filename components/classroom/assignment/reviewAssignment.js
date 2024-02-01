@@ -28,8 +28,11 @@ import {
   PostComment,
 } from '../../../service/comment';
 import { useRouter } from 'next/router';
-import ReactPlayer from 'react-player';
 import { Editor } from '@tinymce/tinymce-react';
+import { BsFileEarmarkCode } from 'react-icons/bs';
+import { FaFileAudio, FaRegFilePdf } from 'react-icons/fa';
+import { IoDocumentText } from 'react-icons/io5';
+import { FcVideoFile } from 'react-icons/fc';
 
 const MAX_DECIMAL_PLACES = 2; // Maximum number of decimal places allowed
 
@@ -964,85 +967,105 @@ focus:border-solid"
                         'Please select some student'}
                     </div>
                   )}
-                  <div className="flex flex-col gap-5 justify-start items-center">
+                  <div className="flex px-10 flex-col gap-5 justify-start items-center">
                     {files.map((file, index) => {
+                      const fileName = file.url.split('/').pop();
+
                       if (file.fileType === 'pdf') {
                         return (
                           <div
+                            onClick={() => window.open(file.url, '_blank')}
                             key={index}
-                            className="w-full flex justify-center"
+                            className="w-full select-none relative flex justify-start px-5 
+                               drop-shadow-sm cursor-pointer  
+                               items-center gap-2 h-10 bg-sky-100 hover:scale-105 transition duration-75
+                              ring-2 ring-green-500 rounded-xl"
                           >
-                            <embed
-                              src={file.url}
-                              type="application/pdf"
-                              frameBorder="0"
-                              scrolling="auto"
-                              height="500px"
-                              width="80%"
-                            ></embed>
+                            <div className="flex items-center justify-center text-green-700">
+                              <FaRegFilePdf />
+                            </div>
+                            <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                              {fileName}
+                            </span>
                           </div>
                         );
-                      }
-                      if (file.fileType === 'docx') {
+                      } else if (file.fileType === 'docx') {
                         return (
                           <div
+                            onClick={() => window.open(file.url, '_blank')}
                             key={index}
-                            className="w-full flex items-center flex-col  justify-center"
+                            className="w-full  select-none relative flex justify-start px-5
+                           drop-shadow-sm cursor-pointer  items-center gap-2 h-10 bg-blue-100 
+                           hover:scale-105 transition duration-75
+                        ring-2 ring-blue-500 rounded-xl"
                           >
-                            {loadingIframe && (
-                              <div className="relative w-full">
-                                <div className=" flex-col w-full gap-2 bg-slate-200 h-96 animate-pulse flex justify-center items-center"></div>
-                                <div
-                                  className="absolute flex flex-col
-                           top-0 bottom-0 justify-center items-center right-0 left-0 m-auto "
-                                >
-                                  <a
-                                    target="_blank"
-                                    href={file.url}
-                                    className="w-60 cursor-pointer hover:scale-105 transition duration-100
-                               text-center h-8 no-underline font-semibold text-lg
-                           px-5 bg-blue-400 py-1 rounded-full text-white"
-                                  >
-                                    คลิกเพื่อดาวน์โหลด
-                                  </a>
-                                  กำลังแสดงไฟล์ DOC ...
-                                </div>
-                              </div>
-                            )}
-                            <iframe
-                              onLoad={handleIframeLoading}
-                              width={loadingIframe ? '0px' : '50%'}
-                              height={loadingIframe ? '0px' : '500px'}
-                              src={`https://docs.google.com/gview?url=${file.url}&embedded=true`}
-                            ></iframe>
+                            <div className="flex items-center justify-center text-blue-700">
+                              <IoDocumentText />
+                            </div>
+                            <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                              {fileName}
+                            </span>
                           </div>
                         );
-                      }
-                      if (
+                      } else if (
                         file.fileType === 'mp4' ||
                         file.fileType === 'mov' ||
                         file.fileType === 'MOV'
                       ) {
                         return (
                           <div
+                            onClick={() => window.open(file.url, '_blank')}
                             key={index}
-                            className="w-full flex  justify-center"
+                            className="w-full select-none relative flex justify-start px-5
+                       drop-shadow-sm cursor-pointer  items-center gap-2 h-10 bg-red-100 
+                       hover:scale-105 transition duration-75
+                    ring-2 ring-red-500 rounded-xl"
                           >
-                            <ReactPlayer playsinline controls url={file.url} />
+                            <div className="flex items-center justify-center text-red-700">
+                              <FcVideoFile />
+                            </div>
+                            <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                              {fileName}
+                            </span>
                           </div>
                         );
-                      }
-                      if (file.fileType === 'mp3' || file.fileType === 'aac') {
+                      } else if (
+                        file.fileType === 'mp3' ||
+                        file.fileType === 'aac'
+                      ) {
                         return (
                           <div
+                            onClick={() => window.open(file.url, '_blank')}
                             key={index}
-                            className="w-full flex  justify-center"
+                            className="w-full select-none relative flex justify-start px-5
+                             drop-shadow-sm cursor-pointer  items-center gap-2 h-10 bg-pink-100 
+                             hover:scale-105 transition duration-75
+                          ring-2 ring-pink-500 rounded-xl"
                           >
-                            <audio
-                              src={file.url}
-                              controls={true}
-                              autoPlay={false}
-                            />
+                            <div className="flex items-center justify-center text-pink-700">
+                              <FaFileAudio />
+                            </div>
+                            <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                              {fileName}
+                            </span>
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div
+                            onClick={() => window.open(file.url, '_blank')}
+                            key={index}
+                            className="w-full select-none relative flex justify-start px-5
+                           drop-shadow-sm cursor-pointer  items-center gap-2 h-10 bg-purple-100 
+                           hover:scale-105 transition duration-75
+                        ring-2 ring-purple-500 rounded-xl"
+                          >
+                            <div className="flex items-center justify-center text-purple-700">
+                              <BsFileEarmarkCode />
+                            </div>
+                            <span className="w-max max-w-[10rem] md:max-w-[20rem] truncate text-sm ">
+                              {fileName}
+                            </span>
                           </div>
                         );
                       }
