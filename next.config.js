@@ -30,18 +30,25 @@ const nextConfig = {
     //largePageDataBytes: 128 * 1000, // 128KB by default
     largePageDataBytes: 200 * 1000,
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
-    domains: [
-      'source.unsplash.com',
-      'scontent.fnak3-1.fna.fbcdn.net',
-      'cdn.sanity.io',
-      'rickandmortyapi.com',
-      'images.unsplash.com',
-      'n14jpqkv.api.sanity.io',
-      'lh3.googleusercontent.com',
-      'storage.googleapis.com',
-      'sp-ao.shortpixel.ai',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'n14jpqkv.api.sanity.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
     ],
   },
 };
