@@ -110,7 +110,7 @@ function Assignment({ error, user }) {
       </Head>
       <Layout checkUser={user} sideMenus={sideMenus} language={user.language} />
       <div className="flex w-full justify-center items-center">
-        <div className="min-w-[25rem] w-max">
+        {/* <div className="min-w-[25rem] w-max">
           {user.plan === 'FREE' && (
             <AdBanner
               data-ad-slot="6344379087"
@@ -118,7 +118,7 @@ function Assignment({ error, user }) {
               data-full-width-responsive="true"
             />
           )}
-        </div>
+        </div> */}
       </div>
       <header className="flex w-full border-b-2 border-black/50 py-5 font-Kanit justify-start">
         <section className="pl-20 gap-5 text-xl flex flex-col font-semibold">

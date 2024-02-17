@@ -109,7 +109,7 @@ function Index({ error, user }) {
         <title>attendance</title>
       </Head>
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus}>
-        <div className="flex w-full justify-center items-center">
+        {/* <div className="flex w-full justify-center items-center">
           <div className="min-w-[25rem] w-max">
             {user.plan === 'FREE' && (
               <AdBanner
@@ -119,7 +119,7 @@ function Index({ error, user }) {
               />
             )}
           </div>
-        </div>
+        </div> */}
         <div className="w-full h-full mt-10 flex flex-col justify-center items-center pb-10 ">
           <Popover>
             {({ open }) => (
