@@ -145,7 +145,7 @@ function Index({ user, error }) {
         <title>overall score</title>
       </Head>
       <Layout checkUser={user} language={user.language} sideMenus={sideMenus} />
-      <div className="flex w-full justify-center items-center">
+      {/* <div className="flex w-full justify-center items-center">
         <div className="min-w-[25rem] w-max">
           {user.plan === 'FREE' && (
             <AdBanner
@@ -155,7 +155,7 @@ function Index({ user, error }) {
             />
           )}
         </div>
-      </div>
+      </div> */}
 
       <div className=" w-full flex flex-col items-center justify-start mt-2">
         <header className="flex gap-4">
