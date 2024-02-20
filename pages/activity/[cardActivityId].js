@@ -231,7 +231,7 @@ function Index(props) {
           {/* button for playing game online  */}
           {props.data[0].game && (
             <div className="w-full flex items-center justify-center mt-3">
-              <Link href={props.data[0].game}>
+              <Link className=" no-underline" href={props.data[0].game}>
                 <div
                   className="w-max h-max p-3 bg-[#EDBA02] font-Kanit font-semibold
                    text-white rounded-md ring-2 ring-white
