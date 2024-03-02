@@ -1,18 +1,24 @@
 import axios from "axios";
 import Error from "next/error";
 import { parseCookies } from "nookies";
-import { Assignment, Classroom, Score, Student, StudentWork } from "../models";
+import {
+  Assignment,
+  Classroom,
+  Score,
+  Student,
+  StudentWithScore,
+  StudentWork,
+} from "../models";
 
 type InputGetAllStudentsService = {
   classroomId: string;
 };
-type ResponseGetAllStudentsService = Student &
-  {
-    score: {
-      score: Score[];
-      totalPoints: number;
-    };
-  }[];
+export type ResponseGetAllStudentsService = (Student & {
+  score: {
+    score: Score[];
+    totalPoints: number;
+  };
+})[];
 export async function GetAllStudentsService({
   classroomId,
 }: InputGetAllStudentsService): Promise<ResponseGetAllStudentsService> {
@@ -93,7 +99,7 @@ export async function ResetStudentPasswordService({
 type InputGetOneStudentService = {
   studentId: string;
 };
-type ResponseGetOneStudentService = Student;
+type ResponseGetOneStudentService = StudentWithScore;
 export async function GetOneStudentService({
   studentId,
 }: InputGetOneStudentService): Promise<ResponseGetOneStudentService> {
@@ -122,10 +128,11 @@ export async function GetOneStudentService({
 type InputGetAllStudentScoresService = {
   classroomId: string;
 };
-type ResponseGetAllStudentScoresService = {
+export type ResponseGetAllStudentScoresService = {
+  sumScoreTotal: number;
   assignments: Assignment[];
   classroom: Classroom;
-  studentsScores: Student & {
+  studentsScores: (Student & {
     score: {
       score: Score[];
       totalPoints: number;
@@ -137,7 +144,8 @@ type ResponseGetAllStudentScoresService = {
     }[];
   } & {
     totalPoints: number;
-  };
+    grade: string;
+  })[];
 };
 export async function GetAllStudentScoresService({
   classroomId,

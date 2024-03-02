@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 import { Classroom, User } from "../../models";
 import {
   GetAllAchievedClassroomsService,
-  GetAllClassroomsService,
+  GetAllClassroomsServiceByPage,
   UnAchieveClassroomService,
 } from "../../services/classroom";
 import Loading from "../loadings/loading";
@@ -28,7 +28,7 @@ function AchieveClassroomComponent({ user }: { user: User }) {
 
   const classrooms = useQuery({
     queryKey: ["classrooms", page],
-    queryFn: () => GetAllClassroomsService({ page: page }),
+    queryFn: () => GetAllClassroomsServiceByPage({ page: page }),
     placeholderData: keepPreviousData,
   });
 

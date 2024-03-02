@@ -9,3 +9,4 @@ export * from "./feedback.model";
 export * from "./comment.model";
 export * from "./attendance.model";
 export * from "./class.model";
+export * from "./school.model";

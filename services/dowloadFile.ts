@@ -4,12 +4,12 @@ import { parseCookies } from "nookies";
 
 type InputDownloadExcelAttendanceService = {
   classroomId: string;
-  absent: boolean;
-  present: boolean;
-  holiday: boolean;
-  sick: boolean;
-  warn: boolean;
-  late: boolean;
+  absent: string;
+  present: string;
+  holiday: string;
+  sick: string;
+  warn: string;
+  late: string;
   teacherId: string;
 };
 export async function DownloadExcelAttendanceService({
@@ -88,6 +88,6 @@ export async function DownloadExcelScoreService({
       });
   } catch (err: any) {
     console.error(err);
-    throw new Error(err);
+    throw err.response.data;
   }
 }

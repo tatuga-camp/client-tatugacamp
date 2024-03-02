@@ -6,6 +6,7 @@ import {
   HeadAttendance,
   QrCodeAttendance,
   Student,
+  StudentWithScore,
 } from "../models";
 import { Base64ToFile } from "./base64ToFile";
 
@@ -13,8 +14,8 @@ type InputCreateAttendanceService = {
   classroomId: string;
   attendanceDate: string;
   endAttendanceDate: string;
-  isChecks: (Student & {
-    [studentId: string]: {
+  students: (StudentWithScore & {
+    attendance: {
       absent: boolean;
       present: boolean;
       holiday: boolean;
@@ -30,7 +31,7 @@ export async function CreateAttendanceService({
   classroomId,
   attendanceDate,
   endAttendanceDate,
-  isChecks,
+  students,
   note,
   imagesBase64,
 }: InputCreateAttendanceService): Promise<ResponseCreateAttendanceService> {
@@ -78,10 +79,10 @@ export async function CreateAttendanceService({
       }
 
       // map through isChecks to get only studentId and data of attendance
-      const students = isChecks.map((student) => {
+      const studentIds = students.map((student) => {
         return {
           id: student.id,
-          attendance: student[student.id],
+          attendance: student.attendance,
         };
       });
 
@@ -90,7 +91,7 @@ export async function CreateAttendanceService({
         `${process.env.MAIN_SERVER_URL}/user/attendance/create`,
         {
           date: formatDate,
-          students: students,
+          students: studentIds,
           note: updatedContent,
           classroomId: classroomId,
         },
@@ -106,17 +107,17 @@ export async function CreateAttendanceService({
 
       // if request does not contain any file
     } else {
-      const students = isChecks.map((student) => {
+      const studentIds = students.map((student) => {
         return {
           id: student.id,
-          attendance: student[student.id],
+          attendance: student.attendance,
         };
       });
       const attendacne = await axios.post(
         `${process.env.MAIN_SERVER_URL}/user/attendance/create`,
         {
           date: formatDate,
-          students: students,
+          students: studentIds,
           note,
           endDate: endAttendanceDateFormat,
           classroomId: classroomId,
@@ -141,45 +142,51 @@ type InputGetAllAttendanceService = {
   classroomId: string;
 };
 
-type ResponseGetAllAttendanceServiceFirstValue = {
-  dateTimes: {
-    date: string;
+type DateTime = {
+  date: string;
+  groupId: string;
+  headData: {
+    id: string;
+    createAt: string;
+    updateAt: string;
     groupId: string;
-    headData: {
-      id: string;
-      createAt: string;
-      updateAt: string;
-      groupId: string;
-      note: string;
-    };
-  }[];
+    note: string;
+  };
+};
+
+type StatisticsPercent = {
+  present: number;
+  absent: number;
+  holiday: number;
+  sick: number;
+  late: number;
+  noData: number;
+};
+
+type StatisticsNumber = {
+  present: number;
+  absent: number;
+  holiday: number;
+  sick: number;
+  late: number;
+  warn: number;
+  noData: number;
+};
+export type FirstResponseGetAllAttendanceService = {
+  dateTimes: DateTime[];
   sum: number;
 };
-type ResponseGetAllAttendanceService = [
-  ResponseGetAllAttendanceServiceFirstValue,
-  ...{
-    data: Attendance[];
-    statistics: {
-      percent: {
-        present: number;
-        absent: number;
-        holiday: number;
-        sick: number;
-        late: number;
-        noData: number;
-      };
-      number: {
-        present: number;
-        absent: number;
-        holiday: number;
-        sick: number;
-        late: number;
-        warn: number;
-        noData: number;
-      };
-    };
-    student: Student;
-  }[]
+export type SecondResponseGetAllAttendanceService = {
+  student: Student;
+  data: Attendance[];
+  statistics: {
+    percent: StatisticsPercent;
+    number: StatisticsNumber;
+  };
+};
+export type ResponseGetAllAttendanceService = [
+  FirstResponseGetAllAttendanceService,
+  SecondResponseGetAllAttendanceService[]
 ];
 export async function GetAllAttendanceService({
   classroomId,
@@ -209,7 +216,7 @@ export async function GetAllAttendanceService({
 type InputUpdateHeadAttendanceService = {
   imagesBase64: string[];
   note: string;
-  headAttendanceId: Student;
+  headAttendanceId: string;
   classroomId: string;
   groupId: string;
 };
@@ -326,7 +333,7 @@ type InputUpdateAttendnaceService = {
   attendanceId: string;
   imagesBase64: string[];
   note: string;
-  warn: string;
+  warn: boolean;
 };
 type ResponseUpdateAttendnaceService = Attendance;
 export async function UpdateAttendnaceService({
@@ -429,7 +436,7 @@ export async function UpdateAttendnaceService({
 type InputGetAllQrAttendancesService = {
   classroomId: string;
 };
-type ResponseGetAllQrAttendancesService = QrCodeAttendance;
+type ResponseGetAllQrAttendancesService = QrCodeAttendance[];
 export async function GetAllQrAttendancesService({
   classroomId,
 }: InputGetAllQrAttendancesService): Promise<ResponseGetAllQrAttendancesService> {
@@ -455,11 +462,11 @@ export async function GetAllQrAttendancesService({
 }
 
 type InputCreateQrAttendanceService = {
-  date: string;
-  endDate: string;
+  date: Date;
+  endDate: Date;
   classroomId: string;
-  expireAt: string;
-  isLimitOneBrowser: string;
+  expireAt: Date;
+  isLimitOneBrowser: boolean;
 };
 type ResponseCreateQrAttendanceService = QrCodeAttendance;
 export async function CreateQrAttendanceService({
@@ -490,8 +497,8 @@ export async function CreateQrAttendanceService({
 
 type InputUpdateQrCodeAttendanceService = {
   qrCodeAttendanceId: string;
-  expireAt: string;
-  isLimitOneBrowser: string;
+  expireAt: Date;
+  isLimitOneBrowser: boolean;
 };
 type ResponseUpdateQrCodeAttendanceService = QrCodeAttendance;
 export async function UpdateQrCodeAttendanceService({

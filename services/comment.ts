@@ -7,7 +7,7 @@ type InputGetCommentsService = {
   assignmentId: string;
   studentId: string;
 };
-type ResponseGetCommentsService = Comment;
+type ResponseGetCommentsService = Comment[];
 export async function GetCommentsService({
   assignmentId,
   studentId,
@@ -16,7 +16,7 @@ export async function GetCommentsService({
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const comments = await axios.get(
-      `${process.env.MAIN_SERVER_URL}/user/comment/get-comment`,
+      `${process.env.MAIN_SERVER_URL}/user/comment/get-comments`,
       {
         params: {
           assignmentId: assignmentId,
@@ -32,7 +32,7 @@ export async function GetCommentsService({
     return comments.data;
   } catch (err: any) {
     console.error(err);
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 
@@ -69,7 +69,7 @@ export async function PostCommentService({
     return comments.data;
   } catch (err: any) {
     console.error(err);
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 
@@ -99,7 +99,7 @@ export async function DeleteStudentCommentService({
     return deleteComment.data;
   } catch (err: any) {
     console.error(err);
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 
@@ -129,6 +129,6 @@ export async function DeleteTeachertCommentService({
     return deleteComment.data;
   } catch (err: any) {
     console.error(err);
-    throw new Error(err);
+    throw err.response.data;
   }
 }

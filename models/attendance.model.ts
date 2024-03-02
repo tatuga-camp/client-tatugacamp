@@ -31,7 +31,7 @@ export type QrCodeAttendance = {
   updateAt: string;
   date: string;
   endDate: string;
-  expireAt: string;
+  exipreAt: string;
   isLimitOneBrowser: boolean;
   classroomId: string;
   headAttendanceId: string;

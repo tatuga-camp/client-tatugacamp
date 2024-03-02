@@ -1,16 +1,24 @@
 import { MenuItem, Pagination, TextField } from "@mui/material";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
-import Loading from "../loading/loading";
-import { UpdateClassroomOrder } from "../../service/classroom";
-import { Classroom, Language } from "../../models";
+import { Classroom, Language, Student } from "../../models";
+import {
+  ResponseGetAllClassroomsService,
+  UpdateClassroomOrderService,
+} from "../../services/classroom";
+import { UseQueryResult } from "@tanstack/react-query";
+import Loading from "../loadings/loading";
 
 type UpdateOrderClassroomProps = {
   language: Language;
   setTiggerUpdateOrderClassroom: React.Dispatch<React.SetStateAction<boolean>>;
-  selectUpdateOrderClassroom: Classroom & { selected: boolean };
-  activeClassroomTotal;
-  classrooms: Classroom;
+  selectUpdateOrderClassroom: Classroom & {
+    selected?: boolean;
+  } & {
+    students: Student[];
+  };
+  activeClassroomTotal: number;
+  classrooms: UseQueryResult<ResponseGetAllClassroomsService, Error>;
 };
 function UpdateOrderClassroom({
   language,
@@ -18,10 +26,13 @@ function UpdateOrderClassroom({
   selectUpdateOrderClassroom,
   activeClassroomTotal,
   classrooms,
-}) {
-  const [activeOrder, setActiveOrder] = useState({
-    index: "",
-    value: "",
+}: UpdateOrderClassroomProps) {
+  const [activeOrder, setActiveOrder] = useState<{
+    index: number | null;
+    value: number | null;
+  }>({
+    index: null,
+    value: null,
   });
 
   const [loading, setLoading] = useState(false);
@@ -36,16 +47,17 @@ function UpdateOrderClassroom({
 
   const handleSummitUpdateOrder = async () => {
     try {
+      if (!activeOrder.value) throw "error";
       setLoading(() => true);
-      await UpdateClassroomOrder({
+      await UpdateClassroomOrderService({
         classroomId: selectUpdateOrderClassroom.id,
         order: activeOrder.value,
       });
+      await classrooms.refetch();
       setLoading(() => false);
 
       Swal.fire("success", "update successfully", "success");
-      classrooms.refetch();
-    } catch (err) {
+    } catch (err: any) {
       setLoading(() => false);
       console.log("err", err);
       Swal.fire(
@@ -124,8 +136,8 @@ function UpdateOrderClassroom({
           onClick={() =>
             setActiveOrder(() => {
               return {
-                index: "",
-                value: "",
+                index: null,
+                value: null,
               };
             })
           }

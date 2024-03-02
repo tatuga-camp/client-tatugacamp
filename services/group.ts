@@ -1,7 +1,13 @@
 import axios from "axios";
 import Error from "next/error";
 import { parseCookies } from "nookies";
-import { Group, MiniGroup, MiniGroupOnStudent, Student } from "../models";
+import {
+  Group,
+  MiniGroup,
+  MiniGroupOnStudent,
+  Student,
+  StudentWithScore,
+} from "../models";
 
 type InputCreateGroupService = {
   title: string;
@@ -115,12 +121,12 @@ export async function RandomGroupService({
 type InputGetGroupService = {
   groupId: string;
 };
-type ResponseGetGroupService = {
+export type ResponseGetGroupService = {
   group: Group;
-  miniGroupId: {
+  miniGroups: {
     data: MiniGroup;
-    students: Student[];
-  };
+    students: StudentWithScore[];
+  }[];
 };
 export async function GetGroupService({
   groupId,
@@ -180,7 +186,7 @@ export async function GetUnGroupStudentService({
 type GetAllGroupService = {
   classroomId: string;
 };
-type ResponseGetAllGroupService = Group[];
+export type ResponseGetAllGroupService = Group[];
 export async function GetAllGroupService({
   classroomId,
 }: GetAllGroupService): Promise<ResponseGetAllGroupService> {

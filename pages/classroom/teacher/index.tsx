@@ -27,7 +27,7 @@ import {
   DeleteClassroomService,
   DuplicateClassroomService,
   GetAllAchievedClassroomsService,
-  GetAllClassroomsService,
+  GetAllClassroomsServiceByPage,
   UpdateClassroomColorService,
 } from "../../../services/classroom";
 import { loadingCount } from "../../../data/loadingCount";
@@ -76,8 +76,13 @@ function Index({ error, user }: { user: User; error: any }) {
   const [triggerCrateClassroom, setTriggerCreateClassroom] = useState(false);
   const [triggerUpdateOrderClassroom, setTiggerUpdateOrderClassroom] =
     useState(false);
-  const [selectUpdateOrderClassroom, setSelectUpdateOrderClassroom] =
-    useState<Classroom>();
+  const [selectUpdateOrderClassroom, setSelectUpdateOrderClassroom] = useState<
+    Classroom & {
+      selected?: boolean;
+    } & {
+      students: Student[];
+    }
+  >();
   const [classroomState, setClassroomState] = useState<
     (Classroom & { selected?: boolean } & { students: Student[] })[]
   >([]);
@@ -92,7 +97,7 @@ function Index({ error, user }: { user: User; error: any }) {
 
   const classrooms = useQuery({
     queryKey: ["classrooms", page],
-    queryFn: () => GetAllClassroomsService({ page: page }),
+    queryFn: () => GetAllClassroomsServiceByPage({ page: page }),
     placeholderData: keepPreviousData,
   });
   const achievedClassrooms = useQuery({
@@ -410,15 +415,21 @@ function Index({ error, user }: { user: User; error: any }) {
         />
         <meta charSet="UTF-8" />
       </Head>
-      {/* {triggerUpdateOrderClassroom && (
+      {triggerUpdateOrderClassroom && (
         <UpdateOrderClassroom
           setTiggerUpdateOrderClassroom={setTiggerUpdateOrderClassroom}
-          selectUpdateOrderClassroom={selectUpdateOrderClassroom}
+          selectUpdateOrderClassroom={
+            selectUpdateOrderClassroom as Classroom & {
+              selected?: boolean;
+            } & {
+              students: Student[];
+            }
+          }
           language={user.language}
-          activeClassroomTotal={classrooms?.data?.classroomsTotal}
+          activeClassroomTotal={classrooms?.data?.classroomsTotal as number}
           classrooms={classrooms}
         />
-      )} */}
+      )}
       <TatugaClassLayout
         user={user}
         sideMenus={user.language === "Thai" ? sideMenusThai : sideMenusEnglish}
@@ -582,9 +593,9 @@ function Index({ error, user }: { user: User; error: any }) {
                 </div>
                 {user.plan === "FREE" && (
                   <AdBanner
-                    data-ad-format="auto"
-                    data-full-width-responsive="true"
-                    data-ad-slot="7501763680"
+                    data_ad_format="auto"
+                    data_full_width_responsive="true"
+                    data_ad_slot="7501763680"
                   />
                 )}
               </header>
@@ -895,7 +906,7 @@ h-20 group ${
                 </div>
               )}
               {activeMenu === 1 && <AchieveClassroomComponent user={user} />}
-              {activeMenu === 2 && <PendingReviews user={user} />}
+              {activeMenu === 2 && <PendingReviews />}
             </div>
           </div>
         </div>

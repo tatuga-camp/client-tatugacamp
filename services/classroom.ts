@@ -138,14 +138,14 @@ export type ResponseGetAllClassroomsService = {
   currentPage: number;
   totalPages: number;
 };
-export async function GetAllClassroomsService({
+export async function GetAllClassroomsServiceByPage({
   page,
 }: InputGetAllClassroomsService): Promise<ResponseGetAllClassroomsService> {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const classrooms = await axios.get(
-      `${process.env.MAIN_SERVER_URL}/user/classroom/get-all-classroom`,
+      `${process.env.MAIN_SERVER_URL}/user/classroom/by-page`,
       {
         params: {
           page: page,
@@ -158,7 +158,26 @@ export async function GetAllClassroomsService({
     );
     return classrooms.data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
+  }
+}
+
+export async function GetAllClassroomsService(): Promise<Classroom[]> {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const classrooms = await axios.get(
+      `${process.env.MAIN_SERVER_URL}/user/classroom/get-all`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+    return classrooms.data;
+  } catch (err: any) {
+    throw err.response.data;
   }
 }
 
@@ -390,7 +409,7 @@ export async function UpdateClassroomService({
 
 type InputUpdatePercentageClassroomService = {
   classroomId: string;
-  maxScore: string;
+  maxScore: number;
   percentage: string;
 };
 type ResponseUpdatePercentageClassroomService = Classroom;
@@ -419,6 +438,6 @@ export async function UpdatePercentageClassroomService({
 
     return classroom.data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
   }
 }

@@ -28,3 +28,10 @@ export type StudentWork = {
   score: number;
   studentOnAssignmentId: string;
 };
+
+export type StudentWithScore = Student & {
+  score: {
+    score: Score[];
+    totalPoints: number;
+  };
+};

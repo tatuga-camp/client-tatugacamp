@@ -7,11 +7,11 @@ export type Grade = {
 };
 
 export type GradeRange = {
-  createAt: string;
-  updateAt: string;
-  id: string;
+  createAt?: string;
+  updateAt?: string;
+  id?: string;
   title: string;
-  gradeId: string;
+  gradeId?: string;
   max: number;
   min: number;
 };

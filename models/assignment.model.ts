@@ -9,5 +9,16 @@ export type Assignment = {
   percentage: number | null;
   isDelete: boolean;
   classroomId: string;
+  description: string;
   userId: string;
+};
+
+export type FileOnAssignment = {
+  id: string;
+  createAt: string;
+  updateAt: string;
+  name: string;
+  file: string;
+  type: string;
+  assignmentId: string;
 };

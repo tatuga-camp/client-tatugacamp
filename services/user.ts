@@ -1,7 +1,7 @@
 import axios from "axios";
 import Error from "next/error";
 import { parseCookies } from "nookies";
-import { User } from "../models";
+import { SchoolUser, User } from "../models";
 
 type ResponseGetUserService = User;
 export async function GetUserService(): Promise<ResponseGetUserService> {
@@ -114,5 +114,77 @@ export async function UpdateUserService({
     return updateData.data;
   } catch (err: any) {
     throw new Error(err);
+  }
+}
+
+export type ResponseSignInJWTService = {
+  user: User;
+  access_token: string;
+  schoolUser?: SchoolUser;
+};
+
+export async function SignInJWTService({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}): Promise<ResponseSignInJWTService> {
+  try {
+    const user = await axios.post(
+      `${process.env.MAIN_SERVER_URL}/auth/sign-in/`,
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return user.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+type InputSignUpJWTService = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
+type ResponseSignUpJWTService = {
+  user: User;
+  access_token: string;
+};
+export async function SignUpJWTService({
+  email,
+  password,
+  firstName,
+  lastName,
+}: InputSignUpJWTService): Promise<ResponseSignUpJWTService> {
+  try {
+    const user = await axios.post(
+      `${process.env.MAIN_SERVER_URL}/auth/sign-up/`,
+      {
+        email,
+        password,
+        firstName,
+        lastName,
+        provider: "JWT",
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return user.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }

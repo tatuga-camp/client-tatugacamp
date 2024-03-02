@@ -1,12 +1,25 @@
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const AdBanner = (props) => {
+interface AdBannerProps {
+  data_ad_slot: string;
+  data_ad_format: "auto";
+  data_full_width_responsive: "true" | "false";
+}
+interface ExtendedWindow extends Window {
+  adsbygoogle?: any[];
+}
+const AdBanner = ({
+  data_ad_slot,
+  data_ad_format,
+  data_full_width_responsive,
+}: AdBannerProps) => {
   const [isUnfilled, setIsUnfilled] = useState(false); // Set to true initially
 
   useEffect(() => {
     try {
-      // (window.adsbygoogle = window.adsbygoogle || []).push({});
+      ((window as ExtendedWindow).adsbygoogle =
+        (window as ExtendedWindow).adsbygoogle || []).push({});
     } catch (err) {
       console.error(err);
     }
@@ -15,11 +28,11 @@ const AdBanner = (props) => {
   useEffect(() => {
     const adsInterval = setInterval(() => {
       const unfilled = document.querySelector(
-        'ins.adsbygoogle[data-ad-status="unfilled"]',
+        'ins.adsbygoogle[data-ad-status="unfilled"]'
       );
 
       const filled = document.querySelector(
-        'ins.adsbygoogle[data-ad-status="filled"]',
+        'ins.adsbygoogle[data-ad-status="filled"]'
       );
 
       if (unfilled) {
@@ -47,11 +60,13 @@ const AdBanner = (props) => {
       <ins
         className="adsbygoogle adbanner-customize"
         style={{
-          display: 'block',
-          overflow: 'hidden',
+          display: "block",
+          overflow: "hidden",
         }}
         data-ad-client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}
-        {...props}
+        data-ad-slot={data_ad_slot}
+        data-ad-format={data_ad_format}
+        data-full-width-responsive={data_full_width_responsive}
       />
     </div>
   );

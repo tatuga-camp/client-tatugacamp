@@ -5,20 +5,21 @@ import Link from "next/link";
 import { Skeleton } from "@mui/material";
 import { useInView } from "react-intersection-observer";
 import { User } from "../../models";
+import { GetAllPendingReviewsService } from "../../services/pending-review";
 
-function PendingReviews({ user }: { user: User }) {
+function PendingReviews() {
   const { ref, inView } = useInView();
-  const pendingReview = useInfiniteQuery(
-    ["pending-reviews"],
-    ({ pageParam }) => {
-      return GetAllPendingReviews({
+
+  const pendingReview = useInfiniteQuery({
+    queryKey: ["pending-reviews"],
+    queryFn: ({ pageParam }) =>
+      GetAllPendingReviewsService({
         nextId: pageParam,
-      });
-    },
-    {
-      getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
-    }
-  );
+      }),
+    getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
+    initialPageParam: "",
+  });
+
   useEffect(() => {
     if (inView) {
       pendingReview.fetchNextPage();
@@ -28,7 +29,7 @@ function PendingReviews({ user }: { user: User }) {
   return (
     <div className="w-full flex flex-col font-Kanit items-center justify-start gap-3">
       <h1 className="text-3xl font-semibold">งานรอตรวจทั้งหมด</h1>
-      {pendingReview?.data?.length === 0 && (
+      {pendingReview?.data?.pages.length === 0 && (
         <div className="text-2xl w-max h-max p-3 bg-white rounded-md">
           ไม่มีผู้เรียนให้ตรวจงาน 😃
         </div>

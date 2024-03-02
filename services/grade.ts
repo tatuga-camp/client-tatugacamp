@@ -5,7 +5,7 @@ import { Grade, GradeRange } from "../models";
 
 type InputCreateGradeService = {
   classroomId: string;
-  grandeRanges: string;
+  grandeRanges: GradeRange[];
 };
 type ResponseCreateGradeService = Grade;
 export async function CreateGradeService({

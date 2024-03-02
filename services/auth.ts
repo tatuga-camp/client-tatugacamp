@@ -23,7 +23,7 @@ export async function PostRequestResetPasswordService({
     return res.data;
   } catch (err: any) {
     console.error(err);
-    throw new Error(err);
+    throw err;
   }
 }
 

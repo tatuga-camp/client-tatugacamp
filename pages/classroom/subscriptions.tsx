@@ -222,7 +222,7 @@ function Subscriptions({ user, error }: { user: User; error: any }) {
       </Head>
       <TatugaClassLayout
         user={user}
-        sideMenus={user.language === "Thai" ? sideMenusThai : sideMenusEnglish}
+        sideMenus={user?.language === "Thai" ? sideMenusThai : sideMenusEnglish}
       >
         <GlobalStyles
           styles={{ ul: { margin: 0, padding: 0, listStyle: "none" } }}

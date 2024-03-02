@@ -4,7 +4,7 @@ import { parseCookies } from "nookies";
 import { Assignment, Classroom, Student, StudentWork } from "../models";
 
 type InputGetAllPendingReviewsService = {
-  nextId: string;
+  nextId: string | undefined;
 };
 type ResponseGetAllPendingReviewsService = {
   cursor: string | null;
@@ -13,7 +13,7 @@ type ResponseGetAllPendingReviewsService = {
     classroom: Classroom;
     student: Student;
     studentWorks: StudentWork;
-  };
+  }[];
 };
 export async function GetAllPendingReviewsService({
   nextId,

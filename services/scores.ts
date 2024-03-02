@@ -6,7 +6,7 @@ import { Assignment, Classroom, Score, ScoreTitle } from "../models";
 type InputGetAllScoresClassroomService = {
   classroomId: string;
 };
-type ResponseGetAllScoresClassroomService = ScoreTitle[];
+export type ResponseGetAllScoresClassroomService = ScoreTitle[];
 export async function GetAllScoresClassroomService({
   classroomId,
 }: InputGetAllScoresClassroomService): Promise<ResponseGetAllScoresClassroomService> {
@@ -61,7 +61,7 @@ export async function UpdateScoreOnStudentService({
     }
     const cookies = parseCookies();
     const access_token = cookies.access_token;
-
+    console.log("scoreId", scoreId);
     const updateScore = await axios.put(
       `${process.env.MAIN_SERVER_URL}/user/score/individual/update`,
       {
@@ -86,7 +86,7 @@ export async function UpdateScoreOnStudentService({
 
 type InputUpdateScoreOnWholeGroupService = {
   scoreId: string;
-  pointsValue: number;
+  pointsValue: number | null;
   miniGroupId: string;
   groupId: string;
   score: number;
@@ -163,7 +163,7 @@ export async function ResetSpecialScorePercentageService({
     );
     return reset.data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 

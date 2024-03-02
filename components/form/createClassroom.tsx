@@ -7,6 +7,7 @@ import {
   CreateClassroomService,
   ResponseGetAllClassroomsService,
 } from "../../services/classroom";
+import Loading from "../loadings/loading";
 
 type CreateClassroomProps = {
   classrooms: UseQueryResult<ResponseGetAllClassroomsService, Error>;
@@ -28,6 +29,7 @@ function CreateClassroom({
     description: "",
     level: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChangecreateClassroomData = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -43,6 +45,7 @@ function CreateClassroom({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
+      setIsLoading(() => true);
       e.preventDefault();
       await CreateClassroomService({
         title: createClassroomData.title,
@@ -52,8 +55,11 @@ function CreateClassroom({
       await classrooms.refetch();
       document.body.style.overflow = "auto";
       setTriggerCreateClassroom(() => false);
+      setIsLoading(() => false);
+
       Swal.fire("success", "create classroom success", "success");
     } catch (err: any) {
+      setIsLoading(() => false);
       console.log("err", err);
       Swal.fire(
         "error",
@@ -158,14 +164,14 @@ function CreateClassroom({
           </div>
 
           <button
+            disabled={isLoading}
             aria-label="create classroom button"
             className="w-full  h-9 mt-2 rounded-full bg-[#2C7CD1] text-white font-sans font-bold
               text-md cursor-pointer hover: active:border-2  active:border-gray-300
                active:border-solid  focus:border-2 
               focus:border-solid"
           >
-            {language === "Thai" && "สร้าง"}
-            {language === "English" && "create"}
+            {isLoading ? <Loading /> : language === "Thai" ? "สร้าง" : "create"}
           </button>
         </form>
       </div>

@@ -1,31 +1,36 @@
+import { GrScorecard } from "react-icons/gr";
 import { FiArrowLeftCircle } from "react-icons/fi";
 import React from "react";
 import { NextRouter } from "next/router";
+import { MdAssignment, MdHomeWork } from "react-icons/md";
+import { GiTeacher } from "react-icons/gi";
+import { FaCalendarCheck } from "react-icons/fa";
+
 export function SideMenusThai({ router }: { router: NextRouter }) {
   const sideMenusThai = [
     {
       title: "โรงเรียน",
-      icon: "🏫",
+      icon: MdHomeWork,
       url: `/classroom/teacher`,
     },
     {
       title: "ห้องเรียน",
-      icon: "👨‍🏫",
-      url: `#`,
+      icon: GiTeacher,
+      url: `/classroom/teacher/${router?.query?.classroomId}`,
     },
     {
       title: "มอบหมายงาน",
-      icon: "🎒",
+      icon: MdAssignment,
       url: `/classroom/teacher/${router?.query?.classroomId}/assignment`,
     },
     {
       title: "ข้อมูลการเข้าเรียน",
-      icon: "🙌",
+      icon: FaCalendarCheck,
       url: `/classroom/teacher/${router?.query?.classroomId}/attendance`,
     },
     {
       title: "คะแนนรวม",
-      icon: "🥇",
+      icon: GrScorecard,
       url: `/classroom/teacher/${router?.query?.classroomId}/scores`,
     },
 
@@ -42,27 +47,27 @@ export function sideMenusEnglish({ router }: { router: NextRouter }) {
   const sideMenusEnglish = [
     {
       title: "school",
-      icon: "🏫",
+      icon: MdHomeWork,
       url: `/classroom/teacher`,
     },
     {
       title: "classroom",
-      icon: "👨‍🏫",
+      icon: GiTeacher,
       url: `#`,
     },
     {
       title: "assignments",
-      icon: "🎒",
+      icon: MdAssignment,
       url: `/classroom/teacher/${router?.query?.classroomId}/assignment`,
     },
     {
       title: "attendances",
-      icon: "🙌",
+      icon: FaCalendarCheck,
       url: `/classroom/teacher/${router?.query?.classroomId}/attendance`,
     },
     {
       title: "scores",
-      icon: "🥇",
+      icon: GrScorecard,
       url: `/classroom/teacher/${router?.query?.classroomId}/scores`,
     },
 

@@ -1,27 +1,30 @@
 import axios from "axios";
-import Error from "next/error";
 import { parseCookies } from "nookies";
-import { Assignment, Student, StudentWork } from "../models";
+import {
+  Assignment,
+  FileOnAssignment,
+  Student,
+  StudentWithScore,
+  StudentWork,
+} from "../models";
 import { convertHeicFilesToJpeg } from "./convertHeicFilesToJpeg";
 import { Base64ToFile } from "./base64ToFile";
 
 type CreateAssignmentToAnotherClassroomService = {
-  classrooms: string;
+  classroomId: string;
   assignmentId: string;
 };
 type ResponseCreateAssignmentToAnotherClassroomService = Assignment[];
-export async function CreateAssignmentToAnotherClassroomService({
-  classrooms,
-  assignmentId,
-}: CreateAssignmentToAnotherClassroomService): Promise<ResponseCreateAssignmentToAnotherClassroomService> {
+export async function CreateAssignmentToAnotherClassroomService(
+  input: CreateAssignmentToAnotherClassroomService
+): Promise<ResponseCreateAssignmentToAnotherClassroomService> {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const assign = await axios.post(
       `${process.env.MAIN_SERVER_URL}/user/assignment/assign-assignment-to-multiple-classroom`,
       {
-        classrooms,
-        assignmentId,
+        ...input,
       },
       {
         headers: {
@@ -32,8 +35,8 @@ export async function CreateAssignmentToAnotherClassroomService({
     );
     return assign.data;
   } catch (err: any) {
-    console.error(err);
-    throw new Error(err);
+    console.error(err.response.data);
+    throw err.response.data;
   }
 }
 
@@ -69,6 +72,7 @@ export async function CreateFileOnAssignmentService({
         },
         body: files[i].file,
       });
+
       await axios.post(
         `${process.env.MAIN_SERVER_URL}/user/assignment/fileOnAssignment/create`,
         {
@@ -88,7 +92,7 @@ export async function CreateFileOnAssignmentService({
 
     return urls;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 
@@ -116,7 +120,7 @@ export async function DeleteFileOnAssignmentService({
     );
     return "Successfully";
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 
@@ -193,14 +197,16 @@ export async function CreateAssignmentService({
     );
     return updateAssignment.data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 
 type InputGetAllAssignmentsService = {
   classroomId: string;
 };
-type ResponseGetAllAssignmentsService = (Assignment & { progress: string })[];
+export type ResponseGetAllAssignmentsService = (Assignment & {
+  progress: string;
+})[];
 export async function GetAllAssignmentsService({
   classroomId,
 }: InputGetAllAssignmentsService): Promise<ResponseGetAllAssignmentsService> {
@@ -224,7 +230,7 @@ export async function GetAllAssignmentsService({
     for (const assignment of assignments.data) {
       const cookies = parseCookies();
       const access_token = cookies.access_token;
-      const progress = await axios.get<string>(
+      const progress = await axios.get<{ progress: string }>(
         `${process.env.MAIN_SERVER_URL}/user/assignment/progress-assignment`,
         {
           params: {
@@ -236,12 +242,12 @@ export async function GetAllAssignmentsService({
           },
         }
       );
-      progresses.push({ ...assignment, progress: progress.data });
+      progresses.push({ ...assignment, ...progress.data });
     }
     return progresses;
   } catch (err: any) {
-    console.error(err);
-    throw new Error(err);
+    console.error(err.response.data);
+    throw err.response.data;
   }
 }
 
@@ -249,7 +255,9 @@ type InputGetAssignmentService = {
   assignmentId: string;
   classroomId: string;
 };
-type ResponseGetAssignmentService = Assignment;
+export type ResponseGetAssignmentService = Assignment & {
+  files: FileOnAssignment[];
+};
 export async function GetAssignmentService({
   assignmentId,
   classroomId,
@@ -272,8 +280,8 @@ export async function GetAssignmentService({
     );
     return assignment.data;
   } catch (err: any) {
-    console.error(err);
-    throw new Error(err);
+    console.error(err.response.data);
+    throw err.response.data;
   }
 }
 
@@ -308,18 +316,21 @@ export async function GetAssignmentProgressService({
       progresses.push({ ...assignment, progress: progress.data });
     } catch (err: any) {
       console.error(err);
-      throw new Error(err);
+      throw Error(err);
     }
   }
   return progresses;
 }
 
-type IsCheckType = Student & { [studentId: string]: boolean };
+export type IsCheckTypeStudent = StudentWithScore & {
+  isAssign: boolean;
+  status: "no-assign";
+};
 type InputAssignWorkToStudentService = {
   assignmentCreated: Assignment;
-  isChecked: IsCheckType[];
+  isChecked: IsCheckTypeStudent[];
 };
-type ResponseAssignWorkToStudentService = IsCheckType;
+type ResponseAssignWorkToStudentService = IsCheckTypeStudent;
 export async function AssignWorkToStudentService({
   isChecked,
   assignmentCreated,
@@ -328,7 +339,7 @@ export async function AssignWorkToStudentService({
 > {
   let stduentOnAssignment: ResponseAssignWorkToStudentService[] = [];
   for (const student of isChecked) {
-    if (student[student.id] === true) {
+    if (student.isAssign === true) {
       try {
         const cookies = parseCookies();
         const access_token = cookies.access_token;
@@ -346,7 +357,7 @@ export async function AssignWorkToStudentService({
             },
           }
         );
-        console.log(stduentOnAssignment[0].status);
+
         stduentOnAssignment.push({
           ...student,
         });
@@ -354,7 +365,7 @@ export async function AssignWorkToStudentService({
         console.error(err);
         stduentOnAssignment.push({ ...student });
       }
-    } else if (student[student.id] === false) {
+    } else if (student.isAssign === false) {
       stduentOnAssignment.push(student);
     }
   }
@@ -389,8 +400,8 @@ export async function UnAssignWorkStudentService({
     );
     return unAssign.data;
   } catch (err: any) {
-    console.error(err);
-    throw new Error(err);
+    console.error(err.response.data);
+    throw err.response.data;
   }
 }
 
@@ -398,9 +409,10 @@ type InputViewAllAssignOnStudentService = {
   classroomId: string;
   assignmentId: string;
 };
-type ResponseViewAllAssignOnStudentService = (Student & {
-  status: "have-work" | "no-assign";
-} & { studentWork: StudentWork })[];
+export type ResponseViewAllAssignOnStudentService = (StudentWithScore & {
+  studentWork: StudentWork;
+  status: "have-work" | "no-work" | "no-assign";
+})[];
 export async function ViewAllAssignOnStudentService({
   classroomId,
   assignmentId,
@@ -423,8 +435,8 @@ export async function ViewAllAssignOnStudentService({
     );
     return studentWorks.data;
   } catch (err: any) {
-    console.error(err);
-    throw new Error(err);
+    console.error(err.response.data);
+    throw err.response.data;
   }
 }
 
@@ -450,8 +462,8 @@ export async function DeleteAssignmentService({
     );
     return deleteAssignment.data;
   } catch (err: any) {
-    console.error(err);
-    throw new Error(err);
+    console.error(err.response.data);
+    throw err.response.data;
   }
 }
 
@@ -531,7 +543,7 @@ export async function UpdateAssignmentService({
     );
     return updatedAssignment.data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 
@@ -565,7 +577,7 @@ export async function ReviewStudentWorkService({
     );
     return review.data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 
@@ -599,7 +611,7 @@ export async function ReviewStudentWorkNoWorkService({
     );
     return review.data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 
@@ -630,8 +642,8 @@ export async function DeleteStudentWorkService({
     );
     return deleteStudent.data;
   } catch (err: any) {
-    console.error(err);
-    throw new Error(err);
+    console.error(err.response.data);
+    throw err.response.data;
   }
 }
 
@@ -659,8 +671,8 @@ export async function ReviewStudentWorksheetService({
     );
     return updateStudentWork.data;
   } catch (err: any) {
-    console.error(err);
-    throw new Error(err);
+    console.error(err.response.data);
+    throw err.response.data;
   }
 }
 
@@ -688,7 +700,7 @@ export async function UpdatePercentAssignmentService({
     );
     return update.data;
   } catch (err: any) {
-    console.error(err);
-    throw new Error(err);
+    console.error(err.response.data);
+    throw err.response.data;
   }
 }

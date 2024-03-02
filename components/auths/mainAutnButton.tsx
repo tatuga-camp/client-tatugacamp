@@ -18,20 +18,21 @@ function AuthButton() {
   const user = useQuery({
     queryKey: ["user"],
     queryFn: () => GetUserService(),
-    enabled: false,
   });
 
   //set accestoken to localstore
   useEffect(() => {
     if (router.query.access_token) {
       setCookie(null, "access_token", router.query.access_token as string, {
-        maxAge: 30 * 24 * 60 * 60, // Cookie expiration time in seconds (e.g., 30 days)
+        maxAge: 2 * 24 * 60 * 60, // Cookie expiration time in seconds (e.g., 30 days)
         path: "/", // Cookie path (can be adjusted based on your needs)
       });
-      user.refetch();
+      setTimeout(() => {
+        user.refetch();
+      }, 2000);
     }
-    user.refetch();
   }, [router.query?.access_token, router.isReady]);
+
   if (user.isFetching) {
     return <Loading />;
   }
@@ -55,7 +56,7 @@ function AuthButton() {
 
   const signOut = () => {
     destroyCookie(null, "access_token", { path: "/" });
-    queryClient.removeQueries({ queryKey: ["user"], exact: true });
+    queryClient.removeQueries();
     user.refetch();
     router.push({
       pathname: "/",
