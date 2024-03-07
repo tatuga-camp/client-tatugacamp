@@ -7,3 +7,4 @@ export * from "./taboo";
 export * from "./tatugaSchoolPosts";
 export * from "./commonQuestion";
 export * from "./announcement";
+export * from "./activity";

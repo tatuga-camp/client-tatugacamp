@@ -51,42 +51,36 @@ function Index({ user }: { user: User }) {
     useState(false);
 
   const classroom = useQuery({
-    queryKey: ["classroom"],
+    queryKey: ["classroom", router.query.classroomId as string],
     queryFn: () =>
       GetOneClassroomService({
         classroomId: router.query.classroomId as string,
       }),
   });
   const students = useQuery({
-    queryKey: ["students"],
+    queryKey: ["students", router.query.classroomId as string],
     queryFn: () =>
       GetAllStudentsService({
         classroomId: router.query.classroomId as string,
       }),
   });
   const scores = useQuery({
-    queryKey: ["scores"],
+    queryKey: ["scores", router.query.classroomId as string],
     queryFn: () =>
       GetAllScoresClassroomService({
         classroomId: router.query.classroomId as string,
       }),
   });
   const groups = useQuery({
-    queryKey: ["classroom-groups"],
+    queryKey: ["classroom-groups", router.query.classroomId as string],
     queryFn: () =>
       GetAllGroupService({ classroomId: router.query.classroomId as string }),
   });
 
   const oneGroup = useQuery({
-    queryKey: ["group"],
+    queryKey: ["group", selectGroupId],
     queryFn: () => GetGroupService({ groupId: selectGroupId as string }),
   });
-
-  useEffect(() => {
-    if (selectGroupId) {
-      oneGroup.refetch();
-    }
-  }, [selectGroupId]);
 
   const handleTriggerUpdateClassroomScore = () => {
     setTriggerUpdateTriggerClassroom((prev) => !prev);

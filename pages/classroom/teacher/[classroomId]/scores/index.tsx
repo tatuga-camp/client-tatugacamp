@@ -31,15 +31,14 @@ import { GetUserCookieService } from "../../../../../services/user";
 function Index({ user }: { user: User }) {
   const router = useRouter();
   const classroom = useQuery({
-    queryKey: ["classroom"],
+    queryKey: ["classroom", router.query.classroomId],
     queryFn: () =>
       GetOneClassroomService({
         classroomId: router.query.classroomId as string,
       }),
-    enabled: false,
   });
   const studentsScores = useQuery({
-    queryKey: ["studentsScores"],
+    queryKey: ["studentsScores", router.query.classroomId],
     queryFn: () =>
       GetAllStudentScoresService({
         classroomId: router.query.classroomId as string,
@@ -54,14 +53,6 @@ function Index({ user }: { user: User }) {
     setTriggerAddPercentageOnSpecialScore,
   ] = useState(false);
   const [selectAssignment, setSelectAssignment] = useState<Assignment>();
-
-  //check whether there is authorrized acccess or not
-  useEffect(() => {
-    if (router.isReady) {
-      classroom.refetch();
-      studentsScores.refetch();
-    }
-  }, [router.isReady]);
 
   useEffect(() => {
     setTriggerAllowStudentViewScore(() =>

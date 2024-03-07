@@ -1,5 +1,4 @@
 import axios from "axios";
-import Error from "next/error";
 import { parseCookies } from "nookies";
 import {
   Group,
@@ -132,6 +131,7 @@ export async function GetGroupService({
   groupId,
 }: InputGetGroupService): Promise<ResponseGetGroupService> {
   try {
+    if (!groupId) throw new Error("groupId is required");
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const group = await axios.get(
@@ -148,7 +148,7 @@ export async function GetGroupService({
     );
     return group.data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
   }
 }
 

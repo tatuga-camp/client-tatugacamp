@@ -30,6 +30,7 @@
     "moment-timezone": "^0.5.44",
     "next": "14.0.4",
     "next-sanity": "^7.0.10",
+    "next-share": "^0.27.0",
     "nextjs-toploader": "^1.6.4",
     "nookies": "^2.5.2",
     "react": "^18",

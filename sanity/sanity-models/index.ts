@@ -7,3 +7,4 @@ export * from "./tatugaSchoolPost.model";
 export * from "./taboo.model";
 export * from "./commonQuestion.model";
 export * from "./announcement.model";
+export * from "./activity.model";
