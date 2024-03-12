@@ -60,14 +60,14 @@ function ClassroomLayout({
     queryFn: () => GetUserService(),
   });
   const classroom = useQuery({
-    queryKey: ["classroom"],
+    queryKey: ["classroom", router.query.classroomId as string],
     queryFn: () =>
       GetOneClassroomService({
         classroomId: router.query.classroomId as string,
       }),
   });
   const students = useQuery({
-    queryKey: ["students"],
+    queryKey: ["students", router.query.classroomId as string],
     queryFn: () =>
       GetAllStudentsService({
         classroomId: router.query.classroomId as string,
