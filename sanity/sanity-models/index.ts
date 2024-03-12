@@ -8,3 +8,5 @@ export * from "./taboo.model";
 export * from "./commonQuestion.model";
 export * from "./announcement.model";
 export * from "./activity.model";
+export * from "./member.model";
+export * from "./about-us.model";

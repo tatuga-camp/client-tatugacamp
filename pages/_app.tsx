@@ -10,21 +10,23 @@ import NextTopLoader from "nextjs-toploader";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppProps } from "next/app";
+import { useState } from "react";
 
-const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnReconnect: false,
-      retry: false,
-      staleTime: twentyFourHoursInMs,
-    },
-  },
-});
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
 function MyApp({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 1000 * 60 * 60, // 1 hour in ms
+            refetchOnWindowFocus: false, // Disables automatic refetching when browser window is focused.
+          },
+        },
+      })
+  );
   return (
     <QueryClientProvider client={queryClient}>
       <Script

@@ -43,6 +43,8 @@ function Index({ user }: { user: User }) {
       GetAllStudentScoresService({
         classroomId: router.query.classroomId as string,
       }),
+    staleTime: 1000 * 10,
+    refetchInterval: 1000 * 10,
   });
   const [triggerCreateCreate, setTriggerCreateGrade] = useState(false);
   const [triggerAddPercentage, setTriggerAddPercentage] = useState(false);

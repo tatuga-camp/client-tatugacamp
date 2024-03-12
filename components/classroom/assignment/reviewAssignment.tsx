@@ -582,15 +582,7 @@ function ReviewAssignment({
                       <span>{student.firstName}</span>
                       <span>{student?.lastName}</span>
                     </td>
-                    {studentOnAssignments.isFetching ? (
-                      <td className="flex items-center justify-center font-Kanit  font-bold text-gray-700 w-10">
-                        <Skeleton
-                          variant="rounded"
-                          animation="wave"
-                          width="100%"
-                        />
-                      </td>
-                    ) : student?.studentWork?.score ? (
+                    {student?.studentWork?.score ? (
                       <td className="flex items-center justify-center font-Kanit font-bold text-gray-700 w-10">
                         {student.studentWork.score}
                       </td>
@@ -599,69 +591,57 @@ function ReviewAssignment({
                         0
                       </td>
                     )}
-                    {studentOnAssignments.isFetching ? (
-                      <td
-                        onClick={() => handleSelectWork(student)}
-                        className=" py-1 px-2 rounded-lg md:w-20 md:text-sm lg:w-28 text-center"
-                      >
-                        <Skeleton
-                          variant="rounded"
-                          animation="wave"
-                          width="100%"
-                        />
-                      </td>
-                    ) : (
-                      <td>
-                        {student.status === "no-work" && !IsDue && (
+
+                    <td>
+                      {student.status === "no-work" && !IsDue && (
+                        <div
+                          onClick={() => handleSelectWork(student)}
+                          className=" bg-orange-500 py-1 px-2 rounded-lg text-white cursor-pointer 
+                  hover:scale-105 transition duration-150 md:w-20 md:text-sm lg:w-28 text-center"
+                        >
+                          {user.language === "Thai" && "ไม่ส่งงาน"}
+                          {user.language === "English" && "NO WORK"}
+                        </div>
+                      )}
+                      {student.status === "no-work" && IsDue && (
+                        <div
+                          onClick={() => handleSelectWork(student)}
+                          className=" bg-red-500 py-1 px-2 rounded-lg text-white cursor-pointer 
+                  hover:scale-105 transition duration-150 md:w-20 md:text-sm lg:w-28 text-center"
+                        >
+                          {user.language === "Thai" && "เลยกำหนดส่ง"}
+                          {user.language === "English" && "PASS DUE"}
+                        </div>
+                      )}
+                      {student.status === "have-work" &&
+                        student.studentWork.score === 0 &&
+                        student.studentWork.isSummited === false && (
                           <div
                             onClick={() => handleSelectWork(student)}
-                            className=" bg-orange-500 py-1 px-2 rounded-lg text-white cursor-pointer 
-                  hover:scale-105 transition duration-150 md:w-20 md:text-sm lg:w-28 text-center"
-                          >
-                            {user.language === "Thai" && "ไม่ส่งงาน"}
-                            {user.language === "English" && "NO WORK"}
-                          </div>
-                        )}
-                        {student.status === "no-work" && IsDue && (
-                          <div
-                            onClick={() => handleSelectWork(student)}
-                            className=" bg-red-500 py-1 px-2 rounded-lg text-white cursor-pointer 
-                  hover:scale-105 transition duration-150 md:w-20 md:text-sm lg:w-28 text-center"
-                          >
-                            {user.language === "Thai" && "เลยกำหนดส่ง"}
-                            {user.language === "English" && "PASS DUE"}
-                          </div>
-                        )}
-                        {student.status === "have-work" &&
-                          student.studentWork.score === 0 &&
-                          student.studentWork.isSummited === false && (
-                            <div
-                              onClick={() => handleSelectWork(student)}
-                              className="md:w-20 md:text-sm lg:w-28 text-center  cursor-pointer hover:scale-105 transition duration-150
+                            className="md:w-20 md:text-sm lg:w-28 text-center  cursor-pointer hover:scale-105 transition duration-150
                      bg-yellow-500 py-1 px-2 rounded-lg text-white lg:text-base flex items-center justify-center"
-                            >
-                              {user.language === "Thai" && "รอการตรวจ"}
-                              {user.language === "English" && "WAIT CHECK"}
-                            </div>
-                          )}
-                        {student.status === "no-assign" && (
-                          <div className=" md:w-20 md:text-sm lg:w-28  bg-gray-500 py-1 px-2 rounded-lg text-white text-center">
-                            {user.language === "Thai" && "ไม่ได้มอบหมาย"}
-                            {user.language === "English" && "NOT ASSIGN"}
+                          >
+                            {user.language === "Thai" && "รอการตรวจ"}
+                            {user.language === "English" && "WAIT CHECK"}
                           </div>
                         )}
-                        {student.status === "have-work" &&
-                          student.studentWork.isSummited === true && (
-                            <div
-                              onClick={() => handleSelectWork(student)}
-                              className=" md:w-20 md:text-sm lg:w-28  text-center bg-green-500 py-1 px-2 cursor-pointer hover:scale-105 transition duration-150 rounded-lg text-white"
-                            >
-                              {user.language === "Thai" && "ตรวจแล้ว"}
-                              {user.language === "English" && "FINISH CHECK"}
-                            </div>
-                          )}
-                      </td>
-                    )}
+                      {student.status === "no-assign" && (
+                        <div className=" md:w-20 md:text-sm lg:w-28  bg-gray-500 py-1 px-2 rounded-lg text-white text-center">
+                          {user.language === "Thai" && "ไม่ได้มอบหมาย"}
+                          {user.language === "English" && "NOT ASSIGN"}
+                        </div>
+                      )}
+                      {student.status === "have-work" &&
+                        student.studentWork.isSummited === true && (
+                          <div
+                            onClick={() => handleSelectWork(student)}
+                            className=" md:w-20 md:text-sm lg:w-28  text-center bg-green-500 py-1 px-2 cursor-pointer hover:scale-105 transition duration-150 rounded-lg text-white"
+                          >
+                            {user.language === "Thai" && "ตรวจแล้ว"}
+                            {user.language === "English" && "FINISH CHECK"}
+                          </div>
+                        )}
+                    </td>
                     <td className="w-10 flex justify-center items-center">
                       <input
                         className="w-5 h-5"

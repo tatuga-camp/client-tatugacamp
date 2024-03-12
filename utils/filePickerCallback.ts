@@ -1,3 +1,4 @@
+declare const tinymce: any;
 export const filePickerCallback = (cb: any, value: any, meta: any) => {
   const input = document.createElement("input");
   input.setAttribute("type", "file");

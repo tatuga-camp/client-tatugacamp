@@ -51,17 +51,16 @@ function CheckAttendanceByQrCode({
     expireAt: null,
   });
   const allQrCode = useQuery({
-    queryKey: ["allQrCode"],
+    queryKey: ["allQrCode", router.query.classroomId as string],
     queryFn: () => GetAllQrAttendancesService({ classroomId }),
   });
 
   const attendances = useQuery({
-    queryKey: ["attendance"],
+    queryKey: ["attendance", router.query.classroomId as string],
     queryFn: () =>
       GetAllAttendanceService({
         classroomId: router.query.classroomId as string,
       }),
-    enabled: false,
   });
 
   const handleCreateAttendanceQrCode = async () => {

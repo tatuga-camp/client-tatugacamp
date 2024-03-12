@@ -64,6 +64,8 @@ function Index({ user }: { user: User }) {
         assignmentId: router.query.assignmentId as string,
         classroomId: router.query.classroomId as string,
       }),
+    staleTime: 1000 * 6,
+    refetchInterval: 1000 * 6,
   });
   const [activeMenu, setActiveMenu] = useState(0);
 

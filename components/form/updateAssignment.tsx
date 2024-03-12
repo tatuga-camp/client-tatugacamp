@@ -62,7 +62,7 @@ function UpdateAssignment({
   const [isChecked, setIsChecked] = useState<
     (StudentWithScore & {
       isAssign: boolean;
-      status: "no-assign";
+      status?: "no-assign";
     })[]
   >();
   const [isAssignStudent, setIsAssignmentStdent] = useState(false);

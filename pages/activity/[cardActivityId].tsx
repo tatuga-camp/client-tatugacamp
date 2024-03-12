@@ -185,7 +185,7 @@ function Index({ activity }: { activity: Activity }) {
           {/* button for playing game online  */}
           {activity.game && (
             <div className="w-full flex items-center justify-center mt-3">
-              <Link href={activity.game}>
+              <Link className="no-underline" href={activity.game}>
                 <div
                   className="w-max h-max p-3 bg-[#EDBA02] font-Kanit font-semibold
                    text-white rounded-md ring-2 ring-white

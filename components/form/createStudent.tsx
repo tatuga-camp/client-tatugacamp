@@ -57,7 +57,7 @@ function CreateStudent({ close, user }: CreateStudentProps) {
     }[]
   >();
   const students = useQuery({
-    queryKey: ["students"],
+    queryKey: ["students", router.query.classroomId as string],
     queryFn: () =>
       GetAllStudentsService({
         classroomId: router.query.classroomId as string,

@@ -54,9 +54,9 @@ function CreateAssignWorkToStudent({
   });
 
   useEffect(() => {
-    if (students.isSuccess) {
+    if (students.isSuccess && students.data) {
       setIsChecked(() => {
-        return students.data.map((student: StudentWithScore) => {
+        return students.data?.map((student) => {
           return {
             ...student,
             isAssign: false,

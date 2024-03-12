@@ -72,12 +72,11 @@ function AttendanceChecker({
   const [loading, setLoading] = useState(false);
   const [triggerAddNote, setTriggerAddNote] = useState(false);
   const attendances = useQuery({
-    queryKey: ["attendance"],
+    queryKey: ["attendance", router.query.classroomId as string],
     queryFn: () =>
       GetAllAttendanceService({
         classroomId: router.query.classroomId as string,
       }),
-    enabled: false,
   });
 
   const handleEditorChange = (content: string) => {

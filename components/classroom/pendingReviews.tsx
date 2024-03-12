@@ -20,12 +20,6 @@ function PendingReviews() {
     initialPageParam: "",
   });
 
-  useEffect(() => {
-    if (inView) {
-      pendingReview.fetchNextPage();
-    }
-  }, [inView]);
-
   return (
     <div className="w-full flex flex-col font-Kanit items-center justify-start gap-3">
       <h1 className="text-3xl font-semibold">งานรอตรวจทั้งหมด</h1>
@@ -101,6 +95,7 @@ function PendingReviews() {
       </table>
       <button
         ref={ref}
+        className="px-2 bg-white rounded-lg py-1 cursor-pointer active:scale-110 drop-shadow-md hover:scale-105 transition duration-75"
         onClick={() => pendingReview.fetchNextPage()}
         disabled={
           !pendingReview.hasNextPage || pendingReview.isFetchingNextPage

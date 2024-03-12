@@ -113,32 +113,21 @@ function Index() {
         lastName: signUpData.lastName,
       });
 
-      if (user.access_token) {
-        setLoading(false);
-        Swal.fire({
-          icon: "success",
-          title: "Login success",
-        });
-        router.push(
-          `/account/reception/?access_token=${user.access_token}`,
-          undefined,
-          {
-            shallow: true,
-          }
-        );
-      }
+      setLoading(false);
+      Swal.fire({
+        icon: "success",
+        title: "ลงทะเบียนสำเร็จ",
+      });
+      router.push({
+        pathname: "/auth/signIn",
+      });
     } catch (err: any) {
-      if (err.code === "ERR_BAD_REQUEST") {
-        setLoading(false);
-        Swal.fire({
-          icon: "error",
-          title: "Login error",
-          text: err.response.data.message,
-        });
-      } else {
-        setLoading(false);
-        console.error(err);
-      }
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Login error",
+        text: err.message,
+      });
     }
   };
 

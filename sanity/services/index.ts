@@ -8,3 +8,5 @@ export * from "./tatugaSchoolPosts";
 export * from "./commonQuestion";
 export * from "./announcement";
 export * from "./activity";
+export * from "./about-us";
+export * from "./member";

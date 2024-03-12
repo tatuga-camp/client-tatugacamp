@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 8080",
     "build": "next build",
-    "start": "next start - 8080",
+    "start": "next start -p 8080",
     "lint": "next lint"
   },
   "dependencies": {
@@ -28,7 +28,7 @@
     "lightbox.js-react": "^1.0.2",
     "lottie-react": "^2.4.0",
     "moment-timezone": "^0.5.44",
-    "next": "14.0.4",
+    "next": "13.4.19",
     "next-sanity": "^7.0.10",
     "next-share": "^0.27.0",
     "nextjs-toploader": "^1.6.4",

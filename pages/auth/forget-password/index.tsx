@@ -109,7 +109,7 @@ flex flex-col justify-center items-center"
           provider เจ้านั้นๆ
           <hr />
           <span className="font-medium">
-            "หากมีความประสงค์อยากย้ายการเข้าสู่ระบบเป็น tatuga class"{" "}
+            &quot;หากมีความประสงค์อยากย้ายการเข้าสู่ระบบเป็น tatuga class&quot;{" "}
           </span>
           <a href="https://www.facebook.com/TatugaCamp/">
             ติดต่อ - facebook: tatuga camp

@@ -324,7 +324,7 @@ export async function GetAssignmentProgressService({
 
 export type IsCheckTypeStudent = StudentWithScore & {
   isAssign: boolean;
-  status: "no-assign";
+  status?: "no-assign";
 };
 type InputAssignWorkToStudentService = {
   assignmentCreated: Assignment;

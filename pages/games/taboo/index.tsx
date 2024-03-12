@@ -163,7 +163,7 @@ function Index() {
           </header>
           <main className="flex  h-max pt-3 items-center justify-center relative    ">
             <ul
-              className="list-none p-10 w-3/5 h-max flex flex-col items-center justify-center
+              className="list-none p-10 w-10/12 h-max flex flex-col items-center justify-center
            bg-white drop-shadow-lg rounded-md  md:w-96 md:flex lg:w-96 relative "
             >
               <div className="absolute z-20 flex flex-col items-center justify-center gap-y-1 -top-5 right-0">

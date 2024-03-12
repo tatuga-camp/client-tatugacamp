@@ -76,11 +76,11 @@ export async function UploadProfilePictureService({
 }
 
 type InputUpdateUserService = {
-  firstName: string;
-  lastName: string;
-  school: string;
-  phone: string;
-  language: string;
+  firstName?: string;
+  lastName?: string;
+  school?: string;
+  phone?: string;
+  language?: string;
 };
 type ResponseUpdateUserService = User;
 export async function UpdateUserService({
@@ -183,8 +183,8 @@ export async function SignUpJWTService({
       }
     );
     return user.data;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    throw error;
+    throw error.response.data;
   }
 }

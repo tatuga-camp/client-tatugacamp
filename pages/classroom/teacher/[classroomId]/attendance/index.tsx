@@ -51,7 +51,7 @@ function Index({ user }: { user: User }) {
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const attendances = useQuery({
-    queryKey: ["attendance"],
+    queryKey: ["attendance", router.query.classroomId as string],
     queryFn: () =>
       GetAllAttendanceService({
         classroomId: router.query.classroomId as string,

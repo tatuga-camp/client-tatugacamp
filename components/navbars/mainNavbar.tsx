@@ -114,10 +114,10 @@ function MainNavbar() {
             </Link>
             <Link className="no-underline relative" href="/school">
               <div
-                className="px-1 w-max text-xs animate-bounce absolute top-0 left-0 m-auto 
-             bg-main-color text-white font-Poppins rounded-lg"
+                className=" w-max text-xs px-2 py-1  absolute top-0 left-0 m-auto 
+             bg-gray-500 text-white font-Poppins rounded-md"
               >
-                update
+                ปิดปรับปรุง
               </div>
               <li
                 onClick={onClick}
@@ -204,6 +204,12 @@ function MainNavbar() {
             </Link>
           </li>
           <li className="relative">
+            <div
+              className=" w-max text-xs px-2 py-0  absolute top-0 left-0 m-auto 
+             bg-gray-500 text-white font-Poppins rounded-md"
+            >
+              ปิดปรับปรุง
+            </div>
             <Link className="no-underline" href="/school">
               <button className="focus:outline-none text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga school 🏫</span>
