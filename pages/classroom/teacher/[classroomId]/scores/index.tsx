@@ -174,7 +174,7 @@ function Index({ user }: { user: User }) {
               </span>
             </div>
           </header>
-          {studentsScores.isLoading || studentsScores.isFetching ? (
+          {studentsScores.isLoading ? (
             <div className="flex flex-col gap-5 mt-5">
               <Skeleton variant="rectangular" width={700} height={40} />
               <Skeleton variant="rectangular" width={600} height={40} />
