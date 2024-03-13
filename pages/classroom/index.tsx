@@ -29,8 +29,8 @@ type IndexProps = {
 
 function Index({ commonQuestions, announcement }: IndexProps) {
   const router = useRouter();
-  const usersNumber = 17.4;
-  const studentNumber = 571;
+  const usersNumber = 18.7;
+  const studentNumber = 597;
   const [loading, setLoading] = useState(true);
   const footerData = `ห้องเรียนจาก Tatuga class หรือ ทาทูก้าคลาส ที่จะพาคุณครูไปสู่การบริหารห้องเรียนอย่างสะดวกและสนุก กับ tatuga class TaTuga Class Classroom Management for Everyone จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ สะดวก และ รวดเร็ว - tatuga class`;
   const [domLoaded, setDomLoaded] = useState(false);
@@ -97,7 +97,7 @@ function Index({ commonQuestions, announcement }: IndexProps) {
           </Alert>
         )}
         <header className="w-full max-w-9xl   h-max  flex justify-center items-center gap-12 font-sans">
-          <div className="lg:w-max lg:max-w-4xl bg-transparent lg:ml-5 xl:pl-10 p-10 gap-2 flex flex-col items-start justify-center ">
+          <div className="lg:w-max lg:max-w-4xl relative z-20 bg-transparent lg:ml-5 xl:pl-10 p-10 gap-2 flex flex-col items-start justify-center ">
             <div className="md:mt-5 mt-10">
               <span className="font-medium text-gray-400 md:text-lg lg:text-xl ">
                 welcome to
@@ -168,7 +168,7 @@ function Index({ commonQuestions, announcement }: IndexProps) {
             </div>
           </div>
 
-          <div className="md:w-full lg:w-full xl:w-4/12 md:h-96 w-40 h-40 hidden md:flex items-center justify-center relative ">
+          <div className="md:hidden lg:w-full xl:w-4/12 md:h-96 w-40 h-40 hidden lg:flex items-center justify-center relative ">
             <div className="absolute -left-60 md:-left-52 lg:-left-16  md:w-96 lg:w-full ">
               <Lottie animationData={teacherAnimation} style={style} />
             </div>
