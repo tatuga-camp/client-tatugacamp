@@ -137,7 +137,7 @@ function MainNavbar() {
 
             <Link className="no-underline" href="/classroom/subscriptions">
               <button
-                className="focus:outline-none text-base font-Inter text-black font-semibold 
+                className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-semibold 
                border-0 w-60 h-auto bg-white hover:text-white hover:bg-[#2C7CD1]  flex justify-center items-center gap-2
                transition duration-150 text-center ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
               >
@@ -198,7 +198,7 @@ function MainNavbar() {
 
           <li className="">
             <Link className="no-underline" href="/about-us">
-              <button className="focus:outline-none text-base text-black font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
+              <button className="focus:outline-none md:text-xs lg:text-base text-black font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>about us</span>
               </button>
             </Link>
@@ -211,22 +211,22 @@ function MainNavbar() {
               ปิดปรับปรุง
             </div>
             <Link className="no-underline" href="/school">
-              <button className="focus:outline-none text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
+              <button className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga school 🏫</span>
               </button>
             </Link>
           </li>
           <li className="">
             <Link className="no-underline" href="/classroom">
-              <button className="focus:outline-none text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
+              <button className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga class 👩‍🏫</span>
               </button>
             </Link>
           </li>
-          <li className="">
+          <li className="md:hidden lg:block">
             <Link className="no-underline" href="/classroom/subscriptions">
               <button
-                className="focus:outline-none text-base font-Inter text-black font-semibold 
+                className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-semibold 
                border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1]  flex justify-center items-center gap-2
                transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
               >
