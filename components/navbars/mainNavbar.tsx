@@ -30,7 +30,7 @@ function MainNavbar() {
   }, [router.isReady]);
   return (
     <nav
-      className={`w-full bg-transparent fixed md:sticky  h-max top-0 z-50 font-Inter transition duration-200 ease-in-out `}
+      className={`w-full bg-transparent sticky  h-max top-0 z-50 font-Inter transition duration-200 ease-in-out `}
     >
       <div>
         <Script
@@ -43,7 +43,7 @@ function MainNavbar() {
         ></Script>
 
         {/* Phone point of view */}
-        <ul className="md:hidden absolute  flex w-screen h-20 z-50  text-white bg-transparent justify-between list-none pl-0  content-center items-center">
+        <ul className="md:hidden absolute bg-white  flex w-screen h-24 z-50  text-white  justify-between list-none pl-0  content-center items-center">
           <Button onClick={onClick} className="w-[50px] h-[50px] rounded-full">
             <li className="w-[50px] h-[50px] bg-[#EDBA02] active:bg-[#2C7CD1] flex items-center justify-center rounded-full text-white">
               <Listmenu />

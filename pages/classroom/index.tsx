@@ -24,10 +24,9 @@ import { GetServerSideProps } from "next";
 import HomepageLayout from "../../layouts/homePageLayout";
 type IndexProps = {
   commonQuestions: ResponseGetAllCommonQuestiontsSanityService;
-  announcement: ResponseGetAllAnnouncementSanityService;
 };
 
-function Index({ commonQuestions, announcement }: IndexProps) {
+function Index({ commonQuestions }: IndexProps) {
   const router = useRouter();
   const usersNumber = 18.7;
   const studentNumber = 597;
@@ -90,12 +89,6 @@ function Index({ commonQuestions, announcement }: IndexProps) {
         <meta charSet="UTF-8" />
       </Head>
       <HomepageLayout>
-        {announcement && (
-          <Alert className="fixed bottom-0 z-40  md:w-full" severity="warning">
-            <AlertTitle>แจ้งข่าวสาร</AlertTitle>
-            tatuga class — <strong>{announcement.description}</strong>
-          </Alert>
-        )}
         <header className="w-full max-w-9xl   h-max  flex justify-center items-center gap-12 font-sans">
           <div className="lg:w-max lg:max-w-4xl relative z-20 bg-transparent lg:ml-5 xl:pl-10 p-10 gap-2 flex flex-col items-start justify-center ">
             <div className="md:mt-5 mt-10">
@@ -331,11 +324,9 @@ export default Index;
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const commonQuestions = await GetAllCommonQuestiontsSanityService();
-  const announcement = await GetAllAnnouncementSanityService();
   return {
     props: {
       commonQuestions,
-      announcement,
     },
   };
 };
