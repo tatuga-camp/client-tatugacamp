@@ -117,48 +117,51 @@ function ClassroomLayout({
   return (
     <>
       {announcement.data && (
-        <Alert className="   md:w-full" severity="warning">
+        <Alert className="md:w-full" severity="warning">
           <AlertTitle>แจ้งข่าวสาร</AlertTitle>
           {announcement.data?.title} —{" "}
           <strong>{announcement.data?.description}</strong>
         </Alert>
       )}
-      <main className="flex justify-center relative items-center  flex-col md:gap-5 lg:gap-10 ">
-        <div className="absolute top-0 right-0 mr-5 mt-5">
-          <AuthButton />
-        </div>
-        <Popover className=" top-0 left-0 mr-5 mt-5 z-40 absolute ">
-          {({ open }) => (
-            <>
-              {!user.isError && (
-                <Popover.Button className="w-max bg-transparent h-max border-none active:border-none z-30 absolute">
-                  <div className="flex p-2 ml-2 flex-col font-Kanit justify-center items-center ">
-                    <div
-                      aria-label="Show sidebar"
-                      className="text-2xl  z-30 w-10 h-10 
+
+      <main className="flex justify-center  w-full relative items-center  flex-col md:gap-5 lg:gap-10 ">
+        <div className="w-full flex justify-between flex-row-reverse sticky top-2 z-50 px-2">
+          <div className=" ">
+            <AuthButton />
+          </div>
+          <Popover className=" ">
+            {({ open }) => (
+              <>
+                {!user.isError && (
+                  <Popover.Button className="w-max bg-transparent h-max border-none active:border-none z-30 absolute">
+                    <div className="flex p-2 ml-2 flex-col font-Kanit justify-center items-center ">
+                      <div
+                        aria-label="Show sidebar"
+                        className="text-2xl  z-30 w-10 h-10 
         flex justify-center items-center bg-white rounded-2xl   text-black drop-shadow cursor-pointer
         hover:scale-125 transition duration-100 ease-in-out "
-                    >
-                      <CgMenuBoxed />
+                      >
+                        <CgMenuBoxed />
+                      </div>
+                      <span className="text-black">menu</span>
                     </div>
-                    <span className="text-white">menu</span>
-                  </div>
-                </Popover.Button>
-              )}
-              <Transition>
-                <Popover.Panel>
-                  {({ close }) => (
-                    <SidebarClassroom
-                      sideMenus={sideMenus}
-                      user={user?.data as User}
-                      close={close}
-                    />
-                  )}
-                </Popover.Panel>
-              </Transition>
-            </>
-          )}
-        </Popover>
+                  </Popover.Button>
+                )}
+                <Transition>
+                  <Popover.Panel>
+                    {({ close }) => (
+                      <SidebarClassroom
+                        sideMenus={sideMenus}
+                        user={user?.data as User}
+                        close={close}
+                      />
+                    )}
+                  </Popover.Panel>
+                </Transition>
+              </>
+            )}
+          </Popover>
+        </div>
         {!user.isError && (
           <div className="h-96    w-full  relative">
             <div className="w-full h-80  bg-gradient-to-r from-blue-400 to-orange-300  overflow-hidden">
