@@ -117,9 +117,7 @@ function ReviewAssignment({
           setLoadingIframe(() => true);
           const createDate = new Date(student.studentWork.createAt); // Replace with your specific date and time
           const deadlineDate = new Date(assignment?.data?.deadline as string);
-          deadlineDate.setHours(23);
-          deadlineDate.setMinutes(59);
-          deadlineDate.setSeconds(0);
+
           let isDue = false;
           // Formatting the date and time
           const formattedCreateDateTime = createDate.toLocaleString("th-TH", {
