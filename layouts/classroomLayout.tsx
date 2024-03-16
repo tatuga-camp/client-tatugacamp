@@ -33,7 +33,7 @@ import { MenubarsMain } from "../data/menubarsMain";
 import { User } from "../models";
 import { ResponseGetAllGroupService } from "../services/group";
 import { GetAllAnnouncementSanityService } from "../sanity/services";
-import { Alert, AlertTitle } from "@mui/material";
+import { Alert, AlertColor, AlertTitle } from "@mui/material";
 
 type ClassroomLayoutProps = {
   children: React.ReactNode;
@@ -117,7 +117,10 @@ function ClassroomLayout({
   return (
     <>
       {announcement.data && (
-        <Alert className="md:w-full" severity="warning">
+        <Alert
+          className="md:w-full"
+          severity={announcement.data.type as AlertColor}
+        >
           <AlertTitle>แจ้งข่าวสาร</AlertTitle>
           {announcement.data?.title} —{" "}
           <strong>{announcement.data?.description}</strong>
