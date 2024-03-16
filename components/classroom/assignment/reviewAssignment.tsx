@@ -557,9 +557,6 @@ function ReviewAssignment({
                 const deadlineDate = new Date(
                   assignment?.data?.deadline as string
                 );
-                deadlineDate.setHours(23);
-                deadlineDate.setMinutes(59);
-                deadlineDate.setSeconds(0);
                 if (currentTime > deadlineDate) {
                   IsDue = true;
                 } else if (currentTime < deadlineDate) {
