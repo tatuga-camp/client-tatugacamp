@@ -8,9 +8,14 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import NextTopLoader from "nextjs-toploader";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 import { AppProps } from "next/app";
 import { useState } from "react";
+import { GetUserService } from "../services/user";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -27,12 +32,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         },
       })
   );
+
   return (
     <QueryClientProvider client={queryClient}>
       <Script
         strategy="afterInteractive"
         src="https://www.googletagmanager.com/gtag/js?id=G-WZH3JD3STK"
       />
+
       <Script
         id="google-analytics"
         strategy="afterInteractive"
