@@ -159,10 +159,9 @@ text-black transition duration-150  cursor-pointer"
                 </div>
               ) : (
                 assignments?.data?.map((assignment, index) => {
-                  //covert date
-                  const date = new Date(assignment.deadline);
-
-                  const formattedDate = date.toLocaleDateString(
+                  const deadline = new Date(
+                    assignment.deadline
+                  ).toLocaleDateString(
                     `${
                       user.language === "Thai"
                         ? "th-TH"
@@ -172,6 +171,8 @@ text-black transition duration-150  cursor-pointer"
                       day: "2-digit",
                       month: "short",
                       year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
                     }
                   );
                   const assignDate = new Date(assignment.createAt);
@@ -255,7 +256,7 @@ text-black transition duration-150  cursor-pointer"
                               {user.language === "English" && "due by"}
                             </span>
                             <span className="group-hover:text-white text-black">
-                              {formattedDate}
+                              {deadline}
                             </span>
                           </div>
                         </div>

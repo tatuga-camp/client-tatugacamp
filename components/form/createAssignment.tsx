@@ -243,7 +243,7 @@ export default function CreateAssignment({
                     name="deadline"
                     className="w-60 appearance-none outline-none border-none ring-2  rounded-md px-5 
                 py-2 text-lg ring-gray-200 focus:ring-black "
-                    type="date"
+                    type="datetime-local"
                     placeholder="Please select a date"
                     required
                   />
