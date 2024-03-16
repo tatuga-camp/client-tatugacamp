@@ -27,6 +27,7 @@ import {
 } from "../../services/assignment";
 import { filePickerCallback } from "../../utils/filePickerCallback";
 import Loading from "../loadings/loading";
+import moment from "moment-timezone";
 
 const tabs = [
   {
@@ -191,10 +192,6 @@ function UpdateAssignment({
       });
     });
   };
-
-  //convert the string date to format that input date required
-  const date = new Date(assignmentData.deadline);
-  const formattedDate = date.toISOString().split("T")[0];
 
   //handle click to sclect all student
   const onClickIsCheck = () => {
@@ -427,12 +424,14 @@ function UpdateAssignment({
                   {user.language === "English" && "due by"}
                 </label>
                 <input
-                  value={formattedDate}
+                  value={moment(assignmentData.deadline).format(
+                    "YYYY-MM-DDTHH:mm"
+                  )}
                   onChange={handleChange}
                   name="deadline"
                   className="w-max appearance-none outline-none border-none ring-2  rounded-md px-5 
             py-2 text-lg ring-gray-200 focus:ring-black "
-                  type="date"
+                  type="datetime-local"
                   placeholder="Please select a date"
                   required
                 />
