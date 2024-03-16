@@ -5,6 +5,10 @@ import SidebarClassroom from "../components/sidebars/sidebarClassroom";
 import AuthButton from "../components/auths/mainAutnButton";
 import { User } from "../models";
 import { MenubarsMain } from "../data/menubarsMain";
+import { useQuery } from "@tanstack/react-query";
+import { GetUserService } from "../services/user";
+import Head from "next/head";
+import Script from "next/script";
 
 type TatugaClassLayoutProps = {
   children: React.ReactNode;
@@ -18,6 +22,18 @@ function TatugaClassLayout({
 }: TatugaClassLayoutProps) {
   return (
     <main className="">
+      {user?.plan === "FREE" && (
+        <Script
+          id="Adsense-id"
+          onError={(e) => {
+            console.error("Script failed to load", e);
+          }}
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}`}
+          strategy="lazyOnload"
+          crossOrigin="anonymous"
+        />
+      )}
       <div className="absolute top-0 right-0 mr-5 mt-5">
         <AuthButton />
       </div>

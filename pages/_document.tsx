@@ -5,17 +5,6 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <Script
-            id="Adsense-id"
-            onError={(e) => {
-              console.error("Script failed to load", e);
-            }}
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}`}
-            strategy="lazyOnload"
-            crossOrigin="anonymous"
-          />
-
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico" />
           <link
@@ -41,14 +30,6 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <Script
-            type="module"
-            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-          ></Script>
-          <Script
-            noModule
-            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-          ></Script>
         </body>
       </Html>
     );

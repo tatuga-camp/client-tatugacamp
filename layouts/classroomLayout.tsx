@@ -34,6 +34,8 @@ import { User } from "../models";
 import { ResponseGetAllGroupService } from "../services/group";
 import { GetAllAnnouncementSanityService } from "../sanity/services";
 import { Alert, AlertColor, AlertTitle } from "@mui/material";
+import Head from "next/head";
+import Script from "next/script";
 
 type ClassroomLayoutProps = {
   children: React.ReactNode;
@@ -116,6 +118,18 @@ function ClassroomLayout({
 
   return (
     <>
+      {user.data?.plan === "FREE" && (
+        <Script
+          id="Adsense-id"
+          onError={(e) => {
+            console.error("Script failed to load", e);
+          }}
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}`}
+          strategy="lazyOnload"
+          crossOrigin="anonymous"
+        />
+      )}
       {announcement.data && (
         <Alert
           className="md:w-full"
