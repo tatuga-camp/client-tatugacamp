@@ -10,7 +10,8 @@ import {
 import { VscDebugRestart } from "react-icons/vsc";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { useRouter } from "next/router";
-
+import Link from "next/link";
+import Countdown, { CountdownRenderProps } from "react-countdown";
 type TimeType =
   | {
       seconds: number;
@@ -25,15 +26,11 @@ type TimeType =
 
 const Timer = () => {
   const router = useRouter();
-  const [initalTime, setInitalTime] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
-  const [minutesInput, setMinutesInput] = useState(0);
-  const [secondInput, setSecondInput] = useState(0);
+  const [minutesInput, setMinutesInput] = useState<number | null>(1);
+  const [secondInput, setSecondInput] = useState<number | null>(0);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-  const [start, setStart] = useState(false);
-  const [counter, setCounter] = useState<number | null>();
-  const handle = useFullScreenHandle();
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+  const [checkTimeUp, setCheckTimeUp] = useState<number>(0);
   const [classroomId, setClassroomId] = useState<string>();
   const [tartgetDateTime, setTargetDateTime] = useState<number | null>();
   const timeChoices: TimeType[] = [
@@ -63,52 +60,6 @@ const Timer = () => {
     setClassroomId(() => localStorage.getItem("classroomId") as string);
   }, []);
 
-  //set miliseconds to seconds and minutes
-
-  // reduce every 1 sec
-  useEffect(() => {
-    if (counter === null || start === false) {
-      return () => {};
-    } else {
-      const timer: NodeJS.Timeout = setInterval(() => {
-        if (start === true) {
-          setCounter(() => {
-            const timeLeft = calculateRemainingTime();
-            return timeLeft * 1000;
-          });
-          setMinutes(Math.floor(((counter as number) / 1000 / 60) % 60));
-          setSeconds(Math.floor(((counter as number) / 1000) % 60));
-          if ((counter as number) <= 0 && audio) {
-            audio.play();
-            setStart(false);
-          }
-        }
-      }, 1000);
-
-      return () => clearInterval(timer);
-    }
-  }, [counter, start, audio]);
-
-  function calculateRemainingTime(): number {
-    return Math.max(
-      0,
-      Math.floor(((tartgetDateTime as number) - Date.now()) / 1000)
-    );
-  }
-
-  //handle sumit put time
-  function handleSumit(event: React.FormEvent) {
-    event.preventDefault();
-
-    const milisecond = secondInput * 1000;
-    const miliminute = minutesInput * 60000;
-    const sumTime = miliminute + milisecond;
-    setCounter(() => sumTime);
-    setTargetDateTime(() => Date.now() + sumTime);
-    setInitalTime(() => sumTime);
-    setStart(() => true);
-  }
-
   const handlePickUpTimer = ({ time }: { time: TimeType }) => {
     setMinutesInput(
       () => ((time.minutes as number) > 0 ? time.minutes : 0) as number
@@ -119,29 +70,95 @@ const Timer = () => {
     setSecondInput(
       () => ((time.seconds as number) > 0 ? time.seconds : 0) as number
     );
-
-    setCounter(() => time.miliseconds);
-    setInitalTime(() => time.miliseconds);
-    setStart(() => true);
+  };
+  const handleFullScreen = () => {
+    document.documentElement.requestFullscreen();
+    setIsFullScreen(() => true);
   };
 
-  const handlePauseTimmer = () => {
-    setStart((prev) => !prev);
-    if (counter) {
-      setTargetDateTime(() => (Date.now() + counter) as number);
+  const handleExitFullScreen = () => {
+    document.exitFullscreen();
+    setIsFullScreen(() => false);
+  };
+
+  const renderer = (props: CountdownRenderProps) => {
+    if (props.completed) {
+      if (audio) {
+        audio.play();
+      }
     }
+    setCheckTimeUp(props.total);
+    return (
+      <>
+        {props.completed ? (
+          <div className="text-[10rem]  font-bold font-Poppins text-white">
+            Time&apos;s up!
+          </div>
+        ) : (
+          <section
+            className={`flex ${
+              isFullScreen ? "text-[20rem]" : "text-[14rem]"
+            }  text-white font-bold font-Poppins justify-center items-center gap-3`}
+            suppressHydrationWarning
+          >
+            <div>{props.minutes}</div>
+            <div>:</div>
+            <div>{props.seconds}</div>
+          </section>
+        )}
+        <div className="flex gap-2">
+          {((props.api.isStarted() === false &&
+            props.api.isPaused() === false) ||
+            props.api.isCompleted() === true) && (
+            <button
+              onClick={() => {
+                let second = secondInput ? secondInput : 0;
+                let minute = minutesInput ? minutesInput : 0;
+                const milisecond = second * 1000;
+                const miliminute = minute * 60000;
+                const sumTime = miliminute + milisecond;
+                setTargetDateTime(() => Date.now() + sumTime);
+                props.api.start();
+              }}
+              className="w-max px-10 py-2 bg-white text-black rounded-md hover:bg-green-400 transition duration-100 active:scale-110"
+            >
+              start
+            </button>
+          )}
+          {props.api.isPaused() === false && props.api.isStarted() === true && (
+            <button
+              onClick={() => {
+                props.api.pause();
+              }}
+              className="w-max px-10 py-2 bg-white text-black rounded-md hover:bg-green-400 transition duration-100 active:scale-110"
+            >
+              stop
+            </button>
+          )}
+          {props.api.isPaused() === true &&
+            props.api.isCompleted() === false && (
+              <button
+                onClick={() => {
+                  props.api.start();
+                }}
+                className="w-max px-10 py-2 bg-white text-black rounded-md hover:bg-green-400 transition duration-100 active:scale-110"
+              >
+                continuous
+              </button>
+            )}
+          <button
+            onClick={() => {
+              props.api.stop();
+            }}
+            className="w-max px-10 py-2 bg-white text-black rounded-md hover:bg-green-400 transition duration-100 active:scale-110"
+          >
+            restart
+          </button>
+        </div>
+      </>
+    );
   };
 
-  const handleRestartTimmer = () => {
-    const milisecond = secondInput * 1000;
-    const miliminute = minutesInput * 60000;
-    const sumTime = miliminute + milisecond;
-    console.log(sumTime);
-    setCounter(() => sumTime);
-    setTargetDateTime(() => Date.now() + sumTime);
-    setInitalTime(() => sumTime);
-    setStart(true);
-  };
   return (
     <>
       <Head>
@@ -160,107 +177,57 @@ const Timer = () => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      <div className="flex w-full">
-        <div
-          onClick={() =>
-            router.push({
-              pathname: `/classroom/teacher/${classroomId}`,
-            })
-          }
-          className="absolute top-5 left-5 bg-white px-7 py-2 rounded-lg 
+      <main
+        className={`w-full gap-5 min-h-screen flex flex-col justify-center items-center max-h-full ${
+          checkTimeUp < 4000 ? "bg-red-600" : "bg-blue-400"
+        } `}
+      >
+        <Link
+          href={`/classroom/teacher/${classroomId}`}
+          className="absolute no-underline text-black top-5 left-5 bg-white px-7 py-2 rounded-lg 
         font-Poppins hover:scale-110 transition duration-150 cursor-pointer"
         >
           back
-        </div>
-        <FullScreen handle={handle} className="w-full">
-          <div className=" right-[47%] top-10 absolute ">
-            {!handle.active && (
-              <button
-                className="w-max h-max flex group flex-col gap-y-1 items-center justify-center p-0 bg-transparent border-0 
+        </Link>
+
+        <div className=" top-5 absolute right-0 left-0 w-max m-auto ">
+          {isFullScreen ? (
+            <button
+              className="w-max h-max flex group flex-col gap-y-1 items-center justify-center p-0 bg-transparent border-0 
                 cursor-pointer text-white"
-                onClick={handle.enter}
-              >
-                <div className="group-hover:scale-125 transition duration-200 ease-in-out ">
-                  <BsFullscreen size={25} />
-                </div>
-
-                <span>full screen</span>
-              </button>
-            )}
-            {handle.active && (
-              <button
-                className="w-max h-max flex group flex-col  gap-y-1 items-center justify-center p-0 bg-transparent border-0 cursor-pointer text-white"
-                onClick={handle.exit}
-              >
-                <div className="group-hover:scale-75 transition duration-200 ease-in-out ">
-                  <BsFullscreenExit size={25} />
-                </div>
-                <span>exit full screen</span>
-              </button>
-            )}
-          </div>
-
-          <div
-            className={`w-full h-screen  ${
-              seconds < 4 && counter !== null && minutes === 0
-                ? `bg-red-700`
-                : " bg-blue-400"
-            } flex  items-center justify-center font-Inter text-[20rem] font-bold text-white`}
-          >
-            <div className="flex flex-col justify-center items-center">
-              <div className="flex  gap-x-5">
-                {minutes > 0 && (
-                  <div className="">
-                    <div className="flex gap-4">
-                      <p id="minute">
-                        {minutes < 10 ? "0" + minutes : minutes}
-                      </p>
-                    </div>
-                  </div>
-                )}
-                {minutes > 0 && <span> : </span>}
-                <div className="">
-                  <div className="flex gap-4">
-                    <p id="second">{seconds < 10 ? "0" + seconds : seconds}</p>
-                  </div>
-                </div>
+              onClick={handleExitFullScreen}
+            >
+              <div className="group-hover:scale-125 transition duration-200 ease-in-out ">
+                <BsFullscreenExit size={25} />
               </div>
-            </div>
-          </div>
 
-          <div className="w-full bg-transparent flex flex-col gap-y-7 justify-center items-center gap-x-8 absolute bottom-40 right-0 left-0 text-center mr-auto ml-auto">
-            <div className="flex justify-center items-center gap-x-5">
-              <button
-                className="w-max p-0 bg flex items-center justify-center bg-transparent rounded-full
-                 text-white m-0  border-0 cursor-pointer"
-                onClick={handlePauseTimmer}
-              >
-                {counter && counter > -1000 ? (
-                  <div>
-                    {start === true ? (
-                      <BsStopCircle size={30} />
-                    ) : (
-                      <BsPlayCircle size={30} />
-                    )}
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-              </button>
-              <button
-                className="w-max p-0 bg flex items-center justify-center bg-transparent rounded-full
-                 text-white m-0  border-0 cursor-pointer"
-                onClick={handleRestartTimmer}
-              >
-                <VscDebugRestart size={30} />
-              </button>
-            </div>
-          </div>
-        </FullScreen>
+              <span>exit full screen</span>
+            </button>
+          ) : (
+            <button
+              className="w-max h-max flex group flex-col gap-y-1 items-center justify-center p-0 bg-transparent border-0 
+                cursor-pointer text-white"
+              onClick={handleFullScreen}
+            >
+              <div className="group-hover:scale-125 transition duration-200 ease-in-out ">
+                <BsFullscreen size={25} />
+              </div>
 
-        <div className="w-full bg-transparent flex flex-col gap-y-7 justify-center items-center gap-x-8 absolute bottom-10 right-0 left-0 text-center mr-auto ml-auto">
+              <span>full screen</span>
+            </button>
+          )}
+        </div>
+        <Countdown
+          date={tartgetDateTime ? tartgetDateTime : Date.now() + 60000}
+          intervalDelay={0}
+          precision={1}
+          autoStart={false}
+          controlled={false}
+          renderer={renderer}
+        />
+        {!isFullScreen && (
           <div className="text-base font-Kanit text-white">
-            <form className="flex gap-x-5 " onSubmit={handleSumit}>
+            <form className="flex gap-x-5 ">
               <label>
                 <span className="mr-2">minute :</span>
                 <input
@@ -272,13 +239,15 @@ const Timer = () => {
                   type="number"
                   inputMode="numeric"
                   name="minute"
-                  value={minutesInput}
+                  value={minutesInput as number}
                   onChange={(e) => {
-                    const minutes = Number(e.target.value);
-                    if (minutes >= 0 && minutes < 60) {
-                      setMinutesInput(minutes);
-                    } else if (minutes > 59) {
+                    const minute = Number(e.target.value);
+                    if (minute > 0 && minute < 60) {
+                      setMinutesInput(minute);
+                    } else if (minute > 59) {
                       setMinutesInput(59);
+                    } else if (minute === 0) {
+                      setMinutesInput(null);
                     }
                   }}
                 />
@@ -293,25 +262,25 @@ const Timer = () => {
                   type="number"
                   name="second"
                   inputMode="numeric"
-                  value={secondInput}
+                  value={secondInput as number}
                   placeholder="second"
                   onChange={(e) => {
                     const seconds = Number(e.target.value);
-                    console.log(seconds);
-                    if (seconds >= 0 && seconds < 60) {
+                    if (seconds > 0 && seconds < 60) {
                       setSecondInput(seconds);
                     } else if (seconds > 59) {
                       setSecondInput(59);
+                    } else if (seconds === 0) {
+                      setSecondInput(null);
                     }
                   }}
                 />
               </label>
-              <button className="w-max px-10 py-2 bg-white text-black rounded-md hover:bg-green-400 transition duration-100 active:scale-110">
-                ตกลง
-              </button>
             </form>
           </div>
-          <div className="flex gap-x-5">
+        )}
+        {!isFullScreen && (
+          <section className="flex gap-x-5">
             {timeChoices.map((time, index) => {
               return (
                 <button
@@ -328,9 +297,9 @@ const Timer = () => {
                 </button>
               );
             })}
-          </div>
-        </div>
-      </div>
+          </section>
+        )}
+      </main>
     </>
   );
 };
