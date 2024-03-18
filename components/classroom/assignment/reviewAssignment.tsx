@@ -90,7 +90,7 @@ function ReviewAssignment({
     summitDate: "",
   });
   const [teacherReview, setTeacherReview] = useState<{
-    score?: number | null;
+    score?: string | null;
     comment?: string;
   }>();
 
@@ -186,7 +186,7 @@ function ReviewAssignment({
         return {
           score: !student?.studentWork?.score
             ? null
-            : student?.studentWork?.score,
+            : student?.studentWork?.score.toLocaleString(),
         };
       });
       const comments = await GetCommentsService({
@@ -201,11 +201,20 @@ function ReviewAssignment({
   const handleSummitReviewStudentWork = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
+      Swal.fire({
+        title: "กำลังตรวจงาน...",
+        html: "รอสักครู่นะครับ...",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       if (currentStudentWork?.status === "have-work") {
         await ReviewStudentWorkService({
           studentId: currentStudentWork.id,
           assignmentId: assignment?.data?.id as string,
-          score: teacherReview?.score as number,
+          score: teacherReview?.score?.toLocaleString() as string,
         });
         await studentOnAssignments.refetch();
         Swal.fire("success", "ตรวจงานเรียบร้อย", "success");
@@ -229,10 +238,10 @@ function ReviewAssignment({
         await ReviewStudentWorkNoWorkService({
           studentId: currentStudentWork?.id as string,
           assignmentId: assignment?.data?.id as string,
-          score: teacherReview?.score as number,
+          score: teacherReview?.score?.toLocaleString() as string,
         });
         Swal.fire("success", "ตรวจงานเรียบร้อย", "success");
-        studentOnAssignments.refetch();
+        await studentOnAssignments.refetch();
 
         let nextStudentNumber = parseInt(currentStudentWork.number) + 1;
         // Check if the current student is the last student
@@ -275,14 +284,13 @@ function ReviewAssignment({
           await ReviewStudentWorkService({
             studentId: slectStudentWork.id,
             assignmentId: assignment?.data?.id as string,
-            score: teacherReview?.score as number,
+            score: teacherReview?.score?.toLocaleString() as string,
           });
-          await studentOnAssignments.refetch();
         } else if (slectStudentWork.status === "no-work") {
           await ReviewStudentWorkNoWorkService({
             studentId: slectStudentWork.id,
             assignmentId: assignment?.data?.id as string,
-            score: teacherReview?.score as number,
+            score: teacherReview?.score?.toLocaleString() as string,
           });
         }
       }
@@ -403,11 +411,11 @@ function ReviewAssignment({
   const handleOnChangeReviewWork = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    if (value === "" || (validateScore(value) && name === "score")) {
+    if (name === "score") {
       setTeacherReview((prev) => {
         return {
           ...prev,
-          score: Number(value),
+          score: value,
         };
       });
     }
@@ -684,7 +692,7 @@ function ReviewAssignment({
                   ? "คะแนน"
                   : user.language === "English" && "score"
               }
-              type="text"
+              type="number"
               name="score"
               value={teacherReview?.score ?? ""}
               onChange={handleOnChangeReviewWork}
