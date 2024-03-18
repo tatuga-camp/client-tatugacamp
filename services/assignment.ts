@@ -550,7 +550,7 @@ export async function UpdateAssignmentService({
 type InputReviewStudentWorkService = {
   studentId: string;
   assignmentId: string;
-  score: number;
+  score: string;
 };
 type ResponseReviewStudentWorkService = StudentWork;
 export async function ReviewStudentWorkService({
@@ -564,7 +564,7 @@ export async function ReviewStudentWorkService({
     const review = await axios.put(
       `${process.env.MAIN_SERVER_URL}/user/assignment/review-student-work`,
       {
-        score: score,
+        score: parseFloat(score),
         assignmentId: assignmentId,
         studentId: studentId,
       },
@@ -584,7 +584,7 @@ export async function ReviewStudentWorkService({
 type InputReviewStudentWorkNoWorkService = {
   studentId: string;
   assignmentId: string;
-  score: number;
+  score: string;
 };
 type ResponseReviewStudentWorkNoWorkService = StudentWork;
 export async function ReviewStudentWorkNoWorkService({
@@ -598,7 +598,7 @@ export async function ReviewStudentWorkNoWorkService({
     const review = await axios.post(
       `${process.env.MAIN_SERVER_URL}/user/assignment/review-student-no-work`,
       {
-        score: score,
+        score: parseFloat(score),
         assignmentId: assignmentId,
         studentId: studentId,
       },
