@@ -132,7 +132,7 @@ function ClassroomLayout({
       )}
       {announcement.data && (
         <Alert
-          className="md:w-full"
+          className="md:w-full static"
           severity={announcement.data.type as AlertColor}
         >
           <AlertTitle>แจ้งข่าวสาร</AlertTitle>

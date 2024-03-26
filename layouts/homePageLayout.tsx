@@ -14,7 +14,7 @@ function HomepageLayout({ children }: { children: React.ReactNode }) {
       <main>
         {announcement.data && (
           <Alert
-            className=" sticky top-0 z-40  md:w-full"
+            className=" z-40  md:w-full static"
             severity={announcement.data.type as AlertColor}
           >
             <AlertTitle>แจ้งข่าวสาร</AlertTitle>
