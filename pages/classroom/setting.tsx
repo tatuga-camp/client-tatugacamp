@@ -398,17 +398,6 @@ function Setting({ userSideServer }: { userSideServer: User }) {
                   <MdSubscriptions />
                 </div>
 
-                {user?.data?.plan === "FREE" ? (
-                  <div
-                    className="w-max flex justify-center items-center gap-1 h-max p-2 bg-gray-200 px-5 text-black rounded-md
-                   font-Kanit font-medium mt-2 "
-                  >
-                    {user?.data.language === "Thai"
-                      ? "คุณยังไม่เป็นสมาชิก"
-                      : user?.data?.language && "you are not member yet"}
-                    <MdNoAccounts />
-                  </div>
-                ) : (
                   <button
                     onClick={handlePortalSession}
                     type="button"
@@ -419,7 +408,7 @@ function Setting({ userSideServer }: { userSideServer: User }) {
                       ? "จัดการ"
                       : user?.data?.language && "manage"}
                   </button>
-                )}
+             
               </div>
               <button
                 aria-label="update user button"

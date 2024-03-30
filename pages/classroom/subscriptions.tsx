@@ -19,10 +19,12 @@ import {
   sideMenusEnglish,
   sideMenusThai,
 } from "../../data/menubarsMain";
+import { ProtalSessionService } from "../../services/stripe-api/portal-session";
 
 function Subscriptions({ user, error }: { user: User; error: any }) {
   const router = useRouter();
   const [enabled, setEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const tiers = [
     {
       title: `${
@@ -63,54 +65,11 @@ function Subscriptions({ user, error }: { user: User; error: any }) {
     {
       title: `${
         user?.language === "Thai" || error
-          ? "สมาชิกเริ่มต้น"
-          : user?.language === "English" && "Tatuga starter"
-      }`,
-      subheader: "Most popular",
-      price: enabled ? 670 : 70,
-      description: [
-        `${
-          user?.language === "Thai" || error
-            ? "สร้างห้องเรียนได้ไม่เกิน 20 ห้อง"
-            : user?.language === "English" &&
-              "Only 20 classrooms can be created"
-        }`,
-        `${
-          user?.language === "Thai" || error
-            ? "ใช้ระบบพื้นฐานได้เต็มที่"
-            : user?.language === "English" && "Can use all basic features"
-        }`,
-        `${
-          user?.language === "Thai" || error
-            ? "สามารถเก็บงานได้อย่างไม่จำกัด"
-            : user?.language === "English" && "Unlimited storage"
-        }`,
-        `${
-          user?.language === "Thai" || error
-            ? "ลบห้องเรียนได้"
-            : user?.language === "English" && "Be able to delete classroom"
-        }`,
-        `${
-          user?.language === "Thai" || error
-            ? "ไม่มีโฆษณา"
-            : user?.language === "English" && "No Ads"
-        }`,
-      ],
-      buttonText: `${
-        user?.language === "Thai" || error
-          ? "สมัครเลย"
-          : user?.language === "English" && "sign up"
-      }`,
-      buttonVariant: "contained",
-    },
-    {
-      title: `${
-        user?.language === "Thai" || error
           ? "สมาชิกพรีเมี่ยม"
           : user?.language === "English" && "Tatuga Premium"
       }`,
       subheader: "Unlimited",
-      price: enabled ? 1100 : 120,
+      price: enabled ? 899 : 120,
       description: [
         `${
           user?.language === "Thai" || error
@@ -147,21 +106,15 @@ function Subscriptions({ user, error }: { user: User; error: any }) {
     },
   ];
 
-  const handleCreateCheckOutStarter = async () => {
-    if (enabled) {
-      router.push({
-        pathname: "/payment",
-        query: {
-          priceId: process.env.NEXT_PUBLIC_TATUGA_STARTER_PRICEID_YEARLY,
-        },
-      });
-    } else if (!enabled) {
-      router.push({
-        pathname: "/payment",
-        query: {
-          priceId: process.env.NEXT_PUBLIC_TATUGA_STARTER_PRICEID,
-        },
-      });
+  const handlePortalSession = async () => {
+    try {
+      setLoading(true);
+      const url = await ProtalSessionService();
+      window.location.href = url;
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      console.error(err);
     }
   };
 
@@ -383,35 +336,33 @@ function Subscriptions({ user, error }: { user: User; error: any }) {
                             : user?.language === "English" && "MOVE TO PREMIUM"}
                         </button>
                       )}
+
                     {user?.plan === "TATUGA-PREMIUM" &&
                       user?.subscriptions === "active" &&
-                      index === 2 && (
-                        <div className="mt-5 bg-gray-400 text-black md:px-3 md:text-sm px-10 py-3  transition duration-150 rounded-3xl">
+                      index === 1 &&
+                      (loading ? (
+                        <button className="mt-5 bg-blue-400 animate-pulse text-white px-10 py-3 hover:bg-orange-500 transition duration-150 rounded-3xl">
+                          {user?.language === "Thai"
+                            ? "กำลังนำคุณไปยังหน้าสมาชิก.."
+                            : user?.language === "English" &&
+                              "Redirecting you to the member page.."}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={handlePortalSession}
+                          className="mt-5 bg-blue-400 text-white px-10 py-3 hover:bg-orange-500 transition duration-150 rounded-3xl"
+                        >
                           {user?.language === "Thai"
                             ? "คุณได้สมัครสมาชิกแล้ว"
                             : user?.language === "English" &&
                               "You are already a memeber"}
-                        </div>
-                      )}
-                    {user?.plan === "TATUGA-PREMIUM" &&
-                      user?.subscriptions === "active" &&
-                      index === 1 && (
-                        <button
-                          onClick={handleCreateCheckOutStarter}
-                          className="mt-5 bg-blue-400 text-white px-10 py-3 hover:bg-orange-500 transition duration-150 rounded-3xl"
-                        >
-                          {user?.language === "Thai"
-                            ? "ย้ายไปแผนเริ่มต้น"
-                            : user?.language === "English" && "MOVE TO STARTER"}
                         </button>
-                      )}
+                      ))}
                     {(user?.plan === "FREE" ||
                       user?.subscriptions !== "active") && (
                       <button
                         onClick={() => {
                           if (index === 1) {
-                            handleCreateCheckOutStarter();
-                          } else if (index === 2) {
                             handleCreateCheckOutPremium();
                           }
                         }}
