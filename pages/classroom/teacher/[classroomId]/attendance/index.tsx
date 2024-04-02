@@ -17,6 +17,7 @@ import ShowNoteAttendance from "../../../../../components/form/showNoteAttendanc
 import {
   DeleteAttendanceService,
   GetAllAttendanceService,
+  SecondResponseGetAllAttendanceService,
 } from "../../../../../services/attendance";
 import {
   Attendance,
@@ -44,6 +45,7 @@ export type selectAttendance = {
 import { LuCalendarRange } from "react-icons/lu";
 import { MdOutlineBarChart } from "react-icons/md";
 import { GoPencil } from "react-icons/go";
+import Image from "next/image";
 
 function Index({ user }: { user: User }) {
   const router = useRouter();
@@ -324,7 +326,7 @@ function Index({ user }: { user: User }) {
                       {/* Body */}
                       <tbody className="w-max">
                         {attendances?.data?.map((item: any, index) => {
-                          if (item !== 0) {
+                          if (index !== 0) {
                             return (
                               <tr
                                 key={index}
@@ -355,8 +357,14 @@ function Index({ user }: { user: User }) {
                                         : "bg-[#E8E8E8]"
                                     }`}
                                   >
-                                    <div className="min-w-9 min-h-9 rounded-full bg-slate-500 mx-2 ring-1">
-                                      {/*Profile pic*/}
+                                    <div className="min-w-9 min-h-9 rounded-full bg-white mx-2 ring-1 relative overflow-hidden">
+                                      <Image
+                                        src={item.student?.picture}
+                                        alt=""
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        className="object-cover"
+                                      />
                                     </div>
                                     <span className="text-left text-xs md:text-base truncate hover:overflow-visible">
                                       {item.student?.firstName}{" "}
@@ -596,7 +604,7 @@ function Index({ user }: { user: User }) {
                       {/* Body */}
                       <tbody className="w-max">
                         {attendances?.data?.map((item: any, index) => {
-                          if (item !== 0) {
+                          if (index !== 0) {
                             return (
                               <tr
                                 key={index}
@@ -627,7 +635,15 @@ function Index({ user }: { user: User }) {
                                         : "bg-[#E8E8E8]"
                                     }`}
                                   >
-                                    <div className="min-w-9 min-h-9 rounded-full bg-slate-500 mx-2 ring-1"></div>
+                                    <div className="min-w-9 min-h-9 rounded-full bg-white mx-2 ring-1 relative overflow-hidden">
+                                      <Image
+                                        src={item.student?.picture}
+                                        alt=""
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        className="object-cover"
+                                      />
+                                    </div>
                                     <span className="text-left text-xs md:text-base truncate hover:overflow-visible">
                                       {item.student?.firstName}{" "}
                                       {item.student?.lastName}
@@ -742,7 +758,7 @@ function Index({ user }: { user: User }) {
                         })}
                       </tbody>
                     </table>
-                    <span className="mt-5 flex items-center justify-center text-center font-Kanit text-xl font-semibold mt-2">
+                    <span className="mt-5 flex items-center justify-center text-center font-Kanit text-xl font-semibold">
                       {user.language === "Thai" &&
                         `จำนวนครูสอนทั้งหมด ${attendances?.data?.[0]?.sum} คาบ`}
                       {user.language === "English" &&
