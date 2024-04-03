@@ -17,7 +17,6 @@ import ShowNoteAttendance from "../../../../../components/form/showNoteAttendanc
 import {
   DeleteAttendanceService,
   GetAllAttendanceService,
-  SecondResponseGetAllAttendanceService,
 } from "../../../../../services/attendance";
 import {
   Attendance,
@@ -148,19 +147,6 @@ function Index({ user }: { user: User }) {
                 </section>
                 ข้อมูลสถิติ
               </button>
-              <button
-                className={`hover:scale-105 transition duration-150 flex items-center justify-center gap-2 rounded-full py-2 px-3 border-[3px] border-solid border-[#9C2CD1]  ${
-                  selectedButton === "note"
-                    ? "bg-[#9C2CD1] text-white"
-                    : "bg-white text-[#9C2CD1] border-[#9C2CD1]"
-                }`}
-                onClick={() => handleButtonClick("note")}
-              >
-                <section className="text-[1.3rem]">
-                  <GoPencil />
-                </section>
-                บันทึก
-              </button>
             </div>
 
             <div className="flex items-center justify-center mt-2 md:mt-0">
@@ -241,7 +227,7 @@ function Index({ user }: { user: User }) {
                             </div>
                           </th>
 
-                          {attendances?.data?.[0].dateTimes.map(
+                          {attendances?.data?.meta.headAttendances.map(
                             (status, index) => {
                               const date = new Date(status.date);
                               const formattedDate = date.toLocaleDateString(
@@ -325,7 +311,7 @@ function Index({ user }: { user: User }) {
                       </thead>
                       {/* Body */}
                       <tbody className="w-max">
-                        {attendances?.data?.map((item: any, index) => {
+                        {attendances?.data?.students.map((item, index) => {
                           if (index !== 0) {
                             return (
                               <tr
@@ -490,7 +476,7 @@ function Index({ user }: { user: User }) {
                                   }`}
                                 >
                                   <span className="text-center">
-                                    {item.statistics?.percent?.present.toFixed(
+                                    {item.statistics?.percent.present?.toFixed(
                                       2
                                     )}
                                     %
@@ -507,11 +493,11 @@ function Index({ user }: { user: User }) {
 
                 <span className="mt-5 flex items-center justify-center text-center font-Kanit text-xl font-semibold ">
                   {user.language === "Thai" &&
-                    `จำนวนครูสอนทั้งหมด ${attendances?.data?.[0]?.sum} คาบ`}
+                    `จำนวนครูสอนทั้งหมด ${attendances?.data?.meta.sum} คาบ`}
                   {user.language === "English" &&
-                    `The teacher has taught this class for ${attendances?.data?.[0]?.sum} periods`}
+                    `The teacher has taught this class for ${attendances?.data?.meta.sum} periods`}
                 </span>
-                {attendances?.data?.[0]?.dateTimes.length === 0 && (
+                {attendances?.data?.meta.headAttendances.length === 0 && (
                   <div className="w-full flex items-center justify-center h-96 text-8xl">
                     <span>ไม่มีข้อมูล</span>
                     <div className="text-red-400">
@@ -603,7 +589,7 @@ function Index({ user }: { user: User }) {
                       </thead>
                       {/* Body */}
                       <tbody className="w-max">
-                        {attendances?.data?.map((item: any, index) => {
+                        {attendances?.data?.students.map((item, index) => {
                           if (index !== 0) {
                             return (
                               <tr
@@ -760,11 +746,11 @@ function Index({ user }: { user: User }) {
                     </table>
                     <span className="mt-5 flex items-center justify-center text-center font-Kanit text-xl font-semibold">
                       {user.language === "Thai" &&
-                        `จำนวนครูสอนทั้งหมด ${attendances?.data?.[0]?.sum} คาบ`}
+                        `จำนวนครูสอนทั้งหมด ${attendances?.data?.meta?.sum} คาบ`}
                       {user.language === "English" &&
-                        `The teacher has taught this class for ${attendances?.data?.[0]?.sum} periods`}
+                        `The teacher has taught this class for ${attendances?.data?.meta?.sum} periods`}
                     </span>
-                    {attendances?.data?.[0]?.dateTimes.length === 0 && (
+                    {attendances?.data?.meta.headAttendances.length === 0 && (
                       <div className="w-full flex items-center justify-center h-96 text-8xl">
                         <span>ไม่มีข้อมูล</span>
                         <div className="text-red-400">
