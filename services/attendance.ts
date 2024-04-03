@@ -172,11 +172,11 @@ type StatisticsNumber = {
   warn: number;
   noData: number;
 };
-export type FirstResponseGetAllAttendanceService = {
-  dateTimes: DateTime[];
+export type MetaAttendance = {
+  headAttendances: DateTime[];
   sum: number;
 };
-export type SecondResponseGetAllAttendanceService = {
+export type StudentAttendaces = {
   student: Student;
   data: Attendance[];
   statistics: {
@@ -184,10 +184,11 @@ export type SecondResponseGetAllAttendanceService = {
     number: StatisticsNumber;
   };
 };
-export type ResponseGetAllAttendanceService = [
-  FirstResponseGetAllAttendanceService,
-  SecondResponseGetAllAttendanceService[]
-];
+export type ResponseGetAllAttendanceService = {
+  meta: MetaAttendance;
+  students: StudentAttendaces[];
+};
+
 export async function GetAllAttendanceService({
   classroomId,
 }: InputGetAllAttendanceService): Promise<ResponseGetAllAttendanceService> {
