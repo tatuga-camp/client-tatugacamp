@@ -171,12 +171,10 @@ function Index({ user }: { user: User }) {
 
   const statusCountsPerMonthWithOrderedNames = {};
 
-  // Iterate over each status type
   for (const statusType in statusCountsPerMonth) {
     const statusCounts = statusCountsPerMonth[statusType];
     const countsPerMonthWithOrderedNames = {};
 
-    // Map all month names to their counts, even if they are 0
     monthNames.forEach((monthName, index) => {
       countsPerMonthWithOrderedNames[monthName] = statusCounts[index] || 0;
     });
