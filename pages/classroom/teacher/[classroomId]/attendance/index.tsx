@@ -14,6 +14,22 @@ import { parseCookies } from "nookies";
 import DowloadExcelAttendacne from "../../../../../components/form/dowloadExcelAttendacne";
 import ShowNoteAttendance from "../../../../../components/form/showNoteAttendance";
 
+//Chart
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+import { Bar } from "react-chartjs-2";
+
+import Chart from "chart.js/auto";
+Chart.register(CategoryScale);
+
 import {
   DeleteAttendanceService,
   GetAllAttendanceService,
@@ -43,8 +59,15 @@ export type selectAttendance = {
 
 import { LuCalendarRange } from "react-icons/lu";
 import { MdOutlineBarChart } from "react-icons/md";
-import { GoPencil } from "react-icons/go";
 import Image from "next/image";
+import { TfiStatsUp } from "react-icons/tfi";
+
+function formatDate(dateString: any) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // Month is zero-indexed, so add 1
+  return `${year}-${month}`;
+}
 
 function Index({ user }: { user: User }) {
   const router = useRouter();
@@ -104,6 +127,249 @@ function Index({ user }: { user: User }) {
     setSelectedButton(buttonName);
   };
 
+  //Status object
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  //สร้างarrayของทุกเดือน เริ่มต้น
+  const statusCountsPerMonth = {
+    Present: Array.from({ length: 12 }, () => 0),
+    Absent: Array.from({ length: 12 }, () => 0),
+    Holiday: Array.from({ length: 12 }, () => 0),
+    Sick: Array.from({ length: 12 }, () => 0),
+    Late: Array.from({ length: 12 }, () => 0),
+    Warn: Array.from({ length: 12 }, () => 0),
+  };
+
+  attendances?.data?.students.forEach((item, index) => {
+    if (index !== 0) {
+      item.data.forEach((attendance) => {
+        const month = new Date(attendance.date).getMonth(); //เอาแค่เดือน
+
+        //each status
+        for (const statusType in statusCountsPerMonth) {
+          if (attendance[statusType.toLowerCase()]) {
+            statusCountsPerMonth[statusType][month]++;
+          }
+        }
+      });
+    }
+  });
+
+  const statusCountsPerMonthWithOrderedNames = {};
+
+  // Iterate over each status type
+  for (const statusType in statusCountsPerMonth) {
+    const statusCounts = statusCountsPerMonth[statusType];
+    const countsPerMonthWithOrderedNames = {};
+
+    // Map all month names to their counts, even if they are 0
+    monthNames.forEach((monthName, index) => {
+      countsPerMonthWithOrderedNames[monthName] = statusCounts[index] || 0;
+    });
+
+    statusCountsPerMonthWithOrderedNames[statusType] =
+      countsPerMonthWithOrderedNames;
+  }
+
+  console.log(statusCountsPerMonthWithOrderedNames);
+
+  //=======turn to data array========
+
+  const absentArray: number[] = Object.values(statusCountsPerMonth["Absent"]);
+
+  const holidayArray: number[] = Object.values(statusCountsPerMonth["Holiday"]);
+
+  const lateArray: number[] = Object.values(statusCountsPerMonth["Late"]);
+
+  const presentArray: number[] = Object.values(statusCountsPerMonth["Present"]);
+  const sickArray: number[] = Object.values(statusCountsPerMonth["Sick"]);
+  const warntArray: number[] = Object.values(statusCountsPerMonth["Warn"]);
+
+  console.log(absentArray);
+  console.log(holidayArray);
+  console.log(lateArray);
+  console.log(presentArray);
+  console.log(sickArray);
+  console.log(warntArray);
+
+  //chart==========================
+  const labels = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+  ];
+
+  //ขาดเรียน
+  const optionsAbsent = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "Absent ขาดเรียน",
+      },
+    },
+  };
+
+  const detaAbsent = {
+    labels,
+    datasets: [
+      {
+        label: "Absent",
+        data: absentArray,
+        backgroundColor: "rgba(255, 99, 132)",
+      },
+    ],
+  };
+
+  //ลาหยุด
+  const optionsHoliday = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "Holiday ลาหยุด",
+      },
+    },
+  };
+
+  const detaHoliday = {
+    labels,
+    datasets: [
+      {
+        label: "Holiday",
+        data: holidayArray,
+        backgroundColor: "rgba(255, 255, 0)",
+      },
+    ],
+  };
+
+  //มาสาย
+  const optionsLate = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "Late มาสาย",
+      },
+    },
+  };
+
+  const dataLate = {
+    labels,
+    datasets: [
+      {
+        label: "Late",
+        data: lateArray,
+        backgroundColor: "rgba(255, 165, 0)",
+      },
+    ],
+  };
+
+  //มาเรียน
+  const optionsPresent = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "Present มาเรียน",
+      },
+    },
+  };
+
+  const dataPresent = {
+    labels,
+    datasets: [
+      {
+        label: "Present",
+        data: presentArray,
+        backgroundColor: "rgba(0, 128, 0)",
+      },
+    ],
+  };
+
+  //ป่วย
+  const optionsSick = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "Sick ป่วย",
+      },
+    },
+  };
+
+  const dataSick = {
+    labels,
+    datasets: [
+      {
+        label: "Sick",
+        data: sickArray,
+        backgroundColor: "rgba(0, 0, 255)",
+      },
+    ],
+  };
+
+  //เฝ้าระวัง
+  const optionWarn = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "Warn เฝ้าระวัง",
+      },
+    },
+  };
+
+  const dataWarn = {
+    labels,
+    datasets: [
+      {
+        label: "Warn",
+        data: warntArray,
+        backgroundColor: "rgba(128, 0, 128)",
+      },
+    ],
+  };
+
   return (
     <div className="bg-blue-50 pb-40">
       <Head>
@@ -146,6 +412,19 @@ function Index({ user }: { user: User }) {
                   <MdOutlineBarChart />
                 </section>
                 ข้อมูลสถิติ
+              </button>
+              <button
+                className={`hover:scale-105 transition duration-150 flex items-center justify-center gap-2 rounded-full py-2 px-3 border-[3px] border-solid border-purple-500  ${
+                  selectedButton === "stat-month"
+                    ? "bg-purple-500 text-white"
+                    : "bg-white text-purple-500 border-purple-500"
+                }`}
+                onClick={() => handleButtonClick("stat-month")}
+              >
+                <section className="text-[1.3rem]">
+                  <TfiStatsUp />
+                </section>
+                สถิติรายเดือน
               </button>
             </div>
 
@@ -762,7 +1041,47 @@ function Index({ user }: { user: User }) {
                 )}
               </div>
             )}
-            {selectedButton === "note" && <div>Note content</div>}
+            {selectedButton === "stat-month" && (
+              <div className="w-[800px]">
+                <div>
+                  <Bar options={optionsAbsent} data={detaAbsent} />
+
+                  <Bar options={optionsHoliday} data={detaHoliday} />
+                  <Bar options={optionsLate} data={dataLate} />
+                  <Bar options={optionsPresent} data={dataPresent} />
+                  <Bar options={optionsSick} data={dataSick} />
+                  <Bar options={optionWarn} data={dataWarn} />
+                </div>
+                <div>
+                  {attendances?.data?.students.map((item, index) => {
+                    if (index !== 0) {
+                      return (
+                        <li className="text-left text-xs md:text-base truncate hover:overflow-visible">
+                          {item.student?.firstName}
+                          {item.student?.lastName}
+                          {item.data.map((attendance) => (
+                            <li key={attendance.id}>
+                              <p>Date: {attendance.date}</p>
+                              <p className="text-blue-500">
+                                Date: {formatDate(attendance.date)}
+                              </p>
+                              {/* Render status */}
+                              {attendance.present && <p>Status: Present</p>}
+                              {attendance.absent && <p>Status: Absent</p>}
+                              {attendance.holiday && <p>Status: Holiday</p>}
+                              {attendance.sick && <p>Status: Sick</p>}
+                              {attendance.late && <p>Status: Late</p>}
+                              {attendance.warn && <p>Status: Warn</p>}
+                              <p>-----</p>
+                            </li>
+                          ))}
+                        </li>
+                      );
+                    }
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </ClassroomLayout>
