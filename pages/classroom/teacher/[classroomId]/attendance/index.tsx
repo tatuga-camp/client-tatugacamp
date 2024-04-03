@@ -17,6 +17,7 @@ import ShowNoteAttendance from "../../../../../components/form/showNoteAttendanc
 import {
   DeleteAttendanceService,
   GetAllAttendanceService,
+  SecondResponseGetAllAttendanceService,
 } from "../../../../../services/attendance";
 import {
   Attendance,
@@ -40,6 +41,11 @@ export type selectAttendance = {
   student: Student;
   attendanceData: Attendance;
 };
+
+import { LuCalendarRange } from "react-icons/lu";
+import { MdOutlineBarChart } from "react-icons/md";
+import { GoPencil } from "react-icons/go";
+import Image from "next/image";
 
 function Index({ user }: { user: User }) {
   const router = useRouter();
@@ -94,6 +100,11 @@ function Index({ user }: { user: User }) {
     });
   };
 
+  const [selectedButton, setSelectedButton] = useState("information");
+  const handleButtonClick = (buttonName: any) => {
+    setSelectedButton(buttonName);
+  };
+
   return (
     <div className="bg-blue-50 pb-40">
       <Head>
@@ -108,344 +119,665 @@ function Index({ user }: { user: User }) {
             : sideMenusEnglish({ router })
         }
       >
-        <div className="w-full h-full mt-10 flex flex-col justify-center items-center pb-10 ">
-          <Popover>
-            {({ open }) => (
-              <>
-                <Popover.Button>
-                  <div className="w-max px-5 flex gap-1 mb-2 hover:scale-105 transition duration-150 active:bg-blue-800 bg-blue-500 font-Poppins font-semibold text-white rounded-lg py-2">
-                    dowload
-                    <div>
-                      <SiMicrosoftexcel />
-                    </div>
-                  </div>
-                </Popover.Button>
-
-                <Popover.Panel>
-                  {({ close }) => (
-                    <DowloadExcelAttendacne close={close} user={user} />
-                  )}
-                </Popover.Panel>
-              </>
-            )}
-          </Popover>
-
-          {triggerUpdateAttendance && (
-            <UpdateAttendance
-              user={user}
-              setTriggerUpdateAttendance={setTriggerUpdateAttendance}
-              attendances={attendances}
-              student={selectAttendance?.student as Student}
-              attendanceData={selectAttendance?.attendanceData as Attendance}
-            />
-          )}
-
-          {triggerShowNote && (
-            <ShowNoteAttendance
-              setTriggerShowNote={setTriggerShowNote}
-              selectNote={selectNote}
-              attendances={attendances}
-              classroomId={router.query.classroomId as string}
-            />
-          )}
-
-          {attendances.isLoading ? (
-            <div className="flex flex-col gap-5 mt-5">
-              <Skeleton variant="rectangular" width={700} height={40} />
-              <Skeleton variant="rectangular" width={600} height={40} />
-              <Skeleton variant="rectangular" width={800} height={40} />
+        <div className="bg-white w-full h-full mt-3 flex flex-col justify-center items-center pb-10 pt-10  ">
+          <div className=" md:w-[70%] flex flex-col md:flex-row  font-Kanit font-semibold justify-between  ">
+            <div className="flex gap-1 text-[0.8rem] md:text-[1rem] md:gap-3">
+              <button
+                className={`hover:scale-105 transition duration-150 flex items-center justify-center gap-2 rounded-full py-2 px-3 border-[3px] border-solid border-[#EDBA02]  ${
+                  selectedButton === "information"
+                    ? "bg-[#EDBA02] text-white"
+                    : "bg-white text-[#EDBA02] border-[#EDBA02]"
+                }`}
+                onClick={() => handleButtonClick("information")}
+              >
+                <section className="text-[1.3rem]">
+                  <LuCalendarRange />
+                </section>
+                ภาพรวม
+              </button>
+              <button
+                className={`hover:scale-105 transition duration-150 flex items-center justify-center gap-2 rounded-full py-2 px-3 border-[3px] border-solid border-[#FF64D4]  ${
+                  selectedButton === "stat"
+                    ? "bg-[#FF64D4] text-white"
+                    : "bg-white text-[#FF64D4] border-[#FF64D4]"
+                }`}
+                onClick={() => handleButtonClick("stat")}
+              >
+                <section className="text-[1.3rem]">
+                  <MdOutlineBarChart />
+                </section>
+                ข้อมูลสถิติ
+              </button>
+              <button
+                className={`hover:scale-105 transition duration-150 flex items-center justify-center gap-2 rounded-full py-2 px-3 border-[3px] border-solid border-[#9C2CD1]  ${
+                  selectedButton === "note"
+                    ? "bg-[#9C2CD1] text-white"
+                    : "bg-white text-[#9C2CD1] border-[#9C2CD1]"
+                }`}
+                onClick={() => handleButtonClick("note")}
+              >
+                <section className="text-[1.3rem]">
+                  <GoPencil />
+                </section>
+                บันทึก
+              </button>
             </div>
-          ) : (
-            <table
-              className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem]
-              lg:w-[60rem] xl:w-[80rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
-            >
-              <thead className="w-max sticky top-0 bg-white h-max py-3 z-30">
-                <tr className="flex ">
-                  <th className="flex w-10 md:w-28  items-center justify-center sticky left-0 z-20 bg-white">
-                    {user.language === "Thai" && "เลขที่"}
-                    {user.language === "English" && "number"}
-                  </th>
-                  <th className="w-20 md:w-60 flex items-center justify-center sticky z-20 left-10 md:left-28 bg-white">
-                    <span className="text-center">
-                      {user.language === "Thai" && "รายชื่อ"}
-                      {user.language === "English" && "student's name"}
-                    </span>
-                  </th>
 
-                  {attendances?.data?.[0].dateTimes.map((status, index) => {
-                    const date = new Date(status.date);
-                    const formattedDate = date.toLocaleDateString(
-                      `${
-                        user.language === "Thai"
-                          ? "th-TH"
-                          : user.language === "English" && "en-US"
-                      }`,
-                      {
-                        timeZone: userTimeZone,
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12:
-                          user.language === "Thai"
-                            ? false
-                            : user.language === "English" && true, // Use 24-hour format
-                      }
-                    );
-                    return (
-                      <th
-                        key={status.groupId}
-                        className="w-28 font-normal  flex items-center justify-around  bg-white 
-                           relative  h-10  group cursor-pointer "
-                      >
-                        {status.headData?.note && (
-                          <div
-                            className="absolute text-[0.8rem] p-1  group-hover:hidden -top-8 bottom-0 m-auto w-5 h-5 right-1 ring-2
-                           ring-black bg-white rounded-full flex items-center justify-center"
-                          >
-                            <BiNotepad />
-                          </div>
-                        )}
-                        <span className="block group-hover:hidden">
-                          {formattedDate}
-                        </span>
-                        <div
-                          onClick={() => {
-                            document.body.style.overflow = "hidden";
-                            setSelectNote(() => {
-                              return {
-                                headAttendance: status.headData,
-                                groupId: status.groupId,
-                              };
-                            });
-                            setTriggerShowNote(() => true);
-                          }}
-                          className="group-hover:visible invisible h-0 w-0 flex items-center
-                             text-black group-hover:text-green-500 
-                                justify-center group-hover:w-5 group-hover:h-5 bg-green-100 rounded-full group-hover:scale-150 transition
-                                 duration-150"
-                        >
-                          <BiNotepad />
+            <div className="flex items-center justify-center mt-2 md:mt-0">
+              <Popover>
+                {({ open }) => (
+                  <>
+                    <Popover.Button>
+                      <div className="text-[1rem] w-max flex items-center justify-center gap-2  hover:scale-105 transition duration-150  bg-white text-[#207245] font-Poppins font-semibold  rounded-full py-2 px-3 border-[3px] border-solid border-[#207245]">
+                        <div>
+                          <section className=" text-[0.9rem] md:text-[1rem]">
+                            <SiMicrosoftexcel />
+                          </section>
                         </div>
-                        <div
-                          onClick={() =>
-                            handleDeleteAttendance({
-                              groupId: status.groupId,
-                            })
-                          }
-                          className="group-hover:visible invisible h-0 w-0 flex items-center text-black group-hover:text-red-500 
-                                justify-center group-hover:w-5 group-hover:scale-150 transition duration-150"
-                        >
-                          <MdDelete />
-                        </div>
-                      </th>
-                    );
-                  })}
-                  <th className="w-36 flex items-center justify-center ">
-                    <span className="text-center">
-                      {user.language === "Thai" && "จำนวนเข้าเรียน"}
-                      {user.language === "English" && "Present"}
-                    </span>
-                  </th>
-                  <th className="w-36 flex items-center justify-center ">
-                    <span className="text-center">
-                      {user.language === "Thai" && "จำนวนสาย"}
-                      {user.language === "English" && "late"}
-                    </span>
-                  </th>
-                  <th className="w-36 flex items-center justify-center ">
-                    <span className="text-center">
-                      {user.language === "Thai" && "จำนวนลา"}
-                      {user.language === "English" && "take a leave"}
-                    </span>
-                  </th>
-                  <th className="w-36 flex items-center justify-center ">
-                    <span className="text-center">
-                      {user.language === "Thai" && "จำนวนป่วย"}
-                      {user.language === "English" && "sick"}
-                    </span>
-                  </th>
-                  <th className="w-36 flex items-center justify-center ">
-                    <span className="text-center">
-                      {user.language === "Thai" && "จำนวนขาดเรียน"}
-                      {user.language === "English" && "absent"}
-                    </span>
-                  </th>
-                  {user?.schoolUser?.organization === "immigration" && (
-                    <th className="w-36 flex items-center justify-center ">
-                      <span className="text-center">
-                        {user.language === "Thai" && "จำนวนเฝ้าระวัง"}
-                        {user.language === "English" && "warn"}
-                      </span>
-                    </th>
-                  )}
-                  <th className="w-36 flex items-center justify-center ">
-                    <span className="text-center">
-                      {user.language === "Thai" && "เปอร์เซ็นมาเรียน"}
-                      {user.language === "English" && "Percentage of present"}
-                    </span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="w-max">
-                {attendances?.data?.map((item: any, index) => {
-                  if (item !== 0) {
-                    return (
-                      <tr
-                        key={index}
-                        className="flex hover:ring-2 hover:bg-slate-200 group "
-                      >
-                        <td className=" w-10 md:w-28 flex items-center justify-center sticky left-0 z-20 bg-white group-hover:bg-slate-200">
-                          {item.student?.number}
-                        </td>
-                        <td
-                          className="w-20 text-xs md:text-base  md:w-60  text-left 
-                        flex justify-start items-center sticky left-10 md:left-28 z-20 bg-white group-hover:bg-slate-200"
-                        >
-                          <span className="text-left text-xs md:text-base truncate hover:overflow-visible">
-                            {item.student?.firstName} {item.student?.lastName}
-                          </span>
-                        </td>
-                        {item?.data?.map((status: any) => {
-                          return (
-                            <td
-                              key={status.id}
-                              className="w-28 flex items-center justify-center"
-                            >
-                              <button
-                                className="relative"
-                                onClick={() => {
-                                  setSelectAttendance(() => {
-                                    return {
-                                      student: item.student,
-                                      attendanceData: status,
-                                    };
-                                  });
-                                  setTriggerUpdateAttendance(() => true);
-                                  document.body.style.overflow = "hidden";
-                                }}
-                              >
-                                {status.note && (
-                                  <div className="absolute text-xs p-1 top-0 bottom-0 m-auto w-5 h-5 right-1 ring-2 ring-black bg-white rounded-full flex items-center justify-center">
+                        download
+                      </div>
+                    </Popover.Button>
+
+                    <Popover.Panel>
+                      {({ close }) => (
+                        <DowloadExcelAttendacne close={close} user={user} />
+                      )}
+                    </Popover.Panel>
+                  </>
+                )}
+              </Popover>
+            </div>
+          </div>
+
+          <div className="mt-5 mb-20">
+            {triggerUpdateAttendance && (
+              <UpdateAttendance
+                user={user}
+                setTriggerUpdateAttendance={setTriggerUpdateAttendance}
+                attendances={attendances}
+                student={selectAttendance?.student as Student}
+                attendanceData={selectAttendance?.attendanceData as Attendance}
+              />
+            )}
+
+            {triggerShowNote && (
+              <ShowNoteAttendance
+                setTriggerShowNote={setTriggerShowNote}
+                selectNote={selectNote}
+                attendances={attendances}
+                classroomId={router.query.classroomId as string}
+              />
+            )}
+
+            {selectedButton === "information" && (
+              <div>
+                {attendances.isLoading ? (
+                  <div className="flex flex-col gap-5 mt-5">
+                    <Skeleton variant="rectangular" width={700} height={40} />
+                    <Skeleton variant="rectangular" width={600} height={40} />
+                    <Skeleton variant="rectangular" width={800} height={40} />
+                  </div>
+                ) : (
+                  <div>
+                    <table
+                      className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem]
+                  lg:w-[60rem] xl:w-[70rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
+                    >
+                      <thead className="w-max sticky top-0  py-2 z-30 bg-white">
+                        <tr className="flex text-white  bg-white">
+                          <th className=" sticky left-0 z-20  bg-white ">
+                            <div className="m-1 flex h-12  w-10 md:w-[5.4rem]  items-center text-xs md:text-base justify-center rounded-md bg-[#2C7CD1]">
+                              {user.language === "Thai" && "เลขที่"}
+                              {user.language === "English" && "number"}
+                            </div>
+                          </th>
+                          <th className=" sticky z-20 left-12 md:left-[6rem] bg-white  ">
+                            <div className="m-1 w-20 h-12 md:w-[16.5rem] flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] rounded-md">
+                              <span className="text-center">
+                                {user.language === "Thai" && "รายชื่อ"}
+                                {user.language === "English" &&
+                                  "student's name"}
+                              </span>
+                            </div>
+                          </th>
+
+                          {attendances?.data?.[0].dateTimes.map(
+                            (status, index) => {
+                              const date = new Date(status.date);
+                              const formattedDate = date.toLocaleDateString(
+                                `${
+                                  user.language === "Thai"
+                                    ? "th-TH"
+                                    : user.language === "English" && "en-US"
+                                }`,
+                                {
+                                  timeZone: userTimeZone,
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12:
+                                    user.language === "Thai"
+                                      ? false
+                                      : user.language === "English" && true, // Use 24-hour format
+                                }
+                              );
+                              return (
+                                <th
+                                  key={status.groupId}
+                                  className="w-28 font-normal  flex items-center justify-around bg-white text-white rounded-md 
+                               relative  h-12  group cursor-pointer  "
+                                >
+                                  {status.headData?.note && (
+                                    <div
+                                      className="absolute text-[0.8rem] p-1  group-hover:hidden  bottom-0 m-auto w-5 h-5 right-2 ring-1
+                               ring-white bg-[#9C2CD1] rounded-full flex items-center justify-center "
+                                    >
+                                      <BiNotepad />
+                                    </div>
+                                  )}
+                                  <span className="block group-hover:hidden bg-[#2C7CD1] mx-1 mt-[0.6rem] rounded-md">
+                                    {formattedDate}
+                                  </span>
+                                  <div
+                                    onClick={() => {
+                                      document.body.style.overflow = "hidden";
+                                      setSelectNote(() => {
+                                        return {
+                                          headAttendance: status.headData,
+                                          groupId: status.groupId,
+                                        };
+                                      });
+                                      setTriggerShowNote(() => true);
+                                    }}
+                                    className="group-hover:visible invisible h-0 w-0 flex items-center
+                                 text-black group-hover:text-green-500 
+                                    justify-center group-hover:w-5 group-hover:h-5 bg-green-100 rounded-full group-hover:scale-150 transition
+                                     duration-150"
+                                  >
                                     <BiNotepad />
                                   </div>
-                                )}
-                                <div className="w-28  flex items-center justify-center ">
-                                  {status.present && (
-                                    <div className="bg-green-600 w-full items-center justify-center py-1  text-white">
-                                      {user.language === "Thai" && "มาเรียน"}
-                                      {user.language === "English" && "Presnt"}
-                                    </div>
-                                  )}
-                                  {status.absent && (
-                                    <div className="bg-red-600 w-full flex items-center justify-center py-1  text-white">
-                                      {user.language === "Thai" && "ขาด"}
-                                      {user.language === "English" && "Absent"}
-                                    </div>
-                                  )}
-                                  {status.holiday && (
-                                    <div className="bg-yellow-500 w-full flex items-center justify-center py-1  text-white">
-                                      {user.language === "Thai" && "ลา"}
-                                      {user.language === "English" &&
-                                        "Take a leave"}
-                                    </div>
-                                  )}
-                                  {status.sick && (
-                                    <div className="bg-blue-500 w-full flex items-center justify-center py-1  text-white">
-                                      {user.language === "Thai" && "ป่วย"}
-                                      {user.language === "English" && "sick"}
-                                    </div>
-                                  )}
-                                  {status.late && (
-                                    <div className="bg-orange-500 w-full flex items-center justify-center py-1  text-white">
-                                      {user.language === "Thai" && "สาย"}
-                                      {user.language === "English" && "late"}
-                                    </div>
-                                  )}
-                                  {status.warn && (
-                                    <div className="bg-red-700 w-full flex items-center justify-center py-1  text-white">
-                                      {user.language === "Thai" && "เฝ้าระวัง"}
-                                      {user.language === "English" && "warn"}
-                                    </div>
-                                  )}
-                                  {!status.holiday &&
-                                    !status.absent &&
-                                    !status.present &&
-                                    !status.sick &&
-                                    !status.late &&
-                                    !status.warn && (
-                                      <div className="bg-gray-600 w-full flex items-center justify-center py-1  text-white">
-                                        {user.language === "Thai" &&
-                                          "ไม่มีข้อมูล"}
-                                        {user.language === "English" &&
-                                          "NO DATA"}
-                                      </div>
-                                    )}
-                                </div>
-                              </button>
-                            </td>
-                          );
-                        })}
-                        <td className="w-36 flex items-center justify-center ">
-                          <span className="text-center">
-                            {item.statistics?.number?.present}
-                          </span>
-                        </td>
-                        <td className="w-36 flex items-center justify-center ">
-                          <span className="text-center">
-                            {item.statistics?.number?.late}
-                          </span>
-                        </td>
-                        <td className="w-36 flex items-center justify-center ">
-                          <span className="text-center">
-                            {item.statistics?.number?.holiday}
-                          </span>
-                        </td>
-                        <td className="w-36 flex items-center justify-center ">
-                          <span className="text-center">
-                            {item.statistics?.number?.sick}
-                          </span>
-                        </td>
-                        <td className="w-36 flex items-center justify-center ">
-                          <span className="text-center">
-                            {item.statistics?.number?.absent}
-                          </span>
-                        </td>
-                        {user?.schoolUser?.organization === "immigration" && (
-                          <td className="w-36 flex items-center justify-center ">
+                                  <div
+                                    onClick={() =>
+                                      handleDeleteAttendance({
+                                        groupId: status.groupId,
+                                      })
+                                    }
+                                    className="group-hover:visible invisible h-0 w-0 flex items-center text-black group-hover:text-red-500 
+                                    justify-center group-hover:w-5 group-hover:scale-150 transition duration-150"
+                                  >
+                                    <MdDelete />
+                                  </div>
+                                </th>
+                              );
+                            }
+                          )}
+
+                          <th className="w-36 flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] m-1 text-white rounded-md  ">
                             <span className="text-center">
-                              {item.statistics?.number?.warn}
+                              {user.language === "Thai" && "เปอร์เซ็นมาเรียน"}
+                              {user.language === "English" &&
+                                "Percentage of present"}
                             </span>
-                          </td>
-                        )}
-                        <td className="w-36 flex items-center justify-center ">
-                          <span className="text-center">
-                            {item.statistics?.percent?.present.toFixed(2)}%
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  }
-                })}
-              </tbody>
-            </table>
-          )}
-          <span className="text-center font-Kanit text-xl font-semibold mt-2">
-            {user.language === "Thai" &&
-              `จำนวนครูสอนทั้งหมด ${attendances?.data?.[0]?.sum} คาบ`}
-            {user.language === "English" &&
-              `The teacher has taught this class for ${attendances?.data?.[0]?.sum} periods`}
-          </span>
-          {attendances?.data?.[0]?.dateTimes.length === 0 && (
-            <div className="w-full flex items-center justify-center h-96 text-8xl">
-              <span>ไม่มีข้อมูล</span>
-              <div className="text-red-400">
-                <BiMessageAltError />
+                          </th>
+                        </tr>
+                      </thead>
+                      {/* Body */}
+                      <tbody className="w-max">
+                        {attendances?.data?.map((item: any, index) => {
+                          if (index !== 0) {
+                            return (
+                              <tr
+                                key={index}
+                                className="flex  hover:ring-2 hover:bg-slate-200 group text-[#2C7CD1] "
+                              >
+                                <td
+                                  key={index}
+                                  className={`w-10 md:w-24 flex items-center justify-center sticky left-0 z-20 bg-white group-hover:bg-slate-200`}
+                                >
+                                  <div
+                                    className={`h-12 w-10 md:w-24 flex items-center justify-center rounded-md m-1 ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    {item.student?.number}
+                                  </div>
+                                </td>
+                                <td
+                                  key={index}
+                                  className={`w-20 text-xs md:text-base md:w-[17rem] text-left flex justify-start items-center sticky left-10 md:left-[6rem] z-20 bg-white group-hover:bg-slate-200`}
+                                >
+                                  <div
+                                    className={`h-12 w-20 text-xs text-start md:text-base md:w-[16.5rem] flex items-center justify-start rounded-md m-1 ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    <div className="min-w-9 min-h-9 rounded-full bg-white mx-2 ring-1 relative overflow-hidden">
+                                      <Image
+                                        src={item.student?.picture}
+                                        alt=""
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        className="object-cover"
+                                      />
+                                    </div>
+                                    <span className="text-left text-xs md:text-base truncate hover:overflow-visible">
+                                      {item.student?.firstName}{" "}
+                                      {item.student?.lastName}
+                                    </span>
+                                  </div>
+                                </td>
+                                {item?.data?.map((status: any) => {
+                                  return (
+                                    <td
+                                      key={status.id}
+                                      className="w-28 flex items-center justify-center"
+                                    >
+                                      <button
+                                        className="relative"
+                                        onClick={() => {
+                                          setSelectAttendance(() => {
+                                            return {
+                                              student: item.student,
+                                              attendanceData: status,
+                                            };
+                                          });
+                                          setTriggerUpdateAttendance(
+                                            () => true
+                                          );
+                                          document.body.style.overflow =
+                                            "hidden";
+                                        }}
+                                      >
+                                        {status.note && (
+                                          <div className="absolute text-xs p-1 bottom-1 m-auto w-5 h-5 right-2 ring-1 ring-white bg-[#9C2CD1] text-white rounded-full flex items-center justify-center">
+                                            <BiNotepad />
+                                          </div>
+                                        )}
+                                        <div className="w-28 ml-[2.5rem] md:ml-0  flex items-center justify-center ">
+                                          {status.present && (
+                                            <div className="mx-1 w-36 h-12  bg-green-600  flex items-center  rounded-md justify-center py-2  text-white">
+                                              {user.language === "Thai" &&
+                                                "มาเรียน"}
+                                              {user.language === "English" &&
+                                                "Presnt"}
+                                            </div>
+                                          )}
+                                          {status.absent && (
+                                            <div className="mx-1 h-12 bg-red-600 w-36 flex items-center  rounded-md justify-center   text-white">
+                                              {user.language === "Thai" &&
+                                                "ขาด"}
+                                              {user.language === "English" &&
+                                                "Absent"}
+                                            </div>
+                                          )}
+                                          {status.holiday && (
+                                            <div className="mx-1 h-12 bg-yellow-500 w-36 flex items-center  rounded-md  justify-center   text-white">
+                                              {user.language === "Thai" && "ลา"}
+                                              {user.language === "English" &&
+                                                "Take a leave"}
+                                            </div>
+                                          )}
+                                          {status.sick && (
+                                            <div className="mx-1 h-12 bg-blue-500 w-36 flex items-center rounded-md  justify-center   text-white">
+                                              {user.language === "Thai" &&
+                                                "ป่วย"}
+                                              {user.language === "English" &&
+                                                "sick"}
+                                            </div>
+                                          )}
+                                          {status.late && (
+                                            <div className="mx-1 h-12 bg-orange-500 w-36 flex items-center  rounded-md  justify-center  text-white">
+                                              {user.language === "Thai" &&
+                                                "สาย"}
+                                              {user.language === "English" &&
+                                                "late"}
+                                            </div>
+                                          )}
+                                          {status.warn && (
+                                            <div className="mx-1 h-12 bg-red-700 w-36 flex items-center  rounded-md  justify-center   text-white">
+                                              {user.language === "Thai" &&
+                                                "เฝ้าระวัง"}
+                                              {user.language === "English" &&
+                                                "warn"}
+                                            </div>
+                                          )}
+                                          {!status.holiday &&
+                                            !status.absent &&
+                                            !status.present &&
+                                            !status.sick &&
+                                            !status.late &&
+                                            !status.warn && (
+                                              <div className="mx-1 h-12 bg-gray-600 w-36 flex items-center justify-center   rounded-md   text-white">
+                                                {user.language === "Thai" &&
+                                                  "ไม่มีข้อมูล"}
+                                                {user.language === "English" &&
+                                                  "NO DATA"}
+                                              </div>
+                                            )}
+                                        </div>
+                                      </button>
+                                    </td>
+                                  );
+                                })}
+
+                                {user?.schoolUser?.organization ===
+                                  "immigration" && (
+                                  <td
+                                    key={index}
+                                    className={`text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    <span className="text-center">
+                                      {item.statistics?.number?.warn}
+                                    </span>
+                                  </td>
+                                )}
+                                <td
+                                  key={index}
+                                  className={`md:ml-0 ml-[1.6rem] text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
+                                    index % 2 === 0
+                                      ? "bg-white"
+                                      : "bg-[#E8E8E8]"
+                                  }`}
+                                >
+                                  <span className="text-center">
+                                    {item.statistics?.percent?.present.toFixed(
+                                      2
+                                    )}
+                                    %
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          }
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+
+                <span className="mt-5 flex items-center justify-center text-center font-Kanit text-xl font-semibold ">
+                  {user.language === "Thai" &&
+                    `จำนวนครูสอนทั้งหมด ${attendances?.data?.[0]?.sum} คาบ`}
+                  {user.language === "English" &&
+                    `The teacher has taught this class for ${attendances?.data?.[0]?.sum} periods`}
+                </span>
+                {attendances?.data?.[0]?.dateTimes.length === 0 && (
+                  <div className="w-full flex items-center justify-center h-96 text-8xl">
+                    <span>ไม่มีข้อมูล</span>
+                    <div className="text-red-400">
+                      <BiMessageAltError />
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          )}
+            )}
+            {selectedButton === "stat" && (
+              <div>
+                {attendances.isLoading ? (
+                  <div className="flex flex-col gap-5 mt-5">
+                    <Skeleton variant="rectangular" width={700} height={40} />
+                    <Skeleton variant="rectangular" width={600} height={40} />
+                    <Skeleton variant="rectangular" width={800} height={40} />
+                  </div>
+                ) : (
+                  <div>
+                    <table
+                      className=" h-full  max-h-[40rem] flex flex-col items-center justify-center w-80 md:w-[40rem]
+                  lg:w-[60rem] xl:w-[70rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
+                    >
+                      <thead className="w-max sticky top-0  py-2 z-30 bg-white">
+                        <tr className="flex text-white  bg-white">
+                          <th className=" sticky left-0 z-20  bg-white ">
+                            <div className="m-1 flex h-12  w-10 md:w-[5.4rem]  items-center justify-center text-xs md:text-base  rounded-md bg-[#2C7CD1]">
+                              {user.language === "Thai" && "เลขที่"}
+                              {user.language === "English" && "number"}
+                            </div>
+                          </th>
+                          <th className=" sticky z-20 left-12 md:left-[6rem] bg-white  ">
+                            <div className="m-1 w-16 h-12 md:w-[16.5rem] flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] rounded-md">
+                              <span className="text-center">
+                                {user.language === "Thai" && "รายชื่อ"}
+                                {user.language === "English" &&
+                                  "student's name"}
+                              </span>
+                            </div>
+                          </th>
+
+                          <th className="ml-[31rem] md:ml-[26rem] lg:ml-[0rem] text-xs md:text-base bg-green-600 rounded-md m-1 w-24 flex items-center justify-center ">
+                            <span className="text-center">
+                              {user.language === "Thai" && "มาเรียน"}
+                              {user.language === "English" && "Present"}
+                            </span>
+                          </th>
+                          <th className="bg-orange-500 rounded-md m-1 w-24 text-xs md:text-base flex items-center justify-center ">
+                            <span className="text-center">
+                              {user.language === "Thai" && "มาสาย"}
+                              {user.language === "English" && "late"}
+                            </span>
+                          </th>
+                          <th className="bg-yellow-500 rounded-md m-1 w-24 text-xs md:text-base flex items-center justify-center ">
+                            <span className="text-center">
+                              {user.language === "Thai" && "ลา"}
+                              {user.language === "English" && "take a leave"}
+                            </span>
+                          </th>
+                          <th className="bg-[#2C7CD1] rounded-md m-1 w-24 text-xs md:text-base flex items-center justify-center ">
+                            <span className="text-center">
+                              {user.language === "Thai" && "ป่วย"}
+                              {user.language === "English" && "sick"}
+                            </span>
+                          </th>
+                          <th className="bg-red-600 rounded-md m-1 w-24 text-xs md:text-base flex items-center justify-center ">
+                            <span className="text-center">
+                              {user.language === "Thai" && "ขาดเรียน"}
+                              {user.language === "English" && "absent"}
+                            </span>
+                          </th>
+                          {user?.schoolUser?.organization === "immigration" && (
+                            <th className="bg-purple-600 rounded-md m-1 w-24 flex text-xs md:text-base items-center justify-center ">
+                              <span className="text-center">
+                                {user.language === "Thai" && "เฝ้าระวัง"}
+                                {user.language === "English" && "warn"}
+                              </span>
+                            </th>
+                          )}
+
+                          <th className="w-36 flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] m-1 text-white rounded-md  ">
+                            <span className="text-center">
+                              {user.language === "Thai" && "เปอร์เซ็นมาเรียน"}
+                              {user.language === "English" &&
+                                "Percentage of present"}
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      {/* Body */}
+                      <tbody className="w-max">
+                        {attendances?.data?.map((item: any, index) => {
+                          if (index !== 0) {
+                            return (
+                              <tr
+                                key={index}
+                                className="flex ml-[5rem] md:ml-0  hover:ring-2 hover:bg-slate-200 group text-[#2C7CD1] "
+                              >
+                                <td
+                                  key={index}
+                                  className={`w-10 md:w-24 flex items-center justify-center sticky left-0 z-20 bg-white group-hover:bg-slate-200`}
+                                >
+                                  <div
+                                    className={`h-12 w-10 md:w-24 flex items-center justify-center rounded-md m-1 ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    {item.student?.number}
+                                  </div>
+                                </td>
+                                <td
+                                  key={index}
+                                  className={`w-20 text-xs md:text-base md:w-[17rem] text-left flex justify-start items-center sticky left-10 md:left-[6rem] z-20 bg-white group-hover:bg-slate-200`}
+                                >
+                                  <div
+                                    className={`h-12 w-20 text-xs text-start md:text-base md:w-[16.5rem] flex items-center justify-start rounded-md m-1 ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    <div className="min-w-9 min-h-9 rounded-full bg-white mx-2 ring-1 relative overflow-hidden">
+                                      <Image
+                                        src={item.student?.picture}
+                                        alt=""
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        className="object-cover"
+                                      />
+                                    </div>
+                                    <span className="text-left text-xs md:text-base truncate hover:overflow-visible">
+                                      {item.student?.firstName}{" "}
+                                      {item.student?.lastName}
+                                    </span>
+                                  </div>
+                                </td>
+
+                                <td
+                                  key={index}
+                                  className="w-24 m-1 flex items-center justify-center ml-[26rem] lg:ml-[0rem]"
+                                >
+                                  <span
+                                    className={`  text-center rounded-md w-24 h-12 flex items-center justify-center ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    {item.statistics?.number?.present}
+                                  </span>
+                                </td>
+                                <td
+                                  key={index}
+                                  className="w-24 m-1 flex items-center justify-center "
+                                >
+                                  <span
+                                    className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    {item.statistics?.number?.late}
+                                  </span>
+                                </td>
+                                <td
+                                  key={index}
+                                  className="w-24 m-1 flex items-center justify-center "
+                                >
+                                  <span
+                                    className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    {item.statistics?.number?.holiday}
+                                  </span>
+                                </td>
+                                <td
+                                  key={index}
+                                  className="w-24 m-1 flex items-center justify-center "
+                                >
+                                  <span
+                                    className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    {item.statistics?.number?.sick}
+                                  </span>
+                                </td>
+                                <td
+                                  key={index}
+                                  className="w-24 m-1 flex items-center justify-center "
+                                >
+                                  <span
+                                    className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    {item.statistics?.number?.absent}
+                                  </span>
+                                </td>
+
+                                {user?.schoolUser?.organization ===
+                                  "immigration" && (
+                                  <td
+                                    key={index}
+                                    className={`text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
+                                      index % 2 === 0
+                                        ? "bg-white"
+                                        : "bg-[#E8E8E8]"
+                                    }`}
+                                  >
+                                    <span className="text-center">
+                                      {item.statistics?.number?.warn}
+                                    </span>
+                                  </td>
+                                )}
+                                <td
+                                  key={index}
+                                  className={`text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
+                                    index % 2 === 0
+                                      ? "bg-white"
+                                      : "bg-[#E8E8E8]"
+                                  }`}
+                                >
+                                  <span className="text-center">
+                                    {item.statistics?.percent?.present.toFixed(
+                                      2
+                                    )}
+                                    %
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          }
+                        })}
+                      </tbody>
+                    </table>
+                    <span className="mt-5 flex items-center justify-center text-center font-Kanit text-xl font-semibold">
+                      {user.language === "Thai" &&
+                        `จำนวนครูสอนทั้งหมด ${attendances?.data?.[0]?.sum} คาบ`}
+                      {user.language === "English" &&
+                        `The teacher has taught this class for ${attendances?.data?.[0]?.sum} periods`}
+                    </span>
+                    {attendances?.data?.[0]?.dateTimes.length === 0 && (
+                      <div className="w-full flex items-center justify-center h-96 text-8xl">
+                        <span>ไม่มีข้อมูล</span>
+                        <div className="text-red-400">
+                          <BiMessageAltError />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+            {selectedButton === "note" && <div>Note content</div>}
+          </div>
         </div>
       </ClassroomLayout>
     </div>
