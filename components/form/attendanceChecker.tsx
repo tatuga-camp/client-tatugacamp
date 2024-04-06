@@ -103,7 +103,8 @@ function AttendanceChecker({
 
         for (const key in convertAttendance) {
           if (key === name) {
-            convertAttendance[key as keyof typeof convertAttendance] = true;
+            convertAttendance[key as keyof typeof convertAttendance] =
+              !convertAttendance[key as keyof typeof convertAttendance];
           } else {
             convertAttendance[key as keyof typeof convertAttendance] = false;
           }
@@ -122,14 +123,14 @@ function AttendanceChecker({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     const { name } = event.currentTarget;
-    console.log(name);
     setIsCheckStudent((prevState) => {
       return prevState?.map((student) => {
         let convertAttendance = { ...student.attendance };
 
         for (const key in convertAttendance) {
           if (key === name) {
-            convertAttendance[key as keyof typeof convertAttendance] = true;
+            convertAttendance[key as keyof typeof convertAttendance] =
+              !convertAttendance[key as keyof typeof convertAttendance];
           } else {
             convertAttendance[key as keyof typeof convertAttendance] = false;
           }

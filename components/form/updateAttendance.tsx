@@ -43,6 +43,11 @@ const checkList = [
     titleEnglish: "warn",
     bgColor: "bg-red-700",
   },
+  {
+    titleThai: "ไม่มีข้อมูล",
+    titleEnglish: "warn",
+    bgColor: "bg-gray-700",
+  },
 ];
 
 type UpdateAttendanceProps = {
@@ -91,21 +96,18 @@ function UpdateAttendance({
     setNote((prev) => attendanceData?.note);
     if (attendanceData?.present) {
       setActiveAttendance(0);
-    }
-    if (attendanceData?.holiday) {
+    } else if (attendanceData?.holiday) {
       setActiveAttendance(1);
-    }
-    if (attendanceData?.sick) {
+    } else if (attendanceData?.sick) {
       setActiveAttendance(2);
-    }
-    if (attendanceData?.absent) {
+    } else if (attendanceData?.absent) {
       setActiveAttendance(3);
-    }
-    if (attendanceData?.late) {
+    } else if (attendanceData?.late) {
       setActiveAttendance(4);
-    }
-    if (attendanceData?.warn) {
+    } else if (attendanceData?.warn) {
       setActiveAttendance(5);
+    } else {
+      setActiveAttendance(6);
     }
   }, []);
 
@@ -155,7 +157,6 @@ function UpdateAttendance({
 
   const handleUpdateAttendance = async () => {
     try {
-      console.log(reCheck);
       setLoading(() => true);
       Swal.fire({
         title: "กำลังโหลด",
