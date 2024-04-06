@@ -99,8 +99,10 @@ function Index({ user }: { user: User }) {
     });
   };
 
-  const [selectedButton, setSelectedButton] = useState("information");
-  const handleButtonClick = (buttonName: any) => {
+  const [selectedButton, setSelectedButton] = useState<
+    "information" | "stat" | "note"
+  >("information");
+  const handleButtonClick = (buttonName: "information" | "stat" | "note") => {
     setSelectedButton(buttonName);
   };
 
@@ -209,16 +211,16 @@ function Index({ user }: { user: User }) {
                       className=" h-full  max-h-[40rem] flex flex-col w-80 md:w-[40rem]
                   lg:w-[60rem] xl:w-[70rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
                     >
-                      <thead className="w-max sticky top-0  py-2 z-30 bg-white">
+                      <thead className="w-max sticky top-0  py-2 z-10 bg-white">
                         <tr className="flex text-white  bg-white">
-                          <th className=" sticky left-0 z-20  bg-white ">
+                          <th className=" sticky left-0 z-10  bg-white ">
                             <div className="m-1 flex h-12  w-10 md:w-[5.4rem]  items-center text-xs md:text-base justify-center rounded-md bg-[#2C7CD1]">
                               {user.language === "Thai" && "เลขที่"}
                               {user.language === "English" && "number"}
                             </div>
                           </th>
-                          <th className=" sticky z-20 left-12 md:left-[6rem] bg-white  ">
-                            <div className="m-1 w-20 h-12 md:w-[16.5rem] flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] rounded-md">
+                          <th className=" sticky z-10 left-12 md:left-[6rem] bg-white  ">
+                            <div className="m-1 w-10 h-12 md:w-[16.5rem] flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] rounded-md">
                               <span className="text-center">
                                 {user.language === "Thai" && "รายชื่อ"}
                                 {user.language === "English" &&
@@ -319,7 +321,7 @@ function Index({ user }: { user: User }) {
                             >
                               <td
                                 key={index}
-                                className={`w-10 md:w-24 flex items-center justify-center sticky left-0 z-20 bg-white group-hover:bg-slate-200`}
+                                className={`w-10 md:w-24 flex items-center justify-center sticky left-0 z-10 bg-white group-hover:bg-slate-200`}
                               >
                                 <div
                                   className={`h-12 w-10 md:w-24 flex items-center justify-center rounded-md m-1 ${
@@ -333,7 +335,9 @@ function Index({ user }: { user: User }) {
                               </td>
                               <td
                                 key={index}
-                                className={`w-20 text-xs md:text-base md:w-[17rem] text-left flex justify-start items-center sticky left-10 md:left-[6rem] z-20 bg-white group-hover:bg-slate-200`}
+                                className={`w-20 text-xs md:text-base md:w-[17rem] text-left
+                                 flex justify-start items-center sticky left-10 md:left-[6rem] z-10
+                                  bg-white group-hover:bg-slate-200`}
                               >
                                 <div
                                   className={`h-12 w-20 text-xs text-start md:text-base md:w-[16.5rem] flex items-center justify-start rounded-md m-1 ${
@@ -509,15 +513,15 @@ function Index({ user }: { user: User }) {
                       className=" h-full  max-h-[40rem] flex flex-col items-center justify-center w-80 md:w-[40rem]
                   lg:w-[60rem] xl:w-[70rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
                     >
-                      <thead className="w-max sticky top-0  py-2 z-30 bg-white">
+                      <thead className="w-max sticky top-0  py-2 z-10 bg-white">
                         <tr className="flex text-white  bg-white">
-                          <th className=" sticky left-0 z-20  bg-white ">
+                          <th className=" sticky left-0 z-10  bg-white ">
                             <div className="m-1 flex h-12  w-10 md:w-[5.4rem]  items-center justify-center text-xs md:text-base  rounded-md bg-[#2C7CD1]">
                               {user.language === "Thai" && "เลขที่"}
                               {user.language === "English" && "number"}
                             </div>
                           </th>
-                          <th className=" sticky z-20 left-12 md:left-[6rem] bg-white  ">
+                          <th className=" sticky z-10 left-12 md:left-[6rem] bg-white  ">
                             <div className="m-1 w-16 h-12 md:w-[16.5rem] flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] rounded-md">
                               <span className="text-center">
                                 {user.language === "Thai" && "รายชื่อ"}
@@ -585,7 +589,7 @@ function Index({ user }: { user: User }) {
                             >
                               <td
                                 key={index}
-                                className={`w-10 md:w-24 flex items-center justify-center sticky left-0 z-20 bg-white group-hover:bg-slate-200`}
+                                className={`w-10 md:w-24 flex items-center justify-center sticky left-0 z-10 bg-white group-hover:bg-slate-200`}
                               >
                                 <div
                                   className={`h-12 w-10 md:w-24 flex items-center justify-center rounded-md m-1 ${
@@ -599,7 +603,7 @@ function Index({ user }: { user: User }) {
                               </td>
                               <td
                                 key={index}
-                                className={`w-20 text-xs md:text-base md:w-[17rem] text-left flex justify-start items-center sticky left-10 md:left-[6rem] z-20 bg-white group-hover:bg-slate-200`}
+                                className={`w-20 text-xs md:text-base md:w-[17rem] text-left flex justify-start items-center sticky left-10 md:left-[6rem] z-10 bg-white group-hover:bg-slate-200`}
                               >
                                 <div
                                   className={`h-12 w-20 text-xs text-start md:text-base md:w-[16.5rem] flex items-center justify-start rounded-md m-1 ${
