@@ -989,7 +989,7 @@ focus:border-solid"
                         "Please select some student"}
                     </div>
                   )}
-                  <div className="flex flex-col gap-5 justify-start items-center">
+                  <div className=" gap-5 justify-start items-center w-full grid grid-cols-2 px-5">
                     {files.map((file, index) => {
                       const fileName = file?.url?.split("/").pop();
 
