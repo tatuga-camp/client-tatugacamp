@@ -311,7 +311,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                       <Popover.Panel>
                         {({ close }) => (
                           <div
-                            className="w-full h-full fixed z-20  overflow-hidden right-0 left-0 top-0 bottom-0 m-auto
+                            className="w-full h-full fixed z-50 overflow-hidden right-0 left-0 top-0 bottom-0 m-auto
                       bg-white/30 backdrop-blur-md"
                             onClick={() => close()}
                           >
@@ -343,8 +343,9 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                       <Popover.Panel>
                         {({ close }) => (
                           <div
-                            className="w-full h-full fixed flex items-center justify-center  overflow-hidden right-0 left-0 top-0 bottom-0 m-auto
-                      bg-white/30 backdrop-blur-md"
+                            className="w-full h-full fixed flex items-center justify-center z-50
+                              overflow-hidden right-0 left-0 top-0 bottom-0 m-auto
+                      bg-white/80 backdrop-blur-md"
                             onClick={() => close()}
                           >
                             <div className="w-96 h-96">
