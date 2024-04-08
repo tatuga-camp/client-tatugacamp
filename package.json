@@ -25,6 +25,7 @@
     "@use-gesture/react": "^10.3.0",
     "axios": "^1.6.5",
     "chart.js": "^4.4.2",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "faker": "^6.6.6",
     "file-loader": "^6.2.0",
     "heic2any": "^0.0.4",
