@@ -61,6 +61,9 @@ import { LuCalendarRange } from "react-icons/lu";
 import { MdOutlineBarChart } from "react-icons/md";
 import Image from "next/image";
 import { TfiStatsUp } from "react-icons/tfi";
+import { processAttendanceData } from "@/components/classroom/attendances/attendanceMonthly";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+Chart.register(ChartDataLabels);
 
 function formatDate(dateString: any) {
   const date = new Date(dateString);
@@ -69,15 +72,8 @@ function formatDate(dateString: any) {
   return `${year}-${month}`;
 }
 
-function Index({ user }: { user: User }) {
+function useAttendanceData() {
   const router = useRouter();
-  const [selectAttendance, setSelectAttendance] =
-    useState<selectAttendance | null>();
-  const [triggerUpdateAttendance, setTriggerUpdateAttendance] = useState(false);
-  const [triggerShowNote, setTriggerShowNote] = useState(false);
-  const [selectNote, setSelectNote] = useState<selectNote | null>();
-  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
   const attendances = useQuery({
     queryKey: ["attendance", router.query.classroomId as string],
     queryFn: () =>
@@ -85,6 +81,21 @@ function Index({ user }: { user: User }) {
         classroomId: router.query.classroomId as string,
       }),
   });
+
+  return attendances;
+}
+
+//main return ==================================================
+function Index({ user }: { user: User }) {
+  const router = useRouter();
+  const attendances = useAttendanceData();
+
+  const [selectAttendance, setSelectAttendance] =
+    useState<selectAttendance | null>();
+  const [triggerUpdateAttendance, setTriggerUpdateAttendance] = useState(false);
+  const [triggerShowNote, setTriggerShowNote] = useState(false);
+  const [selectNote, setSelectNote] = useState<selectNote | null>();
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const handleDeleteAttendance = async ({ groupId }: { groupId: string }) => {
     Swal.fire({
@@ -129,245 +140,140 @@ function Index({ user }: { user: User }) {
     setSelectedButton(buttonName);
   };
 
-  //Status object
+  //Get attendance monthly logic
+  const yearList = processAttendanceData(attendances);
+  console.log(yearList);
 
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  //สร้างarrayของทุกเดือน เริ่มต้น
-  const statusCountsPerMonth = {
-    Present: Array.from({ length: 12 }, () => 0),
-    Absent: Array.from({ length: 12 }, () => 0),
-    Holiday: Array.from({ length: 12 }, () => 0),
-    Sick: Array.from({ length: 12 }, () => 0),
-    Late: Array.from({ length: 12 }, () => 0),
-    Warn: Array.from({ length: 12 }, () => 0),
-  };
-
-  attendances?.data?.students.forEach((item, index) => {
-    if (index !== 0) {
-      item.data.forEach((attendance) => {
-        const month = new Date(attendance.date).getMonth(); //เอาแค่เดือน
-
-        //each status
-        for (const statusType in statusCountsPerMonth) {
-          if (attendance[statusType.toLowerCase()]) {
-            statusCountsPerMonth[statusType][month]++;
-          }
-        }
-      });
+  yearList.forEach((yearData) => {
+    //console.log(`Year: ${yearData.year}`);
+    for (const status in yearData.statuses) {
+      //console.log(`Status: ${status}`);
+      //console.log(yearData.statuses[status].months);
     }
   });
 
-  const statusCountsPerMonthWithOrderedNames = {};
-
-  for (const statusType in statusCountsPerMonth) {
-    const statusCounts = statusCountsPerMonth[statusType];
-    const countsPerMonthWithOrderedNames = {};
-
-    monthNames.forEach((monthName, index) => {
-      countsPerMonthWithOrderedNames[monthName] = statusCounts[index] || 0;
-    });
-
-    statusCountsPerMonthWithOrderedNames[statusType] =
-      countsPerMonthWithOrderedNames;
-  }
-
-  console.log(statusCountsPerMonthWithOrderedNames);
-
-  //=======turn to data array========
-
-  const absentArray: number[] = Object.values(statusCountsPerMonth["Absent"]);
-
-  const holidayArray: number[] = Object.values(statusCountsPerMonth["Holiday"]);
-
-  const lateArray: number[] = Object.values(statusCountsPerMonth["Late"]);
-
-  const presentArray: number[] = Object.values(statusCountsPerMonth["Present"]);
-  const sickArray: number[] = Object.values(statusCountsPerMonth["Sick"]);
-  const warntArray: number[] = Object.values(statusCountsPerMonth["Warn"]);
-
-  console.log(absentArray);
-  console.log(holidayArray);
-  console.log(lateArray);
-  console.log(presentArray);
-  console.log(sickArray);
-  console.log(warntArray);
-
-  //chart==========================
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
+  const monthNamesEN = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
     "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
 
-  //ขาดเรียน
-  const optionsAbsent = {
+  const monthNamesTH = [
+    "ม.ค.",
+    "ก.พ.",
+    "มี.ค.",
+    "เม.ย.",
+    "พ.ค.",
+    "มิ.ย.",
+    "ก.ค.",
+    "ส.ค.",
+    "ก.ย.",
+    "ต.ค.",
+    "พ.ย.",
+    "ธ.ค.",
+  ];
+  //chart==========================
+
+  const statusTypeArray = [
+    "absent",
+    "holiday",
+    "late",
+    "present",
+    "sick",
+    "warn",
+  ];
+
+  const statusTypeArrayTH = [
+    "ขาด",
+    "ลา",
+    "สาย",
+    "มาเรียน",
+    "ป่วย",
+    "เฝ้าระวัง",
+  ];
+
+  const statusColor = [
+    "rgba(209, 44, 44, 1.0)",
+    "rgba(237, 186, 2, 1.0)",
+    "rgba(245, 94, 0, 1.0)",
+    "rgba(0, 180, 81, 1.0)",
+    "rgba(18, 133, 255, 1.0)",
+    "rgba(132, 10, 208, 1.0)",
+  ];
+
+  const optionChart = {
     responsive: true,
     plugins: {
-      legend: {
-        position: "top" as const,
-      },
       title: {
-        display: true,
-        text: "Absent ขาดเรียน",
+        display: false,
+        text: "",
+      },
+      datalabels: {
+        color: "#ffffff",
       },
     },
   };
 
-  const detaAbsent = {
-    labels,
+  const initialData = {
+    labels: monthNamesEN,
     datasets: [
       {
-        label: "Absent",
-        data: absentArray,
-        backgroundColor: "rgba(255, 99, 132)",
+        label: "",
+        data: [],
+        backgroundColor: "",
       },
     ],
   };
 
-  //ลาหยุด
-  const optionsHoliday = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Holiday ลาหยุด",
-      },
-    },
+  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("present");
+  const [chartData, setChartData] = useState(initialData);
+
+  const handleYearChange = (event) => {
+    setSelectedYear(parseInt(event.target.value));
+    updateChartData(selectedStatus, parseInt(event.target.value));
   };
 
-  const detaHoliday = {
-    labels,
-    datasets: [
-      {
-        label: "Holiday",
-        data: holidayArray,
-        backgroundColor: "rgba(255, 255, 0)",
-      },
-    ],
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+    updateChartData(event.target.value, selectedYear);
   };
 
-  //มาสาย
-  const optionsLate = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Late มาสาย",
-      },
-    },
+  const updateChartData = (status, year) => {
+    const yearData = yearList.find((data) => data.year === year);
+
+    if (yearData) {
+      const monthsArray = yearData.statuses[status].months;
+
+      const newChartData = {
+        ...initialData,
+        datasets: [
+          {
+            ...initialData.datasets[0],
+            label: status,
+            data: monthsArray,
+            backgroundColor: statusColor[statusTypeArray.indexOf(status)],
+          },
+        ],
+      };
+      setChartData(newChartData);
+    }
   };
 
-  const dataLate = {
-    labels,
-    datasets: [
-      {
-        label: "Late",
-        data: lateArray,
-        backgroundColor: "rgba(255, 165, 0)",
-      },
-    ],
-  };
-
-  //มาเรียน
-  const optionsPresent = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Present มาเรียน",
-      },
-    },
-  };
-
-  const dataPresent = {
-    labels,
-    datasets: [
-      {
-        label: "Present",
-        data: presentArray,
-        backgroundColor: "rgba(0, 128, 0)",
-      },
-    ],
-  };
-
-  //ป่วย
-  const optionsSick = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Sick ป่วย",
-      },
-    },
-  };
-
-  const dataSick = {
-    labels,
-    datasets: [
-      {
-        label: "Sick",
-        data: sickArray,
-        backgroundColor: "rgba(0, 0, 255)",
-      },
-    ],
-  };
-
-  //เฝ้าระวัง
-  const optionWarn = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Warn เฝ้าระวัง",
-      },
-    },
-  };
-
-  const dataWarn = {
-    labels,
-    datasets: [
-      {
-        label: "Warn",
-        data: warntArray,
-        backgroundColor: "rgba(128, 0, 128)",
-      },
-    ],
+  const getStatusLabel = () => {
+    const index = statusTypeArray.findIndex(
+      (status) => status === selectedStatus
+    );
+    return user.language === "Thai" ? statusTypeArrayTH[index] : selectedStatus;
   };
 
   return (
@@ -1026,43 +932,52 @@ function Index({ user }: { user: User }) {
               </div>
             )}
             {selectedButton === "stat-month" && (
-              <div className="w-[800px]">
-                <div>
-                  <Bar options={optionsAbsent} data={detaAbsent} />
-
-                  <Bar options={optionsHoliday} data={detaHoliday} />
-                  <Bar options={optionsLate} data={dataLate} />
-                  <Bar options={optionsPresent} data={dataPresent} />
-                  <Bar options={optionsSick} data={dataSick} />
-                  <Bar options={optionWarn} data={dataWarn} />
+              <div className="w-[24rem] h-[30rem] md:w-[50rem] md:h-[30rem] lg:w-[60rem] lg:h-[40rem] xl:w-[70rem] xl:h-[50rem]  flex flex-col  items-center gap-3 md:gap-5 mt-5">
+                <div className="flex flex-col md:flex-row gap-2 md:gap-5 font-Kanit font-semibold">
+                  <div className="border-solid border-2 border-black p-2 rounded-md">
+                    <label>
+                      {user.language === "Thai" && "กรุณาเลือกปี :"}
+                      {user.language === "English" && "Select year :"}
+                    </label>
+                    {/* เดี๋ยวมี value กับ onChange อีก */}
+                    <select
+                      value={selectedYear}
+                      onChange={handleYearChange}
+                      className="ml-3 text-slate-400"
+                    >
+                      {yearList.map((yearData) => (
+                        <option key={yearData.year} value={yearData.year}>
+                          {yearData.year}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="border-solid border-2 border-black p-2 rounded-md">
+                    <label>
+                      {user.language === "Thai" &&
+                        "กรุณาเลือกสถานะการเข้าเรียน :"}
+                      {user.language === "English" && "Select status"}
+                    </label>
+                    <select
+                      value={selectedStatus}
+                      onChange={handleStatusChange}
+                      className="ml-3 text-slate-400"
+                    >
+                      {statusTypeArray.map((status, index) => (
+                        <option key={status} value={status}>
+                          {user.language === "Thai"
+                            ? statusTypeArrayTH[index]
+                            : status}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
-                <div>
-                  {attendances?.data?.students.map((item, index) => {
-                    if (index !== 0) {
-                      return (
-                        <li className="text-left text-xs md:text-base truncate hover:overflow-visible">
-                          {item.student?.firstName}
-                          {item.student?.lastName}
-                          {item.data.map((attendance) => (
-                            <li key={attendance.id}>
-                              <p>Date: {attendance.date}</p>
-                              <p className="text-blue-500">
-                                Date: {formatDate(attendance.date)}
-                              </p>
-                              {/* Render status */}
-                              {attendance.present && <p>Status: Present</p>}
-                              {attendance.absent && <p>Status: Absent</p>}
-                              {attendance.holiday && <p>Status: Holiday</p>}
-                              {attendance.sick && <p>Status: Sick</p>}
-                              {attendance.late && <p>Status: Late</p>}
-                              {attendance.warn && <p>Status: Warn</p>}
-                              <p>-----</p>
-                            </li>
-                          ))}
-                        </li>
-                      );
-                    }
-                  })}
+                <div className=" w-10/12 h-10/12 flex flex-col gap-3 mt-10">
+                  <h2 className="flex justify-center items-center font-Kanit font-semibold text-xl text-[#2C7CD1]">
+                    {getStatusLabel()}
+                  </h2>
+                  <Bar options={optionChart} data={chartData} />
                 </div>
               </div>
             )}
