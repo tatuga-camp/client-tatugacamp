@@ -149,7 +149,7 @@ export default function CreateAssignment({
             assignmentCreated={assignmentCreated}
           />
         ) : (
-          <form className="w-full flex justify-center">
+          <form className="w-full mt-20 flex justify-center">
             <div
               className="md:w-10/12 lg:w-11/12 xl:w-8/12 h-screen bg-white px-4
             overflow-auto gap-10 flex-col  justify-start items-center flex "
@@ -486,14 +486,6 @@ export default function CreateAssignment({
       <div
         onClick={() => {
           document.body.style.overflow = "auto";
-          // setIsChecked(() =>
-          //   students?.data?.data?.map((student) => {
-          //     return {
-          //       ...student,
-          //       [student.id]: false,
-          //     };
-          //   })
-          // );
           setIsAssignmentStdent(false);
           setTriggerAssignment(false);
         }}
