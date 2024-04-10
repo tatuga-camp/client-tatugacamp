@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Layout from "../../../../../layouts/classroomLayout";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -61,16 +61,10 @@ import { LuCalendarRange } from "react-icons/lu";
 import { MdOutlineBarChart } from "react-icons/md";
 import Image from "next/image";
 import { TfiStatsUp } from "react-icons/tfi";
-import { processAttendanceData } from "@/components/classroom/attendances/attendanceMonthly";
+
+import { processAttendanceData } from "@/utils/processAttendanceData";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 Chart.register(ChartDataLabels);
-
-function formatDate(dateString: any) {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1; // Month is zero-indexed, so add 1
-  return `${year}-${month}`;
-}
 
 function useAttendanceData() {
   const router = useRouter();
@@ -84,6 +78,14 @@ function useAttendanceData() {
 
   return attendances;
 }
+
+type AttendanceStatus =
+  | "present"
+  | "absent"
+  | "holiday"
+  | "late"
+  | "sick"
+  | "warn";
 
 //main return ==================================================
 function Index({ user }: { user: User }) {
@@ -134,14 +136,17 @@ function Index({ user }: { user: User }) {
   };
 
   const [selectedButton, setSelectedButton] = useState<
-    "information" | "stat" | "note"
+    "information" | "stat" | "stat-month"
   >("information");
-  const handleButtonClick = (buttonName: "information" | "stat" | "note") => {
+  const handleButtonClick = (
+    buttonName: "information" | "stat" | "stat-month"
+  ) => {
     setSelectedButton(buttonName);
   };
 
   //Get attendance monthly logic
   const yearList = processAttendanceData(attendances);
+
   console.log(yearList);
 
   yearList.forEach((yearData) => {
@@ -234,21 +239,24 @@ function Index({ user }: { user: User }) {
     ],
   };
 
-  const [selectedYear, setSelectedYear] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("present");
+  const [selectedYear, setSelectedYear] = useState<number>();
+  const [selectedStatus, setSelectedStatus] =
+    useState<AttendanceStatus>("present");
   const [chartData, setChartData] = useState(initialData);
 
-  const handleYearChange = (event) => {
+  const handleYearChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(parseInt(event.target.value));
     updateChartData(selectedStatus, parseInt(event.target.value));
   };
 
-  const handleStatusChange = (event) => {
-    setSelectedStatus(event.target.value);
-    updateChartData(event.target.value, selectedYear);
+  const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    setSelectedStatus(value as AttendanceStatus);
+    if (!selectedYear) return;
+    updateChartData(value as AttendanceStatus, selectedYear);
   };
 
-  const updateChartData = (status, year) => {
+  const updateChartData = (status: AttendanceStatus, year: number) => {
     const yearData = yearList.find((data) => data.year === year);
 
     if (yearData) {
