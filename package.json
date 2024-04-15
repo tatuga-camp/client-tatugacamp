@@ -34,6 +34,7 @@
     "nextjs-toploader": "^1.6.4",
     "nookies": "^2.5.2",
     "react": "^18",
+    "react-aria-components": "^1.1.1",
     "react-confetti": "^6.1.0",
     "react-countdown": "^2.3.5",
     "react-custom-roulette": "^1.4.1",

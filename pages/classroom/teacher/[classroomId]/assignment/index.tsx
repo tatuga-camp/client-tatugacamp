@@ -24,9 +24,18 @@ import {
   sideMenusEnglish,
 } from "../../../../../data/menubarsClassroom";
 import CreateAssignment from "../../../../../components/form/createAssignment";
+import { MdAssignment, MdQuiz } from "react-icons/md";
+import ShowListAssignments from "../../../../../components/classroom/assignment/showListAssignments";
+import ShowListQuizes from "../../../../../components/classroom/quize/showListQuizes";
+
+const menuAssignments = [
+  { engTitle: "Assignments", thaiTitle: "งานที่มอบหมาย", icon: MdAssignment },
+  { engTitle: "Quiz", thaiTitle: "แบบทดสอบ", icon: MdQuiz },
+];
 
 function Assignment({ user }: { user: User }) {
   const router = useRouter();
+  const [activeMenu, setActiveMenu] = useState<number>(0);
   const classroom = useQuery({
     queryKey: ["classroom", router.query.classroomId],
     queryFn: () =>
@@ -34,22 +43,7 @@ function Assignment({ user }: { user: User }) {
         classroomId: router.query.classroomId as string,
       }),
   });
-  const assignments = useQuery({
-    queryKey: ["assignments", router.query.classroomId],
-    queryFn: () =>
-      GetAllAssignmentsService({
-        classroomId: router.query.classroomId as string,
-      }),
-  });
-  const students = useQuery({
-    queryKey: ["students", router.query.classroomId],
-    queryFn: () =>
-      GetAllStudentsService({
-        classroomId: router.query.classroomId as string,
-      }),
-  });
 
-  const [triggerAssignment, setTriggerAssignment] = useState(false);
   const [triggerAllowStudentDeleteWork, setTriggerAllowStudentDeleteWork] =
     useState(classroom?.data?.allowStudentToDeleteWork);
 
@@ -90,9 +84,6 @@ function Assignment({ user }: { user: User }) {
             : sideMenusEnglish({ router })
         }
       >
-        <div className="flex w-full justify-center items-center">
-          <div className="min-w-[25rem] w-max"></div>
-        </div>
         <header className="flex w-full border-b-2 border-black/50 py-5 font-Kanit justify-start">
           <section className="pl-20 gap-5 text-xl flex flex-col font-semibold">
             <div className="flex w-max justify-center items-center gap-2">
@@ -111,163 +102,32 @@ function Assignment({ user }: { user: User }) {
             </div>
           </section>
         </header>
-        <div className="">
-          <main className="w-full  py-5  mt-10 flex flex-col items-center justify-center relative">
-            <div
-              className="bg-white w-80 md:w-[28rem] h-20 rounded-full drop-shadow-md flex items-center 
-          justify-center gap-2 "
+        <ul className="w-full flex mt-5 justify-center gap-5">
+          {menuAssignments.map((menu, index) => (
+            <li
+              onClick={() => setActiveMenu(index)}
+              key={index}
+              className={`${
+                activeMenu === index
+                  ? "bg-main-color text-white"
+                  : "bg-white text-main-color"
+              } w-1/2 gap-2 cursor-pointer hover:bg-main-color active:scale-105 hover:text-white transition duration-100
+               md:w-1/4 h-10 drop-shadow-lg md:h-14 flex items-center justify-center 
+                  font-Kanit text-lg  md:text-xl font-semibold   rounded-lg
+                 `}
             >
-              <button
-                onClick={() => {
-                  setTriggerAssignment(true);
-                  document.body.style.overflow = "hidden";
-                }}
-                className="w-8/12 md:w-80 border-none py-2 rounded-full
-               bg-blue-100 text-center font-Poppins text-base hover:bg-[#2C7CD1] hover:text-white
-text-black transition duration-150  cursor-pointer"
-              >
-                <div className="font-Kanit flex items-center justify-center gap-2 font-medium">
-                  {user.language === "Thai" && "สร้างชิ้นงาน"}
-                  {user.language === "English" && "create your assignment"}
-                  <IoCreate />
-                </div>
-              </button>
-            </div>
-
-            <div
-              className={` top-0 right-0 left-0 bottom-0 m-auto righ z-40 ${
-                triggerAssignment === false ? "hidden" : "fixed"
-              }`}
-            >
-              <CreateAssignment
-                user={user}
-                assignments={assignments}
-                setTriggerAssignment={setTriggerAssignment}
-                students={students}
-              />
-            </div>
-
-            {/* assignments are here */}
-            <div className=" w-full mt-5 gap-5 grid place-items-center bg-slate-100 ">
-              {assignments.isLoading || assignments.isFetching ? (
-                <div className="flex flex-col gap-5 w-80 md:w-[40rem]">
-                  <Skeleton variant="rounded" width="100%" height={144} />
-                  <Skeleton variant="rounded" width="100%" height={144} />
-                  <Skeleton variant="rounded" width="100%" height={144} />
-                  <Skeleton variant="rounded" width="100%" height={144} />
-                  <Skeleton variant="rounded" width="100%" height={144} />
-                </div>
-              ) : (
-                assignments?.data?.map((assignment, index) => {
-                  const deadline = new Date(
-                    assignment.deadline
-                  ).toLocaleDateString(
-                    `${
-                      user.language === "Thai"
-                        ? "th-TH"
-                        : user.language === "English" && "en-US"
-                    }`,
-                    {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    }
-                  );
-                  const assignDate = new Date(assignment.createAt);
-
-                  const formatAssigDate = assignDate.toLocaleDateString(
-                    `${
-                      user.language === "Thai"
-                        ? "th-TH"
-                        : user.language === "English" && "en-US"
-                    }`,
-                    {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    }
-                  );
-
-                  return (
-                    <Link
-                      href={`/classroom/teacher/${router.query.classroomId}/assignment/${assignment.id}`}
-                      key={index}
-                      className={`w-11/12 no-underline md:w-max px-2 md:max-w-lg lg:max-w-2xl group  h-36  md:px-10 md:py-5 drop-shadow-lg 
-                     bg-white  hover:scale-105 cursor-pointer overflow-hidden
-                 duration-150 transition relative
-               rounded-lg flex flex-col justify-center `}
-                    >
-                      <div className="flex justify-around  w-full">
-                        <div className="flex w-52  md:w-80 lg:w-96 truncate">
-                          <div
-                            className={`flex flex-col  justify-center h-full
-                            gap-2 w-full  md:w-3/4  md:max-w-md  font-Poppins text-center
-                             md:text-left text-black `}
-                          >
-                            <span className=" font text-base md:text-xl font-bold w-full h-max max-h-8  truncate">
-                              {assignment.title}
-                            </span>
-                            <div className="relative text-left">
-                              <div className="w-full hidden md:block bg-gray-200 h-2 rounded-full overflow-hidden">
-                                <div
-                                  style={{
-                                    width: assignment.progress,
-                                  }}
-                                  className={` bg-blue-800 h-2 `}
-                                ></div>
-                              </div>
-                              <div className="font-Kanit mt-2">
-                                {user.language === "Thai" &&
-                                  "ผู้เรียนส่งงานแล้ว"}
-                                {user.language === "English" &&
-                                  "Students has summited thier work for"}{" "}
-                                {assignment.progress}
-                              </div>
-                              <div className="font-Kanit mt-2">
-                                {user.language === "Thai" && "มอบหมายเมื่อ"}
-                                {user.language === "English" &&
-                                  "Assign on"}{" "}
-                                <span className="w-max h-max p-1 px-2 bg-orange-300 text-black rounded-lg">
-                                  {formatAssigDate}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="relative w-24 md:w-32 ring-2 py-1 md:py-2 ring-blue-400 group-hover:bg-blue-400 rounded-xl flex flex-col justify-center ">
-                          <div className="flex items-center justify-center flex-col">
-                            <div>
-                              <span className="text-lg md:text-2xl font-Poppins font-semibold group-hover:text-white text-blue-500 truncate ">
-                                {assignment.maxScore.toLocaleString()}
-                              </span>
-                            </div>
-                            <div className="font-Poppins font-semibold group-hover:text-white text-black">
-                              {user.language === "Thai" && "คะแนน"}
-                              {user.language === "English" && "score"}
-                            </div>
-                          </div>
-
-                          <div className="font-Poppins gap-1 text-sm flex flex-col justify-start items-center  w-full  ">
-                            <span className="group-hover:text-white text-black">
-                              {user.language === "Thai" && "กำหนดส่ง"}
-                              {user.language === "English" && "due by"}
-                            </span>
-                            <span className="group-hover:text-white text-black">
-                              {deadline}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })
-              )}
-            </div>
-          </main>
-        </div>
+              <div>
+                {user.language === "Thai" && menu.thaiTitle}
+                {user.language === "English" && menu.engTitle}
+              </div>
+              <menu.icon />
+            </li>
+          ))}
+        </ul>
+        <main>
+          {activeMenu === 0 && <ShowListAssignments user={user} />}
+          {activeMenu === 1 && <ShowListQuizes user={user} />}
+        </main>
       </ClassroomLayout>
     </div>
   );
