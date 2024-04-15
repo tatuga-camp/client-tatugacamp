@@ -20,7 +20,7 @@ export async function GetExaminationsService(
     const access_token = cookies.access_token;
     const examination = await axios({
       method: "GET",
-      url: `${process.env.NEXT_PUBLIC_API}/user/examinations`,
+      url: `${process.env.MAIN_SERVER_URL}/user/examinations`,
       responseType: "json",
       params: {
         ...input,
@@ -54,7 +54,7 @@ export async function GetExaminationService(
     const access_token = cookies.access_token;
     const examination = await axios({
       method: "GET",
-      url: `${process.env.NEXT_PUBLIC_API}/user/examinations`,
+      url: `${process.env.MAIN_SERVER_URL}/user/examinations`,
       responseType: "json",
       params: {
         ...input,
@@ -76,7 +76,8 @@ type InputCreateExaminationService = {
   duration?: number;
   title: string;
   description?: string;
-  score: number;
+  limitAttemps?: number;
+  score?: number;
   classroomId: string;
 };
 type ResponseCreateExaminationService = Examination;
@@ -88,7 +89,7 @@ export async function CreateExaminationService(
     const access_token = cookies.access_token;
     const examination = await axios({
       method: "POST",
-      url: `${process.env.NEXT_PUBLIC_API}/user/examinations`,
+      url: `${process.env.MAIN_SERVER_URL}/user/examinations`,
       responseType: "json",
       data: {
         ...input,
@@ -127,7 +128,7 @@ export async function UpdateExaminationService(
     const access_token = cookies.access_token;
     const examination = await axios({
       method: "PATCH",
-      url: `${process.env.NEXT_PUBLIC_API}/user/examinations`,
+      url: `${process.env.MAIN_SERVER_URL}/user/examinations`,
       responseType: "json",
       data: {
         ...input,
@@ -155,7 +156,7 @@ export async function DeleteExaminationService(
     const access_token = cookies.access_token;
     const examination = await axios({
       method: "DELETE",
-      url: `${process.env.NEXT_PUBLIC_API}/user/examinations`,
+      url: `${process.env.MAIN_SERVER_URL}/user/examinations`,
       responseType: "json",
       params: {
         ...input,
