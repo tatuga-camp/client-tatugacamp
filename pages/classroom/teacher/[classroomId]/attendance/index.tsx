@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Layout from "../../../../../layouts/classroomLayout";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -13,6 +13,22 @@ import Head from "next/head";
 import { parseCookies } from "nookies";
 import DowloadExcelAttendacne from "../../../../../components/form/dowloadExcelAttendacne";
 import ShowNoteAttendance from "../../../../../components/form/showNoteAttendance";
+
+//Chart
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+import { Bar } from "react-chartjs-2";
+
+import Chart from "chart.js/auto";
+Chart.register(CategoryScale);
 
 import {
   DeleteAttendanceService,
@@ -43,26 +59,86 @@ export type selectAttendance = {
 
 import { LuCalendarRange } from "react-icons/lu";
 import { MdOutlineBarChart } from "react-icons/md";
-import { GoPencil } from "react-icons/go";
 import Image from "next/image";
+import { TfiStatsUp } from "react-icons/tfi";
 
+import { processAttendanceData } from "@/utils/processAttendanceData";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+Chart.register(ChartDataLabels);
+
+type AttendanceStatus =
+  | "present"
+  | "absent"
+  | "holiday"
+  | "late"
+  | "sick"
+  | "warn";
+const monthNamesEN = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+const monthNamesTH = [
+  "ม.ค.",
+  "ก.พ.",
+  "มี.ค.",
+  "เม.ย.",
+  "พ.ค.",
+  "มิ.ย.",
+  "ก.ค.",
+  "ส.ค.",
+  "ก.ย.",
+  "ต.ค.",
+  "พ.ย.",
+  "ธ.ค.",
+];
+const initialData = {
+  labels: monthNamesEN,
+  datasets: [
+    {
+      label: "",
+      data: [],
+      backgroundColor: "",
+    },
+  ],
+};
+
+//main return ==================================================
 function Index({ user }: { user: User }) {
   const router = useRouter();
+  const [yearList, setYearList] =
+    useState<{ year: number; count: any; statuses: any }[]>();
+  const attendances = useQuery({
+    queryKey: ["attendance", router.query.classroomId as string],
+    queryFn: () =>
+      GetAllAttendanceService({
+        classroomId: router.query.classroomId as string,
+      }).then((response) => {
+        const years = processAttendanceData(response);
+        setYearList(years);
+        setSelectedYear(years[0].year);
+        return response;
+      }),
+  });
   const [selectAttendance, setSelectAttendance] =
     useState<selectAttendance | null>();
   const [triggerUpdateAttendance, setTriggerUpdateAttendance] = useState(false);
   const [triggerShowNote, setTriggerShowNote] = useState(false);
   const [selectNote, setSelectNote] = useState<selectNote | null>();
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-  const attendances = useQuery({
-    queryKey: ["attendance", router.query.classroomId as string],
-    queryFn: () =>
-      GetAllAttendanceService({
-        classroomId: router.query.classroomId as string,
-      }),
-  });
-
+  const [selectedYear, setSelectedYear] = useState<number>();
+  const [selectedStatus, setSelectedStatus] =
+    useState<AttendanceStatus>("present");
+  const [chartData, setChartData] = useState(initialData);
   const handleDeleteAttendance = async ({ groupId }: { groupId: string }) => {
     Swal.fire({
       title: "Are you sure?",
@@ -100,14 +176,102 @@ function Index({ user }: { user: User }) {
   };
 
   const [selectedButton, setSelectedButton] = useState<
-    "information" | "stat" | "note"
+    "information" | "stat" | "stat-month"
   >("information");
-  const handleButtonClick = (buttonName: "information" | "stat" | "note") => {
+  const handleButtonClick = (
+    buttonName: "information" | "stat" | "stat-month"
+  ) => {
     setSelectedButton(buttonName);
+  };
+  //Get attendance monthly logic
+
+  //chart==========================
+  const statusTypeArray = [
+    "absent",
+    "holiday",
+    "late",
+    "present",
+    "sick",
+    "warn",
+  ];
+
+  const statusTypeArrayTH = [
+    "ขาด",
+    "ลา",
+    "สาย",
+    "มาเรียน",
+    "ป่วย",
+    "เฝ้าระวัง",
+  ];
+
+  const statusColor = [
+    "rgba(209, 44, 44, 1.0)",
+    "rgba(237, 186, 2, 1.0)",
+    "rgba(245, 94, 0, 1.0)",
+    "rgba(0, 180, 81, 1.0)",
+    "rgba(18, 133, 255, 1.0)",
+    "rgba(132, 10, 208, 1.0)",
+  ];
+
+  const optionChart = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: false,
+        text: "",
+      },
+      datalabels: {
+        color: "#ffffff",
+      },
+    },
+  };
+
+  const handleYearChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedYear(parseInt(event.target.value));
+    updateChartData(selectedStatus, parseInt(event.target.value));
+  };
+
+  const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    setSelectedStatus(value as AttendanceStatus);
+    if (!selectedYear) return;
+    updateChartData(value as AttendanceStatus, selectedYear);
+  };
+
+  const updateChartData = (status: AttendanceStatus, year: number) => {
+    const yearData = yearList?.find((data) => data.year === year);
+    if (yearData) {
+      const monthsArray = yearData.statuses[status].months;
+
+      const newChartData = {
+        ...initialData,
+        datasets: [
+          {
+            ...initialData.datasets[0],
+            label: status,
+            data: monthsArray,
+            backgroundColor: statusColor[statusTypeArray.indexOf(status)],
+          },
+        ],
+      };
+      setChartData(newChartData);
+    }
+  };
+
+  useEffect(() => {
+    if (!yearList) return;
+    updateChartData(selectedStatus, yearList[0].year);
+  }, [yearList]);
+
+  const getStatusLabel = () => {
+    const index = statusTypeArray.findIndex(
+      (status) => status === selectedStatus
+    );
+    return user.language === "Thai" ? statusTypeArrayTH[index] : selectedStatus;
   };
 
   return (
-    <div className="bg-blue-50 pb-40">
+    <div className="bg-blue-50 ">
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta charSet="UTF-8" />
@@ -148,6 +312,19 @@ function Index({ user }: { user: User }) {
                   <MdOutlineBarChart />
                 </section>
                 ข้อมูลสถิติ
+              </button>
+              <button
+                className={`hover:scale-105 transition duration-150 flex items-center justify-center gap-2 rounded-full py-2 px-3 border-[3px] border-solid border-purple-500  ${
+                  selectedButton === "stat-month"
+                    ? "bg-purple-500 text-white"
+                    : "bg-white text-purple-500 border-purple-500"
+                }`}
+                onClick={() => handleButtonClick("stat-month")}
+              >
+                <section className="text-[1.3rem]">
+                  <TfiStatsUp />
+                </section>
+                สถิติรายเดือน
               </button>
             </div>
 
@@ -748,7 +925,56 @@ function Index({ user }: { user: User }) {
                 )}
               </div>
             )}
-            {selectedButton === "note" && <div>Note content</div>}
+            {selectedButton === "stat-month" && (
+              <div className="w-[24rem] h-[30rem] md:w-[50rem] md:h-[30rem] lg:w-[60rem] lg:h-[40rem] xl:w-[70rem] xl:h-[50rem]  flex flex-col  items-center gap-3 md:gap-5 mt-5">
+                <div className="flex flex-col md:flex-row gap-2 md:gap-5 font-Kanit font-semibold">
+                  <div className="border-solid border-2 border-black p-2 rounded-md">
+                    <label>
+                      {user.language === "Thai" && "กรุณาเลือกปี :"}
+                      {user.language === "English" && "Select year :"}
+                    </label>
+                    {/* เดี๋ยวมี value กับ onChange อีก */}
+                    <select
+                      value={selectedYear}
+                      onChange={handleYearChange}
+                      className="ml-3 text-slate-400"
+                    >
+                      {yearList?.map((yearData) => (
+                        <option key={yearData.year} value={yearData.year}>
+                          {yearData.year}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="border-solid border-2 border-black p-2 rounded-md">
+                    <label>
+                      {user.language === "Thai" &&
+                        "กรุณาเลือกสถานะการเข้าเรียน :"}
+                      {user.language === "English" && "Select status"}
+                    </label>
+                    <select
+                      value={selectedStatus}
+                      onChange={handleStatusChange}
+                      className="ml-3 text-slate-400"
+                    >
+                      {statusTypeArray.map((status, index) => (
+                        <option key={status} value={status}>
+                          {user.language === "Thai"
+                            ? statusTypeArrayTH[index]
+                            : status}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className=" w-10/12 h-10/12 flex flex-col gap-3 mt-10">
+                  <h2 className="flex justify-center items-center font-Kanit font-semibold text-xl text-[#2C7CD1]">
+                    {getStatusLabel()}
+                  </h2>
+                  <Bar options={optionChart} data={chartData} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </ClassroomLayout>
