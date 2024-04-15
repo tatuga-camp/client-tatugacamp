@@ -66,19 +66,6 @@ import { processAttendanceData } from "@/utils/processAttendanceData";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 Chart.register(ChartDataLabels);
 
-function useAttendanceData() {
-  const router = useRouter();
-  const attendances = useQuery({
-    queryKey: ["attendance", router.query.classroomId as string],
-    queryFn: () =>
-      GetAllAttendanceService({
-        classroomId: router.query.classroomId as string,
-      }),
-  });
-
-  return attendances;
-}
-
 type AttendanceStatus =
   | "present"
   | "absent"
@@ -86,19 +73,72 @@ type AttendanceStatus =
   | "late"
   | "sick"
   | "warn";
+const monthNamesEN = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+const monthNamesTH = [
+  "ม.ค.",
+  "ก.พ.",
+  "มี.ค.",
+  "เม.ย.",
+  "พ.ค.",
+  "มิ.ย.",
+  "ก.ค.",
+  "ส.ค.",
+  "ก.ย.",
+  "ต.ค.",
+  "พ.ย.",
+  "ธ.ค.",
+];
+const initialData = {
+  labels: monthNamesEN,
+  datasets: [
+    {
+      label: "",
+      data: [],
+      backgroundColor: "",
+    },
+  ],
+};
 
 //main return ==================================================
 function Index({ user }: { user: User }) {
   const router = useRouter();
-  const attendances = useAttendanceData();
-
+  const [yearList, setYearList] =
+    useState<{ year: number; count: any; statuses: any }[]>();
+  const attendances = useQuery({
+    queryKey: ["attendance", router.query.classroomId as string],
+    queryFn: () =>
+      GetAllAttendanceService({
+        classroomId: router.query.classroomId as string,
+      }).then((response) => {
+        const years = processAttendanceData(response);
+        setYearList(years);
+        setSelectedYear(years[0].year);
+        return response;
+      }),
+  });
   const [selectAttendance, setSelectAttendance] =
     useState<selectAttendance | null>();
   const [triggerUpdateAttendance, setTriggerUpdateAttendance] = useState(false);
   const [triggerShowNote, setTriggerShowNote] = useState(false);
   const [selectNote, setSelectNote] = useState<selectNote | null>();
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
+  const [selectedYear, setSelectedYear] = useState<number>();
+  const [selectedStatus, setSelectedStatus] =
+    useState<AttendanceStatus>("present");
+  const [chartData, setChartData] = useState(initialData);
   const handleDeleteAttendance = async ({ groupId }: { groupId: string }) => {
     Swal.fire({
       title: "Are you sure?",
@@ -143,51 +183,9 @@ function Index({ user }: { user: User }) {
   ) => {
     setSelectedButton(buttonName);
   };
-
   //Get attendance monthly logic
-  const yearList = processAttendanceData(attendances);
 
-  console.log(yearList);
-
-  yearList.forEach((yearData) => {
-    //console.log(`Year: ${yearData.year}`);
-    for (const status in yearData.statuses) {
-      //console.log(`Status: ${status}`);
-      //console.log(yearData.statuses[status].months);
-    }
-  });
-
-  const monthNamesEN = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-
-  const monthNamesTH = [
-    "ม.ค.",
-    "ก.พ.",
-    "มี.ค.",
-    "เม.ย.",
-    "พ.ค.",
-    "มิ.ย.",
-    "ก.ค.",
-    "ส.ค.",
-    "ก.ย.",
-    "ต.ค.",
-    "พ.ย.",
-    "ธ.ค.",
-  ];
   //chart==========================
-
   const statusTypeArray = [
     "absent",
     "holiday",
@@ -228,22 +226,6 @@ function Index({ user }: { user: User }) {
     },
   };
 
-  const initialData = {
-    labels: monthNamesEN,
-    datasets: [
-      {
-        label: "",
-        data: [],
-        backgroundColor: "",
-      },
-    ],
-  };
-
-  const [selectedYear, setSelectedYear] = useState<number>();
-  const [selectedStatus, setSelectedStatus] =
-    useState<AttendanceStatus>("present");
-  const [chartData, setChartData] = useState(initialData);
-
   const handleYearChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedYear(parseInt(event.target.value));
     updateChartData(selectedStatus, parseInt(event.target.value));
@@ -257,8 +239,7 @@ function Index({ user }: { user: User }) {
   };
 
   const updateChartData = (status: AttendanceStatus, year: number) => {
-    const yearData = yearList.find((data) => data.year === year);
-
+    const yearData = yearList?.find((data) => data.year === year);
     if (yearData) {
       const monthsArray = yearData.statuses[status].months;
 
@@ -277,6 +258,11 @@ function Index({ user }: { user: User }) {
     }
   };
 
+  useEffect(() => {
+    if (!yearList) return;
+    updateChartData(selectedStatus, yearList[0].year);
+  }, [yearList]);
+
   const getStatusLabel = () => {
     const index = statusTypeArray.findIndex(
       (status) => status === selectedStatus
@@ -285,7 +271,7 @@ function Index({ user }: { user: User }) {
   };
 
   return (
-    <div className="bg-blue-50 pb-40">
+    <div className="bg-blue-50 ">
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta charSet="UTF-8" />
@@ -953,7 +939,7 @@ function Index({ user }: { user: User }) {
                       onChange={handleYearChange}
                       className="ml-3 text-slate-400"
                     >
-                      {yearList.map((yearData) => (
+                      {yearList?.map((yearData) => (
                         <option key={yearData.year} value={yearData.year}>
                           {yearData.year}
                         </option>
