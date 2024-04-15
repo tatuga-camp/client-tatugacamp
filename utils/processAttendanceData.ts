@@ -1,5 +1,5 @@
 import { UseQueryResult } from "@tanstack/react-query";
-import useAttendanceData from "../pages/classroom/teacher/[classroomId]/attendance/index"
+import useAttendanceData from "../pages/classroom/teacher/[classroomId]/attendance/index";
 import { ResponseGetAllAttendanceService } from "@/services/attendance";
 
 interface StatusCount {
@@ -21,9 +21,8 @@ interface YearCounts {
 }
 
 export function processAttendanceData(
-  attendances: UseQueryResult<ResponseGetAllAttendanceService, Error>
+  attendances: ResponseGetAllAttendanceService
 ) {
-  console.log(attendances);
   const yearCounts: YearCounts = {};
 
   const statusTypeArray = [
@@ -37,7 +36,7 @@ export function processAttendanceData(
 
   const monthsArray = Array.from({ length: 12 }, () => 0);
 
-  attendances?.data?.students.forEach((item, index) => {
+  attendances.students.forEach((item, index) => {
     if (index + 1 !== 0) {
       item.data.forEach((attendance) => {
         //console.log(item);
@@ -61,7 +60,6 @@ export function processAttendanceData(
             yearCounts[year].statuses[status].months[month]++;
           }
         });
-        //console.log(yearCounts);
       });
     }
   });
@@ -74,29 +72,3 @@ export function processAttendanceData(
 
   return yearList;
 }
-
-//yearList [{...},{...}]
-//[{
-//   year: 2023,
-//   count: 8,
-//   statuses: {
-//     absent: {
-//       statCount: 1,
-//       months: [1,0,0,0,0,0,0,0,0,0,0,0,0] },
-//     holiday: {
-//       statCount: 1,
-//       months: [1,0,0,0,0,0,0,0,0,0,0,0,0] },
-//     present: {
-//       statCount: 1,
-//       months: [1,0,0,0,0,0,0,0,0,0,0,0,0] },
-//       absent: {
-//         statCount: 1,
-//         months: [1,0,0,0,0,0,0,0,0,0,0,0,0] },
-//     sick: {
-//       statCount: 1,
-//       months: [1,0,0,0,0,0,0,0,0,0,0,0,0] },
-//     warn: {
-//       statCount: 1,
-//       months: [1,0,0,0,0,0,0,0,0,0,0,0,0] },
-//   }
-// }]
