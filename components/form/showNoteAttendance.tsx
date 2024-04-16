@@ -28,7 +28,7 @@ function ShowNoteAttendance({
     groupId: string;
   }>({
     id: selectNote?.headAttendance?.id as string,
-    body: selectNote?.headAttendance.note as string,
+    body: selectNote?.headAttendance?.note as string,
     groupId: selectNote?.groupId as string,
   });
   const handleEditorChange = (content: string) => {
