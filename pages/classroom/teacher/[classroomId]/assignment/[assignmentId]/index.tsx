@@ -289,6 +289,9 @@ function Index({ user }: { user: User }) {
                         }`}
                       >
                         <Editor
+                          tinymceScriptSrc={
+                            "/assets/libs/tinymce/tinymce.min.js"
+                          }
                           disabled={true}
                           init={{
                             setup: function (editor) {

@@ -365,7 +365,7 @@ function UpdateAssignment({
             </div>
             <div className="h-96">
               <Editor
-                apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
                 textareaName="description"
                 value={assignmentData?.description}
                 init={{
