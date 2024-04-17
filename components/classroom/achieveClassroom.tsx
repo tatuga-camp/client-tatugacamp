@@ -35,7 +35,7 @@ function AchieveClassroomComponent({ user }: { user: User }) {
   useEffect(() => {
     if (achievedClassrooms?.data?.classrooms) {
       setClassroomState(
-        () => achievedClassrooms?.data?.classrooms as Classroom[]
+        () => achievedClassrooms?.data?.classrooms as Classroom[],
       );
     }
   }, [achievedClassrooms.isFetching, page]);
@@ -83,18 +83,18 @@ function AchieveClassroomComponent({ user }: { user: User }) {
       Swal.fire(
         "error",
         err?.props?.response?.data?.message.toString(),
-        "error"
+        "error",
       );
     }
   };
   return (
-    <div className="flex  flex-col gap-10 justify-start items-center w-11/12 h-max">
+    <div className="flex  h-max w-11/12  flex-col items-center justify-start gap-10">
       <main
-        className={`w-full  mx-10 h-max grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-8  gap-10
+        className={`mx-10  grid h-max w-full grid-cols-2 gap-10 md:grid-cols-4 lg:grid-cols-6  2xl:grid-cols-8
             ${classroomState?.[0] ? "flex" : "hidden"} `}
       >
         {achievedClassrooms.isLoading ? (
-          <div className="  col-span-8 justify-center  flex flex-wrap gap-10">
+          <div className="  col-span-8 flex  flex-wrap justify-center gap-10">
             <Skeleton variant="rectangular" width={320} height={210} />
             <Skeleton variant="rectangular" width={320} height={210} />
             <Skeleton variant="rectangular" width={320} height={210} />
@@ -109,20 +109,20 @@ function AchieveClassroomComponent({ user }: { user: User }) {
                   padding: "10px",
                 }}
                 key={index}
-                className={`    border-solid col-span-2 h-max min-h-[12rem]
-        rounded-3xl p-3  overflow-hidden relative  bg-white `}
+                className={`    relative col-span-2 h-max min-h-[12rem]
+        overflow-hidden rounded-3xl  border-solid bg-white  p-3 `}
               >
-                <div className="text-right w-full">
+                <div className="w-full text-right">
                   {loading ? (
                     <Loading />
                   ) : (
-                    <div className="text-3xl absolute right-4 top-3">
+                    <div className="absolute right-4 top-3 text-3xl">
                       {!classroom.selected && (
                         <div
                           onClick={() => handleOpenClasssDeleted(index)}
                           role="button"
-                          className="text-gray-700 text-base   hover:text-red-500 
-            cursor-pointer flex"
+                          className="flex cursor-pointer   text-base 
+            text-gray-700 hover:text-red-500"
                         >
                           <BsThreeDotsVertical />
                         </div>
@@ -134,7 +134,7 @@ function AchieveClassroomComponent({ user }: { user: User }) {
                             onClick={() => {
                               handleCloseClasssDeleted(index);
                             }}
-                            className="hover:scale-110  transition duration-150 ease-in-out cursor-pointer "
+                            className="cursor-pointer  transition duration-150 ease-in-out hover:scale-110 "
                           >
                             <FcCancel />
                           </div>
@@ -144,20 +144,20 @@ function AchieveClassroomComponent({ user }: { user: User }) {
                   )}
                 </div>
                 {classroom.selected && (
-                  <div className="w-full h-full items-center flex justify-center gap-3">
+                  <div className="flex h-full w-full items-center justify-center gap-3">
                     <button
                       onClick={() =>
                         handleAchieveClassroom({
                           classroomId: classroom.id,
                         })
                       }
-                      className="w-max px-2 h-20
-                hover:bg-red-100 group hover:text-red-600 transition duration-150
-                 text-4xl flex flex-col justify-center  items-center text-red-100
-               bg-red-600 rounded-lg"
+                      className="group flex h-20
+                w-max flex-col items-center justify-center rounded-lg
+                 bg-red-600 px-2 text-4xl text-red-100  transition duration-150
+               hover:bg-red-100 hover:text-red-600"
                     >
                       <TbSchoolOff />
-                      <span className="text-xs group-hover:text-black transition duration-150 text-white font-normal">
+                      <span className="text-xs font-normal text-white transition duration-150 group-hover:text-black">
                         {user.language === "Thai"
                           ? "ยกเลิกสำเร็จการศึกษา"
                           : "Undo Achieve classroom"}
@@ -166,24 +166,24 @@ function AchieveClassroomComponent({ user }: { user: User }) {
                   </div>
                 )}
                 <div className={`${classroom.selected ? "hidden" : "block"}`}>
-                  <div className="flex w-full justify-start gap-2 md:gap-10  items-center">
-                    <div className="flex flex-col w-3/4 md:w-40 ">
-                      <span className="text-sm md:text-lg text-gray-600 font-light truncate">
+                  <div className="flex w-full items-center justify-start gap-2  md:gap-10">
+                    <div className="flex w-3/4 flex-col md:w-40 ">
+                      <span className="truncate text-sm font-light text-gray-600 md:text-lg">
                         {classroom.level}
                       </span>
-                      <span className="font-bold truncate text-lg md:text-xl  text-[#EDBA02]">
+                      <span className="truncate text-lg font-bold text-[#EDBA02]  md:text-xl">
                         {classroom.title}
                       </span>
-                      <span className="text-sm md:text-base truncate">
+                      <span className="truncate text-sm md:text-base">
                         {classroom.description}
                       </span>
                     </div>
                   </div>
-                  <div className="flex justify-center items-center gap-2 pt-4 pb-3  w-full lg:mt-5 ">
+                  <div className="flex w-full items-center justify-center gap-2 pb-3  pt-4 lg:mt-5 ">
                     <div
-                      className="w-3/4 mb-3 md:mb-0 md:relative text-center flex items-center justify-center
-                         h-9  rounded-lg bg-gray-500 text-white font-sans font-bold
-  text-md d"
+                      className="text-md d mb-3 flex h-9 w-3/4 items-center justify-center
+                         rounded-lg  bg-gray-500 text-center font-sans font-bold text-white
+  md:relative md:mb-0"
                     >
                       <span className="text-sm font-light">
                         {user.language === "Thai" &&

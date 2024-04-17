@@ -2,12 +2,13 @@ export type Examination = {
   id: string;
   createAt: Date;
   updateAt: Date;
-  timeStart: Date;
-  timeEnd: Date;
-  duration: number;
+  timeStart?: Date;
+  timeEnd?: Date;
+  duration?: number;
+  limitAttemps?: number;
   title: string;
-  description: string;
-  score: number;
+  description?: string;
+  score?: number;
   classroomId: string;
   userId: string;
 };
