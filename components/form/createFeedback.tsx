@@ -141,7 +141,7 @@ function CreateFeedback({
                 <div className=" absolute z-50 w-full h-full bg-slate-300 animate-pulse" />
               )}
               <Editor
-                apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
                 textareaName="description"
                 init={{
                   link_context_toolbar: true,

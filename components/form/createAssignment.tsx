@@ -187,7 +187,7 @@ export default function CreateAssignment({
                 <div className="h-96 mt-5">
                   <label>คำอธิบาย</label>
                   <Editor
-                    apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                    tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
                     textareaName="description"
                     init={{
                       link_context_toolbar: true,

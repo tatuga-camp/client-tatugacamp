@@ -277,7 +277,7 @@ function AttendanceChecker({
             }`}
           >
             <Editor
-              apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+              tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
               textareaName="note"
               value={note.body}
               init={{

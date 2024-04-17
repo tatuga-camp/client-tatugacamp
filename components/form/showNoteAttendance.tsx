@@ -93,7 +93,7 @@ function ShowNoteAttendance({
    left-0 m-auto flex flex-col  items-center justify-center md:justify-start gap-2 bg-white p-0 md:p-5 rounded-lg  "
       >
         <Editor
-          apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+          tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
           textareaName="note"
           value={note.body}
           init={{
