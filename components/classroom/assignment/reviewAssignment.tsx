@@ -1258,7 +1258,7 @@ focus:border-solid"
                     </button>
                     <Editor
                       disabled={!triggerEditBody}
-                      apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
+                      tinymceScriptSrc={"/assets/libs/tinymce/tinymce.min.js"}
                       textareaName="body"
                       init={{
                         link_context_toolbar: true,
