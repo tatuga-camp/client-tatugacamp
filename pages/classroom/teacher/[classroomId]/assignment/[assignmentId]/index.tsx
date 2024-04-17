@@ -290,7 +290,6 @@ function Index({ user }: { user: User }) {
                       >
                         <Editor
                           disabled={true}
-                          apiKey={process.env.NEXT_PUBLIC_TINY_TEXTEDITOR_KEY}
                           init={{
                             setup: function (editor) {
                               editor.on("init", function () {
