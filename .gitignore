@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 .yarn/install-state.gz
-/public/tinymce/
+/public/assets/libs/tinymce
 
 # testing
 /coverage
