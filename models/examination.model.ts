@@ -1,9 +1,9 @@
 export type Examination = {
   id: string;
-  createAt: Date;
-  updateAt: Date;
-  timeStart?: Date;
-  timeEnd?: Date;
+  createAt: string;
+  updateAt: string;
+  timeStart?: string | null;
+  timeEnd?: string | null;
   duration?: number;
   limitAttemps?: number;
   title: string;

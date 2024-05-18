@@ -86,7 +86,7 @@ function ClassroomLayout({
 
   const classroomCode: string = ((classroom?.data?.classroomCode?.slice(
     0,
-    3
+    3,
   ) as string) + classroom?.data?.classroomCode?.slice(3)) as string;
   //covert date
   const date = new Date(classroom?.data?.createAt as string);
@@ -102,7 +102,7 @@ function ClassroomLayout({
 
   //rearrange copy studens data to the first array is the highest score
   const highestScorePlayer = coppyStudentsData?.sort(
-    (a, b) => b.score.totalPoints - a.score.totalPoints
+    (a, b) => b.score.totalPoints - a.score.totalPoints,
   )[0];
 
   useEffect(() => {
@@ -132,7 +132,7 @@ function ClassroomLayout({
       )}
       {announcement.data && (
         <Alert
-          className="md:w-full static"
+          className="static md:w-full"
           severity={announcement.data.type as AlertColor}
         >
           <AlertTitle>แจ้งข่าวสาร</AlertTitle>
@@ -141,22 +141,22 @@ function ClassroomLayout({
         </Alert>
       )}
 
-      <main className="flex justify-center  w-full relative items-center  flex-col md:gap-5 lg:gap-10 ">
-        <div className="w-full flex justify-between flex-row-reverse sticky top-2 z-50 px-2">
+      <main className="relative flex  w-full flex-col items-center  justify-center md:gap-5 lg:gap-10 ">
+        <div className="sticky top-2 z-50 flex w-full flex-row-reverse justify-between px-2">
           <div className=" ">
             <AuthButton />
           </div>
-          <Popover className=" ">
-            {({ open }) => (
+          <Popover>
+            {() => (
               <>
                 {!user.isError && (
-                  <Popover.Button className="w-max bg-transparent h-max border-none active:border-none z-30 absolute">
-                    <div className="flex p-2 ml-2 flex-col font-Kanit justify-center items-center ">
+                  <Popover.Button className="absolute z-30 h-max w-max border-none bg-transparent active:border-none">
+                    <div className="ml-2 flex flex-col items-center justify-center p-2 font-Kanit ">
                       <div
                         aria-label="Show sidebar"
-                        className="text-2xl  z-30 w-10 h-10 
-        flex justify-center items-center bg-white rounded-2xl   text-black drop-shadow cursor-pointer
-        hover:scale-125 transition duration-100 ease-in-out "
+                        className="z-30  flex h-10 w-10 
+        cursor-pointer items-center justify-center rounded-2xl bg-white   text-2xl text-black drop-shadow
+        transition duration-100 ease-in-out hover:scale-125 "
                       >
                         <CgMenuBoxed />
                       </div>
@@ -180,11 +180,11 @@ function ClassroomLayout({
           </Popover>
         </div>
         {!user.isError && (
-          <div className="h-96    w-full  relative">
-            <div className="w-full h-80  bg-gradient-to-r from-blue-400 to-orange-300  overflow-hidden">
+          <div className="relative    h-96  w-full">
+            <div className="h-80 w-full  overflow-hidden bg-gradient-to-r from-blue-400  to-orange-300">
               <div
-                className=" w-full h-80  relative 
-         flex items-center justify-center	"
+                className=" relative flex  h-80 
+         w-full items-center justify-center	"
               >
                 <Image
                   fill
@@ -198,45 +198,45 @@ function ClassroomLayout({
               </div>
             </div>
             <div
-              className="w-10/12 lg:w-8/12 xl:w-6/12 max-w-6xl md:w-10/12  md:h-80  
-           h-80 absolute bottom-0 right-0 left-0 m-auto flex justify-center items-end "
+              className="absolute bottom-0 left-0 right-0 m-auto  flex  
+           h-80 w-10/12 max-w-6xl items-end justify-center md:h-80 md:w-10/12 lg:w-8/12 xl:w-6/12 "
             >
               <header
-                className=" w-full h-3/4
-             rounded-3xl mt-0 flex  flex-col-reverse md:flex-row md:gap-x-4 z-10
+                className=" z-10 mt-0
+             flex h-3/4 w-full  flex-col-reverse items-center justify-center rounded-3xl
              bg-white 
-          items-center md:justify-start  justify-center"
+          md:flex-row md:justify-start  md:gap-x-4"
               >
                 {/* text in header */}
-                <div className="font-Kanit text-2xl font-light md:ml-10 m-2 md:w-80 lg:w-full  md:h-max md:block flex flex-col items-center justify-center">
-                  <div className="flex md:block  items-center justify-center w-full md:w-60  lg:w-72   flex-col">
-                    <span className="mr-2 md:block hidden">Welcome to</span>
-                    <div className="mr-2 md:hidden block">Welcome to</div>
-                    <div className="w-full hover:w-max  break-words">
-                      <span className="md:text-xl  lg:text-2xl flex justify-center md:justify-start	 font-semibold text-center md:text-left uppercase">
+                <div className="m-2 flex flex-col items-center justify-center font-Kanit text-2xl  font-light md:ml-10 md:block md:h-max md:w-80 lg:w-full">
+                  <div className="flex w-full  flex-col items-center justify-center md:block  md:w-60   lg:w-72">
+                    <span className="mr-2 hidden md:block">Welcome to</span>
+                    <div className="mr-2 block md:hidden">Welcome to</div>
+                    <div className="w-full break-words  hover:w-max">
+                      <span className="flex  justify-center text-center font-semibold uppercase	 md:justify-start md:text-left md:text-xl lg:text-2xl">
                         {classroom?.data?.title}
                       </span>
                     </div>
                   </div>
-                  <div className="mt-2  md:flex md:flex-col gap-2 text-center md:text-left ">
-                    <span className="font-Kanit text-base mr-5 font-medium ">
+                  <div className="mt-2  gap-2 text-center md:flex md:flex-col md:text-left ">
+                    <span className="mr-5 font-Kanit text-base font-medium ">
                       {classroom?.data?.description}
                     </span>
-                    <div className="flex justify-start flex-col md:flex-row items-center md:items-center">
+                    <div className="flex flex-col items-center justify-start md:flex-row md:items-center">
                       <span
-                        className="font-Kanit font-normal px-2 tracking-wider
-                 text-black text-base bg-[#EDBA02] p-1 rounded-xl"
+                        className="rounded-xl bg-[#EDBA02] p-1 px-2
+                 font-Kanit text-base font-normal tracking-wider text-black"
                       >
                         {classroom?.data?.level}
                       </span>
-                      <span className="text-sm ml-5 uppercase hidden  md:block">
+                      <span className="ml-5 hidden text-sm uppercase  md:block">
                         create on {formattedDate}
                       </span>
-                      <div className="text-sm ml-5 uppercase md:hidden block mt-2">
+                      <div className="ml-5 mt-2 block text-sm uppercase md:hidden">
                         create on {formattedDate}
                       </div>
                     </div>
-                    <div className=" w-full flex justify-center flex-col items-center uppercase md:hidden  text-center mt-2">
+                    <div className=" mt-2 flex w-full flex-col items-center justify-center text-center  uppercase md:hidden">
                       <span className="text-lg">
                         {user.data?.language === "Thai" && "รหัสห้องเรียน"}
                         {user.data?.language === "English" && "classroom code"}
@@ -253,12 +253,12 @@ function ClassroomLayout({
                       onClick={() => {
                         document.body.style.overflow = "hidden";
                       }}
-                      className="absolute top-24  z-20 left-3 text-2xl text-gray-500 cursor-pointer
-border-none flex  items-center justify-center hover:scale-110 transition duration-100 bg-transparent	"
+                      className="absolute left-3  top-24 z-20 flex cursor-pointer items-center
+justify-center border-none  bg-transparent text-2xl text-gray-500 transition duration-100 hover:scale-110	"
                     >
-                      <div className="flex md:text-base text-2xl   md:w-max bg-blue-400 p-1 rounded-xl text-white gap-2 items-center justify-center">
+                      <div className="flex items-center justify-center   gap-2 rounded-xl bg-blue-400 p-1 text-2xl text-white md:w-max md:text-base">
                         <FiSettings />
-                        <span className="text-sm hidden md:block font-Kanit">
+                        <span className="hidden font-Kanit text-sm md:block">
                           {user.data?.language === "Thai"
                             ? "แก้ไขห้องเรียน"
                             : "classroom setting"}
@@ -278,16 +278,16 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                 )}
               </Popover>
               <div
-                className=" items-center justify-center gap-y-3 hidden 
-             md:absolute md:flex flex-col bottom-12  right-[2rem] z-20
-            p-2 "
+                className=" bottom-12 right-[2rem] z-20 hidden 
+             flex-col items-center justify-center gap-y-3  p-2 md:absolute
+            md:flex "
               >
                 <div
-                  className="bg-transparent ring-2 ring-black md:bg-white rounded-md px-4
-                 flex items-center justify-center
-              w-60 h-12 relative"
+                  className="relative flex h-12 w-60 items-center justify-center
+                 rounded-md bg-transparent px-4
+              ring-2 ring-black md:bg-white"
                 >
-                  <span className="font-Kanit font-semibold text-2xl  text-gray-800">
+                  <span className="font-Kanit text-2xl font-semibold  text-gray-800">
                     {user.data?.language === "Thai" && "รหัสห้องเรียน"}
                     {user.data?.language === "English" && "Classroom's code"}
                   </span>
@@ -296,14 +296,14 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                 <Popover className=" flex items-center justify-center ">
                   {({ open }) => (
                     <>
-                      <Popover.Button className="bg-transparent border-none active:border-none flex flex-col justify-center items-center gap-5 ">
+                      <Popover.Button className="flex flex-col items-center justify-center gap-5 border-none bg-transparent active:border-none ">
                         <div
                           aria-label="ขยายเพื่อดูรหัสห้องเรียน"
                           className={`
-                      w-60 p-3 bg-[#F55E00] rounded-xl cursor-pointer 
-             hover:scale-110 transition duration-200 ease-in-out`}
+                      w-60 cursor-pointer rounded-xl bg-[#F55E00] p-3 
+             transition duration-200 ease-in-out hover:scale-110`}
                         >
-                          <span className="font-sans font-bold text-4xl text-white">
+                          <span className="font-sans text-4xl font-bold text-white">
                             {classroomCode}
                           </span>
                         </div>
@@ -311,15 +311,15 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                       <Popover.Panel>
                         {({ close }) => (
                           <div
-                            className="w-full h-full fixed z-20  overflow-hidden right-0 left-0 top-0 bottom-0 m-auto
+                            className="fixed bottom-0 left-0 right-0  top-0 z-20 m-auto h-full w-full overflow-hidden
                       bg-white/30 backdrop-blur-md"
                             onClick={() => close()}
                           >
                             <div
-                              className="w-5/6 md:w-max p-3 h-max fixed right-0 text-center left-0 top-0 bottom-0 m-auto bg-[#F55E00] rounded-xl cursor-pointer
-            hover:scale-110 transition duration-200 ease-in-out"
+                              className="fixed bottom-0 left-0 right-0 top-0 m-auto h-max w-5/6 cursor-pointer rounded-xl bg-[#F55E00] p-3 text-center transition
+            duration-200 ease-in-out hover:scale-110 md:w-max"
                             >
-                              <span className="font-sans font-bold  text-3xl md:text-9xl xl:text-[15rem] text-white md:px-40">
+                              <span className="font-sans text-3xl  font-bold text-white md:px-40 md:text-9xl xl:text-[15rem]">
                                 {classroomCode}
                               </span>
                             </div>
@@ -333,21 +333,21 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                   {({ open }) => (
                     <>
                       <Popover.Button
-                        className="bg-transparent border-none active:border-none 
-                    flex flex-col justify-center items-center gap-5 "
+                        className="flex flex-col items-center 
+                    justify-center gap-5 border-none bg-transparent active:border-none "
                       >
-                        <div className="text-2xl hover:scale-105 absolute -bottom-10">
+                        <div className="absolute -bottom-10 text-2xl hover:scale-105">
                           <BsQrCodeScan />
                         </div>
                       </Popover.Button>
                       <Popover.Panel>
                         {({ close }) => (
                           <div
-                            className="w-full h-full fixed flex items-center justify-center  overflow-hidden right-0 left-0 top-0 bottom-0 m-auto
+                            className="fixed bottom-0 left-0 right-0 top-0 m-auto  flex h-full w-full items-center justify-center overflow-hidden
                       bg-white/30 backdrop-blur-md"
                             onClick={() => close()}
                           >
-                            <div className="w-96 h-96">
+                            <div className="h-96 w-96">
                               <QRCode
                                 size={256}
                                 style={{
@@ -366,9 +366,9 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                   )}
                 </Popover>
               </div>
-              <div className="absolute right-20 z-10 top-0  hidden md:flex ">
+              <div className="absolute right-20 top-0 z-10  hidden md:flex ">
                 <div className="relative ">
-                  <div className="w-40 h-40  relative ">
+                  <div className="relative h-40  w-40 ">
                     <Image
                       src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/IMG_3064.PNG"
                       className="object-contain "
@@ -377,7 +377,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                       sizes="(max-width: 768px) 100vw"
                     />
                   </div>
-                  <div className="w-40 h-40 bg-transparent rotate-12 absolute top-3 -right-20">
+                  <div className="absolute -right-20 top-3 h-40 w-40 rotate-12 bg-transparent">
                     <Image
                       src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/IMG_3052.PNG"
                       className="object-contain"
@@ -386,7 +386,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                       sizes="(max-width: 768px) 100vw"
                     />
                   </div>
-                  <div className="w-40 h-40 bg-transparent absolute top-3 right-20 -rotate-12">
+                  <div className="absolute right-20 top-3 h-40 w-40 -rotate-12 bg-transparent">
                     <Image
                       src="https://storage.googleapis.com/tatugacamp.com/Avatar%20students/mermaid/IMG_3205%20(1).PNG"
                       className="object-contain"
@@ -420,7 +420,7 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
 
         {!user.isError && (
           <div className="flex flex-col gap-5 p-5 ">
-            <div className="flex justify-center items-center gap-2 flex-wrap">
+            <div className="flex flex-wrap items-center justify-center gap-2">
               <Popover className="relative ">
                 {({ open }) => (
                   <>
@@ -431,13 +431,13 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                       <div
                         aria-label="สร้างผู้เรียนของคุณ"
                         className={`
-                      w-max p-3 bg-[#2C7CD1]  cursor-pointer  gap-2
-             hover:scale-110 rounded-md  transition duration-200 ease-in-out h-12 flex items-center justify-center`}
+                      flex h-12 w-max  cursor-pointer  items-center
+             justify-center gap-2  rounded-md bg-[#2C7CD1] p-3 transition duration-200 ease-in-out hover:scale-110`}
                       >
-                        <div className="text-white flex items-center justify-center ">
+                        <div className="flex items-center justify-center text-white ">
                           <IoPersonAdd />
                         </div>
-                        <span className="font-Kanit font-semibold text-lg text-white">
+                        <span className="font-Kanit text-lg font-semibold text-white">
                           {user.data?.language === "Thai" && "สร้างนักเรียน"}
                           {user.data?.language === "English" &&
                             "Create students"}
@@ -460,13 +460,13 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                   })
                 }
                 role="button"
-                className="font-Kanit flex items-center justify-center gap-2 text-white
-           bg-orange-500 w-max p-3 rounded-md hover:scale-110 transition duration-150 cursor-pointer h-12 "
+                className="flex h-12 w-max cursor-pointer items-center justify-center
+           gap-2 rounded-md bg-orange-500 p-3 font-Kanit text-white transition duration-150 hover:scale-110 "
               >
                 <div>
                   <RxLapTimer />
                 </div>
-                <span className="font-Kanit font-semibold text-lg">
+                <span className="font-Kanit text-lg font-semibold">
                   {user.data?.language === "Thai" && "จับเวลา"}
                   {user.data?.language === "English" && "Timer"}
                 </span>
@@ -478,13 +478,13 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                   document.body.style.overflow = "hidden";
                 }}
                 role="button"
-                className="font-Kanit flex items-center justify-center gap-2 text-white
-           bg-green-700 w-max p-3 rounded-md hover:scale-110 transition duration-150 cursor-pointer h-12"
+                className="flex h-12 w-max cursor-pointer items-center justify-center
+           gap-2 rounded-md bg-green-700 p-3 font-Kanit text-white transition duration-150 hover:scale-110"
               >
                 <div>
                   <MdEmojiPeople />
                 </div>
-                <span className="font-Kanit font-semibold text-lg">
+                <span className="font-Kanit text-lg font-semibold">
                   {user.data?.language === "Thai" && "เช็กชื่อ"}
                   {user.data?.language === "English" && "Attendance check"}
                 </span>
@@ -497,13 +497,13 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                     document.body.style.overflow = "hidden";
                   }}
                   role="button"
-                  className="font-Kanit flex items-center justify-center gap-2 text-white
-           bg-orange-500 w-max p-3 rounded-md hover:scale-110 transition duration-150 cursor-pointer h-12"
+                  className="flex h-12 w-max cursor-pointer items-center justify-center
+           gap-2 rounded-md bg-orange-500 p-3 font-Kanit text-white transition duration-150 hover:scale-110"
                 >
                   <div className="flex items-center justify-center">
                     <GiPerspectiveDiceSixFacesRandom />
                   </div>
-                  <span className="font-Kanit font-semibold text-lg">
+                  <span className="font-Kanit text-lg font-semibold">
                     {user.data?.language === "Thai" && "สุ่มชื่อ"}
                     {user.data?.language === "English" && "random student"}
                   </span>
@@ -547,13 +547,13 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                         }}
                       >
                         <div
-                          className="font-Kanit flex items-center justify-center gap-2 text-white
-           bg-violet-500 w-max p-3 rounded-md hover:scale-110 relative transition duration-150 cursor-pointer h-12"
+                          className="relative flex h-12 w-max cursor-pointer items-center
+           justify-center gap-2 rounded-md bg-violet-500 p-3 font-Kanit text-white transition duration-150 hover:scale-110"
                         >
                           <div className="flex items-center justify-center">
                             <HiRectangleGroup />
                           </div>
-                          <span className="font-Kanit font-semibold text-lg">
+                          <span className="font-Kanit text-lg font-semibold">
                             {user.data?.language === "Thai" && "จัดกลุ่ม"}
                             {user.data?.language === "English" &&
                               "create group"}
@@ -591,8 +591,8 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                     setTriggerAttendanceQrCode(() => true);
                     document.body.style.overflow = "hidden";
                   }}
-                  className="font-Kanit select-none font-semibold flex items-center justify-center gap-2 text-white
-           bg-green-500 w-max p-3 rounded-md hover:scale-110 relative transition duration-150 cursor-pointer h-12"
+                  className="relative flex h-12 w-max cursor-pointer select-none items-center justify-center
+           gap-2 rounded-md bg-green-500 p-3 font-Kanit font-semibold text-white transition duration-150 hover:scale-110"
                 >
                   เช็กชื่อด้วย
                   <div>
@@ -614,8 +614,8 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
                     setTriggerStudentPasswordManagement(() => true);
                     document.body.style.overflow = "hidden";
                   }}
-                  className="font-Kanit select-none font-semibold flex items-center justify-center gap-2 text-white
-           bg-sky-500 w-max p-3 rounded-md hover:scale-110 relative transition duration-150 cursor-pointer h-12"
+                  className="relative flex h-12 w-max cursor-pointer select-none items-center justify-center
+           gap-2 rounded-md bg-sky-500 p-3 font-Kanit font-semibold text-white transition duration-150 hover:scale-110"
                 >
                   รหัสผ่านผู้เรียน
                   <div>
@@ -625,16 +625,16 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
               </div>
             </div>
 
-            <div className=" flex gap-2 flex-wrap justify-center ">
+            <div className=" flex flex-wrap justify-center gap-2 ">
               <div
-                className="w-10/12 md:w-60  py-1 h-16 bg-[#F2CC5B] flex items-center 
-                justify-center gap-2  rounded-lg text-white"
+                className="flex h-16  w-10/12 items-center justify-center gap-2 rounded-lg 
+                bg-[#F2CC5B] py-1  text-white md:w-60"
               >
-                <div className="bg-white/40 backdrop-blur-sm p-3 rounded-lg ml-5">
+                <div className="ml-5 rounded-lg bg-white/40 p-3 backdrop-blur-sm">
                   <BsPeopleFill size={20} />
                 </div>
-                <div className="flex items-start justify-center flex-col font-sans">
-                  <span className="font-bold text-2xl">
+                <div className="flex flex-col items-start justify-center font-sans">
+                  <span className="text-2xl font-bold">
                     {students?.data?.length}
                   </span>
                   <span className="text-sm font-medium">students</span>
@@ -642,14 +642,14 @@ border-none flex  items-center justify-center hover:scale-110 transition duratio
               </div>
 
               <div
-                className=" w-10/12 md:max-w-[18rem]
-                  py-1 h-16 px-2 bg-[#EB6297] flex items-center  justify-center gap-5  rounded-lg text-white"
+                className=" flex h-16
+                  w-10/12 items-center justify-center gap-5 rounded-lg bg-[#EB6297]  px-2 py-1  text-white md:max-w-[18rem]"
               >
-                <div className="bg-white/40 backdrop-blur-sm p-3 rounded-lg ml-5">
+                <div className="ml-5 rounded-lg bg-white/40 p-3 backdrop-blur-sm">
                   🥇
                 </div>
-                <div className="flex items-start justify-center flex-col font-sans truncate">
-                  <span className="font-bold text-md md:text-md lg:text-2xl w-max max-w-[18rem] truncate">
+                <div className="flex flex-col items-start justify-center truncate font-sans">
+                  <span className="text-md md:text-md w-max max-w-[18rem] truncate font-bold lg:text-2xl">
                     {highestScorePlayer?.firstName}
                   </span>
                   <span className="text-sm font-medium">the highest score</span>

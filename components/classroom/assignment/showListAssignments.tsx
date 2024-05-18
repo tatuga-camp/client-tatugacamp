@@ -34,38 +34,34 @@ function ShowListAssignments({ user }: ShowListAssignmentsProps) {
   });
 
   return (
-    <main className="w-full mt-20  flex flex-col items-center justify-center relative">
+    <main className="relative mt-20  flex w-full flex-col items-center justify-center">
       <button
         onClick={() => {
           setTriggerAssignment(true);
           document.body.style.overflow = "hidden";
         }}
-        className="w-96 hover:bg-main-color hover:text-white transition active:scale-105
-         font-semibold flex justify-center items-center gap-2 bg-white py-3 
-         drop-shadow-lg ring-1 font-Kanit ring-main-color text-main-color rounded-lg"
+        className="flex w-96 items-center justify-center gap-2
+         rounded-lg bg-white py-3 font-Kanit font-semibold text-main-color ring-1 
+         ring-main-color drop-shadow-lg transition hover:bg-main-color hover:text-white active:scale-105"
       >
         <CiCirclePlus />
         {user.language === "Thai" && "สร้างชิ้นงาน"}
         {user.language === "English" && "create your assignment"}
       </button>
 
-      <div
-        className={` top-0 right-0 left-0 bottom-0 m-auto righ z-40 ${
-          triggerAssignment === false ? "hidden" : "fixed"
-        }`}
-      >
+      {triggerAssignment && (
         <CreateAssignment
           user={user}
           assignments={assignments}
           setTriggerAssignment={setTriggerAssignment}
           students={students}
         />
-      </div>
+      )}
 
       {/* assignments are here */}
-      <div className=" w-full mt-5 gap-5 grid place-items-center bg-slate-100 ">
+      <div className=" mt-5 grid w-full place-items-center gap-5 bg-slate-100 ">
         {assignments.isLoading || assignments.isFetching ? (
-          <div className="flex flex-col gap-5 w-80 md:w-[40rem]">
+          <div className="flex w-80 flex-col gap-5 md:w-[40rem]">
             <Skeleton variant="rounded" width="100%" height={144} />
             <Skeleton variant="rounded" width="100%" height={144} />
             <Skeleton variant="rounded" width="100%" height={144} />
@@ -86,7 +82,7 @@ function ShowListAssignments({ user }: ShowListAssignmentsProps) {
                 year: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
-              }
+              },
             );
             const assignDate = new Date(assignment.createAt);
 
@@ -100,47 +96,47 @@ function ShowListAssignments({ user }: ShowListAssignmentsProps) {
                 day: "2-digit",
                 month: "short",
                 year: "numeric",
-              }
+              },
             );
 
             return (
               <Link
                 href={`/classroom/teacher/${router.query.classroomId}/assignment/${assignment.id}`}
                 key={index}
-                className={`w-11/12 no-underline md:w-max px-2 md:max-w-lg lg:max-w-2xl group  h-36  md:px-10 md:py-5 drop-shadow-lg 
-             bg-white  hover:scale-105 cursor-pointer overflow-hidden
-         duration-150 transition relative
-       rounded-lg flex flex-col justify-center `}
+                className={`group relative flex h-36 w-11/12 cursor-pointer flex-col  justify-center  overflow-hidden rounded-lg bg-white 
+             px-2  no-underline drop-shadow-lg transition
+         duration-150 hover:scale-105 md:w-max
+       md:max-w-lg md:px-10 md:py-5 lg:max-w-2xl `}
               >
-                <div className="flex justify-around  w-full">
-                  <div className="flex w-52  md:w-80 lg:w-96 truncate">
+                <div className="flex w-full  justify-around">
+                  <div className="flex w-52  truncate md:w-80 lg:w-96">
                     <div
-                      className={`flex flex-col  justify-center h-full
-                    gap-2 w-full  md:w-3/4  md:max-w-md  font-Poppins text-center
-                     md:text-left text-black `}
+                      className={`flex h-full  w-full flex-col
+                    justify-center gap-2  text-center  font-Poppins  text-black md:w-3/4
+                     md:max-w-md md:text-left `}
                     >
-                      <span className=" font text-base md:text-xl font-bold w-full h-max max-h-8  truncate">
+                      <span className=" font h-max max-h-8 w-full truncate text-base font-bold  md:text-xl">
                         {assignment.title}
                       </span>
                       <div className="relative text-left">
-                        <div className="w-full hidden md:block bg-gray-200 h-2 rounded-full overflow-hidden">
+                        <div className="hidden h-2 w-full overflow-hidden rounded-full bg-gray-200 md:block">
                           <div
                             style={{
                               width: assignment.progress,
                             }}
-                            className={` bg-blue-800 h-2 `}
+                            className={` h-2 bg-blue-800 `}
                           ></div>
                         </div>
-                        <div className="font-Kanit mt-2">
+                        <div className="mt-2 font-Kanit">
                           {user.language === "Thai" && "ผู้เรียนส่งงานแล้ว"}
                           {user.language === "English" &&
                             "Students has summited thier work for"}{" "}
                           {assignment.progress}
                         </div>
-                        <div className="font-Kanit mt-2">
+                        <div className="mt-2 font-Kanit">
                           {user.language === "Thai" && "มอบหมายเมื่อ"}
                           {user.language === "English" && "Assign on"}{" "}
-                          <span className="w-max h-max p-1 px-2 bg-orange-300 text-black rounded-lg">
+                          <span className="h-max w-max rounded-lg bg-orange-300 p-1 px-2 text-black">
                             {formatAssigDate}
                           </span>
                         </div>
@@ -148,25 +144,25 @@ function ShowListAssignments({ user }: ShowListAssignmentsProps) {
                     </div>
                   </div>
 
-                  <div className="relative w-24 md:w-32 ring-2 py-1 md:py-2 ring-blue-400 group-hover:bg-blue-400 rounded-xl flex flex-col justify-center ">
-                    <div className="flex items-center justify-center flex-col">
+                  <div className="relative flex w-24 flex-col justify-center rounded-xl py-1 ring-2 ring-blue-400 group-hover:bg-blue-400 md:w-32 md:py-2 ">
+                    <div className="flex flex-col items-center justify-center">
                       <div>
-                        <span className="text-lg md:text-2xl font-Poppins font-semibold group-hover:text-white text-blue-500 truncate ">
+                        <span className="truncate font-Poppins text-lg font-semibold text-blue-500 group-hover:text-white md:text-2xl ">
                           {assignment.maxScore.toLocaleString()}
                         </span>
                       </div>
-                      <div className="font-Poppins font-semibold group-hover:text-white text-black">
+                      <div className="font-Poppins font-semibold text-black group-hover:text-white">
                         {user.language === "Thai" && "คะแนน"}
                         {user.language === "English" && "score"}
                       </div>
                     </div>
 
-                    <div className="font-Poppins gap-1 text-sm flex flex-col justify-start items-center  w-full  ">
-                      <span className="group-hover:text-white text-black">
+                    <div className="flex w-full flex-col items-center justify-start gap-1 font-Poppins  text-sm  ">
+                      <span className="text-black group-hover:text-white">
                         {user.language === "Thai" && "กำหนดส่ง"}
                         {user.language === "English" && "due by"}
                       </span>
-                      <span className="group-hover:text-white text-black">
+                      <span className="text-black group-hover:text-white">
                         {deadline}
                       </span>
                     </div>

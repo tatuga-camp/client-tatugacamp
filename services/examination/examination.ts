@@ -13,7 +13,7 @@ type InputGetExaminationsService = {
 };
 type ResponseGetExaminationsService = Examination[];
 export async function GetExaminationsService(
-  input: InputGetExaminationsService
+  input: InputGetExaminationsService,
 ): Promise<ResponseGetExaminationsService> {
   try {
     const cookies = parseCookies();
@@ -39,7 +39,7 @@ export async function GetExaminationsService(
 type InputGetExaminationService = {
   examinationId: string;
 };
-type ResponseGetExaminationService = Examination & {
+export type ResponseGetExaminationService = Examination & {
   questions: (Question & {
     choices: Choice[];
     fileOnQuestions: FileOnQuestion[];
@@ -47,18 +47,16 @@ type ResponseGetExaminationService = Examination & {
   studentOnExaminations: StudentOnExamination[];
 };
 export async function GetExaminationService(
-  input: InputGetExaminationService
+  input: InputGetExaminationService,
 ): Promise<ResponseGetExaminationService> {
   try {
     const cookies = parseCookies();
     const access_token = cookies.access_token;
     const examination = await axios({
       method: "GET",
-      url: `${process.env.MAIN_SERVER_URL}/user/examinations`,
+      url: `${process.env.MAIN_SERVER_URL}/user/examinations/${input.examinationId}`,
       responseType: "json",
-      params: {
-        ...input,
-      },
+
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
@@ -82,7 +80,7 @@ type InputCreateExaminationService = {
 };
 type ResponseCreateExaminationService = Examination;
 export async function CreateExaminationService(
-  input: InputCreateExaminationService
+  input: InputCreateExaminationService,
 ): Promise<ResponseCreateExaminationService> {
   try {
     const cookies = parseCookies();
@@ -121,7 +119,7 @@ type InputUpdateExaminationService = {
 };
 type ResponseUpdateExaminationService = Examination;
 export async function UpdateExaminationService(
-  input: InputUpdateExaminationService
+  input: InputUpdateExaminationService,
 ): Promise<ResponseUpdateExaminationService> {
   try {
     const cookies = parseCookies();
@@ -149,7 +147,7 @@ type InputDeleteExaminationService = {
 };
 type ResponseDeleteExaminationService = Examination;
 export async function DeleteExaminationService(
-  input: InputDeleteExaminationService
+  input: InputDeleteExaminationService,
 ): Promise<ResponseDeleteExaminationService> {
   try {
     const cookies = parseCookies();

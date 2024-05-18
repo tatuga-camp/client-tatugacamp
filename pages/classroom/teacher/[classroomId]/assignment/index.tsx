@@ -23,7 +23,6 @@ import {
   SideMenusThai,
   sideMenusEnglish,
 } from "../../../../../data/menubarsClassroom";
-import CreateAssignment from "../../../../../components/form/createAssignment";
 import { MdAssignment, MdQuiz } from "react-icons/md";
 import ShowListAssignments from "../../../../../components/classroom/assignment/showListAssignments";
 import ShowListQuizes from "../../../../../components/classroom/quize/showListQuizes";
@@ -51,7 +50,7 @@ function Assignment({ user }: { user: User }) {
     setTriggerAllowStudentDeleteWork(() =>
       classroom?.data?.allowStudentToDeleteWork
         ? classroom?.data?.allowStudentToDeleteWork
-        : false
+        : false,
     );
   }, [classroom.data]);
 
@@ -68,7 +67,7 @@ function Assignment({ user }: { user: User }) {
   };
 
   return (
-    <div className="w-full pb-96 bg-blue-50 ">
+    <div className="w-full bg-blue-50 pb-96 ">
       <Head>
         <meta
           name="viewport"
@@ -84,12 +83,12 @@ function Assignment({ user }: { user: User }) {
             : sideMenusEnglish({ router })
         }
       >
-        <header className="flex w-full border-b-2 border-black/50 py-5 font-Kanit justify-start">
-          <section className="pl-20 gap-5 text-xl flex flex-col font-semibold">
-            <div className="flex w-max justify-center items-center gap-2">
+        <header className="flex w-full justify-start border-b-2 border-black/50 py-5 font-Kanit">
+          <section className="flex flex-col gap-5 pl-20 text-xl font-semibold">
+            <div className="flex w-max items-center justify-center gap-2">
               ตั้งค่า <AiOutlineSetting />
             </div>
-            <div className="ring-2 select-none ring-blue-300 rounded-lg p-2">
+            <div className="select-none rounded-lg p-2 ring-2 ring-blue-300">
               <Switch
                 checked={triggerAllowStudentDeleteWork}
                 onClick={handleAllowStudentDeleteWork}
@@ -102,7 +101,7 @@ function Assignment({ user }: { user: User }) {
             </div>
           </section>
         </header>
-        <ul className="w-full flex mt-5 justify-center gap-5">
+        <ul className="mt-5 flex w-full justify-center gap-5">
           {menuAssignments.map((menu, index) => (
             <li
               onClick={() => setActiveMenu(index)}
@@ -111,9 +110,9 @@ function Assignment({ user }: { user: User }) {
                 activeMenu === index
                   ? "bg-main-color text-white"
                   : "bg-white text-main-color"
-              } w-1/2 gap-2 cursor-pointer hover:bg-main-color active:scale-105 hover:text-white transition duration-100
-               md:w-1/4 h-10 drop-shadow-lg md:h-14 flex items-center justify-center 
-                  font-Kanit text-lg  md:text-xl font-semibold   rounded-lg
+              } flex h-10 w-1/2 cursor-pointer items-center justify-center gap-2 rounded-lg
+               font-Kanit text-lg font-semibold drop-shadow-lg transition duration-100 hover:bg-main-color 
+                  hover:text-white active:scale-105  md:h-14 md:w-1/4   md:text-xl
                  `}
             >
               <div>
@@ -136,7 +135,7 @@ function Assignment({ user }: { user: User }) {
 export default Assignment;
 
 export const getServerSideProps: GetServerSideProps = async (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ) => {
   const cookies = parseCookies(context);
   const accessToken = cookies.access_token;

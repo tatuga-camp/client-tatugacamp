@@ -2,16 +2,22 @@ import { Switch } from "@mui/material";
 import React from "react";
 import { Input, Label, TextField } from "react-aria-components";
 
+type QuizeSidebarProps = {
+  timeStart: string;
+  timeEnd: string;
+  limitAttemps: number;
+  duration: number;
+};
 function QuizeSidebar() {
   return (
     <>
-      <li className="text-main-color mt-20 font-semibold text-lg">
+      <li className="mt-20 text-lg font-semibold text-main-color">
         การตั้งค่าแบบทดสอบ
       </li>
-      <li className="ring-1 w-full ring-gray-300 rounded-lg p-2">
-        <div className="flex justify-center items-center gap-2">
+      <li className="w-full rounded-lg p-2 ring-1 ring-gray-300">
+        <div className="flex items-center justify-center gap-2">
           <Switch color="primary" inputProps={{ "aria-label": "controlled" }} />
-          <span className="text-main-color  font-semibold text-base">
+          <span className="text-base  font-semibold text-main-color">
             จำกัดเวลาแบบทดสอบ
           </span>
         </div>
@@ -21,16 +27,16 @@ function QuizeSidebar() {
             max={999}
             min={1}
             type="number"
-            className="p-2 w-full rounded-lg  border-2 border-gray-400 outline-2 outline-main-color "
+            className="w-full rounded-lg border-2  border-gray-400 p-2 outline-2 outline-main-color "
             placeholder="นาที"
           />
         </TextField>
       </li>
 
-      <li className="ring-1 w-full ring-gray-300 rounded-lg p-2">
-        <div className="flex justify-center items-center gap-2">
+      <li className="w-full rounded-lg p-2 ring-1 ring-gray-300">
+        <div className="flex items-center justify-center gap-2">
           <Switch color="primary" inputProps={{ "aria-label": "controlled" }} />
-          <span className="text-main-color  font-semibold text-base">
+          <span className="text-base  font-semibold text-main-color">
             จำกัดจำนวนครั้ง
           </span>
         </div>
@@ -40,7 +46,7 @@ function QuizeSidebar() {
             max={999}
             min={1}
             type="number"
-            className="p-2 w-full rounded-lg  border-2 border-gray-400 outline-2 outline-main-color "
+            className="w-full rounded-lg border-2  border-gray-400 p-2 outline-2 outline-main-color "
             placeholder="นาที"
           />
         </TextField>

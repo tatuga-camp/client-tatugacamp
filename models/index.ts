@@ -11,3 +11,4 @@ export * from "./attendance.model";
 export * from "./class.model";
 export * from "./school.model";
 export * from "./examination.model";
+export * from "./error.model";
