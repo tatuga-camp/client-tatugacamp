@@ -27,6 +27,7 @@ import {
 } from "../../../../../data/menubarsClassroom";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { GetUserCookieService } from "../../../../../services/user";
+import { MdMoodBad } from "react-icons/md";
 
 function Index({ user }: { user: User }) {
   const router = useRouter();
@@ -354,9 +355,13 @@ function Index({ user }: { user: User }) {
                             key={index}
                             className="w-40 text-center  flex items-center justify-center"
                           >
-                            {!studentWork.studentWork
-                              ? "0"
-                              : studentWork?.studentWork?.score?.toFixed(3)}
+                            {!studentWork.studentWork ? (
+                              <div className="px-5 py-1 flex items-center justify-center gap-2 bg-red-300 text-red-700 rounded-md">
+                                ไม่ส่งงาน <MdMoodBad />
+                              </div>
+                            ) : (
+                              studentWork?.studentWork?.score?.toFixed(3)
+                            )}
                           </td>
                         );
                       })}

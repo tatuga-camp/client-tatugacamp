@@ -35,7 +35,7 @@ function AddPercentageOnAssignment({
         percentage: `${percent}%`,
         assignmentId: selectAssignment.id,
       });
-      studentsScores.refetch();
+     await studentsScores.refetch();
       Swal.fire("Success", "create grade successfully", "success");
       setLoading(() => false);
     } catch (err: any) {
