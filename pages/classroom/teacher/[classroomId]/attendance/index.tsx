@@ -112,7 +112,6 @@ const initialData = {
   ],
 };
 
-//main return ==================================================
 function Index({ user }: { user: User }) {
   const router = useRouter();
   const [yearList, setYearList] =
@@ -260,7 +259,7 @@ function Index({ user }: { user: User }) {
 
   useEffect(() => {
     if (!yearList) return;
-    updateChartData(selectedStatus, yearList[0].year);
+    updateChartData(selectedStatus, yearList[0]?.year);
   }, [yearList]);
 
   const getStatusLabel = () => {
