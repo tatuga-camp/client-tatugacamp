@@ -155,6 +155,7 @@ type DateTime = {
 };
 
 type StatisticsPercent = {
+  purePresent:number
   present: number;
   absent: number;
   holiday: number;

@@ -478,11 +478,36 @@ function Index({ user }: { user: User }) {
                             }
                           )}
 
-                          <th className="w-36 flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] m-1 text-white rounded-md  ">
+                          <th
+                            className="w-36 group flex relative items-center justify-center
+                           text-xs md:text-base bg-[#2C7CD1] m-1 text-white rounded-md  "
+                          >
+                            <div
+                              className="p-3 -bottom-24 font-normal h-max hidden group-hover:block  -right-40 py-5 w-60 m-auto z-50 absolute
+                             bg-white text-black ring-1 ring-black rounded-md"
+                            >
+                              เปอร์เซ็นต์การเข้าเรียนนี้ นับเฉพาะ
+                              สถานะมาเรียนเท่านั้น
+                            </div>
                             <span className="text-center">
-                              {user.language === "Thai" && "เปอร์เซ็นมาเรียน"}
+                              {user.language === "Thai" &&
+                                "เปอร์เซ็นต์การเข้าเรียนจริง"}
+                              {user.language === "English" && "Actual Presence"}
+                            </span>
+                          </th>
+                          <th className="w-36 group flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] m-1 text-white rounded-md  ">
+                            <div
+                              className="p-3 -bottom-24 font-normal h-max hidden group-hover:block  -right-40 py-5 w-60 m-auto z-50 absolute
+                             bg-white text-black ring-1 ring-black rounded-md"
+                            >
+                              เปอร์เซ็นต์การเข้าเรียนนี้ นับรวม ลา ป่วย สาย และ
+                              ไม่มีข้อมูล ยกเว้น ขาดเรียน
+                            </div>
+                            <span className="text-center">
+                              {user.language === "Thai" &&
+                                "เปอร์เซ็นต์การเข้าเรียนทั้งหมด"}
                               {user.language === "English" &&
-                                "Percentage of present"}
+                                "Overall Attendance"}
                             </span>
                           </th>
                         </tr>
@@ -496,7 +521,6 @@ function Index({ user }: { user: User }) {
                               className="flex  hover:ring-2 hover:bg-slate-200 group text-[#2C7CD1] "
                             >
                               <td
-                                key={index}
                                 className={`w-10 md:w-24 flex items-center justify-center sticky left-0 z-10 bg-white group-hover:bg-slate-200`}
                               >
                                 <div
@@ -510,7 +534,6 @@ function Index({ user }: { user: User }) {
                                 </div>
                               </td>
                               <td
-                                key={index}
                                 className={`w-20 text-xs md:text-base md:w-[17rem] text-left
                                  flex justify-start items-center sticky left-10 md:left-[6rem] z-10
                                   bg-white group-hover:bg-slate-200`}
@@ -641,13 +664,24 @@ function Index({ user }: { user: User }) {
                                 </td>
                               )}
                               <td
-                                key={index}
                                 className={`md:ml-0 ml-[1.6rem] text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
                                   index % 2 === 0 ? "bg-white" : "bg-[#E8E8E8]"
                                 }`}
                               >
                                 <span className="text-center">
-                                  {item.statistics?.percent.present?.toFixed(2)}
+                                  {item.statistics?.percent?.purePresent?.toFixed(
+                                    2
+                                  )}
+                                  %
+                                </span>
+                              </td>
+                              <td
+                                className={`md:ml-0 ml-[1.6rem] text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
+                                  index % 2 === 0 ? "bg-white" : "bg-[#E8E8E8]"
+                                }`}
+                              >
+                                <span className="text-center">
+                                  {item.statistics?.percent?.present.toFixed(2)}
                                   %
                                 </span>
                               </td>
@@ -748,9 +782,17 @@ function Index({ user }: { user: User }) {
 
                           <th className="w-36 flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] m-1 text-white rounded-md  ">
                             <span className="text-center">
-                              {user.language === "Thai" && "เปอร์เซ็นมาเรียน"}
+                              {user.language === "Thai" &&
+                                "เปอร์เซ็นต์การเข้าเรียนจริง"}
+                              {user.language === "English" && "Actual Presence"}
+                            </span>
+                          </th>
+                          <th className="w-36 flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] m-1 text-white rounded-md  ">
+                            <span className="text-center">
+                              {user.language === "Thai" &&
+                                "เปอร์เซ็นต์การเข้าเรียนทั้งหมด"}
                               {user.language === "English" &&
-                                "Percentage of present"}
+                                "Overall Attendance"}
                             </span>
                           </th>
                         </tr>
@@ -764,7 +806,6 @@ function Index({ user }: { user: User }) {
                               className="flex ml-[5rem] md:ml-0  hover:ring-2 hover:bg-slate-200 group text-[#2C7CD1] "
                             >
                               <td
-                                key={index}
                                 className={`w-10 md:w-24 flex items-center justify-center sticky left-0 z-10 bg-white group-hover:bg-slate-200`}
                               >
                                 <div
@@ -778,7 +819,6 @@ function Index({ user }: { user: User }) {
                                 </div>
                               </td>
                               <td
-                                key={index}
                                 className={`w-20 text-xs md:text-base md:w-[17rem] text-left flex justify-start items-center sticky left-10 md:left-[6rem] z-10 bg-white group-hover:bg-slate-200`}
                               >
                                 <div
@@ -804,10 +844,7 @@ function Index({ user }: { user: User }) {
                                 </div>
                               </td>
 
-                              <td
-                                key={index}
-                                className="w-24 m-1 flex items-center justify-center ml-[26rem] lg:ml-[0rem]"
-                              >
+                              <td className="w-24 m-1 flex items-center justify-center ml-[26rem] lg:ml-[0rem]">
                                 <span
                                   className={`  text-center rounded-md w-24 h-12 flex items-center justify-center ${
                                     index % 2 === 0
@@ -818,10 +855,7 @@ function Index({ user }: { user: User }) {
                                   {item.statistics?.number?.present}
                                 </span>
                               </td>
-                              <td
-                                key={index}
-                                className="w-24 m-1 flex items-center justify-center "
-                              >
+                              <td className="w-24 m-1 flex items-center justify-center ">
                                 <span
                                   className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
                                     index % 2 === 0
@@ -832,10 +866,7 @@ function Index({ user }: { user: User }) {
                                   {item.statistics?.number?.late}
                                 </span>
                               </td>
-                              <td
-                                key={index}
-                                className="w-24 m-1 flex items-center justify-center "
-                              >
+                              <td className="w-24 m-1 flex items-center justify-center ">
                                 <span
                                   className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
                                     index % 2 === 0
@@ -846,10 +877,7 @@ function Index({ user }: { user: User }) {
                                   {item.statistics?.number?.holiday}
                                 </span>
                               </td>
-                              <td
-                                key={index}
-                                className="w-24 m-1 flex items-center justify-center "
-                              >
+                              <td className="w-24 m-1 flex items-center justify-center ">
                                 <span
                                   className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
                                     index % 2 === 0
@@ -860,10 +888,7 @@ function Index({ user }: { user: User }) {
                                   {item.statistics?.number?.sick}
                                 </span>
                               </td>
-                              <td
-                                key={index}
-                                className="w-24 m-1 flex items-center justify-center "
-                              >
+                              <td className="w-24 m-1 flex items-center justify-center ">
                                 <span
                                   className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
                                     index % 2 === 0
@@ -878,7 +903,6 @@ function Index({ user }: { user: User }) {
                               {user?.schoolUser?.organization ===
                                 "immigration" && (
                                 <td
-                                  key={index}
                                   className={`text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
                                     index % 2 === 0
                                       ? "bg-white"
@@ -891,7 +915,18 @@ function Index({ user }: { user: User }) {
                                 </td>
                               )}
                               <td
-                                key={index}
+                                className={`text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
+                                  index % 2 === 0 ? "bg-white" : "bg-[#E8E8E8]"
+                                }`}
+                              >
+                                <span className="text-center">
+                                  {item.statistics?.percent?.purePresent.toFixed(
+                                    2
+                                  )}
+                                  %
+                                </span>
+                              </td>
+                              <td
                                 className={`text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
                                   index % 2 === 0 ? "bg-white" : "bg-[#E8E8E8]"
                                 }`}
