@@ -154,7 +154,7 @@ export default function CreateAssignment({
               className="md:w-10/12 lg:w-11/12 xl:w-8/12 h-screen bg-white px-4
             overflow-auto gap-10 flex-col  justify-start items-center flex "
             >
-              <div className="flex-col mt-5 w-full h-max  ">
+              <div className="flex-col pt-20 w-full h-max  ">
                 <div className="w-full flex justify-end mb-3">
                   <button
                     type="button"
