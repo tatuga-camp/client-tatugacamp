@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import Layout from "../../../../../layouts/classroomLayout";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { MdDelete } from "react-icons/md";
@@ -13,22 +12,7 @@ import Head from "next/head";
 import { parseCookies } from "nookies";
 import DowloadExcelAttendacne from "../../../../../components/form/dowloadExcelAttendacne";
 import ShowNoteAttendance from "../../../../../components/form/showNoteAttendance";
-
-//Chart
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
-import { Bar } from "react-chartjs-2";
-
-import Chart from "chart.js/auto";
-Chart.register(CategoryScale);
+import { PiListNumbersFill } from "react-icons/pi";
 
 import {
   DeleteAttendanceService,
@@ -63,68 +47,19 @@ import Image from "next/image";
 import { TfiStatsUp } from "react-icons/tfi";
 
 import { processAttendanceData } from "@/utils/processAttendanceData";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-Chart.register(ChartDataLabels);
-
-type AttendanceStatus =
-  | "present"
-  | "absent"
-  | "holiday"
-  | "late"
-  | "sick"
-  | "warn";
-const monthNamesEN = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-const monthNamesTH = [
-  "ม.ค.",
-  "ก.พ.",
-  "มี.ค.",
-  "เม.ย.",
-  "พ.ค.",
-  "มิ.ย.",
-  "ก.ค.",
-  "ส.ค.",
-  "ก.ย.",
-  "ต.ค.",
-  "พ.ย.",
-  "ธ.ค.",
-];
-const initialData = {
-  labels: monthNamesEN,
-  datasets: [
-    {
-      label: "",
-      data: [],
-      backgroundColor: "",
-    },
-  ],
-};
+import MonthlySummary from "../../../../../components/classroom/attendances/monthlySummary";
+import StatisticSummary from "../../../../../components/classroom/attendances/statisticSummary";
+import DailySummary from "../../../../../components/classroom/attendances/dailySummary";
 
 function Index({ user }: { user: User }) {
   const router = useRouter();
-  const [yearList, setYearList] =
-    useState<{ year: number; count: any; statuses: any }[]>();
+
   const attendances = useQuery({
     queryKey: ["attendance", router.query.classroomId as string],
     queryFn: () =>
       GetAllAttendanceService({
         classroomId: router.query.classroomId as string,
       }).then((response) => {
-        const years = processAttendanceData(response);
-        setYearList(years);
-        setSelectedYear(years[0].year);
         return response;
       }),
   });
@@ -134,10 +69,7 @@ function Index({ user }: { user: User }) {
   const [triggerShowNote, setTriggerShowNote] = useState(false);
   const [selectNote, setSelectNote] = useState<selectNote | null>();
   const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const [selectedYear, setSelectedYear] = useState<number>();
-  const [selectedStatus, setSelectedStatus] =
-    useState<AttendanceStatus>("present");
-  const [chartData, setChartData] = useState(initialData);
+
   const handleDeleteAttendance = async ({ groupId }: { groupId: string }) => {
     Swal.fire({
       title: "Are you sure?",
@@ -175,98 +107,12 @@ function Index({ user }: { user: User }) {
   };
 
   const [selectedButton, setSelectedButton] = useState<
-    "information" | "stat" | "stat-month"
+    "information" | "stat" | "stat-month" | "daily"
   >("information");
   const handleButtonClick = (
-    buttonName: "information" | "stat" | "stat-month"
+    buttonName: "information" | "stat" | "stat-month" | "daily"
   ) => {
     setSelectedButton(buttonName);
-  };
-  //Get attendance monthly logic
-
-  //chart==========================
-  const statusTypeArray = [
-    "absent",
-    "holiday",
-    "late",
-    "present",
-    "sick",
-    "warn",
-  ];
-
-  const statusTypeArrayTH = [
-    "ขาด",
-    "ลา",
-    "สาย",
-    "มาเรียน",
-    "ป่วย",
-    "เฝ้าระวัง",
-  ];
-
-  const statusColor = [
-    "rgba(209, 44, 44, 1.0)",
-    "rgba(237, 186, 2, 1.0)",
-    "rgba(245, 94, 0, 1.0)",
-    "rgba(0, 180, 81, 1.0)",
-    "rgba(18, 133, 255, 1.0)",
-    "rgba(132, 10, 208, 1.0)",
-  ];
-
-  const optionChart = {
-    responsive: true,
-    plugins: {
-      title: {
-        display: false,
-        text: "",
-      },
-      datalabels: {
-        color: "#ffffff",
-      },
-    },
-  };
-
-  const handleYearChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedYear(parseInt(event.target.value));
-    updateChartData(selectedStatus, parseInt(event.target.value));
-  };
-
-  const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
-    setSelectedStatus(value as AttendanceStatus);
-    if (!selectedYear) return;
-    updateChartData(value as AttendanceStatus, selectedYear);
-  };
-
-  const updateChartData = (status: AttendanceStatus, year: number) => {
-    const yearData = yearList?.find((data) => data.year === year);
-    if (yearData) {
-      const monthsArray = yearData.statuses[status].months;
-
-      const newChartData = {
-        ...initialData,
-        datasets: [
-          {
-            ...initialData.datasets[0],
-            label: status,
-            data: monthsArray,
-            backgroundColor: statusColor[statusTypeArray.indexOf(status)],
-          },
-        ],
-      };
-      setChartData(newChartData);
-    }
-  };
-
-  useEffect(() => {
-    if (!yearList) return;
-    updateChartData(selectedStatus, yearList[0]?.year);
-  }, [yearList]);
-
-  const getStatusLabel = () => {
-    const index = statusTypeArray.findIndex(
-      (status) => status === selectedStatus
-    );
-    return user.language === "Thai" ? statusTypeArrayTH[index] : selectedStatus;
   };
 
   return (
@@ -299,6 +145,7 @@ function Index({ user }: { user: User }) {
                 </section>
                 ภาพรวม
               </button>
+
               <button
                 className={`hover:scale-105 transition duration-150 flex items-center justify-center gap-2 rounded-full py-2 px-3 border-[3px] border-solid border-[#FF64D4]  ${
                   selectedButton === "stat"
@@ -311,6 +158,20 @@ function Index({ user }: { user: User }) {
                   <MdOutlineBarChart />
                 </section>
                 ข้อมูลสถิติ
+              </button>
+              <button
+                className={`hover:scale-105 transition duration-150 flex items-center 
+                  justify-center gap-2 rounded-full py-2 px-3 border-[3px] border-solid border-sky-800  ${
+                    selectedButton === "daily"
+                      ? "bg-sky-700 text-white"
+                      : "bg-white text-sky-700 border-sky-700"
+                  }`}
+                onClick={() => handleButtonClick("daily")}
+              >
+                <section className="text-[1.3rem]">
+                  <PiListNumbersFill />
+                </section>
+                สรุปรายวัน
               </button>
               <button
                 className={`hover:scale-105 transition duration-150 flex items-center justify-center gap-2 rounded-full py-2 px-3 border-[3px] border-solid border-purple-500  ${
@@ -709,305 +570,15 @@ function Index({ user }: { user: User }) {
                 )}
               </div>
             )}
+
+            {selectedButton === "daily" && (
+              <DailySummary attendances={attendances} user={user} />
+            )}
             {selectedButton === "stat" && (
-              <div>
-                {attendances.isLoading ? (
-                  <div className="flex flex-col gap-5 mt-5">
-                    <Skeleton variant="rectangular" width={700} height={40} />
-                    <Skeleton variant="rectangular" width={600} height={40} />
-                    <Skeleton variant="rectangular" width={800} height={40} />
-                  </div>
-                ) : (
-                  <div>
-                    <table
-                      className=" h-full  max-h-[40rem] flex flex-col items-center justify-center w-80 md:w-[40rem]
-                  lg:w-[60rem] xl:w-[70rem] bg-white rounded-md font-Kanit overflow-x-auto relative"
-                    >
-                      <thead className="w-max sticky top-0  py-2 z-10 bg-white">
-                        <tr className="flex text-white  bg-white">
-                          <th className=" sticky left-0 z-10  bg-white ">
-                            <div className="m-1 flex h-12  w-10 md:w-[5.4rem]  items-center justify-center text-xs md:text-base  rounded-md bg-[#2C7CD1]">
-                              {user.language === "Thai" && "เลขที่"}
-                              {user.language === "English" && "number"}
-                            </div>
-                          </th>
-                          <th className=" sticky z-10 left-12 md:left-[6rem] bg-white  ">
-                            <div className="m-1 w-16 h-12 md:w-[16.5rem] flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] rounded-md">
-                              <span className="text-center">
-                                {user.language === "Thai" && "รายชื่อ"}
-                                {user.language === "English" &&
-                                  "student's name"}
-                              </span>
-                            </div>
-                          </th>
-
-                          <th className="ml-[31rem] md:ml-[26rem] lg:ml-[0rem] text-xs md:text-base bg-green-600 rounded-md m-1 w-24 flex items-center justify-center ">
-                            <span className="text-center">
-                              {user.language === "Thai" && "มาเรียน"}
-                              {user.language === "English" && "Present"}
-                            </span>
-                          </th>
-                          <th className="bg-orange-500 rounded-md m-1 w-24 text-xs md:text-base flex items-center justify-center ">
-                            <span className="text-center">
-                              {user.language === "Thai" && "มาสาย"}
-                              {user.language === "English" && "late"}
-                            </span>
-                          </th>
-                          <th className="bg-yellow-500 rounded-md m-1 w-24 text-xs md:text-base flex items-center justify-center ">
-                            <span className="text-center">
-                              {user.language === "Thai" && "ลา"}
-                              {user.language === "English" && "take a leave"}
-                            </span>
-                          </th>
-                          <th className="bg-[#2C7CD1] rounded-md m-1 w-24 text-xs md:text-base flex items-center justify-center ">
-                            <span className="text-center">
-                              {user.language === "Thai" && "ป่วย"}
-                              {user.language === "English" && "sick"}
-                            </span>
-                          </th>
-                          <th className="bg-red-600 rounded-md m-1 w-24 text-xs md:text-base flex items-center justify-center ">
-                            <span className="text-center">
-                              {user.language === "Thai" && "ขาดเรียน"}
-                              {user.language === "English" && "absent"}
-                            </span>
-                          </th>
-                          {user?.schoolUser?.organization === "immigration" && (
-                            <th className="bg-purple-600 rounded-md m-1 w-24 flex text-xs md:text-base items-center justify-center ">
-                              <span className="text-center">
-                                {user.language === "Thai" && "เฝ้าระวัง"}
-                                {user.language === "English" && "warn"}
-                              </span>
-                            </th>
-                          )}
-
-                          <th className="w-36 flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] m-1 text-white rounded-md  ">
-                            <span className="text-center">
-                              {user.language === "Thai" &&
-                                "เปอร์เซ็นต์การเข้าเรียนจริง"}
-                              {user.language === "English" && "Actual Presence"}
-                            </span>
-                          </th>
-                          <th className="w-36 flex items-center justify-center text-xs md:text-base bg-[#2C7CD1] m-1 text-white rounded-md  ">
-                            <span className="text-center">
-                              {user.language === "Thai" &&
-                                "เปอร์เซ็นต์การเข้าเรียนทั้งหมด"}
-                              {user.language === "English" &&
-                                "Overall Attendance"}
-                            </span>
-                          </th>
-                        </tr>
-                      </thead>
-                      {/* Body */}
-                      <tbody className="w-max">
-                        {attendances?.data?.students.map((item, index) => {
-                          return (
-                            <tr
-                              key={index}
-                              className="flex ml-[5rem] md:ml-0  hover:ring-2 hover:bg-slate-200 group text-[#2C7CD1] "
-                            >
-                              <td
-                                className={`w-10 md:w-24 flex items-center justify-center sticky left-0 z-10 bg-white group-hover:bg-slate-200`}
-                              >
-                                <div
-                                  className={`h-12 w-10 md:w-24 flex items-center justify-center rounded-md m-1 ${
-                                    index % 2 === 0
-                                      ? "bg-white"
-                                      : "bg-[#E8E8E8]"
-                                  }`}
-                                >
-                                  {item.student?.number}
-                                </div>
-                              </td>
-                              <td
-                                className={`w-20 text-xs md:text-base md:w-[17rem] text-left flex justify-start items-center sticky left-10 md:left-[6rem] z-10 bg-white group-hover:bg-slate-200`}
-                              >
-                                <div
-                                  className={`h-12 w-20 text-xs text-start md:text-base md:w-[16.5rem] flex items-center justify-start rounded-md m-1 ${
-                                    index % 2 === 0
-                                      ? "bg-white"
-                                      : "bg-[#E8E8E8]"
-                                  }`}
-                                >
-                                  <div className="min-w-9 min-h-9 rounded-full bg-white mx-2 ring-1 relative overflow-hidden">
-                                    <Image
-                                      src={item.student?.picture}
-                                      alt=""
-                                      fill
-                                      sizes="(max-width: 768px) 100vw, 33vw"
-                                      className="object-cover"
-                                    />
-                                  </div>
-                                  <span className="text-left text-xs md:text-base truncate hover:overflow-visible">
-                                    {item.student?.firstName}{" "}
-                                    {item.student?.lastName}
-                                  </span>
-                                </div>
-                              </td>
-
-                              <td className="w-24 m-1 flex items-center justify-center ml-[26rem] lg:ml-[0rem]">
-                                <span
-                                  className={`  text-center rounded-md w-24 h-12 flex items-center justify-center ${
-                                    index % 2 === 0
-                                      ? "bg-white"
-                                      : "bg-[#E8E8E8]"
-                                  }`}
-                                >
-                                  {item.statistics?.number?.present}
-                                </span>
-                              </td>
-                              <td className="w-24 m-1 flex items-center justify-center ">
-                                <span
-                                  className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
-                                    index % 2 === 0
-                                      ? "bg-white"
-                                      : "bg-[#E8E8E8]"
-                                  }`}
-                                >
-                                  {item.statistics?.number?.late}
-                                </span>
-                              </td>
-                              <td className="w-24 m-1 flex items-center justify-center ">
-                                <span
-                                  className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
-                                    index % 2 === 0
-                                      ? "bg-white"
-                                      : "bg-[#E8E8E8]"
-                                  }`}
-                                >
-                                  {item.statistics?.number?.holiday}
-                                </span>
-                              </td>
-                              <td className="w-24 m-1 flex items-center justify-center ">
-                                <span
-                                  className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
-                                    index % 2 === 0
-                                      ? "bg-white"
-                                      : "bg-[#E8E8E8]"
-                                  }`}
-                                >
-                                  {item.statistics?.number?.sick}
-                                </span>
-                              </td>
-                              <td className="w-24 m-1 flex items-center justify-center ">
-                                <span
-                                  className={`text-center rounded-md w-24 h-12 flex items-center justify-center ${
-                                    index % 2 === 0
-                                      ? "bg-white"
-                                      : "bg-[#E8E8E8]"
-                                  }`}
-                                >
-                                  {item.statistics?.number?.absent}
-                                </span>
-                              </td>
-
-                              {user?.schoolUser?.organization ===
-                                "immigration" && (
-                                <td
-                                  className={`text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
-                                    index % 2 === 0
-                                      ? "bg-white"
-                                      : "bg-[#E8E8E8]"
-                                  }`}
-                                >
-                                  <span className="text-center">
-                                    {item.statistics?.number?.warn}
-                                  </span>
-                                </td>
-                              )}
-                              <td
-                                className={`text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
-                                  index % 2 === 0 ? "bg-white" : "bg-[#E8E8E8]"
-                                }`}
-                              >
-                                <span className="text-center">
-                                  {item.statistics?.percent?.purePresent.toFixed(
-                                    2
-                                  )}
-                                  %
-                                </span>
-                              </td>
-                              <td
-                                className={`text-[#2C7CD1] font-semibold w-36 flex items-center justify-center rounded-md py-2 m-1  ${
-                                  index % 2 === 0 ? "bg-white" : "bg-[#E8E8E8]"
-                                }`}
-                              >
-                                <span className="text-center">
-                                  {item.statistics?.percent?.present.toFixed(2)}
-                                  %
-                                </span>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                    <span className="mt-5 flex items-center justify-center text-center font-Kanit text-xl font-semibold">
-                      {user.language === "Thai" &&
-                        `จำนวนครูสอนทั้งหมด ${attendances?.data?.meta?.sum} คาบ`}
-                      {user.language === "English" &&
-                        `The teacher has taught this class for ${attendances?.data?.meta?.sum} periods`}
-                    </span>
-                    {attendances?.data?.meta.headAttendances.length === 0 && (
-                      <div className="w-full flex items-center justify-center h-96 text-8xl">
-                        <span>ไม่มีข้อมูล</span>
-                        <div className="text-red-400">
-                          <BiMessageAltError />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+              <StatisticSummary user={user} attendances={attendances} />
             )}
             {selectedButton === "stat-month" && (
-              <div className="w-[24rem] h-[30rem] md:w-[50rem] md:h-[30rem] lg:w-[60rem] lg:h-[40rem] xl:w-[70rem] xl:h-[50rem]  flex flex-col  items-center gap-3 md:gap-5 mt-5">
-                <div className="flex flex-col md:flex-row gap-2 md:gap-5 font-Kanit font-semibold">
-                  <div className="border-solid border-2 border-black p-2 rounded-md">
-                    <label>
-                      {user.language === "Thai" && "กรุณาเลือกปี :"}
-                      {user.language === "English" && "Select year :"}
-                    </label>
-                    {/* เดี๋ยวมี value กับ onChange อีก */}
-                    <select
-                      value={selectedYear}
-                      onChange={handleYearChange}
-                      className="ml-3 text-slate-400"
-                    >
-                      {yearList?.map((yearData) => (
-                        <option key={yearData.year} value={yearData.year}>
-                          {yearData.year}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="border-solid border-2 border-black p-2 rounded-md">
-                    <label>
-                      {user.language === "Thai" &&
-                        "กรุณาเลือกสถานะการเข้าเรียน :"}
-                      {user.language === "English" && "Select status"}
-                    </label>
-                    <select
-                      value={selectedStatus}
-                      onChange={handleStatusChange}
-                      className="ml-3 text-slate-400"
-                    >
-                      {statusTypeArray.map((status, index) => (
-                        <option key={status} value={status}>
-                          {user.language === "Thai"
-                            ? statusTypeArrayTH[index]
-                            : status}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className=" w-10/12 h-10/12 flex flex-col gap-3 mt-10">
-                  <h2 className="flex justify-center items-center font-Kanit font-semibold text-xl text-[#2C7CD1]">
-                    {getStatusLabel()}
-                  </h2>
-                  <Bar options={optionChart} data={chartData} />
-                </div>
-              </div>
+              <MonthlySummary user={user} attendances={attendances} />
             )}
           </div>
         </div>

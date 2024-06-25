@@ -28,8 +28,8 @@ type IndexProps = {
 
 function Index({ commonQuestions }: IndexProps) {
   const router = useRouter();
-  const usersNumber = 18.7;
-  const studentNumber = 597;
+  const usersNumber = 24.5;
+  const studentNumber = 882;
   const [loading, setLoading] = useState(true);
   const footerData = `ห้องเรียนจาก Tatuga class หรือ ทาทูก้าคลาส ที่จะพาคุณครูไปสู่การบริหารห้องเรียนอย่างสะดวกและสนุก กับ tatuga class TaTuga Class Classroom Management for Everyone จัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ สะดวก และ รวดเร็ว - tatuga class`;
   const [domLoaded, setDomLoaded] = useState(false);
