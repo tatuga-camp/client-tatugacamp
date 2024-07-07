@@ -97,7 +97,7 @@ function DowloadExcelAttendacne({
           </span>
           <div className="flex flex-col relative">
             <label className="font-sans font-normal">
-              {user.language === "Thai" && "สถานะะมาเรียน"}
+              {user.language === "Thai" && "สถานะมาเรียน"}
               {user.language === "English" && "present"}
             </label>
             <input
@@ -118,7 +118,7 @@ function DowloadExcelAttendacne({
           </div>
           <div className="flex flex-col relative">
             <label className="font-sans font-normal">
-              {user.language === "Thai" && "สถานะะป่วย"}
+              {user.language === "Thai" && "สถานะป่วย"}
               {user.language === "English" && "sick"}
             </label>
             <input
@@ -161,7 +161,7 @@ function DowloadExcelAttendacne({
           </div>
           <div className="flex flex-col relative mt-2">
             <label className="font-sans font-normal">
-              {user.language === "Thai" && "สถาะนะลา"}
+              {user.language === "Thai" && "สถานะลา"}
               {user.language === "English" && "take a leave  "}
             </label>
             <input
@@ -182,7 +182,7 @@ function DowloadExcelAttendacne({
           </div>
           <div className="flex flex-col relative mt-2">
             <label className="font-sans font-normal">
-              {user.language === "Thai" && "สถาะนะสาย"}
+              {user.language === "Thai" && "สถานะสาย"}
               {user.language === "English" && "late "}
             </label>
             <input
