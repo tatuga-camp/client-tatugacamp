@@ -704,3 +704,31 @@ export async function UpdatePercentAssignmentService({
     throw err.response.data;
   }
 }
+
+type InputReorderAssignmentService = {
+  assignmentIds: string[];
+};
+type ResponseReorderAssignmentService = Assignment[];
+export async function ReorderAssignmentService(
+  input: InputReorderAssignmentService
+): Promise<ResponseReorderAssignmentService> {
+  try {
+    const cookies = parseCookies();
+    const access_token = cookies.access_token;
+    const reorder = await axios({
+      method: "PATCH",
+      url: `${process.env.MAIN_SERVER_URL}/user/assignment/reorder`,
+      data: input,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access_token}`,
+      },
+      responseType: "json",
+    });
+
+    return reorder.data;
+  } catch (err: any) {
+    console.error(err.response.data);
+    throw err.response.data;
+  }
+}

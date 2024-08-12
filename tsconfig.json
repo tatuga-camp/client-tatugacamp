@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,14 +14,13 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
     "forceConsistentCasingInFileNames": true
   },
   "include": [
     "next-env.d.ts",
+    "type.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "pages/404.jsx",
@@ -33,7 +28,5 @@
     "data/portableContent.js",
     "data/students.js"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
