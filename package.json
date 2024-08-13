@@ -29,8 +29,6 @@
     "file-loader": "^6.2.0",
     "heic2any": "^0.0.4",
     "lightbox.js-react": "^1.0.2",
-    "lodash-move": "^1.1.1",
-    "lodash.clamp": "^4.0.3",
     "lottie-react": "^2.4.0",
     "moment-timezone": "^0.5.44",
     "next": "14.1.3",

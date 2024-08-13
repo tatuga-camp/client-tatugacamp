@@ -5,6 +5,7 @@ export type Assignment = {
   title: string;
   picture: string | null;
   deadline: string;
+  order: number;
   maxScore: number;
   percentage: number | null;
   isDelete: boolean;

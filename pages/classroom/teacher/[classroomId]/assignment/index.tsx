@@ -11,12 +11,15 @@ import { IoCreate } from "react-icons/io5";
 import { AiOutlineSetting } from "react-icons/ai";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { GetUserCookieService } from "../../../../../services/user";
-import { User } from "../../../../../models";
+import { Assignment, User } from "../../../../../models";
 import {
   AllowStudentDeleteWorkService,
   GetOneClassroomService,
 } from "../../../../../services/classroom";
-import { GetAllAssignmentsService } from "../../../../../services/assignment";
+import {
+  GetAllAssignmentsService,
+  ReorderAssignmentService,
+} from "../../../../../services/assignment";
 import { GetAllStudentsService } from "../../../../../services/students";
 import ClassroomLayout from "../../../../../layouts/classroomLayout";
 import {
@@ -24,33 +27,16 @@ import {
   sideMenusEnglish,
 } from "../../../../../data/menubarsClassroom";
 import CreateAssignment from "../../../../../components/form/createAssignment";
-import { useSprings, animated } from "react-spring";
-import { useDrag } from "@use-gesture/react";
-import clamp from "lodash.clamp";
-import swap from "lodash-move";
 
-const fn =
-  (order: number[], active = false, originalIndex = 0, curIndex = 0, y = 0) =>
-  (index: number) =>
-    active && index === originalIndex
-      ? {
-          y: curIndex * 50 + y,
-          scale: 1.1,
-          zIndex: 1,
-          shadow: 15,
-          immediate: (key: string) => key === "y" || key === "zIndex",
-        }
-      : {
-          y: order.indexOf(index) * 50,
-          scale: 1,
-          zIndex: 0,
-          shadow: 1,
-          immediate: false,
-        };
-
-function Assignment({ user }: { user: User }) {
-  const order = useRef<number[]>([]); // Store indicies as a local ref, this represents the item order
+function Index({ user }: { user: User }) {
   const router = useRouter();
+  const dragAssignment = useRef<number>(0);
+  const draggedOverAssignment = useRef<number>(0);
+  const [assignmentsData, setAssignmentsData] = useState<
+    (Assignment & {
+      progress: string;
+    })[]
+  >([]);
   const classroom = useQuery({
     queryKey: ["classroom", router.query.classroomId],
     queryFn: () =>
@@ -63,35 +49,18 @@ function Assignment({ user }: { user: User }) {
     queryFn: () =>
       GetAllAssignmentsService({
         classroomId: router.query.classroomId as string,
-      }).then((res) => {
-        order.current = res.map((_, index) => index);
-        return res;
+      }).then((data) => {
+        setAssignmentsData(data);
+        return data;
       }),
   });
+
   const students = useQuery({
     queryKey: ["students", router.query.classroomId],
     queryFn: () =>
       GetAllStudentsService({
         classroomId: router.query.classroomId as string,
       }),
-  });
-
-  const [springs, api] = useSprings(
-    assignments.data?.length || 0,
-    fn(order.current)
-  ); // Create springs, each corresponds to an item, controlling its transform, scale, etc.
-
-  console.log(order);
-  const bind = useDrag(({ args: [originalIndex], active, movement: [, y] }) => {
-    const curIndex = order.current.indexOf(originalIndex);
-    const curRow = clamp(
-      Math.round((curIndex * 100 + y) / 100),
-      0,
-      assignments.data?.length ?? 0 - 1
-    );
-    const newOrder = swap(order.current, curIndex, curRow);
-    api.start(fn(newOrder, active, originalIndex, curIndex, y)); // Feed springs new style data, they'll animate the view without causing a single render
-    if (!active) order.current = newOrder;
   });
 
   const [triggerAssignment, setTriggerAssignment] = useState(false);
@@ -106,6 +75,12 @@ function Assignment({ user }: { user: User }) {
     );
   }, [classroom.data]);
 
+  useEffect(() => {
+    if (assignments.data) {
+      setAssignmentsData(assignments.data);
+    }
+  }, [assignments.data]);
+
   const handleAllowStudentDeleteWork = async () => {
     try {
       const update = await AllowStudentDeleteWorkService({
@@ -117,6 +92,28 @@ function Assignment({ user }: { user: User }) {
       console.error(err);
     }
   };
+  async function handleSort() {
+    try {
+      let assignmentClone = [...assignmentsData];
+      const temp = assignmentClone[dragAssignment.current];
+      assignmentClone[dragAssignment.current] =
+        assignmentClone[draggedOverAssignment.current];
+      assignmentClone[draggedOverAssignment.current] = temp;
+      const reorder = assignmentClone.map((assignment, index) => {
+        return {
+          ...assignment,
+          order: index,
+        };
+      });
+      setAssignmentsData(reorder);
+      await ReorderAssignmentService({
+        assignmentIds: reorder.map((assignment) => assignment.id),
+      });
+      await assignments.refetch();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <div className="w-full pb-96 bg-blue-50 ">
@@ -135,19 +132,6 @@ function Assignment({ user }: { user: User }) {
             : sideMenusEnglish({ router })
         }
       >
-        <div
-          className={` top-0 right-0 left-0 bottom-0 m-auto righ z-40 ${
-            triggerAssignment === false ? "hidden" : "fixed"
-          }`}
-        >
-          <CreateAssignment
-            user={user}
-            assignments={assignments}
-            setTriggerAssignment={setTriggerAssignment}
-            students={students}
-          />
-        </div>
-
         <div className="flex w-full justify-center items-center">
           <div className="min-w-[25rem] w-max"></div>
         </div>
@@ -169,99 +153,102 @@ function Assignment({ user }: { user: User }) {
             </div>
           </section>
         </header>
-
-        <main
-          className="w-full h-full gap-20 bg-gray-100  
-         flex flex-col items-center justify-center relative"
-        >
-          <div
-            className="bg-white h-20  w-80 md:w-[28rem] rounded-full drop-shadow-md flex items-center 
+        <div className="">
+          <main className="w-full  py-5  mt-10 flex flex-col items-center justify-center relative">
+            <div
+              className="bg-white w-80 md:w-[28rem] h-20 rounded-full drop-shadow-md flex items-center 
           justify-center gap-2 "
-          >
-            <button
-              onClick={() => {
-                setTriggerAssignment(true);
-                document.body.style.overflow = "hidden";
-              }}
-              className="w-8/12 md:w-80 border-none py-2 rounded-full
+            >
+              <button
+                onClick={() => {
+                  setTriggerAssignment(true);
+                  document.body.style.overflow = "hidden";
+                }}
+                className="w-8/12 md:w-80 border-none py-2 rounded-full
                bg-blue-100 text-center font-Poppins text-base hover:bg-[#2C7CD1] hover:text-white
 text-black transition duration-150  cursor-pointer"
+              >
+                <div className="font-Kanit flex items-center justify-center gap-2 font-medium">
+                  {user.language === "Thai" && "สร้างชิ้นงาน"}
+                  {user.language === "English" && "create your assignment"}
+                  <IoCreate />
+                </div>
+              </button>
+            </div>
+
+            <div
+              className={` top-0 right-0 left-0 bottom-0 m-auto righ z-40 ${
+                triggerAssignment === false ? "hidden" : "fixed"
+              }`}
             >
-              <div className="font-Kanit flex items-center justify-center gap-2 font-medium">
-                {user.language === "Thai" && "สร้างชิ้นงาน"}
-                {user.language === "English" && "create your assignment"}
-                <IoCreate />
-              </div>
-            </button>
-          </div>
+              <CreateAssignment
+                user={user}
+                assignments={assignments}
+                setTriggerAssignment={setTriggerAssignment}
+                students={students}
+              />
+            </div>
 
-          {/* assignments are here */}
-          <div style={{ height: assignments.data?.length ?? 0 * 50 }}>
-            {assignments.isLoading || assignments.isFetching ? (
-              <div className="flex flex-col gap-5 w-80 md:w-[40rem]">
-                <Skeleton variant="rounded" width="100%" height={144} />
-                <Skeleton variant="rounded" width="100%" height={144} />
-                <Skeleton variant="rounded" width="100%" height={144} />
-                <Skeleton variant="rounded" width="100%" height={144} />
-                <Skeleton variant="rounded" width="100%" height={144} />
-              </div>
-            ) : (
-              springs.map(({ zIndex, shadow, y, scale }, index) => {
-                const deadline = new Date(
-                  assignments.data?.[index].deadline ?? ""
-                ).toLocaleDateString(
-                  `${
-                    user.language === "Thai"
-                      ? "th-TH"
-                      : user.language === "English" && "en-US"
-                  }`,
-                  {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }
-                );
-                const assignDate = new Date(
-                  assignments.data?.[index].createAt ?? ""
-                );
+            {/* assignments are here */}
+            <div className=" w-full mt-5 gap-5 grid place-items-center bg-slate-100 ">
+              {assignments.isLoading || assignments.isFetching ? (
+                <div className="flex flex-col gap-5 w-80 md:w-[40rem]">
+                  <Skeleton variant="rounded" width="100%" height={144} />
+                  <Skeleton variant="rounded" width="100%" height={144} />
+                  <Skeleton variant="rounded" width="100%" height={144} />
+                  <Skeleton variant="rounded" width="100%" height={144} />
+                  <Skeleton variant="rounded" width="100%" height={144} />
+                </div>
+              ) : (
+                assignmentsData
+                  .sort((a, b) => a.order - b.order)
+                  .map((assignment, index) => {
+                    const deadline = new Date(
+                      assignment.deadline
+                    ).toLocaleDateString(
+                      `${
+                        user.language === "Thai"
+                          ? "th-TH"
+                          : user.language === "English" && "en-US"
+                      }`,
+                      {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }
+                    );
+                    const assignDate = new Date(assignment.createAt);
 
-                const formatAssigDate = assignDate.toLocaleDateString(
-                  `${
-                    user.language === "Thai"
-                      ? "th-TH"
-                      : user.language === "English" && "en-US"
-                  }`,
-                  {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  }
-                );
+                    const formatAssigDate = assignDate.toLocaleDateString(
+                      `${
+                        user.language === "Thai"
+                          ? "th-TH"
+                          : user.language === "English" && "en-US"
+                      }`,
+                      {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      }
+                    );
 
-                return (
-                  <animated.div
-                    {...bind(index)}
-                    key={index}
-                    style={{
-                      touchAction: "pan-y",
-                      zIndex,
-                      boxShadow: shadow.to(
-                        (s) => `rgba(0, 0, 0, 0.15) 0px ${s}px ${2 * s}px 0px`
-                      ),
-                      y,
-                      scale,
-                    }}
-                    children={
-                      <div
-                        // href={`/classroom/teacher/${router.query.classroomId}/assignment/${assignments.data?.[index].id}`}
+                    return (
+                      <Link
+                        onDragStart={() => (dragAssignment.current = index)}
+                        onDragEnter={() =>
+                          (draggedOverAssignment.current = index)
+                        }
+                        onDragEnd={handleSort}
+                        onDragOver={(e) => e.preventDefault()}
+                        draggable
+                        href={`/classroom/teacher/${router.query.classroomId}/assignment/${assignment.id}`}
                         key={index}
-                        className="marker:w-11/12 no-underline md:w-max px-2 md:max-w-lg lg:max-w-2xl 
-                            group  h-36  md:px-10 md:py-5 drop-shadow-lg 
-                        bg-white  overflow-hidden
-                           relative
-                         rounded-lg flex flex-col justify-center"
+                        className={`w-11/12 no-underline md:w-max px-2 md:max-w-lg lg:max-w-2xl group  h-36  md:px-10 md:py-5 drop-shadow-lg 
+                     bg-white  hover:scale-105 cursor-pointer overflow-hidden
+                 duration-150 transition relative
+               rounded-lg flex flex-col justify-center `}
                       >
                         <div className="flex justify-around  w-full">
                           <div className="flex w-52  md:w-80 lg:w-96 truncate">
@@ -271,13 +258,13 @@ text-black transition duration-150  cursor-pointer"
                              md:text-left text-black `}
                             >
                               <span className=" font text-base md:text-xl font-bold w-full h-max max-h-8  truncate">
-                                {assignments.data?.[index].title}
+                                {assignment.title}
                               </span>
                               <div className="relative text-left">
                                 <div className="w-full hidden md:block bg-gray-200 h-2 rounded-full overflow-hidden">
                                   <div
                                     style={{
-                                      width: assignments.data?.[index].progress,
+                                      width: assignment.progress,
                                     }}
                                     className={` bg-blue-800 h-2 `}
                                   ></div>
@@ -287,7 +274,7 @@ text-black transition duration-150  cursor-pointer"
                                     "ผู้เรียนส่งงานแล้ว"}
                                   {user.language === "English" &&
                                     "Students has summited thier work for"}{" "}
-                                  {assignments.data?.[index].progress}
+                                  {assignment.progress}
                                 </div>
                                 <div className="font-Kanit mt-2">
                                   {user.language === "Thai" && "มอบหมายเมื่อ"}
@@ -305,9 +292,7 @@ text-black transition duration-150  cursor-pointer"
                             <div className="flex items-center justify-center flex-col">
                               <div>
                                 <span className="text-lg md:text-2xl font-Poppins font-semibold group-hover:text-white text-blue-500 truncate ">
-                                  {assignments.data?.[
-                                    index
-                                  ].maxScore.toLocaleString()}
+                                  {assignment.maxScore.toLocaleString()}
                                 </span>
                               </div>
                               <div className="font-Poppins font-semibold group-hover:text-white text-black">
@@ -327,20 +312,19 @@ text-black transition duration-150  cursor-pointer"
                             </div>
                           </div>
                         </div>
-                      </div>
-                    }
-                  />
-                );
-              })
-            )}
-          </div>
-        </main>
+                      </Link>
+                    );
+                  })
+              )}
+            </div>
+          </main>
+        </div>
       </ClassroomLayout>
     </div>
   );
 }
 
-export default Assignment;
+export default Index;
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
