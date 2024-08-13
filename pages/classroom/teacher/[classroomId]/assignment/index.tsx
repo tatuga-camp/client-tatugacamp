@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Layout from "../../../../../layouts/classroomLayout";
@@ -19,6 +19,7 @@ import {
 import {
   GetAllAssignmentsService,
   ReorderAssignmentService,
+  ResponseGetAllAssignmentsService,
 } from "../../../../../services/assignment";
 import { GetAllStudentsService } from "../../../../../services/students";
 import ClassroomLayout from "../../../../../layouts/classroomLayout";
@@ -29,6 +30,7 @@ import {
 import CreateAssignment from "../../../../../components/form/createAssignment";
 
 function Index({ user }: { user: User }) {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const dragAssignment = useRef<number>(0);
   const draggedOverAssignment = useRef<number>(0);
@@ -106,10 +108,23 @@ function Index({ user }: { user: User }) {
         };
       });
       setAssignmentsData(reorder);
-      await ReorderAssignmentService({
+      const updates = await ReorderAssignmentService({
         assignmentIds: reorder.map((assignment) => assignment.id),
       });
-      await assignments.refetch();
+
+      const updateAssignment: ResponseGetAllAssignmentsService = updates.map(
+        (update) => {
+          return {
+            ...update,
+            progress:
+              assignmentsData.find((a) => a.id === update.id)?.progress ?? "0%",
+          };
+        }
+      );
+      queryClient.setQueryData(
+        ["assignments", router.query.classroomId],
+        updateAssignment
+      );
     } catch (error) {
       console.error(error);
     }
