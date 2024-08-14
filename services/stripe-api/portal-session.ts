@@ -19,6 +19,6 @@ export async function ProtalSessionService(): Promise<ResponseProtalSessionServi
     );
     return createPortalSession.data;
   } catch (err: any) {
-    throw new Error(err);
+    throw err.response.data;
   }
 }

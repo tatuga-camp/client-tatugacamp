@@ -127,16 +127,19 @@ function Setting({ userSideServer }: { userSideServer: User }) {
     try {
       Swal.fire({
         title: "..กำลังเปลี่ยนเส้นทาง",
-        allowEnterKey: false,
-        allowOutsideClick: false,
         didOpen: () => {
           Swal.showLoading();
         },
       });
       const url = await ProtalSessionService();
       window.location.href = url;
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      Swal.fire({
+        title: "error",
+        html: err?.message,
+        icon: "error",
+      });
     }
   };
   //handle summit user's data
@@ -398,17 +401,16 @@ function Setting({ userSideServer }: { userSideServer: User }) {
                   <MdSubscriptions />
                 </div>
 
-                  <button
-                    onClick={handlePortalSession}
-                    type="button"
-                    className="w-max px-20 h-max p-2 bg-orange-400 text-black rounded-md
+                <button
+                  onClick={handlePortalSession}
+                  type="button"
+                  className="w-max px-20 h-max p-2 bg-orange-400 text-black rounded-md
                      font-Kanit font-medium mt-2 hover:bg-orange-500 transition duration-100 drop-shadow-md"
-                  >
-                    {user?.data?.language === "Thai"
-                      ? "จัดการ"
-                      : user?.data?.language && "manage"}
-                  </button>
-             
+                >
+                  {user?.data?.language === "Thai"
+                    ? "จัดการ"
+                    : user?.data?.language && "manage"}
+                </button>
               </div>
               <button
                 aria-label="update user button"
