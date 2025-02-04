@@ -49,10 +49,10 @@ export default function CreateAssignment({
   });
   const [isAssignStudent, setIsAssignmentStdent] = useState(false);
   const [loading, setLoading] = useState(false);
+
   // handle chagne of assignment's detail
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setAssignmentData((prev) => {
       return {
         ...prev,
@@ -64,16 +64,13 @@ export default function CreateAssignment({
   const handleFileEvent = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.prototype.slice.call(e.target.files);
     let totalSize = 0;
-
     // Combine the existing selected files with the newly selected files
     const updatedSelectedFiles = [...(selectedFiles || []), ...newFiles];
     for (let i = 0; i < updatedSelectedFiles.length; i++) {
       totalSize += updatedSelectedFiles[i].size;
     }
-
     const totalSizeInMB = (totalSize / (1024 * 1024)).toFixed(2);
     setFilesSize(() => totalSizeInMB);
-
     setSelectedFiles(() => updatedSelectedFiles);
   };
 
@@ -289,14 +286,6 @@ export default function CreateAssignment({
                     aria-label="upload image"
                     type="file"
                     multiple={true}
-                    accept="application/pdf,
-                      image/jpeg,
-                      image/png,
-                      image/gif,
-                      application/msword,
-                      application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-                      video/mp4,
-                      audio/mpeg"
                     className="text-sm text-grey-500 hidden  ring-2 appearance-none
             file:mr-5 md:file:w-40 file:w-40 w-max file:py-2
             file:rounded-full file:border-0

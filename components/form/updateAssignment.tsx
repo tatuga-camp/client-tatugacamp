@@ -475,14 +475,6 @@ function UpdateAssignment({
                   aria-label="upload image"
                   type="file"
                   multiple={true}
-                  accept="application/pdf,
-                      image/jpeg,
-                      image/png,
-                      image/gif,
-                      application/msword,
-                      application/vnd.openxmlformats-officedocument.wordprocessingml.document,
-                      video/mp4,
-                      audio/mpeg"
                   className="text-sm text-grey-500 hidden  ring-2 appearance-none
             file:mr-5 md:file:w-40 file:w-40 w-max file:py-2
             file:rounded-full file:border-0
