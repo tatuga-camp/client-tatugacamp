@@ -112,12 +112,15 @@ function MainNavbar() {
                 tatuga class
               </li>
             </Link>
-            <Link className="no-underline relative" href="/school">
+            <a
+              className="no-underline relative"
+              href="https://tatugaschool.com"
+            >
               <div
                 className=" w-max text-xs px-2 py-1  absolute top-0 left-0 m-auto 
-             bg-gray-500 text-white font-Poppins rounded-md"
+             bg-blue-500 text-white font-Poppins rounded-md"
               >
-                ปิดปรับปรุง
+                พร้อมใช้งาน
               </div>
               <li
                 onClick={onClick}
@@ -125,7 +128,7 @@ function MainNavbar() {
               >
                 tatuga school
               </li>
-            </Link>
+            </a>
             <Link className="no-underline" href="/about-us">
               <li
                 onClick={onClick}
@@ -206,15 +209,15 @@ function MainNavbar() {
           <li className="relative">
             <div
               className=" w-max text-xs px-2 py-0  absolute top-0 left-0 m-auto 
-             bg-gray-500 text-white font-Poppins rounded-md"
+             bg-blue-500 text-white font-Poppins rounded-md"
             >
-              ปิดปรับปรุง
+              พร้อมใช้งาน
             </div>
-            <Link className="no-underline" href="/school">
-              <button className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
+            <a className="no-underline" href="https://tatugaschool.com">
+              <div className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga school 🏫</span>
-              </button>
-            </Link>
+              </div>
+            </a>
           </li>
           <li className="">
             <Link className="no-underline" href="/classroom">

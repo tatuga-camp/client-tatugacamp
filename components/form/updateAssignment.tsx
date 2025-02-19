@@ -482,8 +482,7 @@ function UpdateAssignment({
              bg-white rounded-full
             file:bg-blue-400 file:drop-shadow-lg
             hover:file:cursor-pointer hover:file:bg-amber-50
-            hover:file:text-amber-700
-          "
+            hover:file:text-amber-700"
                 />
               </label>
               <div className="flex gap-2">

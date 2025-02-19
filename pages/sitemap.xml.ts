@@ -8,6 +8,30 @@ function generateSiteMap(posts: any) {
      <url>
        <loc>https://tatugacamp.com</loc>
      </url>
+      <url>
+    <loc>https://www.tatugaschool.com</loc>
+        <lastmod>2025-02-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+      </url>
+      <url>
+    <loc>https://tatugaschool.com</loc>
+    <lastmod>2025-02-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://app.tatugaschool.com/auth/sign-in</loc>
+    <lastmod>2025-02-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://student.tatugaschool.com/welcome</loc>
+    <lastmod>2025-02-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
      <url>
      <loc>https://tatugacamp.com/classroom</loc>
     </url>
