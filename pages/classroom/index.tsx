@@ -199,7 +199,7 @@ function Index({ commonQuestions }: IndexProps) {
             </a>
             <span className="text-xs  md:text-lg text-white text-center">
               พวกเราชาว tatuga ได้ตัดสินใจยุติให้บริการเว็บไซต์ tatuga class
-              โดยจะเริ่มลบข้อมูลทั้งหมดและปิดการให้บริการ ณ วันที่ 1 เมษายน 2568
+              โดยจะเริ่มลบข้อมูลทั้งหมดและปิดการให้บริการ ณ วันที่ 1 เมษายน 2569
             </span>
           </section>
           <div className="w-80 h-[2px] bg-white" />
