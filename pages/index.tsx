@@ -180,7 +180,7 @@ export default function Home({
         ></Script>
 
         {/* Image silder */}
-        <header className="flex w-full flex-col mt-28 md:mt-0 md:flex-col-reverse lg:flex-row relative md:justify-center lg:justify-around items-center">
+        <header className="flex w-full flex-col pt-40 md:pt-0 md:flex-col-reverse lg:flex-row relative md:justify-center lg:justify-around items-center">
           <div className="w-full max-w-sm md:max-w-lg md:h-max lg:h-96 ml-0 md:ml-0  flex flex-col items-center justify-center gap-1 md:gap-3">
             <span className="font-Kanit text-sx">ทา-ทู-ก้า-แคมป์ 😁</span>
             <h1 className="text-2xl md:text-6xl text-main-color font-Poppins font-semibold">

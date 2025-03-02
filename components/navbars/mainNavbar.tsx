@@ -138,17 +138,6 @@ function MainNavbar() {
               </li>
             </Link>
 
-            <Link className="no-underline" href="/classroom/subscriptions">
-              <button
-                className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-semibold 
-               border-0 w-60 h-auto bg-white hover:text-white hover:bg-[#2C7CD1]  flex justify-center items-center gap-2
-               transition duration-150 text-center ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
-              >
-                <span>subscriptions</span>
-                🤑
-              </button>
-            </Link>
-
             <div>
               <li className=" rounded-md bg-[#2C7CD1] px-5 py-1 flex items-center justify-center gap-x-5 text-[30px] ">
                 <div className="flex items-center justify-center">
@@ -232,18 +221,6 @@ function MainNavbar() {
             <Link className="no-underline" href="/classroom">
               <button className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>tatuga class 👩‍🏫</span>
-              </button>
-            </Link>
-          </li>
-          <li className="md:hidden lg:block">
-            <Link className="no-underline" href="/classroom/subscriptions">
-              <button
-                className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-semibold 
-               border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1]  flex justify-center items-center gap-2
-               transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
-              >
-                <span>subscriptions</span>
-                🤑
               </button>
             </Link>
           </li>
