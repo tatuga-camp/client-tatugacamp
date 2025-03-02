@@ -214,8 +214,17 @@ function MainNavbar() {
               พร้อมใช้งาน
             </div>
             <a className="no-underline" href="https://tatugaschool.com">
-              <div className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
-                <span>tatuga school 🏫</span>
+              <div
+                className="focus:outline-none flex items-center justify-center
+               md:text-xs lg:text-base font-Inter gap-2 text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]"
+              >
+                <span>tatuga school </span>
+                <Image
+                  src="/svgs/tatuga-school.svg"
+                  width={20}
+                  height={20}
+                  alt="logo tatuga school"
+                />
               </div>
             </a>
           </li>

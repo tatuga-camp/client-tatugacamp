@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import Lottie from "lottie-react";
-import * as teacherAnimation from "../../components/animations/jsons/98349-teacher-in-classroom.json";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import { useInView } from "react-intersection-observer";
-import NumberAnimated from "../../components/animations/numberAnimated";
-import ReactPlayer from "react-player";
-import { Alert, AlertTitle, Skeleton } from "@mui/material";
 import { Disclosure } from "@headlessui/react";
-import { RiArrowDropDownLine } from "react-icons/ri";
+import { Skeleton } from "@mui/material";
 import { PortableText } from "@portabletext/react";
-import { myPortableTextComponents } from "../../data/portableContent";
-import { cardData } from "../../data/card-classroom";
+import { GetServerSideProps } from "next";
+import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import { useInView } from "react-intersection-observer";
+import ReactPlayer from "react-player";
+import NumberAnimated from "../../components/animations/numberAnimated";
+import { cardData } from "../../data/card-classroom";
+import { myPortableTextComponents } from "../../data/portableContent";
+import HomepageLayout from "../../layouts/homePageLayout";
 import {
-  GetAllAnnouncementSanityService,
   GetAllCommonQuestiontsSanityService,
-  ResponseGetAllAnnouncementSanityService,
   ResponseGetAllCommonQuestiontsSanityService,
 } from "../../sanity/services";
-import { GetServerSideProps } from "next";
-import HomepageLayout from "../../layouts/homePageLayout";
+import { IoIosAlert } from "react-icons/io";
+import Facebook from "../../components/svgs/social_logo/Facebook";
+import { IoHappy } from "react-icons/io5";
 type IndexProps = {
   commonQuestions: ResponseGetAllCommonQuestiontsSanityService;
 };
@@ -49,7 +48,7 @@ function Index({ commonQuestions }: IndexProps) {
   }
 
   return (
-    <div className="md:h-full bg-gradient-to-b  from-white from-20% to-80%   to-blue-500   bg-cover pb-20">
+    <div className="min-h-screen  bg-gradient-to-b  from-white from-20% to-80%   to-blue-500   bg-cover pb-20">
       <Head>
         <meta
           property="og:title"
@@ -89,7 +88,7 @@ function Index({ commonQuestions }: IndexProps) {
         <meta charSet="UTF-8" />
       </Head>
       <HomepageLayout>
-        <header className="w-full max-w-9xl   h-max  flex justify-center items-center gap-12 font-sans">
+        <header className="w-full max-w-9xl pt-10 flex-col xl:flex-row   h-max  flex justify-center items-center gap-12 font-sans">
           <div className="lg:w-max lg:max-w-4xl relative z-20 bg-transparent lg:ml-5 xl:pl-10 p-10 gap-2 flex flex-col items-start justify-center ">
             <div className="md:mt-5 mt-10">
               <span className="font-medium text-gray-400 md:text-lg lg:text-xl ">
@@ -161,23 +160,6 @@ function Index({ commonQuestions }: IndexProps) {
             </div>
           </div>
 
-          <div className="md:hidden lg:w-full xl:w-4/12 md:h-96 w-40 h-40 hidden lg:flex items-center justify-center relative ">
-            <div className="absolute -left-60 md:-left-52 lg:-left-16  md:w-96 lg:w-full ">
-              <Lottie animationData={teacherAnimation} style={style} />
-            </div>
-          </div>
-        </header>
-        <div className="relative">
-          {loading && (
-            <div className=" flex absolute top-0 right-0 left-0 bottom-0 m-auto justify-center items-center flex-col">
-              <div className="md:w-[35rem] md:h-[20rem] w-72 h-40">
-                <Skeleton variant="rectangular" width="100%" height="100%" />
-              </div>
-              <div className="font-Kanit lg:text-lg text-base">
-                📹กำลำโหลด..
-              </div>
-            </div>
-          )}
           {domLoaded && (
             <div className=" flex justify-center items-center flex-col">
               <div className=" md:w-[35rem] md:h-[20rem] w-72 h-40 rounded-md overflow-hidden ">
@@ -193,128 +175,52 @@ function Index({ commonQuestions }: IndexProps) {
               </div>
             </div>
           )}
-        </div>
+        </header>
 
-        <main className=" w-full h-max flex flex-col justify-start items-center  pt-12 gap-12">
-          <div className="flex flex-col items-center justify-center font-Poppins">
-            <span className="uppercase text-xl font-normal text-[#2C7CD1]">
-              tatuga class
+        <main className="flex font-Kanit items-center pt-5  justify-start mt-5  flex-col gap-10">
+          <section className="w-11/12 md:w-9/12 flex flex-col items-center  gap-3">
+            <div className="text-xs md:text-lg flex items-center justify-center gap-2 text-white">
+              สามารถติดตามรายละเอียดได้ที่ FACEBOOK <Facebook />
+            </div>
+            <h1 className="text-5xl md:text-7xl flex flex-col text-center font-semibold text-white">
+              ปิดการใช้งาน <span>Tatuga School!</span>
+            </h1>
+            <section className="w-max text-sm md:text-lg text-red-700 font-semibold flex items-center justify-center gap-2 bg-white rounded-md px-3">
+              <IoIosAlert />
+              แจ้งการปิดเว็บไซต์ Tatuga Class
+            </section>
+            <span className="text-xs  md:text-lg text-white text-center">
+              พวกเราชาว tatuga ได้ตัดสินใจยุติให้บริการเว็บไซต์ tatuga class
+              โดยจะเริ่มลบข้อมูลทั้งหมดและปิดการให้บริการ ณ วันที่ 1 เมษายน 2568
             </span>
-            <span className=" text-2xl font-bold text-blue-900 mt-2">
-              Manage Your Classrooms
-            </span>
-            <span className=" text-2xl font-bold text-blue-900">
-              With Our Tools
-            </span>
-          </div>
-          <div className="lg:w-full md:w-[95%] gap-8 md:flex-row flex-col  flex md:gap-5  lg:gap-10 items-center justify-center py-4 ">
-            {cardData.map((list, index) => {
-              return (
-                <div
-                  key={index}
-                  className="w-52 h-60 lg:h-72 md:h-60  rounded-lg drop-shadow-lg bg-white hover:bg-[#EDBA02] transition duration-200 ease-in-out
-           hover:scale-110 hover:text-white text-blue-900 group  flex flex-col items-start justify-start font-Poppins p-6 gap-2"
-                >
-                  <div className="font-Poppins text-xl font-bold ">
-                    {list.title}
-                  </div>
-                  <div className="w-36  h-2/4 relative mt-2 rounded-md overflow-hidden ">
-                    <Image
-                      alt="tatuga avatar"
-                      priority
-                      src={list.picture}
-                      placeholder="blur"
-                      blurDataURL={list.imageProps.blurDataURL}
-                      className="object-contain  object-center  transition duration-150  "
-                      fill
-                      sizes="(max-width: 768px) 100vw"
-                    />
-                  </div>
-                  <div className="h-10 text-xs lg:relative  leading-tight text-black group-hover:text-white font-semibold ">
-                    {list.description}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div
-            ref={ref}
-            className={`w-full   mt-10 h-full flex gap-10 font-Poppins 
-             items-center justify-center item-group square   `}
-          >
-            <div
-              className={`flex flex-col justify-center w-20 md:w-80  items-center gap-5 text-right ${
-                inView && "element-to-fade-in"
-              } `}
+          </section>
+          <div className="w-80 h-[2px] bg-white" />
+          <section className="w-11/12 flex flex-col items-center gap-3">
+            <a
+              href="https://tatugaschool.com/"
+              className="text-xs md:text-lg no-underline flex items-center justify-center gap-2 text-white"
             >
-              <div className="">
-                <span className="font-Poppins text-right font-semibold text-5xl md:text-8xl flex text-white">
-                  {inView && <NumberAnimated n={usersNumber} />}K
-                </span>
-              </div>
-
-              <span className="font-Poppins text-right font-semibold text-xl text-white">
-                Teachers
-              </span>
-            </div>
-            <div className="h-80 w-[2px] bg-white"></div>
-            <div
-              className={`flex flex-col jjustify-center w-20 md:w-80  items-center gap-5 text-right ${
-                inView && "element-to-fade-in"
-              } `}
+              สามารถเริ่มทดสอบใช้งานได้ที่{" "}
+              <Image
+                src="/svgs/tatuga-school.svg"
+                width={20}
+                height={20}
+                alt="logo tatuga school"
+              />
+            </a>
+            <h1 className="text-5xl md:text-7xl text-center flex flex-col font-semibold text-white">
+              มาเริ่มใช้ <span>Tatuga School!</span>
+            </h1>
+            <a
+              href="https://tatugaschool.com"
+              className="w-max text-sm md:text-lg no-underline text-blue-700 font-semibold flex items-center justify-center gap-2 bg-white rounded-md px-3"
             >
-              <div className="">
-                <span className="font-Poppins text-right font-semibold flex text-5xl md:text-8xl text-white">
-                  {inView && <NumberAnimated n={studentNumber} />}K
-                </span>
-              </div>
-
-              <span className="font-Poppins text-right font-semibold text-xl text-white">
-                Students
-              </span>
-            </div>
-          </div>
-          <section className="w-full text-center flex flex-col items-center justify-center gap-5">
-            <span className=" text-white font-Kanit font-normal text-4xl">
-              คำถามที่พบบ่อย
-            </span>
-            <div className="mx-auto w-full gap-2 flex flex-col max-w-xs md:max-w-md lg:max-w-xl  rounded-2xl bg-white p-3  md:p-10 font-Kanit ">
-              {commonQuestions?.map((commonQuestion, index) => {
-                return (
-                  <Disclosure key={index}>
-                    {({ open }) => (
-                      <>
-                        <Disclosure.Button
-                          className="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2
-                         text-left text-sm md:text-md lg:text-lg font-medium text-purple-900 hover:bg-purple-200 focus:outline-none 
-                         focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
-                        >
-                          <span>{commonQuestion.questionThai}</span>
-                          <RiArrowDropDownLine
-                            className={`${
-                              open ? "rotate-180 transform" : ""
-                            } h-5 w-5 text-purple-500`}
-                          />
-                        </Disclosure.Button>
-                        <Disclosure.Panel className="px-4 pt-4 pb-2  text-sm md:text-lg text-start">
-                          <PortableText
-                            value={commonQuestion.answerThai}
-                            components={myPortableTextComponents}
-                          />
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-                );
-              })}
-            </div>
+              <IoHappy />
+              ใช้งานได้เหมือนเดิม เพิ่มเติมคือเจ๋งกว่า คลิก
+            </a>
+            <span className="text-xs text-white text-center"></span>
           </section>
         </main>
-        <footer className="w-full flex items-center mt-10 justify-center relative">
-          <div className="md:w-9/12 lg:w-6/12 w-11/12 text-lg font-Kanit text-white text-center">
-            {footerData}
-          </div>
-        </footer>
       </HomepageLayout>
     </div>
   );
