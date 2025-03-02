@@ -179,16 +179,24 @@ function Index({ commonQuestions }: IndexProps) {
 
         <main className="flex font-Kanit items-center pt-5  justify-start mt-5  flex-col gap-10">
           <section className="w-11/12 md:w-9/12 flex flex-col items-center  gap-3">
-            <div className="text-xs md:text-lg flex items-center justify-center gap-2 text-white">
+            <a
+              target="_blank"
+              href="https://www.facebook.com/share/p/1BMoLTarhf/"
+              className="text-xs no-underline md:text-lg flex items-center justify-center gap-2 text-white"
+            >
               สามารถติดตามรายละเอียดได้ที่ FACEBOOK <Facebook />
-            </div>
+            </a>
             <h1 className="text-5xl md:text-7xl flex flex-col text-center font-semibold text-white">
               ปิดการใช้งาน <span>Tatuga School!</span>
             </h1>
-            <section className="w-max text-sm md:text-lg text-red-700 font-semibold flex items-center justify-center gap-2 bg-white rounded-md px-3">
+            <a
+              target="_blank"
+              href="https://www.facebook.com/share/p/1BMoLTarhf/"
+              className="w-max text-sm md:text-lg text-red-700  no-underline font-semibold flex items-center justify-center gap-2 bg-white rounded-md px-3"
+            >
               <IoIosAlert />
               แจ้งการปิดเว็บไซต์ Tatuga Class
-            </section>
+            </a>
             <span className="text-xs  md:text-lg text-white text-center">
               พวกเราชาว tatuga ได้ตัดสินใจยุติให้บริการเว็บไซต์ tatuga class
               โดยจะเริ่มลบข้อมูลทั้งหมดและปิดการให้บริการ ณ วันที่ 1 เมษายน 2568
