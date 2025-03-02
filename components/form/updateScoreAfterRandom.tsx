@@ -1,4 +1,5 @@
-import Lottie from "lottie-react";
+import dynamic from "next/dynamic";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import * as animationData from "../../public/jsons/well-done-output.json";

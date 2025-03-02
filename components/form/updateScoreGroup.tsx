@@ -1,50 +1,23 @@
-import Lottie from "lottie-react";
-import Image from "next/image";
+import { UseQueryResult } from "@tanstack/react-query";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { FiPlus, FiPlusSquare, FiSave, FiSettings } from "react-icons/fi";
-import * as animationData from "../../public/jsons/well-done-output.json";
-import {
-  FcBusinessContact,
-  FcCancel,
-  FcCheckmark,
-  FcLineChart,
-  FcViewDetails,
-} from "react-icons/fc";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { FiPlus } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
-import CreateScore from "./createScore";
-import { avartars } from "../../data/students";
-import { useRouter } from "next/router";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
-import { nationalities } from "../../data/student/nationality";
-import AdBannerFixed from "../ads/adBannerFixed";
-import { blurDataURL } from "../../data/student/blurDataURL";
-import { UseQueryResult } from "@tanstack/react-query";
+import { User } from "../../models";
+import * as animationData from "../../public/jsons/well-done-output.json";
+import { ResponseGetGroupService } from "../../services/group";
 import {
   HideScoreService,
   ResponseGetAllScoresClassroomService,
-  UpdateScoreOnStudentService,
   UpdateScoreOnWholeGroupService,
 } from "../../services/scores";
-import { Score, Student, StudentWithScore, User } from "../../models";
-import {
-  DelteStudentService,
-  ResponseGetAllStudentsService,
-  UpdateStudentService,
-} from "../../services/students";
-import {
-  ResponseGetAllGroupService,
-  ResponseGetGroupService,
-} from "../../services/group";
-import Loading from "../loadings/loading";
+import { ResponseGetAllStudentsService } from "../../services/students";
+import AdBannerFixed from "../ads/adBannerFixed";
+import CreateScore from "./createScore";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 type UpdateScoreProps = {
   user: User;

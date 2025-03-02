@@ -1,39 +1,35 @@
-import { useRouter } from "next/router";
-import React, { use, useContext, useEffect, useRef, useState } from "react";
+import { Skeleton } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import UpdateScore from "../../../../components/form/updateScore";
-import { Skeleton } from "@mui/material";
+import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
+import { useEffect, useState } from "react";
+import SelectStudentMultipleScoreUpdate from "../../../../components/form/selectStudentMultipleScoreUpdate";
+import UpdateScore from "../../../../components/form/updateScore";
+import UpdateScoreMultiple from "../../../../components/form/updateScoreMultiple";
+import DisplayGroup from "../../../../components/group/displayGroup";
+import Loading from "../../../../components/loadings/loading";
+import Trophy from "../../../../components/svgs/Trophy";
 import {
   SideMenusThai,
   sideMenusEnglish,
 } from "../../../../data/menubarsClassroom";
-import Trophy from "../../../../components/svgs/Trophy";
-import DisplayGroup from "../../../../components/group/displayGroup";
-import SelectStudentMultipleScoreUpdate from "../../../../components/form/selectStudentMultipleScoreUpdate";
-import UpdateScoreMultiple from "../../../../components/form/updateScoreMultiple";
-import AdBanner from "../../../../components/ads/adBanner";
 import { blurDataURL } from "../../../../data/student/blurDataURL";
-import { Score, Student, StudentWithScore, User } from "../../../../models";
-import TatugaClassLayout from "../../../../layouts/tatugaClassLayout";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { GetUserCookieService } from "../../../../services/user";
+import ClassroomLayout from "../../../../layouts/classroomLayout";
+import { StudentWithScore, User } from "../../../../models";
 import { GetOneClassroomService } from "../../../../services/classroom";
-import { GetAllStudentsService } from "../../../../services/students";
-import { GetAllScoresClassroomService } from "../../../../services/scores";
 import {
   GetAllGroupService,
   GetGroupService,
 } from "../../../../services/group";
-import Loading from "../../../../components/loadings/loading";
-import ClassroomLayout from "../../../../layouts/classroomLayout";
-import { set } from "sanity";
+import { GetAllScoresClassroomService } from "../../../../services/scores";
+import { GetAllStudentsService } from "../../../../services/students";
+import { GetUserCookieService } from "../../../../services/user";
 
 function Index({ user }: { user: User }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [triggerUpdateStudent, setTriggerUpdateStudent] = useState(false);
   const [selectStudent, setSelectStudent] = useState<StudentWithScore>();
   const [skeletion, setSkeletion] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -96,11 +92,6 @@ function Index({ user }: { user: User }) {
       });
     });
   }, [students.data]);
-
-  //style animationLottie
-  const style = {
-    height: 280,
-  };
 
   return (
     <div className="w-full pb-96 bg-slate-100 ">

@@ -8,7 +8,8 @@ import {
 } from "react-icons/fc";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { useQuery } from "@tanstack/react-query";
-import Lottie from "lottie-react";
+import dynamic from "next/dynamic";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import * as SuccesfulAnimation from "../animations/jsons/79952-successful.json";
 import ExcelTable from "./createManyStudent";
 import { MdError } from "react-icons/md";

@@ -1,21 +1,19 @@
-import Lottie from "lottie-react";
-
+import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
-import { FiPlus } from "react-icons/fi";
 import * as animationData from "../../public/jsons/well-done-output.json";
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-import { MdDelete } from "react-icons/md";
-import Swal from "sweetalert2";
+import { UseQueryResult } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { UseQueryResult } from "@tanstack/react-query";
+import Swal from "sweetalert2";
+import { StudentWithScore } from "../../models";
 import {
   HideScoreService,
   ResponseGetAllScoresClassroomService,
   UpdateScoreOnStudentService,
 } from "../../services/scores";
 import { ResponseGetAllStudentsService } from "../../services/students";
-import { StudentWithScore } from "../../models";
 
 type UpdateScoreMultipleProps = {
   scores: UseQueryResult<ResponseGetAllScoresClassroomService, Error>;
