@@ -187,7 +187,7 @@ function Index({ commonQuestions }: IndexProps) {
               สามารถติดตามรายละเอียดได้ที่ FACEBOOK <Facebook />
             </a>
             <h1 className="text-5xl md:text-7xl flex flex-col text-center font-semibold text-white">
-              ปิดการใช้งาน <span>Tatuga School!</span>
+              ปิดการใช้งาน <span>Tatuga Class!</span>
             </h1>
             <a
               target="_blank"
