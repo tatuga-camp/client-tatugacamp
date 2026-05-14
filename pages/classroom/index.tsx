@@ -52,7 +52,7 @@ function Index({ commonQuestions }: IndexProps) {
       <Head>
         <meta
           property="og:title"
-          content="Tatuga class - เว็บไซต์จัดการชั้นเรียน"
+          content="Tatuga class  - เว็บไซต์จัดการชั้นเรียน"
         />
         <meta
           property="og:description"
