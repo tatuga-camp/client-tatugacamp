@@ -6,3 +6,33 @@
   "node_modules/next/dist/server/future/route-modules/pages/vendored/contexts/app-router-context*",
 
 ]
+
+[[redirects]]
+  from = "/classroom"
+  to = "https://tatugaschool.com/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/classroom/teacher/*"
+  to = "/410"
+  status = 410
+  force = true
+
+[[redirects]]
+  from = "/classroom/setting"
+  to = "/410"
+  status = 410
+  force = true
+
+[[redirects]]
+  from = "/classroom/subscriptions"
+  to = "/410"
+  status = 410
+  force = true
+
+[[redirects]]
+  from = "/school"
+  to = "https://tatugaschool.com/"
+  status = 301
+  force = true
