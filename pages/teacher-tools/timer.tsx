@@ -10,8 +10,8 @@ import {
 import { VscDebugRestart } from "react-icons/vsc";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import Countdown, { CountdownRenderProps } from "react-countdown";
+import SEOHead from "../../components/seo/SEOHead";
 type TimeType =
   | {
       seconds: number;
@@ -31,7 +31,6 @@ const Timer = () => {
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
   const [checkTimeUp, setCheckTimeUp] = useState<number>(0);
-  const [classroomId, setClassroomId] = useState<string>();
   const [tartgetDateTime, setTargetDateTime] = useState<number | null>();
   const timeChoices: TimeType[] = [
     {
@@ -57,7 +56,6 @@ const Timer = () => {
   useEffect(() => {
     const sound = require("../../public/sounds/ringing.mp3");
     setAudio(() => new Audio(sound));
-    setClassroomId(() => localStorage.getItem("classroomId") as string);
   }, []);
 
   const handlePickUpTimer = ({ time }: { time: TimeType }) => {
@@ -161,6 +159,7 @@ const Timer = () => {
 
   return (
     <>
+      <SEOHead />
       <Head>
         <title>Timer🕛 - เครื่องจับเวลา</title>
 
@@ -182,14 +181,6 @@ const Timer = () => {
           checkTimeUp < 4000 ? "bg-red-600" : "bg-blue-400"
         } `}
       >
-        <Link
-          href={`/classroom/teacher/${classroomId}`}
-          className="absolute no-underline text-black top-5 left-5 bg-white px-7 py-2 rounded-lg 
-        font-Poppins hover:scale-110 transition duration-150 cursor-pointer"
-        >
-          back
-        </Link>
-
         <div className=" top-5 absolute right-0 left-0 w-max m-auto ">
           {isFullScreen ? (
             <button

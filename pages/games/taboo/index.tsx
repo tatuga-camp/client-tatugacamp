@@ -9,6 +9,7 @@ import { CategoryTaboo, Taboo } from "../../../sanity/sanity-models";
 import { useQuery } from "@tanstack/react-query";
 import { GetAllTabooByCategorySanityService } from "../../../sanity/services";
 import HomepageLayout from "../../../layouts/homePageLayout";
+import SEOHead from "../../../components/seo/SEOHead";
 function Index() {
   const [random, setRandom] = useState<number[]>([1, 2, 3, 4, 5]);
   const [nextCard, setNextCard] = useState<number>(() => {
@@ -138,6 +139,7 @@ function Index() {
 
   return (
     <>
+      <SEOHead />
       <Head>
         <meta charSet="UTF-8" />
         <meta

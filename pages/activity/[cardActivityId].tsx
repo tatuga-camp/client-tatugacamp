@@ -14,6 +14,7 @@ import FooterActivities from "../../components/footers/footerActivities";
 import { Activity } from "../../sanity/sanity-models";
 import HomepageLayout from "../../layouts/homePageLayout";
 import { FaFacebook, FaHeart, FaTwitterSquare } from "react-icons/fa";
+import SEOHead from "../../components/seo/SEOHead";
 
 function Index({ activity }: { activity: Activity }) {
   const [likes, setLikes] = useState(activity.likes);
@@ -53,6 +54,7 @@ function Index({ activity }: { activity: Activity }) {
         className="w-full md:h-full font-Poppins  bg-[url('/svgs/blob2.svg')] md:bg-[url('/svgs/blob3.svg')]
        bg-no-repeat bg-cover pt-11"
       >
+        <SEOHead />
         <Head>
           <meta property="og:url" content={currentURL} />
           <meta property="og:type" content="website" />

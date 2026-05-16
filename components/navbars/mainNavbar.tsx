@@ -104,14 +104,6 @@ function MainNavbar() {
                 Home page
               </li>
             </Link>
-            <Link className="no-underline" href="/classroom">
-              <li
-                onClick={onClick}
-                className="w-60 bg-white text-center rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
-              >
-                tatuga class
-              </li>
-            </Link>
             <a
               className="no-underline relative"
               href="https://tatugaschool.com"
@@ -217,14 +209,6 @@ function MainNavbar() {
               </div>
             </a>
           </li>
-          <li className="">
-            <Link className="no-underline" href="/classroom">
-              <button className="focus:outline-none md:text-xs lg:text-base font-Inter text-black font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
-                <span>tatuga class 👩‍🏫</span>
-              </button>
-            </Link>
-          </li>
-
           <li className="mr-5">
             <AuthButton />
           </li>

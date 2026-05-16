@@ -40,12 +40,12 @@ import Loading from "../components/loadings/loading";
 import HomepageLayout from "../layouts/homePageLayout";
 import BlobSmall1 from "../components/svgs/blobs/small-blobs/blob-small1";
 import BlobMainPage from "../components/svgs/blobs/big-blobs/blob2";
+import SEOHead from "../components/seo/SEOHead";
 
 const tags = [
   { title: "#ค่ายภาษาอังกฤษ" },
   { title: "#แหล่งเรียนรู้สำหรับครู" },
   { title: "#ออกแบบเว็บไซต์โรงเรียน" },
-  { title: "#เว็บไซต์จัดการชั้นเรียน" },
   { title: "#การ์ดเกมเพื่อการเรียนรู้" },
   { title: "#หนังสือเสริมพัฒนาการสำหรับเด็ก" },
 ];
@@ -117,8 +117,9 @@ export default function Home({
         <div className="absolute z-auto right-0 top-1/4 w-8/12">
           <BlobMainPage />
         </div>
+        <SEOHead />
         <Head>
-          <title>tatugacamp - เว็บไซต์เพื่อการศึกษาครบวงจร</title>
+          <title>Tatuga Camp — ค่ายภาษาอังกฤษ การ์ดเกมเพื่อการเรียนรู้ กิจกรรมในห้องเรียน</title>
           <meta
             name="facebook-domain-verification"
             content="1ssqit5qo60k2zi8809tm53bag9t3y"
@@ -130,11 +131,11 @@ export default function Home({
           <meta property="og:type" content="website" />
           <meta
             property="og:title"
-            content="tatugacamp - เว็บไซต์เพื่อการศึกษาครบวงจร"
+            content="Tatuga Camp — ค่ายภาษาอังกฤษ การ์ดเกมเพื่อการเรียนรู้ กิจกรรมในห้องเรียน"
           />
           <meta
             property="og:description"
-            content="#เว็บไซต์จัดการชั้นเรียน #ค่ายภาษาอังกฤษ #ทำเว็บไซต์โรงเรียนแบบทันสมัย #การ์ดเกมเพื่อการเรียนรู้ จบที่นี้ - tatuga camp! "
+            content="จัดค่ายภาษาอังกฤษ ด้วยประสบการณ์ มากกว่า 30 โรงเรียน การเรียนรู้ภาษาอังกฤษผ่านเกม กิจกรรมที่สนุกสนาน ด้วยนวัตกรรมที่ทันสมัย เน้นให้ผู้เรียนได้นำความรู้มาใช้ได้จริง มุ่งพัฒนา 4 ทักษะภาษาอังกฤษ ฟัง พูด อ่าน เขียน — Tatuga Camp"
           />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="600" />
@@ -150,18 +151,11 @@ export default function Home({
           <meta name="google" content="notranslate" key="notranslate" />
           <meta
             name="description"
-            content="จัดค่ายภาษาอังกฤษ ด้วยประสบการณ์ มากกว่า 30 โรงเรียน
-            การเรียนรู้ภาษาอังกฤษผ่านเกม กิจกรรมที่สนุกสนาน ด้วยนวัตกรรมที่ทันสมัย เน้นให้ผู้เรียนได้นำความรู้มาใช้ได้จริง
-            มุ่งพัฒนา 4 ทักษะภาษาอังกฤษ ฟัง พูด อ่าน เขียน และมุ่งเน้นทักษะที่จำเป็นในศตวรรษที่ 21
-            
-            เว็บไซต์จัดการชั้นเรียน Tatuga Class
-            Tatuga Class เว็บไซต์จัดการชั้นเรียนเพื่อทุกคน เว็บไซต์ที่ทุกคนสามารถจัดการชั้นเรียนและบริหารห้องเรียนอย่างมีประสิทธิภาพ
-            สะดวก และ รวดเร็ว
-            "
+            content="จัดค่ายภาษาอังกฤษ ด้วยประสบการณ์ มากกว่า 30 โรงเรียน การเรียนรู้ภาษาอังกฤษผ่านเกม กิจกรรมที่สนุกสนาน ด้วยนวัตกรรมที่ทันสมัย เน้นให้ผู้เรียนได้นำความรู้มาใช้ได้จริง มุ่งพัฒนา 4 ทักษะภาษาอังกฤษ ฟัง พูด อ่าน เขียน — Tatuga Camp"
           />
           <meta
             name="keywords"
-            content="TaTuga camp, tatugacamp, tatuga camp, English, English camp, camp for learning English, card game, activities in classroom, กิจกรรมค่ายภาษาอังกฤษ, การ์ดเกมเพื่อการเรียนรู้, การ์ดเกม"
+            content="TaTuga camp, tatugacamp, tatuga camp, English camp, ค่ายภาษาอังกฤษ, การ์ดเกมเพื่อการเรียนรู้, การ์ดเกม, กิจกรรมในห้องเรียน"
           />
           <meta
             name="viewport"
