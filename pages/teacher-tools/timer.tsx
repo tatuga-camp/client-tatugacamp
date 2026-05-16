@@ -12,6 +12,7 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Countdown, { CountdownRenderProps } from "react-countdown";
+import SEOHead from "../../components/seo/SEOHead";
 type TimeType =
   | {
       seconds: number;
@@ -161,6 +162,7 @@ const Timer = () => {
 
   return (
     <>
+      <SEOHead />
       <Head>
         <title>Timer🕛 - เครื่องจับเวลา</title>
 

@@ -28,6 +28,7 @@ import Mail from "../../components/svgs/social_logo/Mail";
 import Google from "../../components/svgs/social_logo/Google";
 import Blob4 from "../../components/svgs/blobs/big-blobs/blob4";
 import Blob3 from "../../components/svgs/blobs/big-blobs/blob3";
+import SEOHead from "../../components/seo/SEOHead";
 
 const Index = ({
   members,
@@ -50,6 +51,7 @@ const Index = ({
       {/* Banner */}
 
       <div className="flex flex-col items-center justify-center z-10 relative">
+        <SEOHead />
         <Head>
           <title>About us</title>
           {/* metatag for SEO */}

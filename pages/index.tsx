@@ -40,6 +40,7 @@ import Loading from "../components/loadings/loading";
 import HomepageLayout from "../layouts/homePageLayout";
 import BlobSmall1 from "../components/svgs/blobs/small-blobs/blob-small1";
 import BlobMainPage from "../components/svgs/blobs/big-blobs/blob2";
+import SEOHead from "../components/seo/SEOHead";
 
 const tags = [
   { title: "#ค่ายภาษาอังกฤษ" },
@@ -116,6 +117,7 @@ export default function Home({
         <div className="absolute z-auto right-0 top-1/4 w-8/12">
           <BlobMainPage />
         </div>
+        <SEOHead />
         <Head>
           <title>Tatuga Camp — ค่ายภาษาอังกฤษ การ์ดเกมเพื่อการเรียนรู้ กิจกรรมในห้องเรียน</title>
           <meta
