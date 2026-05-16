@@ -93,9 +93,6 @@ function MainNavbar() {
           } `}
         >
           <ul className="list-none font-medium grid grid-cols-1 place-items-center gap-2 ">
-            <li>
-              <AuthButton />
-            </li>
             <Link className="no-underline" href="/">
               <li
                 onClick={onClick}
@@ -209,9 +206,7 @@ function MainNavbar() {
               </div>
             </a>
           </li>
-          <li className="mr-5">
-            <AuthButton />
-          </li>
+          <li className="mr-20"></li>
         </ul>
       </div>
     </nav>
