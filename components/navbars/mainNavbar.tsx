@@ -68,9 +68,9 @@ function MainNavbar() {
                   return null;
                 } else if (classroomCode) {
                   router.push({
-                    pathname: `${process.env.NEXT_PUBLIC_CLIENT_STUDENT_URL}/classroom/student`,
+                    pathname: `${process.env.NEXT_PUBLIC_CLIENT_STUDENT_URL}`,
                     query: {
-                      classroomCode: classroomCode,
+                      subject_code: classroomCode,
                     },
                   });
                 }
