@@ -7,6 +7,10 @@
 
 ]
 
+# Netlify's redirect engine only supports 200/301/302/404 statuses — 410 rules
+# are served as 404 or ignored. 410 responses for all /classroom/* paths are
+# returned by pages/classroom/[[...slug]].tsx instead.
+
 [[redirects]]
   from = "/classroom"
   to = "https://tatugaschool.com/"
@@ -14,25 +18,15 @@
   force = true
 
 [[redirects]]
-  from = "/classroom/teacher/*"
-  to = "/410"
-  status = 410
-  force = true
-
-[[redirects]]
-  from = "/classroom/setting"
-  to = "/410"
-  status = 410
-  force = true
-
-[[redirects]]
-  from = "/classroom/subscriptions"
-  to = "/410"
-  status = 410
-  force = true
-
-[[redirects]]
   from = "/school"
+  to = "https://tatugaschool.com/"
+  status = 301
+  force = true
+
+
+
+[[redirects]]
+  from = "/auth/*"
   to = "https://tatugaschool.com/"
   status = 301
   force = true

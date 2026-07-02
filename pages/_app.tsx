@@ -5,7 +5,6 @@ import "../styles/card.css";
 import "../styles/animation.css";
 import Script from "next/script";
 import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import NextTopLoader from "nextjs-toploader";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import {
@@ -17,9 +16,7 @@ import { AppProps } from "next/app";
 import { useState } from "react";
 import { GetUserService } from "../services/user";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
-);
+
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
     () =>
@@ -49,11 +46,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   gtag('config', 'G-WZH3JD3STK');`}</Script>
 
-      <Elements stripe={stripePromise}>
         <NextTopLoader showSpinner={false} color="#F85C00" />
 
         <Component {...pageProps} />
-      </Elements>
       <ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
     </QueryClientProvider>
   );
