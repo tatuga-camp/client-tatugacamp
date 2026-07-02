@@ -5,6 +5,7 @@ const SITE = "https://tatugacamp.com";
 const STATIC_PATHS = [
   "",
   "/about-us",
+  "/become-a-trainer",
   "/games/taboo",
   "/teacher-tools/timer",
 ];
