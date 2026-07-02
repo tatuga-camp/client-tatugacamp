@@ -10,3 +10,4 @@ export * from "./announcement.model";
 export * from "./activity.model";
 export * from "./member.model";
 export * from "./about-us.model";
+export * from "./trainer.model";
