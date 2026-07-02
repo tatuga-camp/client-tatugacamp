@@ -126,6 +126,14 @@ function MainNavbar() {
                 about us
               </li>
             </Link>
+            <Link className="no-underline" href="/become-a-trainer">
+              <li
+                onClick={onClick}
+                className="w-60 bg-white text-center rounded-md text-black  py-4 px-10 active:bg-[#2C7CD1] active:text-white"
+              >
+                become a trainer
+              </li>
+            </Link>
 
             <div>
               <li className=" rounded-md bg-[#2C7CD1] px-5 py-1 flex items-center justify-center gap-x-5 text-[30px] ">
@@ -181,6 +189,13 @@ function MainNavbar() {
             <Link className="no-underline" href="/about-us">
               <button className="focus:outline-none md:text-xs lg:text-base text-black font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
                 <span>about us</span>
+              </button>
+            </Link>
+          </li>
+          <li className="">
+            <Link className="no-underline" href="/become-a-trainer">
+              <button className="focus:outline-none md:text-xs lg:text-base text-black font-Inter font-normal  border-0 w-max h-auto bg-white hover:text-white hover:bg-[#2C7CD1] transition duration-150 ease-in-out cursor-pointer px-2 py-4 rounded-md active:bg-[#EDBA02]">
+                <span>become a trainer</span>
               </button>
             </Link>
           </li>
