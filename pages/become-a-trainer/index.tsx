@@ -49,8 +49,8 @@ const lookingFor = [
 const Index = ({ trainers }: { trainers: Trainer[] }) => {
   const contacts = {
     name: "Tatuga Camp",
-    phone: "061-027-7960",
-    email: "tatugacamp@gmail.com",
+    phone: "+66 061 027 7960",
+    email: "permlap@tatugacamp.com",
   };
 
   const contactCSS =
