@@ -13,6 +13,7 @@ import serviceCard from "./schemas/serviceCard";
 import taboo from "./schemas/taboo";
 import tatugaSchoolPosts from "./schemas/tatugaSchoolPosts";
 import thanksSchools from "./schemas/thanksSchools";
+import trainer from "./schemas/trainer";
 import whatsNews from "./schemas/whatsNews";
 import whatWeGotCards from "./schemas/whatWeGotCards";
 
@@ -32,6 +33,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     taboo,
     tatugaSchoolPosts,
     thanksSchools,
+    trainer,
     whatsNews,
     whatWeGotCards,
   ],
